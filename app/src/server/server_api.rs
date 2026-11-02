@@ -386,6 +386,10 @@ pub struct ServerApi {
     ambient_agent_task_id: Arc<RwLock<Option<AmbientAgentTaskId>>>,
     /// The source of agent runs (e.g. CLI, GitHub Action). Set once at startup and immutable.
     agent_source: Option<ai::AgentSource>,
+    #[cfg(test)]
+    server_root_url_override: Option<String>,
+    #[cfg(test)]
+    request_timeout_override: Option<Duration>,
 
     #[cfg(feature = "agent_mode_evals")]
     eval_user_id: Option<i32>,
@@ -416,6 +420,10 @@ impl ServerApi {
             ambient_workload_token: Arc::new(Mutex::new(None)),
             ambient_agent_task_id: Arc::new(RwLock::new(None)),
             agent_source,
+            #[cfg(test)]
+            server_root_url_override: None,
+            #[cfg(test)]
+            request_timeout_override: None,
             #[cfg(feature = "agent_mode_evals")]
             eval_user_id,
         }
@@ -423,13 +431,35 @@ impl ServerApi {
 
     #[cfg(test)]
     fn new_for_test() -> Self {
+        Self::new_for_test_with_auth_state(Arc::new(AuthState::new_for_test()))
+    }
+
+    #[cfg(test)]
+    pub(crate) fn new_for_test_with_auth_state(auth_state: Arc<AuthState>) -> Self {
+        Self::new_for_test_with_auth_state_and_overrides(auth_state, None, None)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn new_for_test_with_auth_state_and_server_root_url(
+        auth_state: Arc<AuthState>,
+        server_root_url: Option<String>,
+    ) -> Self {
+        Self::new_for_test_with_auth_state_and_overrides(auth_state, server_root_url, None)
+    }
+
+    #[cfg(test)]
+    pub(crate) fn new_for_test_with_auth_state_and_overrides(
+        auth_state: Arc<AuthState>,
+        server_root_url: Option<String>,
+        request_timeout: Option<Duration>,
+    ) -> Self {
         let (tx, _) = async_channel::unbounded();
 
         let oauth_client = Self::create_oauth_client();
 
         Self {
             client: Arc::new(http_client::Client::new_for_test()),
-            auth_state: Arc::new(AuthState::new_for_test()),
+            auth_state,
             event_sender: tx,
             telemetry_api: TelemetryApi::new(),
             last_server_time: Arc::new(Mutex::new(None)),
@@ -437,6 +467,8 @@ impl ServerApi {
             ambient_workload_token: Arc::new(Mutex::new(None)),
             ambient_agent_task_id: Arc::new(RwLock::new(None)),
             agent_source: None,
+            server_root_url_override: server_root_url,
+            request_timeout_override: request_timeout,
             #[cfg(feature = "agent_mode_evals")]
             eval_user_id: None,
         }
@@ -521,9 +553,13 @@ impl ServerApi {
                 headers.insert(name.to_string(), value);
             }
 
+            #[cfg(test)]
+            let timeout = self.request_timeout_override.or(timeout);
+
             let options = warp_graphql::client::RequestOptions {
                 auth_token: auth_token.bearer_token(),
                 timeout,
+                server_root_url: self.server_root_url_override.clone(),
                 headers,
                 ..default_request_options()
             };

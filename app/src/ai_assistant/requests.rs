@@ -174,6 +174,14 @@ impl Requests {
 
     /// Starts a Warp AI request against the server with the given request prompt.
     pub fn issue_request(&mut self, request: String, ctx: &mut ModelContext<Self>) {
+        self.start_request(request, ctx);
+    }
+
+    fn start_request(
+        &mut self,
+        request: String,
+        ctx: &mut ModelContext<Self>,
+    ) -> warpui::r#async::SpawnedFutureHandle {
         let server_api = self.server_api.clone();
         let raw_request = request.trim();
         let request_for_api = raw_request.to_string();
@@ -334,6 +342,7 @@ impl Requests {
         };
 
         ctx.notify();
+        future_handle
     }
 
     pub fn reset(&mut self, ctx: &mut ModelContext<Self>) {
@@ -436,3 +445,7 @@ impl Requests {
         }
     }
 }
+
+#[cfg(test)]
+#[path = "requests_tests.rs"]
+mod tests;

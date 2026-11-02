@@ -9,19 +9,22 @@ This file provides guidance when working with code in this repository.
 - `cargo bundle --bin warp` - Bundle the main app
 
 ### Running with local warp-server
-To connect Warp client to a local warp-server instance:
+`with_local_server` is no longer a Cargo feature. The compatibility wrapper
+translates it to `WITH_LOCAL_SERVER` for the channel configuration generator:
 
 ```bash
-# Connect to server on default port 8080
-cargo run --features with_local_server
-
-# Connect to server on custom port (e.g., 8082)
-SERVER_ROOT_URL=http://localhost:8082 WS_SERVER_URL=ws://localhost:8082/graphql/v2 cargo run --features with_local_server
+./script/run --features with_local_server
 ```
 
-Environment variables:
-- `SERVER_ROOT_URL` - HTTP endpoint (default: `http://localhost:8080`)
-- `WS_SERVER_URL` - WebSocket endpoint (default: `ws://localhost:8080/graphql/v2`)
+`script/run` invokes `script/install_channel_config`, which pins the
+`warp-channel-config` tool from a separate SSH Git repository. The command
+therefore requires access to that repository. Its generated Local channel
+configuration is not equivalent to running the OSS binary.
+
+The OSS binary uses production service configuration, and release channels
+ignore runtime server URL overrides. It is not currently a supported way to
+point the OSS client at a self-hosted server. Do not use
+`cargo run --features with_local_server`; it passes a removed Cargo feature.
 
 ### Testing
 - `cargo nextest run --no-fail-fast --workspace --exclude command-signatures-v2` - Run tests with nextest

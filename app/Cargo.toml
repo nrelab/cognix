@@ -388,12 +388,14 @@ async-executor = "1.5.1"
 command = { workspace = true, features = ["test-util"] }
 ctor = "0.1.18"
 http_client = { workspace = true, features = ["test-util"] }
+futures-timer = "3.0.2"
 mockall = "0.13.1"
 mockito.workspace = true
 serial_test = "0.8.0"
 sum_tree = { workspace = true, features = ["test-util"] }
 virtual-fs.workspace = true
 warp_completer = { workspace = true, features = ["test-util"] }
+warp_graphql = { workspace = true, features = ["test-util"] }
 warp_core = { workspace = true, features = ["test-util"] }
 warp_editor = { workspace = true, features = ["test-util"] }
 warp_server_client = { workspace = true, features = ["test-util"] }

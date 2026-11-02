@@ -57,6 +57,9 @@ pub struct RequestOptions {
     /// If provided, a Bearer authentication token to provide with the request.
     pub auth_token: Option<String>,
     pub timeout: Option<Duration>,
+    /// If provided, overrides the server root used to build the GraphQL URL.
+    #[cfg(feature = "test-util")]
+    pub server_root_url: Option<String>,
     /// Additional HTTP headers to attach to the request.
     pub headers: std::collections::HashMap<String, String>,
     /// If provided, a prefix to attach to the request URL.
@@ -84,9 +87,14 @@ where
         .map(Cow::into_owned)
         .unwrap_or_default();
 
+    #[cfg(feature = "test-util")]
+    let server_root_url = options
+        .server_root_url
+        .unwrap_or_else(|| ChannelState::server_root_url().into_owned());
+    #[cfg(not(feature = "test-util"))]
+    let server_root_url = ChannelState::server_root_url();
     let graphql_endpoint = format!(
-        "{}{}/graphql/v2?op={}",
-        ChannelState::server_root_url(),
+        "{server_root_url}{}/graphql/v2?op={}",
         options.path_prefix.unwrap_or_default(),
         &operation_name
     );

@@ -10,8 +10,8 @@
 use super::integration_tests;
 
 integration_tests! {
-    // Test command execution works.
-    test_single_command,
+    // Test a local shell command while Warp service URLs are unreachable.
+    test_local_command_with_unreachable_services,
     // Test shell process terminates when session is closed.
     test_add_and_close_session,
     // Test powerlevel10k detection (via bootstrap script logic).
