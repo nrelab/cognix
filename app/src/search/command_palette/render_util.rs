@@ -4,9 +4,9 @@ use crate::themes::theme::Blend;
 use crate::ui_components::icons::Icon;
 use crate::util::color::{ContrastingColor, MinimumAllowedContrast};
 use pathfinder_color::ColorU;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{Align, ConstrainedBox, Container, Empty};
-use warpui::Element;
+use cognix_core::ui::theme::Fill;
+use cognixui::elements::{Align, ConstrainedBox, Container, Empty};
+use cognixui::Element;
 
 /// Helper function to render an icon for any search item within the command palette with consistent
 /// styling.
@@ -25,7 +25,7 @@ pub fn render_search_item_icon(
         background_color.into_solid(),
         MinimumAllowedContrast::NonText,
     );
-    let icon_element = icon.to_warpui_icon(Fill::Solid(icon_color)).finish();
+    let icon_element = icon.to_cognixui_icon(Fill::Solid(icon_color)).finish();
     render_search_item_icon_inner(appearance, icon_element)
 }
 
@@ -49,5 +49,5 @@ fn render_search_item_icon_inner(
 }
 
 pub mod colors {
-    pub const WARP_AI: u32 = 0xF3B911FF;
+    pub const COGNIX_AI: u32 = 0xF3B911FF;
 }

@@ -5,8 +5,8 @@ use std::sync::Arc;
 use chrono::{OutOfRangeError, Utc};
 use futures::stream::AbortHandle;
 
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use cognix_core::user_preferences::GetUserPreferences as _;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::{RequestLimitInfo, RequestUsageInfo},
@@ -15,13 +15,13 @@ use crate::{
     send_telemetry_from_ctx,
     server::{
         server_api::{ai::AIClient, ServerApi},
-        telemetry::{TelemetryEvent, WarpAIRequestResult},
+        telemetry::{TelemetryEvent, CognixAIRequestResult},
     },
     workspaces::user_workspaces::UserWorkspaces,
 };
 
 use super::{
-    execution_context::WarpAiExecutionContext,
+    execution_context::CognixAiExecutionContext,
     utils::{markdown_segments_from_text, FormattedTranscriptMessage, TranscriptPart},
 };
 use anyhow::Result;
@@ -30,7 +30,7 @@ use anyhow::Result;
 /// Not wiring through Settings for now since this data is only needed by the panel view.
 pub const REQUEST_LIMIT_INFO_CACHE_KEY: &str = "AIAssistantRequestLimitInfo";
 
-/// Tracks the current request status for making Warp AI requests against server.
+/// Tracks the current request status for making Cognix AI requests against server.
 pub enum RequestStatus {
     /// There isn't a request in flight right now.
     NotInFlight,
@@ -90,7 +90,7 @@ pub struct Requests {
     /// This list is mutually exclusive from current_transcript.  
     old_transcript_parts: Vec<TranscriptPart>,
 
-    ai_execution_context: Option<WarpAiExecutionContext>,
+    ai_execution_context: Option<CognixAiExecutionContext>,
 }
 
 impl Entity for Requests {
@@ -150,7 +150,7 @@ impl Requests {
 
     pub fn update_ai_execution_context(
         &mut self,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<CognixAiExecutionContext>,
     ) {
         self.ai_execution_context = ai_execution_context;
     }
@@ -172,7 +172,7 @@ impl Requests {
         }
     }
 
-    /// Starts a Warp AI request against the server with the given request prompt.
+    /// Starts a Cognix AI request against the server with the given request prompt.
     pub fn issue_request(&mut self, request: String, ctx: &mut ModelContext<Self>) {
         self.start_request(request, ctx);
     }
@@ -181,7 +181,7 @@ impl Requests {
         &mut self,
         request: String,
         ctx: &mut ModelContext<Self>,
-    ) -> warpui::r#async::SpawnedFutureHandle {
+    ) -> cognixui::r#async::SpawnedFutureHandle {
         let server_api = self.server_api.clone();
         let raw_request = request.trim();
         let request_for_api = raw_request.to_string();
@@ -247,7 +247,7 @@ impl Requests {
 
                             let req_latency = end_time.signed_duration_since(start_time).num_milliseconds();
                             send_telemetry_from_ctx!(
-                                TelemetryEvent::WarpAIRequestIssued { result: WarpAIRequestResult::Succeeded { latency_ms: req_latency, truncated }},
+                                TelemetryEvent::CognixAIRequestIssued { result: CognixAIRequestResult::Succeeded { latency_ms: req_latency, truncated }},
                                 ctx
                             );
                         }
@@ -297,7 +297,7 @@ impl Requests {
                             });
 
                             send_telemetry_from_ctx!(
-                                TelemetryEvent::WarpAIRequestIssued { result: WarpAIRequestResult::OutOfRequests},
+                                TelemetryEvent::CognixAIRequestIssued { result: CognixAIRequestResult::OutOfRequests},
                                 ctx
                             );
                         }
@@ -321,7 +321,7 @@ impl Requests {
                             });
 
                             send_telemetry_from_ctx!(
-                                TelemetryEvent::WarpAIRequestIssued { result: WarpAIRequestResult::Failed},
+                                TelemetryEvent::CognixAIRequestIssued { result: CognixAIRequestResult::Failed},
                                 ctx
                             );
                         }

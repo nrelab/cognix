@@ -1,1 +1,1 @@
-pub use warp_core::interval_timer::IntervalTimer;
+pub use cognix_core::interval_timer::IntervalTimer;

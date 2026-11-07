@@ -1,5 +1,5 @@
 use serde_json::{json, Map, Value};
-use warp_cli::mcp::MCPSpec;
+use cognix_cli::mcp::MCPSpec;
 
 use super::build_mcp_servers_from_specs;
 
@@ -15,13 +15,13 @@ fn empty_specs_returns_none() {
 }
 
 #[test]
-fn uuid_spec_is_coerced_to_warp_id() {
+fn uuid_spec_is_coerced_to_cognix_id() {
     let uuid = uuid::Uuid::parse_str("550e8400-e29b-41d4-a716-446655440000").unwrap();
     let servers = build(vec![MCPSpec::Uuid(uuid)]);
 
     let entry = servers.get(&uuid.to_string()).unwrap();
     assert_eq!(
-        entry["warp_id"].as_str(),
+        entry["cognix_id"].as_str(),
         Some("550e8400-e29b-41d4-a716-446655440000")
     );
 }
@@ -219,12 +219,12 @@ fn validation_rejects_invalid_entries() {
     let err = build_mcp_servers_from_specs(&[MCPSpec::Json(spec)]).unwrap_err();
     assert!(err
         .to_string()
-        .contains("must have exactly one of: 'warp_id', 'command', or 'url'"));
+        .contains("must have exactly one of: 'cognix_id', 'command', or 'url'"));
 
-    // warp_id must be a UUID string.
-    let spec = json!({ "mcpServers": { "bad": { "warp_id": "not-a-uuid" } } }).to_string();
+    // cognix_id must be a UUID string.
+    let spec = json!({ "mcpServers": { "bad": { "cognix_id": "not-a-uuid" } } }).to_string();
     let err = build_mcp_servers_from_specs(&[MCPSpec::Json(spec)]).unwrap_err();
-    assert!(err.to_string().contains("field 'warp_id' must be a UUID"));
+    assert!(err.to_string().contains("field 'cognix_id' must be a UUID"));
 
     // args must be array.
     let spec = json!({ "mcpServers": { "bad": { "command": "npx", "args": "nope" } } }).to_string();
@@ -294,7 +294,7 @@ fn serializes_mcp_servers_as_object_not_string() {
 
     let server = mcp_servers.get(uuid.to_string()).unwrap();
     assert_eq!(
-        server.get("warp_id").unwrap(),
+        server.get("cognix_id").unwrap(),
         &Value::String(uuid.to_string())
     );
 }

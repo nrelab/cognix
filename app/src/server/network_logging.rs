@@ -3,7 +3,7 @@ use std::fmt;
 use bounded_vec_deque::BoundedVecDeque;
 use chrono::{DateTime, FixedOffset};
 use enclose::enclose;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 
 use crate::server::datetime_ext::DateTimeExt;
 use crate::server::server_api::ServerApiProvider;
@@ -123,7 +123,7 @@ pub(super) fn init<'a>(
 /// Represents an item (either a request or response) captured for the network
 /// activity log. The inner string contains a timestamp and the
 /// [`Debug`]-formatted representation of the request or response, matching the
-/// format previously written to `warp_network.log`.
+/// format previously written to `cognix_network.log`.
 #[derive(Clone, Debug)]
 pub struct NetworkLogItem(String);
 

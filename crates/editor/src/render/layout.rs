@@ -6,15 +6,15 @@ use std::ops::Range;
 use std::sync::Arc;
 
 use crate::content::text::{BufferBlockStyle, TextStylesWithMetadata};
-use warpui::fonts::TextLayoutSystem;
+use cognixui::fonts::TextLayoutSystem;
 #[cfg(test)]
-use warpui::fonts::{Style, Weight};
-use warpui::text_layout::{
+use cognixui::fonts::{Style, Weight};
+use cognixui::text_layout::{
     ClipConfig, LayoutCache, Line, StyleAndFont, TextAlignment, TextBorder, TextStyle,
 };
-use warpui::units::{IntoPixels, Pixels};
-use warpui::{AppContext, LayoutContext};
-use warpui::{color::ColorU, text_layout::TextFrame};
+use cognixui::units::{IntoPixels, Pixels};
+use cognixui::{AppContext, LayoutContext};
+use cognixui::{color::ColorU, text_layout::TextFrame};
 
 use super::model::{BlockSpacing, ParagraphStyles, RenderState, RichTextStyles};
 

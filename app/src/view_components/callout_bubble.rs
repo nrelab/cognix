@@ -1,12 +1,12 @@
 use pathfinder_color::ColorU;
-use warp_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
-use warpui::elements::{
+use cognix_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
+use cognixui::elements::{
     Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, MainAxisSize,
     MouseStateHandle, ParentElement, Radius, Stack,
 };
-use warpui::ui_components::checkbox::Checkbox;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::Element;
+use cognixui::ui_components::checkbox::Checkbox;
+use cognixui::ui_components::components::UiComponentStyles;
+use cognixui::Element;
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
@@ -114,7 +114,7 @@ pub fn render_callout_bubble(
         .with_child(
             ConstrainedBox::new(
                 border_icon
-                    .to_warpui_icon(Fill::Solid(border_color))
+                    .to_cognixui_icon(Fill::Solid(border_color))
                     .finish(),
             )
             .with_width(24.)
@@ -122,7 +122,7 @@ pub fn render_callout_bubble(
             .finish(),
         )
         .with_child(
-            ConstrainedBox::new(fill_icon.to_warpui_icon(background).finish())
+            ConstrainedBox::new(fill_icon.to_cognixui_icon(background).finish())
                 .with_width(24.)
                 .with_height(24.)
                 .finish(),

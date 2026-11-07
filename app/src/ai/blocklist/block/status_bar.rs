@@ -4,9 +4,9 @@ use super::{
     cli_controller::{CLISubagentController, CLISubagentEvent, UserTakeOverReason},
     model::{AIBlockModel, AIBlockModelImpl, AIBlockOutputStatus},
     view_impl::common::{
-        render_switch_control_to_user_button, render_warping_indicator,
-        render_warping_indicator_base, ButtonProps, ForceRefreshButtonProps, MaybeShimmeringText,
-        WarpingIndicatorProps, WarpingProps, LOAD_OUTPUT_MESSAGE, WAITING_FOR_USER_INPUT_MESSAGE,
+        render_switch_control_to_user_button, render_cognixing_indicator,
+        render_cognixing_indicator_base, ButtonProps, ForceRefreshButtonProps, MaybeShimmeringText,
+        CognixingIndicatorProps, CognixingProps, LOAD_OUTPUT_MESSAGE, WAITING_FOR_USER_INPUT_MESSAGE,
     },
 };
 use crate::{
@@ -29,7 +29,7 @@ use crate::{
         suggestions_mode_model::InputSuggestionsModeModel,
     },
 };
-use warp_multi_agent_api as api;
+use cognix_multi_agent_api as api;
 
 use crate::{
     ai::{
@@ -60,7 +60,7 @@ use crate::{
         model::block::LONG_RUNNING_COMMAND_DURATION_MS,
         model_events::{ModelEvent, ModelEventDispatcher},
         view::ambient_agent::{AmbientAgentViewModel, AmbientAgentViewModelEvent},
-        warpify::render::LEFT_STRIPE_WIDTH,
+        cognixify::render::LEFT_STRIPE_WIDTH,
         TerminalModel, CANCEL_COMMAND_KEYBINDING, TOGGLE_AUTOEXECUTE_MODE_KEYBINDING,
         TOGGLE_HIDE_CLI_RESPONSES_KEYBINDING, TOGGLE_QUEUE_NEXT_PROMPT_KEYBINDING,
     },
@@ -70,12 +70,12 @@ use crate::{
 use instant::Instant;
 use parking_lot::FairMutex;
 use pathfinder_color::ColorU;
-use warp_core::{
+use cognix_core::{
     features::FeatureFlag,
     ui::{appearance::Appearance, theme::Fill, Icon as CoreIcon},
 };
-use warpui::elements::shimmering_text::ShimmeringTextStateHandle;
-use warpui::{
+use cognixui::elements::shimmering_text::ShimmeringTextStateHandle;
+use cognixui::{
     elements::{Border, Container, Empty, Flex, MouseStateHandle, ParentElement, Text},
     keymap::Keystroke,
     presenter::ChildView,
@@ -83,7 +83,7 @@ use warpui::{
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity, View, ViewContext,
     ViewHandle,
 };
-use warpui::{r#async::Timer, TypedActionView};
+use cognixui::{r#async::Timer, TypedActionView};
 
 pub fn init(app: &mut AppContext) {
     summarization_cancel_dialog::init(app);
@@ -129,12 +129,12 @@ pub struct BlocklistAIStatusBar {
     summarization_timer_handle: Option<SpawnedFutureHandle>,
     summarization_start_time: Option<Instant>,
     /// Handle for the 1-second periodic timer that refreshes the "Last read …" suffix in
-    /// the warping indicator while the active block has a recorded LRC snapshot.
+    /// the cognixing indicator while the active block has a recorded LRC snapshot.
     last_read_refresh_handle: Option<SpawnedFutureHandle>,
 
     latest_response_stream_id: Option<ResponseStreamId>,
 
-    /// Agent tip to display below the warping indicator.
+    /// Agent tip to display below the cognixing indicator.
     current_tip: Option<AgentTip>,
 
     ephemeral_message_model: ModelHandle<EphemeralMessageModel>,
@@ -749,7 +749,7 @@ impl BlocklistAIStatusBar {
         }
     }
 
-    fn render_warping_indicator_for_latest_exchange(
+    fn render_cognixing_indicator_for_latest_exchange(
         &self,
         app: &AppContext,
     ) -> Option<Box<dyn Element>> {
@@ -764,12 +764,12 @@ impl BlocklistAIStatusBar {
                 .is_some_and(|metadata| {
                     !metadata.should_hide_block() && metadata.long_running_control_state().is_none()
                 });
-        let should_render_warping = !model.request_type(app).is_passive()
+        let should_render_cognixing = !model.request_type(app).is_passive()
             && !has_expanded_requested_command_with_no_subagent
             && (conversation.status().is_in_progress()
                 || (active_block.is_agent_in_control() && !active_block.is_agent_blocked()));
 
-        if !should_render_warping {
+        if !should_render_cognixing {
             return None;
         }
 
@@ -804,24 +804,24 @@ impl BlocklistAIStatusBar {
             })
             .unwrap_or((None, None));
 
-        let fallback_warping_text = resolve_fallback_warping_message(
+        let fallback_cognixing_text = resolve_fallback_cognixing_message(
             current_is_fallback,
             current_display_name,
             model.as_ref(),
             app,
         );
-        let default_warping_text = fallback_warping_text
+        let default_cognixing_text = fallback_cognixing_text
             .as_deref()
             .unwrap_or(LOAD_OUTPUT_MESSAGE)
             .to_owned();
-        let secondary_element = if fallback_warping_text.is_some() {
+        let secondary_element = if fallback_cognixing_text.is_some() {
             Some(render_fallback_explanation(model.as_ref(), app))
         } else {
             self.render_tip(app)
         };
 
-        Some(render_warping_indicator(
-            WarpingProps {
+        Some(render_cognixing_indicator(
+            CognixingProps {
                 model: model.as_ref(),
                 terminal_model: &terminal_model,
                 action_model: self.action_model.as_ref(app),
@@ -866,7 +866,7 @@ impl BlocklistAIStatusBar {
                     should_hide_responses,
                 )),
                 force_refresh_button,
-                default_warping_text,
+                default_cognixing_text,
                 secondary_element,
                 last_snapshot_at,
             },
@@ -889,10 +889,10 @@ impl BlocklistAIStatusBar {
         } else {
             "Connecting to Host (Step 1/3)"
         };
-        Some(render_warping_indicator_base(
-            WarpingIndicatorProps {
+        Some(render_cognixing_indicator_base(
+            CognixingIndicatorProps {
                 icon: None,
-                warping_indicator_text: MaybeShimmeringText::Shimmering {
+                cognixing_indicator_text: MaybeShimmeringText::Shimmering {
                     text: progress_text.into(),
                     shimmering_text_handle: self.shimmering_text_handle.clone(),
                 },
@@ -990,7 +990,7 @@ fn latest_model_used_before_exchange<V: View>(
 fn render_agent_tip(tip: &AgentTip, app: &AppContext) -> Box<dyn Element> {
     use crate::ai::agent_tips::AITip;
     use markdown_parser::{FormattedTextFragment, FormattedTextLine};
-    use warpui::text_layout::ClipConfig;
+    use cognixui::text_layout::ClipConfig;
 
     let appearance = Appearance::as_ref(app);
     let theme = appearance.theme();
@@ -1010,7 +1010,7 @@ fn render_agent_tip(tip: &AgentTip, app: &AppContext) -> Box<dyn Element> {
 
     let formatted_text =
         markdown_parser::FormattedText::new(vec![FormattedTextLine::Line(fragments)]);
-    warpui::elements::FormattedTextElement::new(
+    cognixui::elements::FormattedTextElement::new(
         formatted_text,
         appearance.monospace_font_size() - 3.,
         appearance.ui_font_family(),
@@ -1022,7 +1022,7 @@ fn render_agent_tip(tip: &AgentTip, app: &AppContext) -> Box<dyn Element> {
     .set_selectable(true)
     .with_clip(ClipConfig::ellipsis())
     .register_default_click_handlers_with_action_support(move |link, evt, app| {
-        use warpui::elements::HyperlinkLens;
+        use cognixui::elements::HyperlinkLens;
         match link {
             HyperlinkLens::Url(url) => {
                 send_telemetry_from_app_ctx!(
@@ -1081,16 +1081,16 @@ fn render_fallback_explanation<V: View>(
     .finish()
 }
 
-/// If the current exchange is using a fallback model, returns the warping message to display
-/// (e.g. "Warping with Claude 3.5 Haiku."). When the current exchange's output doesn't have
+/// If the current exchange is using a fallback model, returns the cognixing message to display
+/// (e.g. "Cognixing with Claude 3.5 Haiku."). When the current exchange's output doesn't have
 /// model info yet (the ModelUsed message hasn't arrived), we check the most recent previous
 /// exchange as a best guess — if the conversation already fell back, the next exchange likely
-/// will too. This avoids a flicker from "Warping..." to "Warping with {name}." on follow-ups.
+/// will too. This avoids a flicker from "Cognixing..." to "Cognixing with {name}." on follow-ups.
 ///
 /// We skip the lookback for new user queries because the underlying model may have recovered
 /// since the previous exchange. For agent-initiated follow-up exchanges (action results, etc.)
 /// the lookback is still applied.
-fn resolve_fallback_warping_message<V: View>(
+fn resolve_fallback_cognixing_message<V: View>(
     current_is_fallback: Option<bool>,
     current_display_name: Option<String>,
     model: &dyn AIBlockModel<View = V>,
@@ -1120,8 +1120,8 @@ fn resolve_fallback_warping_message<V: View>(
         return None;
     }
     Some(match display_name.as_deref() {
-        Some(name) => format!("Warping with {name}."),
-        None => "Warping with another model.".to_owned(),
+        Some(name) => format!("Cognixing with {name}."),
+        None => "Cognixing with another model.".to_owned(),
     })
 }
 
@@ -1130,7 +1130,7 @@ impl View for BlocklistAIStatusBar {
         "BlocklistAIStatusBar"
     }
 
-    fn render(&self, app: &AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &AppContext) -> Box<dyn cognixui::Element> {
         let appearance = Appearance::as_ref(app);
         let agent_view_controller = self.agent_view_controller.as_ref(app);
         if let Some(cloud_mode_setup_terminal_message) =
@@ -1148,10 +1148,10 @@ impl View for BlocklistAIStatusBar {
                     app,
                 )
             {
-                render_warping_indicator_base(
-                    WarpingIndicatorProps {
+                render_cognixing_indicator_base(
+                    CognixingIndicatorProps {
                         icon: None,
-                        warping_indicator_text: MaybeShimmeringText::Shimmering {
+                        cognixing_indicator_text: MaybeShimmeringText::Shimmering {
                             text: "Setting up environment".into(),
                             shimmering_text_handle: self.shimmering_text_handle.clone(),
                         },
@@ -1175,10 +1175,10 @@ impl View for BlocklistAIStatusBar {
                     .current_message()
                     .is_none()
             {
-                render_warping_indicator_base(
-                    WarpingIndicatorProps {
+                render_cognixing_indicator_base(
+                    CognixingIndicatorProps {
                         icon: Some(icons::gray_clock_icon(appearance).finish()),
-                        warping_indicator_text: MaybeShimmeringText::Static(
+                        cognixing_indicator_text: MaybeShimmeringText::Static(
                             WAITING_FOR_USER_INPUT_MESSAGE.into(),
                         ),
                         non_shimmering_text: None,
@@ -1198,20 +1198,20 @@ impl View for BlocklistAIStatusBar {
                     },
                     app,
                 )
-            } else if let (Some(warping_indicator), true) = (
-                self.render_warping_indicator_for_latest_exchange(app),
+            } else if let (Some(cognixing_indicator), true) = (
+                self.render_cognixing_indicator_for_latest_exchange(app),
                 self.ephemeral_message_model
                     .as_ref(app)
                     .current_message()
                     .is_none(),
             ) {
-                warping_indicator
+                cognixing_indicator
             } else if self
                 .ambient_agent_view_model
                 .as_ref(app)
                 .is_waiting_for_session()
             {
-                // Don't render warping indicator - the loading screen is shown in the main view
+                // Don't render cognixing indicator - the loading screen is shown in the main view
                 return Empty::new().finish();
             } else if agent_view_controller.is_active() {
                 return Flex::column()
@@ -1282,7 +1282,7 @@ impl View for BlocklistAIStatusBar {
         }
 
         // When the agent view is active, keep the child agent status card
-        // visible above the warping/status indicator so it doesn't disappear
+        // visible above the cognixing/status indicator so it doesn't disappear
         // while the agent is working.
         if agent_view_controller.is_active() {
             return Flex::column()
@@ -1312,7 +1312,7 @@ pub enum BlocklistAIStatusBarAction {
     Stop,
     /// Force the agent's pending poll for a long-running command to resolve
     /// immediately with a fresh snapshot, bypassing its agent-set timer. Dispatched
-    /// by the inline `Check now` affordance in the warping indicator.
+    /// by the inline `Check now` affordance in the cognixing indicator.
     ForceRefreshAgentView {
         block_id: crate::terminal::model::block::BlockId,
     },

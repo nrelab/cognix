@@ -8,7 +8,7 @@ use crate::{util::skip_if_powershell_core_2303, Builder};
 use lazy_static::lazy_static;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use settings::ToggleableSetting;
-use warp::{
+use cognix::{
     cmd_or_ctrl_shift,
     features::FeatureFlag,
     integration_testing::{
@@ -22,8 +22,8 @@ use warp::{
     },
     settings::SelectionSettings,
 };
-use warp_multi_agent_api as api;
-use warpui::{async_assert, integration::TestStep, text::SelectionType, Event, SingletonEntity};
+use cognix_multi_agent_api as api;
+use cognixui::{async_assert, integration::TestStep, text::SelectionType, Event, SingletonEntity};
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "linux")] {
@@ -104,7 +104,7 @@ fn builder_with_setup() -> Builder {
 }
 
 fn markdown_visuals_fixture_directory() -> String {
-    let fixture_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../warpui_core/test_data");
+    let fixture_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../cognixui_core/test_data");
     fixture_dir
         .canonicalize()
         .unwrap_or(fixture_dir)

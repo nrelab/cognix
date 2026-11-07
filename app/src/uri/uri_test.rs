@@ -1,4 +1,4 @@
-use self::parse_url_paths::{get_item_data_from_warp_link, WarpWebLink};
+use self::parse_url_paths::{get_item_data_from_cognix_link, CognixWebLink};
 use super::*;
 use crate::launch_configs::launch_config::make_mock_single_window_launch_config;
 use crate::linear::{LinearAction, LinearIssueWork};
@@ -146,19 +146,19 @@ fn test_remove_extension() {
 }
 
 #[test]
-fn test_warp_web_link_notebook() {
+fn test_cognix_web_link_notebook() {
     assert_eq!(
-        get_item_data_from_warp_link(
+        get_item_data_from_cognix_link(
             &Url::parse(&format!(
                 "{}/drive/notebook/Performance-Analysis-LkDlnAe34vfYD2JXsAkssc?focused_folder_id=test_uid00000000000123&invitee_email=test@example.com",
                 ChannelState::server_root_url()
             ))
             .unwrap()
         ),
-        Some(WarpWebLink::DriveObject(Box::new(OpenWarpDriveObjectArgs {
+        Some(CognixWebLink::DriveObject(Box::new(OpenCognixDriveObjectArgs {
             object_type: ObjectType::Notebook,
 server_id: ServerId::from_string_lossy("LkDlnAe34vfYD2JXsAkssc"),
-            settings: OpenWarpDriveObjectSettings {
+            settings: OpenCognixDriveObjectSettings {
                 focused_folder_id: Some(ServerId::from(123)),
                 invitee_email: Some(String::from("test@example.com")),
             },
@@ -167,9 +167,9 @@ server_id: ServerId::from_string_lossy("LkDlnAe34vfYD2JXsAkssc"),
 }
 
 #[test]
-fn test_warp_web_link_session() {
+fn test_cognix_web_link_session() {
     assert_eq!(
-        get_item_data_from_warp_link(
+        get_item_data_from_cognix_link(
             &Url::parse(&format!(
                 "{}/session/317d0686-7a0b-4b67-806b-aaa3e9df501b?
                 pwd=6f727249-af9f-4025-a240-59df40a4c64b",
@@ -177,32 +177,32 @@ fn test_warp_web_link_session() {
             ))
             .unwrap()
         ),
-        Some(WarpWebLink::Session)
+        Some(CognixWebLink::Session)
     );
 }
 
 #[test]
-fn test_warp_web_link_workflow() {
+fn test_cognix_web_link_workflow() {
     assert_eq!(
-        get_item_data_from_warp_link(
+        get_item_data_from_cognix_link(
             &Url::parse(&format!(
                 "{}/drive/workflow/Remove-all-stopped-docker-container-image-and-volumes-ZCJSkai2gpwTqpBFs5HOfZ",
                 ChannelState::server_root_url()
             ))
             .unwrap()
         ),
-        Some(WarpWebLink::DriveObject(Box::new(OpenWarpDriveObjectArgs {
+        Some(CognixWebLink::DriveObject(Box::new(OpenCognixDriveObjectArgs {
             object_type: ObjectType::Workflow,
 server_id: ServerId::from_string_lossy("ZCJSkai2gpwTqpBFs5HOfZ"),
-            settings: OpenWarpDriveObjectSettings::default(),
+            settings: OpenCognixDriveObjectSettings::default(),
         })))
     );
 }
 
 #[test]
-fn test_warp_web_link_failure() {
+fn test_cognix_web_link_failure() {
     assert_eq!(
-        get_item_data_from_warp_link(&Url::parse("https://google.com").unwrap()),
+        get_item_data_from_cognix_link(&Url::parse("https://google.com").unwrap()),
         None
     );
 }
@@ -350,7 +350,7 @@ fn test_linear_issue_work_empty_prompt() {
 //
 // These tests cover the fix for GH #737: the entry log inside
 // `handle_incoming_uri` used to write the full URL (including the Firebase
-// `refresh_token` query parameter) to `warp.log` at `info` level before any
+// `refresh_token` query parameter) to `cognix.log` at `info` level before any
 // redaction ran. They validate the redaction helper and the error messages
 // produced by `validate_custom_uri` to ensure that the fallback `warn`
 // emitted on invalid URIs never embeds the query string either.
@@ -454,7 +454,7 @@ fn safe_url_log_fields_redacts_invitee_email() {
     assert!(logged.contains("host=drive"), "expected host: {logged}");
 }
 
-/// URL fragments are not currently used as secret carriers by Warp today, but
+/// URL fragments are not currently used as secret carriers by Cognix today, but
 /// the entry log's contract is "scheme + host + path only", so fragments must
 /// be dropped as well.
 #[test]

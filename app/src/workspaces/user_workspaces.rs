@@ -29,12 +29,12 @@ use crate::{
 use anyhow::Result;
 use regex::Regex;
 use std::sync::Arc;
-use warp_core::{
+use cognix_core::{
     features::FeatureFlag,
     settings::{ChangeEventReason, Setting},
 };
-use warp_graphql::workspace::FeatureModelChoice;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity, Tracked};
+use cognix_graphql::workspace::FeatureModelChoice;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity, Tracked};
 
 #[cfg(test)]
 use crate::server::server_api::{team::MockTeamClient, workspace::MockWorkspaceClient};
@@ -122,7 +122,7 @@ pub struct WorkspacesMetadataResponse {
 // independent queries.
 pub struct WorkspacesMetadataWithPricing {
     pub metadata: WorkspacesMetadataResponse,
-    pub pricing_info: Option<warp_graphql::billing::PricingInfo>,
+    pub pricing_info: Option<cognix_graphql::billing::PricingInfo>,
 }
 
 pub struct CreateTeamResponse {
@@ -256,7 +256,7 @@ impl UserWorkspaces {
         }
     }
 
-    pub fn is_at_tier_limit_for_some_warp_drive_objects(
+    pub fn is_at_tier_limit_for_some_cognix_drive_objects(
         team_uid: ServerId,
         ctx: &AppContext,
     ) -> bool {
@@ -392,7 +392,7 @@ impl UserWorkspaces {
         self.current_team().is_none_or(|team| {
             team.billing_metadata
                 .tier
-                .warp_ai_policy
+                .cognix_ai_policy
                 .is_none_or(|policy| {
                     policy.is_prompt_suggestions_toggleable
                         || policy.is_next_command_enabled
@@ -403,7 +403,7 @@ impl UserWorkspaces {
 
     /// Returns `true` if the current team's enterprise status allows AI features that have an
     /// enterprise gate. Non-enterprise teams always pass; enterprise teams pass only if they
-    /// are on the Warp Plan or the build is dogfood (both our internal Warp team and dogfood
+    /// are on the Cognix Plan or the build is dogfood (both our internal Cognix team and dogfood
     /// team are billed as enterprise).
     pub fn ai_allowed_for_current_team(&self) -> bool {
         !self
@@ -411,7 +411,7 @@ impl UserWorkspaces {
             .is_some_and(|team| team.billing_metadata.customer_type == CustomerType::Enterprise)
             || self
                 .current_team()
-                .is_some_and(|team| team.billing_metadata.is_warp_plan())
+                .is_some_and(|team| team.billing_metadata.is_cognix_plan())
             || ChannelState::channel().is_dogfood()
     }
 
@@ -423,7 +423,7 @@ impl UserWorkspaces {
             .is_none_or(|team| {
                 team.billing_metadata
                     .tier
-                    .warp_ai_policy
+                    .cognix_ai_policy
                     .is_some_and(|policy| policy.is_prompt_suggestions_toggleable)
             })
     }
@@ -436,7 +436,7 @@ impl UserWorkspaces {
             .is_none_or(|team| {
                 team.billing_metadata
                     .tier
-                    .warp_ai_policy
+                    .cognix_ai_policy
                     .is_some_and(|policy| policy.is_code_suggestions_toggleable)
             })
     }
@@ -449,7 +449,7 @@ impl UserWorkspaces {
             .is_none_or(|team| {
                 team.billing_metadata
                     .tier
-                    .warp_ai_policy
+                    .cognix_ai_policy
                     .is_some_and(|policy| policy.is_next_command_enabled)
             })
     }
@@ -465,7 +465,7 @@ impl UserWorkspaces {
                 .is_none_or(|team| {
                     team.billing_metadata
                         .tier
-                        .warp_ai_policy
+                        .cognix_ai_policy
                         .is_some_and(|policy| policy.is_voice_enabled)
                 })
     }

@@ -10,7 +10,7 @@ lazy_static! {
     static ref WORKFLOW: Workflow = Workflow::Command {
         name: "Run single integration test with display".to_owned(),
         command:
-            "RUST_BACKTRACE=full WARP_SHELL_PATH={{shell_path}} cargo run -p integration --bin \
+            "RUST_BACKTRACE=full COGNIX_SHELL_PATH={{shell_path}} cargo run -p integration --bin \
           integration --features=with_real_display_in_integration_tests -- {{test_name}}"
                 .to_owned(),
         arguments: vec![
@@ -33,9 +33,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            cognix_workflows::Shell::Zsh,
+            cognix_workflows::Shell::Bash,
+            cognix_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -54,9 +54,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            cognix_workflows::Shell::Zsh,
+            cognix_workflows::Shell::Bash,
+            cognix_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -70,9 +70,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
-            warp_workflows::Shell::Zsh,
+            cognix_workflows::Shell::Bash,
+            cognix_workflows::Shell::Fish,
+            cognix_workflows::Shell::Zsh,
         ],
         environment_variables: None,
     };
@@ -101,9 +101,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            cognix_workflows::Shell::Zsh,
+            cognix_workflows::Shell::Bash,
+            cognix_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -126,9 +126,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            cognix_workflows::Shell::Zsh,
+            cognix_workflows::Shell::Bash,
+            cognix_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -152,9 +152,9 @@ lazy_static! {
         author: None,
         author_url: None,
         shells: vec![
-            warp_workflows::Shell::Zsh,
-            warp_workflows::Shell::Bash,
-            warp_workflows::Shell::Fish,
+            cognix_workflows::Shell::Zsh,
+            cognix_workflows::Shell::Bash,
+            cognix_workflows::Shell::Fish,
         ],
         environment_variables: None,
     };
@@ -167,7 +167,7 @@ fn test_compute_workflow_display_data_for_linked_history_command() {
     // It passes "/opt/homebrew/bin/fish" for the {{shell_path}} parameter and
     // test_command_search_loads_history for the {{test_name}} parameter.
     let linked_history_command =
-        "RUST_BACKTRACE=full WARP_SHELL_PATH=/opt/homebrew/bin/fish cargo run -p integration --bin \
+        "RUST_BACKTRACE=full COGNIX_SHELL_PATH=/opt/homebrew/bin/fish cargo run -p integration --bin \
         integration --features=with_real_display_in_integration_tests -- \
         test_command_search_loads_history";
     let display_data =
@@ -179,13 +179,13 @@ fn test_compute_workflow_display_data_for_linked_history_command() {
     );
     assert_eq!(
         display_data.replaced_ranges,
-        vec![36.into()..58.into(), 155.into()..188.into()]
+        vec![38.into()..60.into(), 157.into()..190.into()]
     );
     assert_eq!(
         display_data.argument_index_to_char_range_map,
         HashMap::from([
-            (0.into(), vec![36.into()..58.into()]),
-            (1.into(), vec![155.into()..188.into()])
+            (0.into(), vec![38.into()..60.into()]),
+            (1.into(), vec![157.into()..190.into()])
         ])
     );
 }
@@ -196,7 +196,7 @@ fn test_compute_workflow_display_data_for_linked_history_command_with_multiple_i
     // This command should be parsed as a workflow-linked command.
     //
     // The workflow contains multiple instances of the same parameter
-    let linked_history_command = r#"echo warp warp warp"#;
+    let linked_history_command = r#"echo cognix cognix cognix"#;
     let display_data = compute_workflow_display_data_for_history_command(
         linked_history_command,
         &WORKFLOW_MULTIPLE_INSTANCES_SAME_PARAMETER,
@@ -209,9 +209,9 @@ fn test_compute_workflow_display_data_for_linked_history_command_with_multiple_i
     assert_eq!(
         display_data.replaced_ranges,
         vec![
-            5.into()..9.into(),
-            10.into()..14.into(),
-            15.into()..19.into()
+            5.into()..11.into(),
+            12.into()..18.into(),
+            19.into()..25.into()
         ]
     );
     assert_eq!(
@@ -219,9 +219,9 @@ fn test_compute_workflow_display_data_for_linked_history_command_with_multiple_i
         HashMap::from([(
             0.into(),
             vec![
-                5.into()..9.into(),
-                10.into()..14.into(),
-                15.into()..19.into()
+                5.into()..11.into(),
+                12.into()..18.into(),
+                19.into()..25.into()
             ]
         ),])
     );
@@ -300,7 +300,7 @@ fn test_compute_workflow_display_data_for_similar_but_unlinked_history_command()
     // This command is missing the "-p" from the workflow's command, so should not be linked to the
     // command.
     let similar_but_unlinked_history_command =
-        "RUST_BACKTRACE=full WARP_SHELL_PATH=/opt/homebrew/bin/fish cargo run integration --bin \
+        "RUST_BACKTRACE=full COGNIX_SHELL_PATH=/opt/homebrew/bin/fish cargo run integration --bin \
         integration --features=with_real_display_in_integration_tests -- \
         test_command_search_loads_history";
     assert!(compute_workflow_display_data_for_history_command(

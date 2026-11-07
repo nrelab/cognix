@@ -9,9 +9,9 @@ use async_trait::async_trait;
 use itertools::Itertools;
 use parking_lot::Mutex;
 use settings::Setting as _;
-use warp_core::command::ExitCode;
-use warpui::{App, SingletonEntity};
-use warpui_extras::user_preferences;
+use cognix_core::command::ExitCode;
+use cognixui::{App, SingletonEntity};
+use cognixui_extras::user_preferences;
 
 #[cfg(feature = "local_fs")]
 use crate::code_review::diff_state::DiffStats;
@@ -31,7 +31,7 @@ use crate::{
     server::{
         server_api::ServerApiProvider, telemetry::context_provider::AppTelemetryContextProvider,
     },
-    settings::WarpPromptSeparator,
+    settings::CognixPromptSeparator,
     terminal::{
         model::{
             block::BlockMetadata,
@@ -45,7 +45,7 @@ use crate::{
 };
 #[cfg(feature = "local_fs")]
 use repo_metadata::DirectoryWatcher;
-use warp_completer::completer::{CommandExitStatus, CommandOutput};
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
 
 use super::{ChipUpdateStatus, CurrentPrompt, PromptContext};
 
@@ -59,7 +59,7 @@ fn test_context_menu_items() {
                     ContextChipKind::VirtualEnvironment,
                 ],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -117,7 +117,7 @@ fn test_prompt_to_string() {
                     ContextChipKind::ShellGitBranch,
                 ],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -173,7 +173,7 @@ fn test_fingerprint_skips_contextual_chip_recompute_when_context_is_unchanged() 
             Prompt::mock_with(
                 [ContextChipKind::WorkingDirectory],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -233,7 +233,7 @@ fn test_shell_chip_is_disabled_when_required_executable_is_missing() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -360,7 +360,7 @@ fn test_invalidating_command_count_unaffected_for_chips_without_invalidate_on_co
             Prompt::mock_with(
                 [ContextChipKind::WorkingDirectory],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -407,7 +407,7 @@ fn test_github_pr_chip_is_disabled_when_github_cli_is_missing() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -493,7 +493,7 @@ fn test_github_pr_chip_empty_success_does_not_set_failure_suppression() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -587,7 +587,7 @@ fn test_github_pr_chip_revisiting_empty_result_directory_reruns_and_clears_previ
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -616,7 +616,7 @@ fn test_github_pr_chip_revisiting_empty_result_directory_reruns_and_clears_previ
         let executor = Arc::new(RecordingCommandExecutor::with_success_responses([
             "gh\ngit\n",
             "",
-            "https://github.com/warp/warp/pull/456\n",
+            "https://github.com/cognix/cognix/pull/456\n",
             "",
         ]));
         let sessions = app.add_model(|ctx| {
@@ -685,7 +685,7 @@ fn test_github_pr_chip_revisiting_empty_result_directory_reruns_and_clears_previ
                 .expect("expected github pr state");
             assert_eq!(
                 state.last_computed_value.as_ref().and_then(|v| v.as_text()),
-                Some("https://github.com/warp/warp/pull/456")
+                Some("https://github.com/cognix/cognix/pull/456")
             );
         });
 
@@ -728,7 +728,7 @@ fn test_github_pr_chip_revisiting_failed_directory_uses_failure_suppression() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -757,7 +757,7 @@ fn test_github_pr_chip_revisiting_failed_directory_uses_failure_suppression() {
         let executor = Arc::new(RecordingCommandExecutor::with_outputs([
             RecordingCommandExecutor::success_output("gh\ngit\n"),
             RecordingCommandExecutor::failure_output("authentication required", ExitCode::from(4)),
-            RecordingCommandExecutor::success_output("https://github.com/warp/warp/pull/456\n"),
+            RecordingCommandExecutor::success_output("https://github.com/cognix/cognix/pull/456\n"),
         ]));
         let sessions = app.add_model(|ctx| {
             let mut sessions = Sessions::new_for_test().with_command_executor(executor.clone());
@@ -831,7 +831,7 @@ fn test_github_pr_chip_revisiting_failed_directory_uses_failure_suppression() {
                 .expect("expected github pr state");
             assert_eq!(
                 state.last_computed_value.as_ref().and_then(|v| v.as_text()),
-                Some("https://github.com/warp/warp/pull/456")
+                Some("https://github.com/cognix/cognix/pull/456")
             );
         });
 
@@ -871,7 +871,7 @@ fn test_github_pr_chip_transient_failure_retries_with_same_fingerprint() {
             Prompt::mock_with(
                 [ContextChipKind::GithubPullRequest],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -903,7 +903,7 @@ fn test_github_pr_chip_transient_failure_retries_with_same_fingerprint() {
                 "Post \"https://api.github.com/graphql\": dial tcp: lookup api.github.com: no such host",
                 ExitCode::from(1),
             ),
-            RecordingCommandExecutor::success_output("https://github.com/warp/warp/pull/456\n"),
+            RecordingCommandExecutor::success_output("https://github.com/cognix/cognix/pull/456\n"),
         ]));
         let sessions = app.add_model(|ctx| {
             let mut sessions = Sessions::new_for_test().with_command_executor(executor.clone());
@@ -984,7 +984,7 @@ fn test_github_pr_chip_transient_failure_retries_with_same_fingerprint() {
                 .expect("expected github pr state");
             assert_eq!(
                 state.last_computed_value.as_ref().and_then(|v| v.as_text()),
-                Some("https://github.com/warp/warp/pull/456")
+                Some("https://github.com/cognix/cognix/pull/456")
             );
             assert_eq!(state.last_failure_fingerprint, None);
             assert_eq!(state.update_status, ChipUpdateStatus::Ready);
@@ -1034,7 +1034,7 @@ fn test_disabling_chips() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -1150,7 +1150,7 @@ fn test_externally_driven_chip_skips_periodic_timer() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -1170,7 +1170,7 @@ fn test_externally_driven_chip_skips_periodic_timer() {
         let repo_handle = watcher_handle.update(&mut app, |watcher, ctx| {
             watcher
                 .add_directory(
-                    warp_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
                         temp_dir.path(),
                     )
                     .unwrap(),
@@ -1211,7 +1211,7 @@ fn test_git_status_change_updates_chip_value() {
             Prompt::mock_with(
                 [ContextChipKind::ShellGitBranch],
                 false,
-                WarpPromptSeparator::None,
+                CognixPromptSeparator::None,
             )
         });
         app.add_singleton_model(SessionSettings::new_with_defaults);
@@ -1231,7 +1231,7 @@ fn test_git_status_change_updates_chip_value() {
         let repo_handle = watcher_handle.update(&mut app, |watcher, ctx| {
             watcher
                 .add_directory(
-                    warp_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
                         temp_dir.path(),
                     )
                     .unwrap(),

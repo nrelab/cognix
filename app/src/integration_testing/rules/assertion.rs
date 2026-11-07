@@ -1,4 +1,4 @@
-use warpui::{
+use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionCallback, AssertionWithDataCallback},
     AppContext, SingletonEntity,

@@ -55,10 +55,10 @@ use simple_logger::manager::LogManager;
 use simple_logger::SimpleLogger;
 use tokio::io::AsyncBufReadExt as _;
 use uuid::Uuid;
-use warp_core::safe_error;
-use warp_core::{execution_mode::AppExecutionMode, features::FeatureFlag, settings::Setting as _};
-use warpui::AppContext;
-use warpui::{windowing::WindowManager, ModelContext, SingletonEntity};
+use cognix_core::safe_error;
+use cognix_core::{execution_mode::AppExecutionMode, features::FeatureFlag, settings::Setting as _};
+use cognixui::AppContext;
+use cognixui::{windowing::WindowManager, ModelContext, SingletonEntity};
 
 use super::{
     oauth::{self, AuthContext, FileBasedPersistedCredentialsMap, PersistedCredentialsMap},
@@ -160,7 +160,7 @@ fn error_to_user_message(error: &rmcp::RmcpError) -> String {
     }
 }
 
-/// An MCP server integration that Warp ships with bundled skills for.
+/// An MCP server integration that Cognix ships with bundled skills for.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum McpIntegration {
     Figma,
@@ -2067,8 +2067,8 @@ fn make_client_info() -> rmcp::model::ClientInfo {
         protocol_version: Default::default(),
         capabilities: Default::default(),
         client_info: rmcp::model::Implementation {
-            name: warp_core::channel::ChannelState::app_id().to_string(),
-            version: warp_core::channel::ChannelState::app_version()
+            name: cognix_core::channel::ChannelState::app_id().to_string(),
+            version: cognix_core::channel::ChannelState::app_version()
                 .map(|v| v.to_string())
                 .unwrap_or_default(),
             title: None,

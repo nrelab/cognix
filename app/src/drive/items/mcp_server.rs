@@ -1,4 +1,4 @@
-use super::{WarpDriveItem, WarpDriveItemId};
+use super::{CognixDriveItem, CognixDriveItemId};
 use crate::{
     ai::mcp::CloudMCPServer,
     appearance::Appearance,
@@ -6,21 +6,21 @@ use crate::{
     drive::{index::DriveIndexAction, CloudObjectTypeAndId, DriveObjectType},
     themes::theme::Fill,
 };
-use warpui::{elements::MouseStateHandle, AppContext, Element};
+use cognixui::{elements::MouseStateHandle, AppContext, Element};
 
 #[derive(Clone)]
-pub struct WarpDriveMCPServer {
+pub struct CognixDriveMCPServer {
     id: CloudObjectTypeAndId,
     mcp_server: CloudMCPServer,
 }
 
-impl WarpDriveMCPServer {
+impl CognixDriveMCPServer {
     pub fn new(id: CloudObjectTypeAndId, mcp_server: CloudMCPServer) -> Self {
         Self { id, mcp_server }
     }
 }
 
-impl WarpDriveItem for WarpDriveMCPServer {
+impl CognixDriveItem for CognixDriveMCPServer {
     fn display_name(&self) -> Option<String> {
         Some(self.mcp_server.model().string_model.name.clone())
     }
@@ -45,8 +45,8 @@ impl WarpDriveItem for WarpDriveMCPServer {
         None
     }
 
-    fn warp_drive_id(&self) -> WarpDriveItemId {
-        WarpDriveItemId::Object(self.id)
+    fn cognix_drive_id(&self) -> CognixDriveItemId {
+        CognixDriveItemId::Object(self.id)
     }
 
     fn sync_status_icon(
@@ -65,7 +65,7 @@ impl WarpDriveItem for WarpDriveMCPServer {
         None
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem> {
+    fn clone_box(&self) -> Box<dyn CognixDriveItem> {
         Box::new(self.clone())
     }
 }

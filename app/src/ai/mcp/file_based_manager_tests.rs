@@ -3,7 +3,7 @@ use crate::ai::mcp::FileMCPWatcher;
 use crate::ai::mcp::ParsedTemplatableMCPServerResult;
 use crate::auth::AuthStateProvider;
 use crate::settings::{AISettings, FocusedTerminalInfo};
-use crate::warp_managed_paths_watcher::{warp_data_dir, WarpManagedPathsWatcher};
+use crate::cognix_managed_paths_watcher::{cognix_data_dir, CognixManagedPathsWatcher};
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use repo_metadata::{
     repositories::DetectedRepositories, watcher::DirectoryWatcher, RepoMetadataModel,
@@ -12,17 +12,17 @@ use settings::Setting as _;
 use std::collections::HashSet;
 use std::path::PathBuf;
 use uuid::Uuid;
-use warp_core::features::FeatureFlag;
-use warpui::{App, Entity, ModelHandle, SingletonEntity as _};
+use cognix_core::features::FeatureFlag;
+use cognixui::{App, Entity, ModelHandle, SingletonEntity as _};
 use watcher::HomeDirectoryWatcher;
 
 // Helper to initialize dependencies and return FileBasedMCPManager handle
-fn setup_app(app: &mut App) -> warpui::ModelHandle<FileBasedMCPManager> {
+fn setup_app(app: &mut App) -> cognixui::ModelHandle<FileBasedMCPManager> {
     app.add_singleton_model(DirectoryWatcher::new);
     app.add_singleton_model(|_| DetectedRepositories::default());
     app.add_singleton_model(RepoMetadataModel::new);
     app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-    app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+    app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
     app.add_singleton_model(FileMCPWatcher::new);
     app.add_singleton_model(AISettings::new_with_defaults);
     app.add_singleton_model(|_| AuthStateProvider::new_for_test());
@@ -255,48 +255,48 @@ fn test_update_file_based_servers_removes_unreferenced_servers() {
     });
 }
 
-/// A globally-scoped Warp installation always auto-spawns, regardless of the
+/// A globally-scoped Cognix installation always auto-spawns, regardless of the
 /// `file_based_mcp_enabled` toggle.
 #[test]
-fn test_global_warp_server_always_spawns() {
+fn test_global_cognix_server_always_spawns() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
-    let warp_root = warp_data_dir();
-    let parsed = parse_mcp_json(r#"{"global-warp": {"command": "npx", "args": ["warp"]}}"#);
+    let cognix_root = cognix_data_dir();
+    let parsed = parse_mcp_json(r#"{"global-cognix": {"command": "npx", "args": ["cognix"]}}"#);
 
     App::test((), |mut app| async move {
         let manager = setup_app(&mut app);
         let events = subscribe_events(&mut app, &manager);
 
-        // Toggle is off by default; global Warp server should still spawn.
+        // Toggle is off by default; global Cognix server should still spawn.
         manager.update(&mut app, |m, ctx| {
-            m.apply_parsed_servers(warp_root.clone(), MCPProvider::Warp, parsed, ctx);
+            m.apply_parsed_servers(cognix_root.clone(), MCPProvider::Cognix, parsed, ctx);
         });
 
         events.update(&mut app, |e, _| {
             assert_eq!(
                 e.spawned_uuids.len(),
                 1,
-                "Global Warp server should auto-spawn regardless of toggle"
+                "Global Cognix server should auto-spawn regardless of toggle"
             );
         });
 
-        // Flipping the toggle must not despawn the global Warp server.
+        // Flipping the toggle must not despawn the global Cognix server.
         set_file_based_mcp_enabled(&mut app, true);
         set_file_based_mcp_enabled(&mut app, false);
 
         events.update(&mut app, |e, _| {
             assert!(
                 e.despawned_uuids.is_empty(),
-                "Global Warp server should never be despawned by toggle changes, got: {:?}",
+                "Global Cognix server should never be despawned by toggle changes, got: {:?}",
                 e.despawned_uuids
             );
         });
     });
 }
 
-/// A globally-scoped non-Warp installation only auto-spawns when the toggle is on.
+/// A globally-scoped non-Cognix installation only auto-spawns when the toggle is on.
 #[test]
-fn test_global_non_warp_server_respects_toggle() {
+fn test_global_non_cognix_server_respects_toggle() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
     let Some(home_dir) = dirs::home_dir() else {
         // Skip on platforms where a home dir isn't available (shouldn't happen on
@@ -316,7 +316,7 @@ fn test_global_non_warp_server_respects_toggle() {
         events.update(&mut app, |e, _| {
             assert!(
                 e.spawned_uuids.is_empty(),
-                "Global non-Warp server must not auto-spawn while toggle is off, got: {:?}",
+                "Global non-Cognix server must not auto-spawn while toggle is off, got: {:?}",
                 e.spawned_uuids
             );
         });
@@ -327,37 +327,37 @@ fn test_global_non_warp_server_respects_toggle() {
             servers[0].uuid()
         });
 
-        // Toggle on: the global non-Warp server should be spawned.
+        // Toggle on: the global non-Cognix server should be spawned.
         set_file_based_mcp_enabled(&mut app, true);
         events.update(&mut app, |e, _| {
             assert_eq!(
                 e.spawned_uuids,
                 vec![installation_uuid],
-                "Global non-Warp server should spawn when toggle flips on"
+                "Global non-Cognix server should spawn when toggle flips on"
             );
         });
 
-        // Toggle off: the global non-Warp server should be despawned.
+        // Toggle off: the global non-Cognix server should be despawned.
         set_file_based_mcp_enabled(&mut app, false);
         events.update(&mut app, |e, _| {
             assert_eq!(
                 e.despawned_uuids,
                 vec![installation_uuid],
-                "Global non-Warp server should despawn when toggle flips off"
+                "Global non-Cognix server should despawn when toggle flips off"
             );
         });
     });
 }
 
-/// Project-scoped installations (both Warp and third-party) never auto-spawn on
+/// Project-scoped installations (both Cognix and third-party) never auto-spawn on
 /// detection, and the toggle must not spawn or despawn them either.
 #[test]
 fn test_project_scoped_servers_never_auto_spawn() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
-    let repo_path = PathBuf::from("/tmp/warp-test-repo");
+    let repo_path = PathBuf::from("/tmp/cognix-test-repo");
     let claude_parsed =
         parse_mcp_json(r#"{"proj-claude": {"command": "npx", "args": ["proj-claude"]}}"#);
-    let warp_parsed = parse_mcp_json(r#"{"proj-warp": {"command": "npx", "args": ["proj-warp"]}}"#);
+    let cognix_parsed = parse_mcp_json(r#"{"proj-cognix": {"command": "npx", "args": ["proj-cognix"]}}"#);
 
     App::test((), |mut app| async move {
         let manager = setup_app(&mut app);
@@ -365,7 +365,7 @@ fn test_project_scoped_servers_never_auto_spawn() {
 
         manager.update(&mut app, |m, ctx| {
             m.apply_parsed_servers(repo_path.clone(), MCPProvider::Claude, claude_parsed, ctx);
-            m.apply_parsed_servers(repo_path.clone(), MCPProvider::Warp, warp_parsed, ctx);
+            m.apply_parsed_servers(repo_path.clone(), MCPProvider::Cognix, cognix_parsed, ctx);
         });
 
         // Neither detection should emit a spawn event.
@@ -406,14 +406,14 @@ fn test_project_scoped_servers_never_auto_spawn() {
 }
 
 /// An installation referenced from both a global location and a project location
-/// is considered global (and thus gated only by the toggle for non-Warp providers).
+/// is considered global (and thus gated only by the toggle for non-Cognix providers).
 #[test]
 fn test_server_referenced_from_both_global_and_project_is_global() {
     let _flag_guard = FeatureFlag::FileBasedMcp.override_enabled(true);
     let Some(home_dir) = dirs::home_dir() else {
         return;
     };
-    let repo_path = PathBuf::from("/tmp/warp-test-repo-shared");
+    let repo_path = PathBuf::from("/tmp/cognix-test-repo-shared");
     let json = r#"{"shared-claude": {"command": "npx", "args": ["shared"]}}"#;
     let global_parsed = parse_mcp_json(json);
     let project_parsed = parse_mcp_json(json);

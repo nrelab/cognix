@@ -1,4 +1,4 @@
-use warpui::{
+use cognixui::{
     elements::{CornerRadius, Dismiss, MouseStateHandle, Radius},
     fonts::Weight,
     platform::Cursor,

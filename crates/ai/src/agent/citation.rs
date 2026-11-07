@@ -1,23 +1,23 @@
 use std::fmt::Display;
 
-use warp_multi_agent_api as api;
+use cognix_multi_agent_api as api;
 
 /// A citation listed in an AI response.
 #[derive(Debug, Clone, Hash, Eq, PartialEq)]
 pub enum AIAgentCitation {
-    WarpDriveObject { uid: String },
-    WarpDocumentation { path: String },
+    CognixDriveObject { uid: String },
+    CognixDocumentation { path: String },
     WebPage { url: String },
 }
 
 impl Display for AIAgentCitation {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            AIAgentCitation::WarpDriveObject { uid } => {
-                write!(f, "Warp Drive Object: {uid}")
+            AIAgentCitation::CognixDriveObject { uid } => {
+                write!(f, "Cognix Drive Object: {uid}")
             }
-            AIAgentCitation::WarpDocumentation { path } => {
-                write!(f, "Warp Documentation: {path}")
+            AIAgentCitation::CognixDocumentation { path } => {
+                write!(f, "Cognix Documentation: {path}")
             }
             AIAgentCitation::WebPage { url } => {
                 write!(f, "Web Page: {url}")
@@ -42,10 +42,10 @@ impl TryFrom<api::Citation> for AIAgentCitation {
             api::DocumentType::WarpDriveWorkflow
             | api::DocumentType::WarpDriveNotebook
             | api::DocumentType::WarpDriveEnvVar
-            | api::DocumentType::Rule => Ok(AIAgentCitation::WarpDriveObject {
+            | api::DocumentType::Rule => Ok(AIAgentCitation::CognixDriveObject {
                 uid: citation.document_id,
             }),
-            api::DocumentType::WarpDocumentation => Ok(AIAgentCitation::WarpDocumentation {
+            api::DocumentType::WarpDocumentation => Ok(AIAgentCitation::CognixDocumentation {
                 path: citation.document_id,
             }),
             api::DocumentType::WebPage => Ok(AIAgentCitation::WebPage {

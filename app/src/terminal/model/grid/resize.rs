@@ -1,5 +1,5 @@
 use string_offset::ByteOffset;
-use warp_terminal::model::{
+use cognix_terminal::model::{
     grid::{
         cell::{self, LineLength as _},
         Dimensions as _,

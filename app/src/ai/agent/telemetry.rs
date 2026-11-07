@@ -1,5 +1,5 @@
 use serde::Serialize;
-use warpui::{AppContext, SingletonEntity};
+use cognixui::{AppContext, SingletonEntity};
 
 use crate::ai::llms::LLMId;
 use crate::CloudModel;
@@ -25,16 +25,16 @@ impl ForTelemetry for AIAgentCitation {
 
     fn for_telemetry(&self, ctx: &AppContext) -> Option<Self::Output> {
         match self {
-            Self::WarpDriveObject { uid } => {
+            Self::CognixDriveObject { uid } => {
                 CloudModel::as_ref(ctx).get_by_uid(uid).map(|object| {
-                    CitationForTelemetry::WarpDriveObject {
+                    CitationForTelemetry::CognixDriveObject {
                         object_type: object.object_type(),
                         uid: object.uid(),
                     }
                 })
             }
-            Self::WarpDocumentation { path } => {
-                Some(CitationForTelemetry::WarpDocs { page: path.clone() })
+            Self::CognixDocumentation { path } => {
+                Some(CitationForTelemetry::CognixDocs { page: path.clone() })
             }
             Self::WebPage { url } => Some(CitationForTelemetry::WebPage { url: url.clone() }),
         }

@@ -3,8 +3,8 @@
 use ai::LLMId;
 use onboarding::slides::OnboardingModelInfo;
 use onboarding::OnboardingAuthState;
-use warp_core::ui::icons::Icon;
-use warpui::{AppContext, SingletonEntity};
+use cognix_core::ui::icons::Icon;
+use cognixui::{AppContext, SingletonEntity};
 
 use crate::auth::AuthStateProvider;
 use crate::workspaces::user_workspaces::UserWorkspaces;

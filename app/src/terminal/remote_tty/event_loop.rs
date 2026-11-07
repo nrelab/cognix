@@ -9,7 +9,7 @@ use parking_lot::FairMutex;
 use serde::Serialize;
 use std::io;
 use std::sync::Arc;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 use websocket::{Message, Sink, Stream, WebSocket, WebsocketMessage as _};
 
 const CREATE_SESSION_ENDPOINT: &str = "ws://127.0.0.1:3030/create";
@@ -18,7 +18,7 @@ const CREATE_SESSION_ENDPOINT: &str = "ws://127.0.0.1:3030/create";
 /// sent over the websocket as text.
 ///
 /// The field names need to be kept the same as the `WindowSizeChange` struct in
-/// https://github.com/warpdotdev/ssh-proxy-server/blob/main/src/ssh/session.rs.
+/// https://github.com/nrelab/ssh-proxy-server/blob/main/src/ssh/session.rs.
 #[derive(Serialize, Debug)]
 struct WindowSizeChange {
     width: u32,
@@ -152,7 +152,7 @@ impl EventLoop {
 
     /// Writes the ZSH init shell script to the "PTY", mimicking how we send the init shell script
     /// when there is a local pty:
-    /// <https://github.com/warpdotdev/warp-internal/blob/747da2df83f2caa97e781ce284ceb226fb97a66c/app/src/terminal/local_tty/unix.rs#L338-L347>.
+    /// <https://github.com/nrelab/cognix-internal/blob/747da2df83f2caa97e781ce284ceb226fb97a66c/app/src/terminal/local_tty/unix.rs#L338-L347>.
     async fn write_zsh_init_shell_script(sink: &mut impl Sink) -> anyhow::Result<()> {
         let zsh_init_shell_script = init_shell_script_for_shell(ShellType::Zsh, &crate::ASSETS);
         sink.send(Message::new_binary(
@@ -171,12 +171,12 @@ impl EventLoop {
     /// Writes environment variables that should be defined in the session
     /// before bootstrapping. This is a subset of the environment variables
     /// defined in `app/src/terminal/local_tty/unix.rs` that are necessary in
-    /// order to dogfood Warp on Web over the remote tty.
+    /// order to dogfood Cognix on Web over the remote tty.
     async fn write_env_vars(
         sink: &mut impl Sink,
         is_honor_ps1_enabled: bool,
     ) -> anyhow::Result<()> {
-        let honor_ps1_env_var = format!(r#"WARP_HONOR_PS1="{}";"#, is_honor_ps1_enabled as u8);
+        let honor_ps1_env_var = format!(r#"COGNIX_HONOR_PS1="{}";"#, is_honor_ps1_enabled as u8);
         sink.send(Message::new_binary(honor_ps1_env_var.as_bytes().to_vec()))
             .await?;
 

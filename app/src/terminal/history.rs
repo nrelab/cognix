@@ -6,8 +6,8 @@ use std::{
     sync::Arc,
 };
 
-use warp_core::command::ExitCode;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use cognix_core::command::ExitCode;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use super::{
     model::block::{AgentInteractionMetadata, Block, SerializedAIMetadata, SerializedBlock},

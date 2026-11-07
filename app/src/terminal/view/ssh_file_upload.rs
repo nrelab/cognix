@@ -4,9 +4,9 @@ use itertools::Itertools;
 use markdown_parser::{
     FormattedText, FormattedTextFragment, FormattedTextHeader, FormattedTextLine,
 };
-use warp_core::command::ExitCode;
-use warp_core::ui::{appearance::Appearance, color::blend::Blend as _};
-use warpui::{
+use cognix_core::command::ExitCode;
+use cognix_core::ui::{appearance::Appearance, color::blend::Blend as _};
+use cognixui::{
     elements::{
         Border, Container, CornerRadius, CrossAxisAlignment, Flex, FormattedTextElement,
         HighlightedHyperlink, MainAxisSize, MouseStateHandle, ParentElement, Radius,
@@ -91,7 +91,7 @@ impl TypedActionView for FileUpload {
         &mut self,
         _action: &Self::Action,
         _ctx: &mut ViewContext<Self>,
-    ) -> warpui::accessibility::ActionAccessibilityContent {
+    ) -> cognixui::accessibility::ActionAccessibilityContent {
         Default::default()
     }
 }
@@ -101,7 +101,7 @@ impl View for FileUpload {
         "SSH File Upload"
     }
 
-    fn render(&self, app: &warpui::AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &cognixui::AppContext) -> Box<dyn cognixui::Element> {
         let appearance = Appearance::as_ref(app);
         self.render_file_upload_element(&self.uploads, appearance)
     }
@@ -187,7 +187,7 @@ impl FileUpload {
         }
     }
 
-    /// Creates an sftp command that copies a given local file into the PWD of the warpified ssh session, if any.
+    /// Creates an sftp command that copies a given local file into the PWD of the cognixified ssh session, if any.
     fn transfer_file_sftp_command(&self, file_upload: &FileUploadInfo) -> String {
         // "sftp "
         let mut command = String::from("sftp ");

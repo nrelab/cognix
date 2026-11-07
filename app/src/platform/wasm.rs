@@ -2,7 +2,7 @@ use js_sys::ReferenceError;
 use thiserror::Error;
 use wasm_bindgen::{JsCast, JsValue};
 
-pub use warp_web_event_bus::{emit_event, WarpEvent};
+pub use cognix_web_event_bus::{emit_event, CognixEvent};
 
 /// This function should be called early in application initialization to ensure that
 /// static variables are initialized.
@@ -25,7 +25,7 @@ mod ffi {
 
     #[wasm_bindgen]
     extern "C" {
-        #[wasm_bindgen(js_name = "warpUserHandoff", catch)]
+        #[wasm_bindgen(js_name = "cognixUserHandoff", catch)]
         pub fn user_handoff() -> Result<Option<String>, JsValue>;
     }
 }

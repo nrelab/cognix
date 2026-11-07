@@ -1,6 +1,6 @@
 use std::sync::Arc;
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{
     elements::Empty, platform::WindowStyle, App, AppContext, Element, Entity, TypedActionView,
     View, ViewContext,
 };

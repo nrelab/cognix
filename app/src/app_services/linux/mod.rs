@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use futures_util::FutureExt as _;
 use itertools::Itertools as _;
-use warpui::{r#async::executor::BackgroundTask, AppContext, SingletonEntity};
+use cognixui::{r#async::executor::BackgroundTask, AppContext, SingletonEntity};
 use zbus::{interface, proxy, zvariant};
 
 use crate::channel::ChannelState;
@@ -26,13 +26,13 @@ pub fn teardown(ctx: &mut AppContext) {
 /// Returns Ok if an existing instance exists and was reachable.
 #[cfg(feature = "release_bundle")]
 pub fn pass_startup_args_to_existing_instance(
-    args: &warp_cli::AppArgs,
+    args: &cognix_cli::AppArgs,
 ) -> Result<(), StartupArgsForwardingError> {
     if args.finish_update {
         return Err(StartupArgsForwardingError::IgnoredAfterAutoUpdate);
     }
 
-    warpui::r#async::block_on(async {
+    cognixui::r#async::block_on(async {
         let conn = zbus::Connection::session().await?;
         let proxy = ExistingApplicationProxy::builder(&conn)
             .destination(DBusServiceHost::well_known_name())?
@@ -64,7 +64,7 @@ pub fn pass_startup_args_to_existing_instance(
 #[derive(Debug, thiserror::Error)]
 #[cfg(feature = "release_bundle")]
 pub enum StartupArgsForwardingError {
-    /// There's no instance of Warp already running.
+    /// There's no instance of Cognix already running.
     #[error("no existing instance found to forward args to")]
     NoExistingInstance,
     /// This instance was launched after an auto-update and should not forward
@@ -81,7 +81,7 @@ impl From<zbus::fdo::Error> for StartupArgsForwardingError {
     fn from(value: zbus::fdo::Error) -> Self {
         // While ServiceUnknown usually means that D-Bus doesn't know how to
         // _launch_ something to handle your message, in our case, we're not
-        // registering a service, so this really means that Warp is not already
+        // registering a service, so this really means that Cognix is not already
         // running.
         if matches!(value, zbus::fdo::Error::ServiceUnknown(_)) {
             StartupArgsForwardingError::NoExistingInstance
@@ -149,12 +149,12 @@ impl ApplicationService {
     }
 }
 
-// A D-Bus client for connecting to an already-running instance of Warp and
+// A D-Bus client for connecting to an already-running instance of Cognix and
 // invoking org.freedesktop.Application IPC methods.
 #[proxy(
     interface = "org.freedesktop.Application",
-    default_service = "dev.warp.WarpLocal",
-    default_path = "/dev/warp/WarpLocal",
+    default_service = "dev.cognix.CognixLocal",
+    default_path = "/dev/cognix/CognixLocal",
     gen_blocking = false
 )]
 trait ExistingApplication {
@@ -181,7 +181,7 @@ struct DBusServiceHost {
 }
 
 impl DBusServiceHost {
-    fn new(ctx: &mut warpui::ModelContext<Self>) -> Self {
+    fn new(ctx: &mut cognixui::ModelContext<Self>) -> Self {
         let (tx, rx) = async_channel::unbounded();
 
         // Spawn a background task for the D-Bus server.
@@ -232,7 +232,7 @@ impl DBusServiceHost {
         if let Some(server_task) = self.server_task.take() {
             server_task.abort();
             // Wait until we've torn down the dbus service.
-            report_if_error!(warpui::r#async::block_on(server_task));
+            report_if_error!(cognixui::r#async::block_on(server_task));
         }
     }
 
@@ -248,7 +248,7 @@ impl DBusServiceHost {
     }
 }
 
-impl warpui::Entity for DBusServiceHost {
+impl cognixui::Entity for DBusServiceHost {
     type Event = ();
 }
 

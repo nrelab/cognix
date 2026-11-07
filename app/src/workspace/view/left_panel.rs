@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 use std::path::PathBuf;
 
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::{send_telemetry_from_ctx, ui::Icon};
-use warp_util::path::LineAndColumnArg;
-use warpui::{
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::{send_telemetry_from_ctx, ui::Icon};
+use cognix_util::path::LineAndColumnArg;
+use cognixui::{
     elements::{
         resizable_state_handle, ChildView, ConstrainedBox, Container, CrossAxisAlignment,
         DragBarSide, Element, Empty, Flex, MainAxisAlignment, MainAxisSize, MouseStateHandle,
@@ -26,7 +26,7 @@ use crate::pane_group::working_directories::WorkingDirectory;
 use crate::pane_group::{PaneGroup, WorkingDirectoriesEvent, WorkingDirectoriesModel};
 #[cfg(feature = "local_fs")]
 use crate::server::telemetry::CodePanelsFileOpenEntrypoint;
-use crate::server::telemetry::{FileTreeSource, WarpDriveSource};
+use crate::server::telemetry::{FileTreeSource, CognixDriveSource};
 use crate::settings_view::keybindings::{KeybindingChangedEvent, KeybindingChangedNotifier};
 #[cfg(feature = "local_fs")]
 use crate::util::file::external_editor::EditorSettings;
@@ -41,9 +41,9 @@ use crate::workspace::view::global_search::view::{
 };
 use crate::workspace::view::{
     LEFT_PANEL_AGENT_CONVERSATIONS_BINDING_NAME, LEFT_PANEL_GLOBAL_SEARCH_BINDING_NAME,
-    LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME, LEFT_PANEL_WARP_DRIVE_BINDING_NAME,
+    LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME, LEFT_PANEL_COGNIX_DRIVE_BINDING_NAME,
     OPEN_GLOBAL_SEARCH_BINDING_NAME, TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME,
-    TOGGLE_PROJECT_EXPLORER_BINDING_NAME, TOGGLE_WARP_DRIVE_BINDING_NAME,
+    TOGGLE_PROJECT_EXPLORER_BINDING_NAME, TOGGLE_COGNIX_DRIVE_BINDING_NAME,
 };
 use crate::{
     appearance::Appearance,
@@ -65,7 +65,7 @@ use crate::{
 struct MouseStateHandles {
     project_explorer_button: MouseStateHandle,
     global_search_button: MouseStateHandle,
-    warp_drive_button: MouseStateHandle,
+    cognix_drive_button: MouseStateHandle,
     conversation_list_view_button: MouseStateHandle,
 }
 
@@ -73,14 +73,14 @@ struct MouseStateHandles {
 pub enum LeftPanelAction {
     ProjectExplorer,
     GlobalSearch { entry_focus: GlobalSearchEntryFocus },
-    WarpDrive,
+    CognixDrive,
     ConversationListView,
 }
 
 pub enum LeftPanelEvent {
     #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
     FileTree(pane_group::Event),
-    WarpDrive(DrivePanelEvent),
+    CognixDrive(DrivePanelEvent),
     #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
     OpenFileWithTarget {
         path: PathBuf,
@@ -91,7 +91,7 @@ pub enum LeftPanelEvent {
     ShowDeleteConfirmationDialog {
         conversation_id: AIConversationId,
         conversation_title: String,
-        terminal_view_id: Option<warpui::EntityId>,
+        terminal_view_id: Option<cognixui::EntityId>,
     },
 }
 
@@ -99,7 +99,7 @@ pub enum LeftPanelEvent {
 pub enum ToolPanelView {
     ProjectExplorer,
     GlobalSearch { entry_focus: GlobalSearchEntryFocus },
-    WarpDrive,
+    CognixDrive,
     ConversationListView,
 }
 
@@ -107,7 +107,7 @@ pub enum ToolPanelView {
 /// `active_view_state::set`, which handles necessary side effects.
 mod active_view_state {
     use super::ToolPanelView;
-    use warpui::ViewContext;
+    use cognixui::ViewContext;
 
     pub struct ActiveViewState(ToolPanelView);
 
@@ -144,9 +144,9 @@ mod active_view_state {
 }
 
 pub struct ToolbeltButtonConfig {
-    pub icon: warp_core::ui::Icon,
+    pub icon: cognix_core::ui::Icon,
     /// Optional icon to use when the given toolbelt option is in an active state.
-    pub active_icon: Option<warp_core::ui::Icon>,
+    pub active_icon: Option<cognix_core::ui::Icon>,
     pub tooltip_text: String,
     pub action: LeftPanelAction,
     /// Whether the button should be rendered with an "active" state.
@@ -165,7 +165,7 @@ pub struct LeftPanelView {
     resizable_state_handle: ResizableStateHandle,
     mouse_state_handles: MouseStateHandles,
     close_button_mouse_state: MouseStateHandle,
-    warp_drive_view: ViewHandle<DrivePanel>,
+    cognix_drive_view: ViewHandle<DrivePanel>,
     conversation_list_view: ViewHandle<ConversationListView>,
     active_view: active_view_state::ActiveViewState,
     toolbelt_buttons: Vec<ToolbeltButtonConfig>,
@@ -209,11 +209,11 @@ impl LeftPanelView {
                 resizable_state_handle(600.0)
             }
         };
-        let warp_drive_view = ctx.add_typed_action_view(DrivePanel::new);
+        let cognix_drive_view = ctx.add_typed_action_view(DrivePanel::new);
         let conversation_list_view = ctx.add_typed_action_view(ConversationListView::new);
 
-        ctx.subscribe_to_view(&warp_drive_view, |_me, _, event, ctx| {
-            ctx.emit(LeftPanelEvent::WarpDrive(event.clone()));
+        ctx.subscribe_to_view(&cognix_drive_view, |_me, _, event, ctx| {
+            ctx.emit(LeftPanelEvent::CognixDrive(event.clone()));
         });
 
         ctx.subscribe_to_view(&conversation_list_view, |_me, _, event, ctx| match event {
@@ -233,7 +233,7 @@ impl LeftPanelView {
             }
         });
 
-        let active_view = views.first().copied().unwrap_or(ToolPanelView::WarpDrive);
+        let active_view = views.first().copied().unwrap_or(ToolPanelView::CognixDrive);
         let toolbelt_buttons = views
             .iter()
             .map(|view| Self::create_toolbelt_button_config(view, ctx))
@@ -306,7 +306,7 @@ impl LeftPanelView {
             resizable_state_handle,
             mouse_state_handles: Default::default(),
             close_button_mouse_state: Default::default(),
-            warp_drive_view,
+            cognix_drive_view,
             conversation_list_view,
             active_view: active_view_state::new(active_view),
             toolbelt_buttons,
@@ -408,17 +408,17 @@ impl LeftPanelView {
                     tooltip_keybinding_names,
                 }
             }
-            ToolPanelView::WarpDrive => {
+            ToolPanelView::CognixDrive => {
                 let tooltip_keybinding_names = vec![
-                    LEFT_PANEL_WARP_DRIVE_BINDING_NAME,
-                    TOGGLE_WARP_DRIVE_BINDING_NAME,
+                    LEFT_PANEL_COGNIX_DRIVE_BINDING_NAME,
+                    TOGGLE_COGNIX_DRIVE_BINDING_NAME,
                 ];
 
                 ToolbeltButtonConfig {
-                    icon: Icon::WarpDrive,
+                    icon: Icon::CognixDrive,
                     active_icon: None,
-                    tooltip_text: "Warp Drive".to_string(),
-                    action: LeftPanelAction::WarpDrive,
+                    tooltip_text: "Cognix Drive".to_string(),
+                    action: LeftPanelAction::CognixDrive,
                     render_with_active_state: false,
                     tooltip_keybinding: toolbelt_tooltip_keybinding(&tooltip_keybinding_names, ctx),
                     tooltip_keybinding_names,
@@ -445,7 +445,7 @@ impl LeftPanelView {
 
     fn get_or_create_global_search_view_for_pane_group(
         &mut self,
-        pane_group_id: warpui::EntityId,
+        pane_group_id: cognixui::EntityId,
         ctx: &mut ViewContext<Self>,
     ) -> ViewHandle<GlobalSearchView> {
         if let Some(view) = self
@@ -471,7 +471,7 @@ impl LeftPanelView {
 
     fn get_or_create_file_tree_view_for_pane_group(
         &mut self,
-        pane_group_id: warpui::EntityId,
+        pane_group_id: cognixui::EntityId,
         ctx: &mut ViewContext<Self>,
     ) -> ViewHandle<FileTreeView> {
         if let Some(view) = self
@@ -525,16 +525,16 @@ impl LeftPanelView {
         self.active_view.get()
     }
 
-    pub fn is_warp_drive_active(&self) -> bool {
-        self.active_view.get() == ToolPanelView::WarpDrive
+    pub fn is_cognix_drive_active(&self) -> bool {
+        self.active_view.get() == ToolPanelView::CognixDrive
     }
 
     pub fn is_file_tree_active(&self) -> bool {
         self.active_view.get() == ToolPanelView::ProjectExplorer
     }
 
-    pub fn warp_drive_view(&self) -> &ViewHandle<DrivePanel> {
-        &self.warp_drive_view
+    pub fn cognix_drive_view(&self) -> &ViewHandle<DrivePanel> {
+        &self.cognix_drive_view
     }
 
     pub(crate) fn auto_expand_active_file_tree_to_most_recent_directory(
@@ -671,10 +671,10 @@ impl LeftPanelView {
                     ctx,
                 );
             }
-            ToolPanelView::WarpDrive => {
-                ctx.focus(&self.warp_drive_view);
-                self.warp_drive_view.update(ctx, |view, ctx| {
-                    view.reset_focused_index_in_warp_drive(true, ctx);
+            ToolPanelView::CognixDrive => {
+                ctx.focus(&self.cognix_drive_view);
+                self.cognix_drive_view.update(ctx, |view, ctx| {
+                    view.reset_focused_index_in_cognix_drive(true, ctx);
                 });
             }
             ToolPanelView::ConversationListView => {
@@ -830,7 +830,7 @@ impl LeftPanelView {
                 LeftPanelAction::GlobalSearch { .. } => {
                     matches!(self.active_view.get(), ToolPanelView::GlobalSearch { .. })
                 }
-                LeftPanelAction::WarpDrive => self.active_view.get() == ToolPanelView::WarpDrive,
+                LeftPanelAction::CognixDrive => self.active_view.get() == ToolPanelView::CognixDrive,
                 LeftPanelAction::ConversationListView => {
                     self.active_view.get() == ToolPanelView::ConversationListView
                 }
@@ -951,20 +951,20 @@ impl LeftPanelView {
                     send_telemetry_from_ctx!(TelemetryEvent::GlobalSearchOpened, ctx);
                 }
             }
-            LeftPanelAction::WarpDrive => {
-                active_view_state::set(self, ToolPanelView::WarpDrive, ctx);
+            LeftPanelAction::CognixDrive => {
+                active_view_state::set(self, ToolPanelView::CognixDrive, ctx);
                 if force_open {
                     send_telemetry_from_ctx!(
-                        TelemetryEvent::WarpDriveOpened {
-                            source: WarpDriveSource::ForceOpened,
+                        TelemetryEvent::CognixDriveOpened {
+                            source: CognixDriveSource::ForceOpened,
                             is_code_mode_v2: true
                         },
                         ctx
                     );
                 } else {
                     send_telemetry_from_ctx!(
-                        TelemetryEvent::WarpDriveOpened {
-                            source: WarpDriveSource::LeftPanelToolbelt,
+                        TelemetryEvent::CognixDriveOpened {
+                            source: CognixDriveSource::LeftPanelToolbelt,
                             is_code_mode_v2: true
                         },
                         ctx
@@ -988,7 +988,7 @@ impl LeftPanelView {
 
     fn deactivate_file_tree_view_for_pane_group(
         &self,
-        pane_group_id: warpui::EntityId,
+        pane_group_id: cognixui::EntityId,
         ctx: &mut ViewContext<Self>,
     ) {
         if let Some(view) = self
@@ -1072,7 +1072,7 @@ impl View for LeftPanelView {
                         ctx.focus(&view);
                     }
                 }
-                ToolPanelView::WarpDrive => ctx.focus(&self.warp_drive_view),
+                ToolPanelView::CognixDrive => ctx.focus(&self.cognix_drive_view),
                 ToolPanelView::ConversationListView => ctx.focus(&self.conversation_list_view),
             }
         }
@@ -1084,7 +1084,7 @@ impl View for LeftPanelView {
         let mouse_state_handles = vec![
             self.mouse_state_handles.project_explorer_button.clone(),
             self.mouse_state_handles.global_search_button.clone(),
-            self.mouse_state_handles.warp_drive_button.clone(),
+            self.mouse_state_handles.cognix_drive_button.clone(),
             self.mouse_state_handles
                 .conversation_list_view_button
                 .clone(),
@@ -1135,9 +1135,9 @@ impl View for LeftPanelView {
                     Shrinkable::new(1.0, Container::new(Empty::new().finish()).finish()).finish()
                 }
             }
-            ToolPanelView::WarpDrive => Shrinkable::new(
+            ToolPanelView::CognixDrive => Shrinkable::new(
                 1.0,
-                Container::new(ChildView::new(&self.warp_drive_view).finish())
+                Container::new(ChildView::new(&self.cognix_drive_view).finish())
                     .with_padding_left(2.)
                     .with_padding_right(2.)
                     .finish(),
@@ -1182,7 +1182,7 @@ impl View for LeftPanelView {
         })
         .finish();
 
-        if warpui::platform::is_mobile_device() {
+        if cognixui::platform::is_mobile_device() {
             return panel_content;
         }
 

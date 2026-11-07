@@ -1,6 +1,6 @@
 use hex;
-use warp_core::command::ExitCode;
-use warpui::color::ColorU;
+use cognix_core::command::ExitCode;
+use cognixui::color::ColorU;
 
 use super::*;
 use crate::terminal::model::index::VisibleRow;
@@ -212,9 +212,9 @@ impl Handler for MockHandler {
         self.d_proto_hooks.push(DProtoHook::InitSsh { value: data })
     }
 
-    fn sourced_rc_file(&mut self, data: SourcedRcFileForWarpValue) {
+    fn sourced_rc_file(&mut self, data: SourcedRcFileForCognixValue) {
         self.d_proto_hooks
-            .push(DProtoHook::SourcedRcFileForWarp { value: data })
+            .push(DProtoHook::SourcedRcFileForCognix { value: data })
     }
 
     fn pluggable_notification(&mut self, title: Option<String>, body: String) {
@@ -687,7 +687,7 @@ fn parse_dcs_input_buffer() {
 
 #[test]
 fn parse_sourced_rc_file_hook() {
-    let rc_file_hook = r#"{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh" }}"#;
+    let rc_file_hook = r#"{"hook": "SourcedRcFileForCognix", "value": { "shell": "zsh" }}"#;
     let bytes = [
         UNENCODED_JSON_DCS_START,
         &Vec::from(rc_file_hook.as_bytes()),
@@ -699,9 +699,9 @@ fn parse_sourced_rc_file_hook() {
 
     assert_eq!(handler.d_proto_hooks.len(), 1);
     match handler.d_proto_hooks.first().unwrap() {
-        DProtoHook::SourcedRcFileForWarp { value } => assert_eq!(
+        DProtoHook::SourcedRcFileForCognix { value } => assert_eq!(
             *value,
-            SourcedRcFileForWarpValue {
+            SourcedRcFileForCognixValue {
                 shell: "zsh".to_owned(),
                 uname: None,
                 tmux: None,
@@ -714,7 +714,7 @@ fn parse_sourced_rc_file_hook() {
 #[test]
 fn parse_sourced_rc_file_hook_with_uname() {
     let rc_file_hook =
-        r#"{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh", "uname": "Darwin" }}"#;
+        r#"{"hook": "SourcedRcFileForCognix", "value": { "shell": "zsh", "uname": "Darwin" }}"#;
     let bytes = [
         UNENCODED_JSON_DCS_START,
         &Vec::from(rc_file_hook.as_bytes()),
@@ -726,9 +726,9 @@ fn parse_sourced_rc_file_hook_with_uname() {
 
     assert_eq!(handler.d_proto_hooks.len(), 1);
     match handler.d_proto_hooks.first().unwrap() {
-        DProtoHook::SourcedRcFileForWarp { value } => assert_eq!(
+        DProtoHook::SourcedRcFileForCognix { value } => assert_eq!(
             *value,
-            SourcedRcFileForWarpValue {
+            SourcedRcFileForCognixValue {
                 shell: "zsh".to_owned(),
                 uname: Some("Darwin".to_owned()),
                 tmux: None,

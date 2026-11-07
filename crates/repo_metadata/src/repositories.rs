@@ -3,15 +3,15 @@ use std::{collections::HashSet, future::Future, path::PathBuf};
 
 #[cfg(test)]
 use virtual_fs::{Stub, VirtualFS};
-use warp_util::standardized_path::StandardizedPath;
+use cognix_util::standardized_path::StandardizedPath;
 #[cfg(test)]
-use warpui::r#async::FutureId;
-use warpui::{AppContext, Entity, ModelContext, ModelHandle};
+use cognixui::r#async::FutureId;
+use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
 
 use crate::DirectoryWatcher;
 use crate::Repository;
 use futures::future::{ready, Either};
-use warpui::SingletonEntity;
+use cognixui::SingletonEntity;
 
 /// Indicates why a repository detection event was emitted.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

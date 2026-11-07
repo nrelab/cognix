@@ -14,14 +14,14 @@ use std::collections::{HashMap, HashSet};
 use std::hash::{Hash, Hasher};
 use std::path::Path;
 use std::path::PathBuf;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::Icon;
-use warpui::prelude::MouseStateHandle;
-use warpui::EventContext;
-use warpui::{AppContext, Element, SingletonEntity};
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::Icon;
+use cognixui::prelude::MouseStateHandle;
+use cognixui::EventContext;
+use cognixui::{AppContext, Element, SingletonEntity};
 
-use crate::warp_managed_paths_watcher::warp_managed_skill_dirs;
+use crate::cognix_managed_paths_watcher::cognix_managed_skill_dirs;
 
 lazy_static! {
     static ref CONTENT_HASHER: SipHasher = SipHasher::new_with_keys(0, 0);
@@ -60,7 +60,7 @@ fn try_insert_skill(
 ///
 /// Two skills are considered duplicates only when they share the same owning directory
 /// **and** identical content — which is the common case when a tool like `npx skills`
-/// symlinks the same skill under `~/.agents/skills/`, `~/.warp/skills/`, `~/.claude/skills/`, etc.
+/// symlinks the same skill under `~/.agents/skills/`, `~/.cognix/skills/`, `~/.claude/skills/`, etc.
 ///
 /// Each element of `skill_paths` is a `(dir_path, skill_file_path)` tuple where
 /// `dir_path` is the directory that owns the skill.
@@ -166,8 +166,8 @@ pub fn icon_override_for_skill_name(name: &str) -> Option<Icon> {
 
 pub fn skill_path_from_file_path(file_path: &Path) -> Option<PathBuf> {
     for definition in SKILL_PROVIDER_DEFINITIONS.iter() {
-        let home_skill_dirs = if definition.provider == SkillProvider::Warp {
-            warp_managed_skill_dirs()
+        let home_skill_dirs = if definition.provider == SkillProvider::Cognix {
+            cognix_managed_skill_dirs()
         } else {
             home_skills_path(definition.provider).into_iter().collect()
         };

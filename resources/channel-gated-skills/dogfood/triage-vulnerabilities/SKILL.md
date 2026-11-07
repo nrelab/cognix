@@ -1,6 +1,6 @@
 ---
 name: triage-vulnerabilities
-description: Triage and remediate security vulnerabilities across Warp infrastructure. Checks Dependabot alerts (GitHub), GCP Artifact Registry container scanning, and Docker Scout for public images. Use when the user asks to check for vulnerabilities, triage CVEs, fix dependency issues, update base images, or remediate security alerts.
+description: Triage and remediate security vulnerabilities across Cognix infrastructure. Checks Dependabot alerts (GitHub), GCP Artifact Registry container scanning, and Docker Scout for public images. Use when the user asks to check for vulnerabilities, triage CVEs, fix dependency issues, update base images, or remediate security alerts.
 ---
 
 # triage-vulnerabilities
@@ -11,13 +11,13 @@ Triage and remediate security vulnerabilities across four sources: GitHub Depend
 
 ### 1. Dependabot (GitHub)
 
-Repos with Dependabot enabled: `warp-internal`, `warp-server`, `warp-terraform`, `session-sharing-server`.
+Repos with Dependabot enabled: `cognix-internal`, `cognix-server`, `cognix-terraform`, `session-sharing-server`.
 
 Fetch open alerts:
 
 ```bash
 # All open alerts for a repo (returns JSON array)
-gh api /repos/warpdotdev/<repo>/dependabot/alerts?state=open
+gh api /repos/nrelab/<repo>/dependabot/alerts?state=open
 
 # Useful fields per alert:
 #   .number, .state, .html_url
@@ -26,15 +26,15 @@ gh api /repos/warpdotdev/<repo>/dependabot/alerts?state=open
 #   .security_vulnerability.first_patched_version.identifier
 
 # Summary view: CVE/GHSA, package, severity, fix version, manifest
-gh api /repos/warpdotdev/<repo>/dependabot/alerts?state=open \
+gh api /repos/nrelab/<repo>/dependabot/alerts?state=open \
   --jq '.[] | [.number, .security_advisory.cve_id // .security_advisory.ghsa_id, .dependency.package.name, .security_advisory.severity, (.security_vulnerability.first_patched_version.identifier // "no fix"), .dependency.manifest_path] | @tsv'
 ```
 
 ### 2. GCP Artifact Registry Scanning
 
 Internal service images in `us-east4` across two projects:
-- **Production** (`astral-field-294621`): `warp-server`, `warp-server-jobs`, `warp-server-migrations`, `session-sharing-server`, `pgbouncer-rtc`
-- **Staging** (`warp-server-staging`): same repos plus `cloud-run-source-deploy`
+- **Production** (`astral-field-294621`): `cognix-server`, `cognix-server-jobs`, `cognix-server-migrations`, `session-sharing-server`, `pgbouncer-rtc`
+- **Staging** (`cognix-server-staging`): same repos plus `cloud-run-source-deploy`
 
 Scan steps:
 
@@ -54,14 +54,14 @@ Only scan the latest (most recently tagged) image per repo — older images are 
 
 ### 3. Docker Scout (Public Images)
 
-Public images on Docker Hub under `warpdotdev/` org. Currently enrolled repos: `dev-base` (and potentially others — check with `docker scout repo list --org warpdotdev`).
+Public images on Docker Hub under `nrelab/` org. Currently enrolled repos: `dev-base` (and potentially others — check with `docker scout repo list --org nrelab`).
 
 ```bash
 # List CVEs (critical and high only)
-docker scout cves warpdotdev/<image> --only-severity critical,high
+docker scout cves nrelab/<image> --only-severity critical,high
 
 # Check for base image update recommendations
-docker scout recommendations warpdotdev/<image>
+docker scout recommendations nrelab/<image>
 ```
 
 ### 4. Linear Security Issues
@@ -79,8 +79,8 @@ Find open security issues:
 
 # Useful fields per issue:
 #   - Issue ID/number (e.g., CLD-2726)
-#   - Title (usually contains CVE ID, e.g., "warp-server-GHSA-8r9q-7v3j-jr4g")
-#   - URL (e.g., https://linear.app/warpdotdev/issue/CLD-2726/...)
+#   - Title (usually contains CVE ID, e.g., "cognix-server-GHSA-8r9q-7v3j-jr4g")
+#   - URL (e.g., https://linear.app/nrelab/issue/CLD-2726/...)
 #   - Status (Backlog, Todo, In Progress, Done, Cancelled)
 #   - Description (contains CVE details and affected package info)
 ```
@@ -128,7 +128,7 @@ Fixes fall into three categories:
 **Dependabot auto-fix available**: The simplest case. Check if Dependabot has already created a PR:
 
 ```bash
-gh pr list --repo warpdotdev/<repo> --author app/dependabot --state open --json title,url
+gh pr list --repo nrelab/<repo> --author app/dependabot --state open --json title,url
 ```
 
 If a PR exists, review and approve it. If not, the fix may require manual intervention.

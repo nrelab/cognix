@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use warpui::Entity;
+use cognixui::Entity;
 
 #[derive(
     Debug,

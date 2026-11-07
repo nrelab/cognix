@@ -17,8 +17,8 @@ use crate::{
         settings::TerminalSettings, view::TerminalAction,
     },
 };
-use warp_core::settings::Setting;
-use warpui::{
+use cognix_core::settings::Setting;
+use cognixui::{
     elements::{
         Border, Clipped, Container, DropTarget, Element, Flex, Hoverable, ParentElement,
         SavePosition, Stack,
@@ -299,9 +299,9 @@ impl Input {
 
 pub mod styles {
     use pathfinder_color::ColorU;
-    use warp_core::ui::theme::WarpTheme;
+    use cognix_core::ui::theme::CognixTheme;
 
-    pub fn default_border_color(theme: &WarpTheme) -> ColorU {
+    pub fn default_border_color(theme: &CognixTheme) -> ColorU {
         theme.outline().into()
     }
 }

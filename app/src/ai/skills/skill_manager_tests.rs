@@ -1,12 +1,12 @@
 use super::*;
-use crate::warp_managed_paths_watcher::WarpManagedPathsWatcher;
+use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use ai::skills::{ParsedSkill, SkillProvider, SkillScope};
 use repo_metadata::{repositories::DetectedRepositories, DirectoryWatcher, RepoMetadataModel};
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use tempfile::TempDir;
-use warp_core::channel::ChannelState;
-use warpui::App;
+use cognix_core::channel::ChannelState;
+use cognixui::App;
 use watcher::HomeDirectoryWatcher;
 
 // ============================================================================
@@ -74,12 +74,12 @@ fn get_skills_for_working_directory_scopes_subdirectory_skills() {
         let repo_handle = app.add_singleton_model(|_| DetectedRepositories::default());
         app.add_singleton_model(RepoMetadataModel::new);
         app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-        app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+        app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
         let skill_manager_handle = app.add_singleton_model(SkillManager::new);
 
         // Register the repo root so get_root_for_path returns Some.
         let canonical_repo =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
+            cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
                 .unwrap();
         repo_handle.update(&mut app, |repos, _ctx| {
             repos.insert_test_repo_root(canonical_repo);
@@ -196,12 +196,12 @@ fn get_skills_for_working_directory_name_collision_returns_both() {
         let repo_handle = app.add_singleton_model(|_| DetectedRepositories::default());
         app.add_singleton_model(RepoMetadataModel::new);
         app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-        app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+        app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
         let skill_manager_handle = app.add_singleton_model(SkillManager::new);
 
         // Register the repo root so get_root_for_path returns Some.
         let canonical_repo =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
+            cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
                 .unwrap();
         repo_handle.update(&mut app, |repos, _ctx| {
             repos.insert_test_repo_root(canonical_repo);
@@ -292,11 +292,11 @@ fn cloud_environment_skills_always_included() {
         let repo_handle = app.add_singleton_model(|_| DetectedRepositories::default());
         app.add_singleton_model(RepoMetadataModel::new);
         app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-        app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+        app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
         let skill_manager_handle = app.add_singleton_model(SkillManager::new);
 
         let canonical_repo_a =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo_a)
+            cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo_a)
                 .unwrap();
         repo_handle.update(&mut app, |repos, _ctx| {
             repos.insert_test_repo_root(canonical_repo_a);
@@ -355,7 +355,7 @@ name: test-skill
 description: Test skill with variables
 ---
 
-Run `{{warp_cli_binary_name}}` to connect to {{warp_server_url}}.
+Run `{{cognix_cli_binary_name}}` to connect to {{cognix_server_url}}.
 "#,
     )
     .unwrap();
@@ -377,7 +377,7 @@ fn test_read_bundled_skills_preserves_other_content() {
     let temp_dir = TempDir::new().unwrap();
     let skills_dir = temp_dir.path();
 
-    // Create a test skill with both warp and non-warp variables
+    // Create a test skill with both cognix and non-cognix variables
     let skill_dir = skills_dir.join("test-skill");
     fs::create_dir_all(&skill_dir).unwrap();
     let skill_file = skill_dir.join("SKILL.md");
@@ -388,7 +388,7 @@ name: test-skill
 description: Test skill with mixed variables
 ---
 
-Use {{other_var}} and {{warp_cli_binary_name}} together.
+Use {{other_var}} and {{cognix_cli_binary_name}} together.
 "#,
     )
     .unwrap();
@@ -439,21 +439,21 @@ fn test_build_bundled_skill_context() {
     // At least 4 entries: server_url, cli_binary_name, url_scheme, settings_file_path.
     // settings_schema_path is only present when bundled_resources_dir() returns Some.
     assert!(context.len() >= 4);
-    assert!(context.contains_key("warp_server_url"));
-    assert!(context.contains_key("warp_cli_binary_name"));
-    assert!(context.contains_key("warp_url_scheme"));
+    assert!(context.contains_key("cognix_server_url"));
+    assert!(context.contains_key("cognix_cli_binary_name"));
+    assert!(context.contains_key("cognix_url_scheme"));
     assert!(context.contains_key("settings_file_path"));
 
     assert_eq!(
-        context.get("warp_server_url").unwrap(),
+        context.get("cognix_server_url").unwrap(),
         &ChannelState::server_root_url().to_string()
     );
     assert_eq!(
-        context.get("warp_cli_binary_name").unwrap(),
+        context.get("cognix_cli_binary_name").unwrap(),
         ChannelState::channel().cli_command_name()
     );
     assert_eq!(
-        context.get("warp_url_scheme").unwrap(),
+        context.get("cognix_url_scheme").unwrap(),
         ChannelState::url_scheme()
     );
     assert_eq!(
@@ -480,7 +480,7 @@ fn make_skill(name: &str, provider_dir: &str) -> ParsedSkill {
         provider: get_provider_for_path(&PathBuf::from(format!(
             "/repo/{provider_dir}/skills/{name}/SKILL.md"
         )))
-        .unwrap_or(SkillProvider::Warp),
+        .unwrap_or(SkillProvider::Cognix),
         scope: SkillScope::Project,
     }
 }
@@ -493,7 +493,7 @@ fn best_supported_provider_fast_path_returns_deduped_provider() {
         app.add_singleton_model(|_| DetectedRepositories::default());
         app.add_singleton_model(RepoMetadataModel::new);
         app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-        app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+        app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
         let handle = app.add_singleton_model(SkillManager::new);
 
         let claude_skill = make_skill("deploy", ".claude");
@@ -518,7 +518,7 @@ fn best_supported_provider_remaps_to_supported_provider() {
         app.add_singleton_model(|_| DetectedRepositories::default());
         app.add_singleton_model(RepoMetadataModel::new);
         app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-        app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+        app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
         let handle = app.add_singleton_model(SkillManager::new);
 
         let agents_skill = make_skill("deploy", ".agents");
@@ -548,7 +548,7 @@ fn best_supported_provider_falls_back_when_no_match() {
         app.add_singleton_model(|_| DetectedRepositories::default());
         app.add_singleton_model(RepoMetadataModel::new);
         app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
-        app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+        app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
         let handle = app.add_singleton_model(SkillManager::new);
 
         let agents_skill = make_skill("deploy", ".agents");

@@ -10,16 +10,16 @@ use std::sync::Arc;
 
 use parking_lot::FairMutex;
 use style::{DENIED_MODAL_WIDTH, MODAL_HEIGHT, MODAL_WIDTH};
-use warp_core::ui::appearance::Appearance;
-use warpui::keymap::FixedBinding;
-use warpui::EntityId;
+use cognix_core::ui::appearance::Appearance;
+use cognixui::keymap::FixedBinding;
+use cognixui::EntityId;
 
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::AppContext;
-use warpui::SingletonEntity;
-use warpui::ViewHandle;
-use warpui::{Element, Entity, TypedActionView, View, ViewContext};
+use cognixui::presenter::ChildView;
+use cognixui::ui_components::components::UiComponentStyles;
+use cognixui::AppContext;
+use cognixui::SingletonEntity;
+use cognixui::ViewHandle;
+use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
 
 mod body;
 mod denied_body;
@@ -60,7 +60,7 @@ pub enum ShareSessionModalEvent {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",

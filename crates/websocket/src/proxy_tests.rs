@@ -179,11 +179,11 @@ fn no_proxy_suffix_with_dot() {
     let _lock = ENV_LOCK.lock();
     clear_proxy_env();
     env::set_var("HTTPS_PROXY", "http://proxy:3128");
-    env::set_var("NO_PROXY", ".warp.dev");
+    env::set_var("NO_PROXY", ".cognix.dev");
 
-    assert!(resolved_proxy_tls("sessions.app.warp.dev").is_none());
+    assert!(resolved_proxy_tls("sessions.app.cognix.dev").is_none());
 
-    assert!(resolved_proxy_tls("warp.dev").is_some()); // Exact "warp.dev" != ".warp.dev"
+    assert!(resolved_proxy_tls("cognix.dev").is_some()); // Exact "cognix.dev" != ".cognix.dev"
     assert!(resolved_proxy_tls("other.com").is_some());
     clear_proxy_env();
 }
@@ -193,13 +193,13 @@ fn no_proxy_suffix_without_dot() {
     let _lock = ENV_LOCK.lock();
     clear_proxy_env();
     env::set_var("HTTPS_PROXY", "http://proxy:3128");
-    env::set_var("NO_PROXY", "warp.dev");
+    env::set_var("NO_PROXY", "cognix.dev");
 
-    // "sessions.app.warp.dev" ends with ".warp.dev" → matches
-    assert!(resolved_proxy_tls("sessions.app.warp.dev").is_none());
+    // "sessions.app.cognix.dev" ends with ".cognix.dev" → matches
+    assert!(resolved_proxy_tls("sessions.app.cognix.dev").is_none());
     // Exact match too
-    assert!(resolved_proxy_tls("warp.dev").is_none());
-    assert!(resolved_proxy_tls("notwarp.dev").is_some());
+    assert!(resolved_proxy_tls("cognix.dev").is_none());
+    assert!(resolved_proxy_tls("notcognix.dev").is_some());
     clear_proxy_env();
 }
 

@@ -2,12 +2,12 @@
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use comfy_table::Cell;
 use serde::Serialize;
-use warp_cli::{
+use cognix_cli::{
     provider::{ProviderCommand, ProviderType},
     GlobalOptions,
 };
-use warp_core::channel::ChannelState;
-use warpui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
+use cognix_core::channel::ChannelState;
+use cognixui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
 
 use crate::ai::agent_sdk::output::{self, TableFormat};
 
@@ -123,7 +123,7 @@ impl ProviderCommandRunner {
     }
 }
 
-impl warpui::Entity for ProviderCommandRunner {
+impl cognixui::Entity for ProviderCommandRunner {
     type Event = ();
 }
 impl SingletonEntity for ProviderCommandRunner {}

@@ -23,16 +23,16 @@ use rand::Rng as _;
 use std::collections::VecDeque;
 use std::sync::Arc;
 use std::time::Duration;
-use warp_core::execution_mode::AppExecutionMode;
-use warpui::platform::TerminationMode;
-use warpui::r#async::Timer;
-use warpui::windowing::state::ApplicationStage;
-use warpui::windowing::{self, WindowManager};
-use warpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+use cognix_core::execution_mode::AppExecutionMode;
+use cognixui::platform::TerminationMode;
+use cognixui::r#async::Timer;
+use cognixui::windowing::state::ApplicationStage;
+use cognixui::windowing::{self, WindowManager};
+use cognixui::{
+    accessibility::{AccessibilityContent, CognixA11yRole},
     AppContext,
 };
-use warpui::{Entity, ModelContext, SingletonEntity, ViewContext};
+use cognixui::{Entity, ModelContext, SingletonEntity, ViewContext};
 
 pub use self::changelog::get_current_changelog;
 use self::channel_versions::fetch_channel_versions;
@@ -67,7 +67,7 @@ pub enum AutoupdateStage {
     },
     /// A relaunch was initiated to use the new version, but failed.
     UnableToLaunchNewVersion { new_version: VersionInfo },
-    /// A new version was installed, but Warp hasn't restarted yet.
+    /// A new version was installed, but Cognix hasn't restarted yet.
     ///
     /// This state is only used on macOS, where the update isn't fully applied until right before
     /// restarting.
@@ -711,13 +711,13 @@ pub fn accessibility_content(
         // Found autoupdate
         (RequestType::ManualCheck, Ok(UpdateReady::Yes { .. })) => Some(AccessibilityContent::new(
             "Update available.",
-            "Use the command palette to install and relaunch Warp",
-            WarpA11yRole::HelpRole,
+            "Use the command palette to install and relaunch Cognix",
+            CognixA11yRole::HelpRole,
         )),
         // Any non-successful autoupdate check
         (RequestType::ManualCheck, _) => Some(AccessibilityContent::new_without_help(
             "No updates available",
-            WarpA11yRole::HelpRole,
+            CognixA11yRole::HelpRole,
         )),
         _ => None,
     }
@@ -831,7 +831,7 @@ pub fn apply_update(
     }
 }
 
-/// Relaunch Warp to apply an update.
+/// Relaunch Cognix to apply an update.
 ///
 /// This will:
 /// 1. Perform any last update steps.

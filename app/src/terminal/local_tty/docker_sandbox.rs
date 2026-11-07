@@ -1,6 +1,6 @@
 //! Docker-sandbox-specific shell-starter types and helpers.
 //!
-//! This module owns everything specific to running a Warp shell inside a
+//! This module owns everything specific to running a Cognix shell inside a
 //! `sbx`-managed Docker sandbox: the [`DockerSandboxShellStarter`] that
 //! carries per-instance state, the host-side mount-point layout, and the
 //! `sbx` binary resolution logic.
@@ -15,7 +15,7 @@ use futures::FutureExt as _;
 use serde::{Deserialize, Serialize};
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
-use warpui::{AppContext, SingletonEntity as _};
+use cognixui::{AppContext, SingletonEntity as _};
 
 use super::shell::DirectShellStarter;
 use crate::{
@@ -31,13 +31,13 @@ use crate::terminal::local_shell::LocalShellState;
 /// doesn't need to be per-instance.
 pub const DOCKER_SANDBOX_HOME_DIR: &str = "/home/agent";
 
-/// Prefix for generated container names: `warp-sandbox-<id>`.
-const DOCKER_SANDBOX_NAME_PREFIX: &str = "warp-sandbox";
+/// Prefix for generated container names: `cognix-sandbox-<id>`.
+const DOCKER_SANDBOX_NAME_PREFIX: &str = "cognix-sandbox";
 
 /// Root directory on the host under which Docker-sandbox scratch files
 /// (bash init scripts, empty workspace mount points) live.
 ///
-/// Lives under the Warp per-user cache directory rather than `/tmp` so:
+/// Lives under the Cognix per-user cache directory rather than `/tmp` so:
 /// - other users on a multi-user host can't pre-create or symlink-attack the
 ///   mount path,
 /// - file contents are protected by the user's home-directory permissions
@@ -46,14 +46,14 @@ const DOCKER_SANDBOX_NAME_PREFIX: &str = "warp-sandbox";
 ///
 /// Layout: `<cache_dir>/docker-sandbox/{init,workspace}/<sandbox_id>/`.
 fn docker_sandbox_host_root() -> PathBuf {
-    warp_core::paths::cache_dir().join("docker-sandbox")
+    cognix_core::paths::cache_dir().join("docker-sandbox")
 }
 
-/// Resolves the absolute path to the `sbx` CLI binary using the Warp
+/// Resolves the absolute path to the `sbx` CLI binary using the Cognix
 /// process's `PATH`.
 ///
-/// Warp's process `PATH` is minimal and often misses user-shell-installed
-/// tools (e.g. homebrew on Apple Silicon when Warp is launched from Finder,
+/// Cognix's process `PATH` is minimal and often misses user-shell-installed
+/// tools (e.g. homebrew on Apple Silicon when Cognix is launched from Finder,
 /// or `~/.local/bin`). Prefer [`resolve_sbx_path_from_user_shell`], which
 /// captures the PATH from the user's interactive login shell, the same way
 /// MCP servers and LSP resolve binaries.
@@ -86,7 +86,7 @@ pub fn resolve_sbx_path_from_user_shell(
 
 /// Wraps a [`DirectShellStarter`] and adds Docker-sandbox-specific parameters.
 ///
-/// Each instance carries a unique `sandbox_id` so multiple Warp panes can run
+/// Each instance carries a unique `sandbox_id` so multiple Cognix panes can run
 /// independent sandboxes concurrently without colliding on container name or
 /// on the host-side init / workspace mount directories. The base Docker image
 /// is threaded down from the AvailableShell used to initialize this starter
@@ -137,7 +137,7 @@ impl DockerSandboxShellStarter {
         format!("{DOCKER_SANDBOX_NAME_PREFIX}-{}", self.sandbox_id)
     }
 
-    /// Host directory where Warp writes this sandbox's bash init script.
+    /// Host directory where Cognix writes this sandbox's bash init script.
     /// Mounted read-only into the container at the same absolute path.
     pub fn init_dir(&self) -> PathBuf {
         docker_sandbox_host_root()

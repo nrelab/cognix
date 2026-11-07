@@ -7,7 +7,7 @@ use std::time::Duration;
 use dashmap::DashMap;
 use futures::channel::oneshot;
 use futures::io::{AsyncRead, AsyncWrite};
-use warpui::r#async::{executor, FutureExt as _};
+use cognixui::r#async::{executor, FutureExt as _};
 
 use crate::proto::{
     client_message, server_message, Abort, ClientMessage, DeleteFile, ErrorCode, Initialize,
@@ -18,8 +18,8 @@ use crate::proto::{
 
 use crate::protocol::{self, ProtocolError, RequestId};
 
-use warp_core::SessionId;
-use warpui::r#async::TransportStream;
+use cognix_core::SessionId;
+use cognixui::r#async::TransportStream;
 
 /// Default request timeout (2 minutes).
 const REQUEST_TIMEOUT: Duration = Duration::from_secs(120);
@@ -82,7 +82,7 @@ pub enum ClientEvent {
 /// This type does **not** own the child subprocess whose stdio backs it.
 /// For transports that spawn a subprocess (e.g. SSH), the caller is
 /// responsible for holding the `Child` for the lifetime of the session
-/// so that `kill_on_drop` fires when teardown occurs. In Warp this is
+/// so that `kill_on_drop` fires when teardown occurs. In Cognix this is
 /// the `RemoteServerManager`, which stores the child in
 /// `RemoteSessionState` alongside the `Arc<RemoteServerClient>`. That
 /// way the child's lifetime is gated by the manager's session map
@@ -115,7 +115,7 @@ impl RemoteServerClient {
     /// The caller retains ownership of the `Child` itself. Typically the
     /// caller spawns the `Command` with `kill_on_drop(true)` and stashes
     /// the returned `Child` somewhere whose lifetime matches the
-    /// session's (in Warp, on the `RemoteServerManager`'s
+    /// session's (in Cognix, on the `RemoteServerManager`'s
     /// `RemoteSessionState`). Dropping the `Child` there triggers
     /// SIGKILL on the subprocess, regardless of how many
     /// `Arc<RemoteServerClient>` clones are still alive.

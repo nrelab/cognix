@@ -5,16 +5,16 @@ use std::collections::{HashMap, HashSet};
 use std::future::Future;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use warp_core::channel::ChannelState;
-use warp_core::SessionId;
-use warp_util::standardized_path::StandardizedPath;
-use warpui::platform::TerminationMode;
-use warpui::r#async::{Spawnable, SpawnableOutput, SpawnedFutureHandle};
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognix_core::channel::ChannelState;
+use cognix_core::SessionId;
+use cognix_util::standardized_path::StandardizedPath;
+use cognixui::platform::TerminationMode;
+use cognixui::r#async::{Spawnable, SpawnableOutput, SpawnedFutureHandle};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 
-use warp_files::{FileModel, FileModelEvent};
-use warp_util::content_version::ContentVersion;
-use warp_util::file::FileId;
+use cognix_files::{FileModel, FileModelEvent};
+use cognix_util::content_version::ContentVersion;
+use cognix_util::file::FileId;
 
 use super::proto::{
     client_message, delete_file_response, run_command_response, server_message,
@@ -139,7 +139,7 @@ pub struct ServerModel {
     /// Per-connection outbound channels, keyed by `ConnectionId`.
     ///
     /// The daemon can serve multiple proxy connections simultaneously — one
-    /// per SSH session / Warp tab connecting to this host.  Each entry maps
+    /// per SSH session / Cognix tab connecting to this host.  Each entry maps
     /// a connection's `Uuid` to the channel the connection task drains to
     /// write `ServerMessage`s back to its proxy.
     connection_senders: HashMap<ConnectionId, async_channel::Sender<ServerMessage>>,

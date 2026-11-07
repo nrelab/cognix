@@ -10,7 +10,7 @@ jobs:
     if: github.event.assignee.login == 'oz-agent' && !contains(github.event.issue.labels.*.name, 'ready-to-spec') && !contains(github.event.issue.labels.*.name, 'ready-to-implement')
     permissions:
       issues: write
-    uses: warpdotdev/oz-for-oss/.github/workflows/comment-on-unready-assigned-issue.yml@main
+    uses: nrelab/oz-for-oss/.github/workflows/comment-on-unready-assigned-issue.yml@main
     secrets:
       OZ_MGMT_GHA_APP_ID: ${{ secrets.OZ_MGMT_GHA_APP_ID }}
       OZ_MGMT_GHA_PRIVATE_KEY: ${{ secrets.OZ_MGMT_GHA_PRIVATE_KEY }}

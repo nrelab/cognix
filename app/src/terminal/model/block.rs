@@ -3,7 +3,7 @@ mod serialized_block;
 
 pub use interaction_mode::*;
 pub use serialized_block::*;
-use warp_core::features::FeatureFlag;
+use cognix_core::features::FeatureFlag;
 
 use super::grid::grid_handler::{GridHandler, PerformResetGridChecks};
 use super::grid::{Cursor, RespectDisplayedOutput};
@@ -16,7 +16,7 @@ use super::selection::ScrollDelta;
 use super::session::{command_executor, Sessions};
 pub use super::BlockId;
 use super::{bootstrap::BootstrapStage, find::RegexDFAs};
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::blocklist::agent_view::{AgentViewDisplayMode, AgentViewState};
@@ -54,11 +54,11 @@ use hex;
 use instant::Instant;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::Vector2F;
-use warp_core::command::ExitCode;
-use warp_terminal::model::grid::Dimensions as _;
-use warp_util::path::user_friendly_path;
-use warpui::units::{IntoLines, Lines};
-use warpui::{r#async::executor::Background, record_trace_event};
+use cognix_core::command::ExitCode;
+use cognix_terminal::model::grid::Dimensions as _;
+use cognix_util::path::user_friendly_path;
+use cognixui::units::{IntoLines, Lines};
+use cognixui::{r#async::executor::Background, record_trace_event};
 
 use enum_iterator::all;
 use lazy_static::lazy_static;
@@ -85,7 +85,7 @@ pub const LONG_RUNNING_BOTTOM_PADDING_LINES: f32 = 0.2;
 /// commands that didn't start execution (i.e. `preexec` was never called), as the exit code is
 /// only for the last point of execution.
 /// Note: we should keep this in sync with the command-corrections list:
-/// https://github.com/warpdotdev/command-corrections/blob/main/src/lib.rs#L109
+/// https://github.com/nrelab/command-corrections/blob/main/src/lib.rs#L109
 pub(super) fn has_block_failed(exit_code: ExitCode, block_state: BlockState) -> bool {
     block_state == BlockState::DoneWithExecution && !exit_code.was_successful()
 }
@@ -523,7 +523,7 @@ impl From<&Block> for BlockType {
 
         match block.bootstrap_stage() {
             BootstrapStage::RestoreBlocks => BlockType::Restored,
-            BootstrapStage::WarpInput | BootstrapStage::Bootstrapped => BlockType::BootstrapHidden,
+            BootstrapStage::CognixInput | BootstrapStage::Bootstrapped => BlockType::BootstrapHidden,
             BootstrapStage::ScriptExecution => {
                 if block.is_empty(&AgentViewState::Inactive) {
                     BlockType::BootstrapHidden
@@ -610,7 +610,7 @@ pub struct BlockSize {
     pub block_padding: BlockPadding,
     pub size: SizeInfo,
     pub max_block_scroll_limit: usize,
-    pub warp_prompt_height_lines: f32,
+    pub cognix_prompt_height_lines: f32,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
@@ -635,7 +635,7 @@ pub enum BlockState {
     /// any particular execution or command.
     Background,
 
-    /// This block holds static content and is programmatically added to the blocklist by Warp. An
+    /// This block holds static content and is programmatically added to the blocklist by Cognix. An
     /// example is the information subshell bootstrap "success" block.
     Static,
 }
@@ -924,7 +924,7 @@ impl Block {
         event_proxy: ChannelEventListener,
         background_executor: Arc<Background>,
         bootstrap_stage: BootstrapStage,
-        show_warp_bootstrap_input: bool,
+        show_cognix_bootstrap_input: bool,
         show_in_band_command_blocks: bool,
         show_memory_stats: bool,
         block_index: BlockIndex,
@@ -985,7 +985,7 @@ impl Block {
             background_executor,
             event_proxy,
             bootstrap_stage,
-            show_bootstrap_block: show_warp_bootstrap_input,
+            show_bootstrap_block: show_cognix_bootstrap_input,
             show_in_band_command_blocks,
             show_memory_stats,
             creation_ts: Local::now(),
@@ -1431,7 +1431,7 @@ impl Block {
             }
         }
 
-        let is_bootstrap_block = self.bootstrap_stage == BootstrapStage::WarpInput;
+        let is_bootstrap_block = self.bootstrap_stage == BootstrapStage::CognixInput;
         let is_empty_bootstrap_script_execution_block = self.bootstrap_stage
             == BootstrapStage::ScriptExecution
             && self.command_should_show_as_empty_when_finished()
@@ -1526,7 +1526,7 @@ impl Block {
     }
 
     /// Whether we render the prompt on the same line, in the context of a finished block. Post-same
-    /// line prompt, we render on the same line for PS1, but not for Warp prompt!
+    /// line prompt, we render on the same line for PS1, but not for Cognix prompt!
     pub fn render_prompt_on_same_line(&self) -> bool {
         self.honor_ps1()
     }
@@ -1686,7 +1686,7 @@ impl Block {
 
     /// A command-grid is active in the period after we have received the precmd
     /// hook but before the command has started executing. This includes the time
-    /// when the shell echoes the command bytes that Warp wrote to the PTY.
+    /// when the shell echoes the command bytes that Cognix wrote to the PTY.
     pub fn is_command_grid_active(&self) -> bool {
         self.state == BlockState::BeforeExecution
     }
@@ -1904,7 +1904,7 @@ impl Block {
         if self.header_grid.honor_ps1() {
             self.block_banner_height() + self.padding_top()
         } else {
-            // Grid is drawn below custom Warp prompt in finished blocks.
+            // Grid is drawn below custom Cognix prompt in finished blocks.
             self.block_banner_height()
                 + self.padding_top()
                 + self.prompt_height()
@@ -1933,7 +1933,7 @@ impl Block {
     }
 
     /// Returns the ENTIRE HEIGHT of the prompt and command (no padding top or middle included).
-    /// In the case of combined grid: for Warp prompt, this includes the height of both the Warp prompt
+    /// In the case of combined grid: for Cognix prompt, this includes the height of both the Cognix prompt
     /// AND combined grid; for PS1, this is just the combined grid (PS1 is included there).
     pub fn prompt_and_command_height(&self) -> Lines {
         if !self.ready_to_render() {
@@ -1942,7 +1942,7 @@ impl Block {
             // No padding between prompt and command in the case of PS1 (combined grid).
             self.header_grid.prompt_and_command_height()
         } else {
-            // Handle the case of Warp built-in prompt with combined grid.
+            // Handle the case of Cognix built-in prompt with combined grid.
             // Note that we have non-zero `command_padding_top` in this case, unlike above!
             if self.header_grid.is_command_empty() {
                 Lines::zero()
@@ -2175,7 +2175,7 @@ impl Block {
         let escape_char = session.shell_family().escape_char();
 
         // Parse the raw command string to get the top-level command.
-        let command = warp_completer::parsers::simple::top_level_command(
+        let command = cognix_completer::parsers::simple::top_level_command(
             self.command_to_string(),
             escape_char,
         )?;
@@ -2185,7 +2185,7 @@ impl Block {
             .alias_value(command.as_str())
             .map(|s| s.to_owned())
             // An alias can technically expand into an entire command (e.g. "gl" => "PAGER=0 git log").
-            .and_then(|s| warp_completer::parsers::simple::top_level_command(s, escape_char))
+            .and_then(|s| cognix_completer::parsers::simple::top_level_command(s, escape_char))
             // If alias expansion didn't work, then just return the original top-level command.
             .or(Some(command))
     }
@@ -2503,7 +2503,7 @@ impl Block {
 
         self.background_executor
             .spawn(async move {
-                warpui::r#async::Timer::after(std::time::Duration::from_millis(delay_ms)).await;
+                cognixui::r#async::Timer::after(std::time::Duration::from_millis(delay_ms)).await;
                 ready_to_render.store(true, Ordering::Relaxed);
                 event_proxy.send_wakeup_event();
             })
@@ -2824,7 +2824,7 @@ impl Block {
     }
 
     pub fn grid_storage_lines(&self) -> usize {
-        use warp_terminal::model::grid::Dimensions as _;
+        use cognix_terminal::model::grid::Dimensions as _;
 
         self.all_grids_iter()
             .map(|grid| grid.grid_storage().total_rows())
@@ -2993,7 +2993,7 @@ impl ansi::Handler for Block {
         // If we're processing a prompt and we receive an initial blank line,
         // ignore it.  This is sometimes used in prompts (e.g.: oh-my-zsh's
         // "re5et" theme) to separate the previous command's output from the
-        // prompt, but this is not needed in Warp due to us visually separating
+        // prompt, but this is not needed in Cognix due to us visually separating
         // blocks.
         match self.header_grid.receiving_chars_for_prompt {
             Some(ansi::PromptKind::Initial) if !self.header_grid.prompt_has_received_content() => {

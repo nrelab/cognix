@@ -10,22 +10,22 @@ use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use thousands::Separable;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::{Fill, WarpTheme};
-use warp_graphql::billing::{PlanPricing, StripeSubscriptionPlan};
-use warpui::elements::{
+use cognix_core::send_telemetry_from_ctx;
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_graphql::billing::{PlanPricing, StripeSubscriptionPlan};
+use cognixui::elements::{
     Align, Border, CacheOption, ChildAnchor, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, DropShadow, Flex, FormattedTextElement, HighlightedHyperlink, Image,
     MainAxisAlignment, MainAxisSize, MouseStateHandle, OffsetPositioning, ParentAnchor,
     ParentElement, ParentOffsetBounds, Radius, Stack,
 };
-use warpui::fonts::Weight;
-use warpui::keymap::FixedBinding;
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use cognixui::fonts::Weight;
+use cognixui::keymap::FixedBinding;
+use cognixui::platform::Cursor;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
+use cognixui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 const BUTTON_DIAMETER: f32 = 20.;
 const MODAL_HEIGHT: f32 = 440.;
@@ -33,7 +33,7 @@ const LEFT_PANEL_WIDTH: f32 = 360.;
 const RIGHT_PANEL_WIDTH: f32 = 360.;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",
@@ -97,7 +97,7 @@ impl FreeTierLimitHitModal {
     fn render_checklist_item_dynamic(
         text: String,
         appearance: &Appearance,
-        theme: &WarpTheme,
+        theme: &CognixTheme,
     ) -> Box<dyn Element> {
         let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
             FormattedTextFragment::plain_text(text),
@@ -108,7 +108,7 @@ impl FreeTierLimitHitModal {
                 Container::new(
                     ConstrainedBox::new(
                         Icon::CheckCircleBroken
-                            .to_warpui_icon(Fill::Solid(theme.ansi_fg_green()))
+                            .to_cognixui_icon(Fill::Solid(theme.ansi_fg_green()))
                             .finish(),
                     )
                     .with_width(14.)
@@ -231,7 +231,7 @@ impl FreeTierLimitHitModal {
                                     FormattedTextFragment::plain_text("Access to "),
                                     FormattedTextFragment::hyperlink(
                                         "Reload Credits".to_string(),
-                                        "https://docs.warp.dev/support-and-community/plans-and-billing/add-on-credits".to_string(),
+                                        "https://docs.cognix.dev/support-and-community/plans-and-billing/add-on-credits".to_string(),
                                     ),
                                 ])]);
                                 Flex::row()
@@ -240,7 +240,7 @@ impl FreeTierLimitHitModal {
                                         Container::new(
                                             ConstrainedBox::new(
                                                 Icon::CheckCircleBroken
-                                                    .to_warpui_icon(Fill::Solid(theme.ansi_fg_green()))
+                                                    .to_cognixui_icon(Fill::Solid(theme.ansi_fg_green()))
                                                     .finish(),
                                             )
                                             .with_width(14.)
@@ -274,7 +274,7 @@ impl FreeTierLimitHitModal {
                                 let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
                                     FormattedTextFragment::hyperlink(
                                         "Extended cloud agents access".to_string(),
-                                        "https://www.warp.dev/oz".to_string(),
+                                        "https://www.cognix.dev/oz".to_string(),
                                     ),
                                 ])]);
                                 Flex::row()
@@ -283,7 +283,7 @@ impl FreeTierLimitHitModal {
                                         Container::new(
                                             ConstrainedBox::new(
                                                 Icon::CheckCircleBroken
-                                                    .to_warpui_icon(Fill::Solid(theme.ansi_fg_green()))
+                                                    .to_cognixui_icon(Fill::Solid(theme.ansi_fg_green()))
                                                     .finish(),
                                             )
                                             .with_width(14.)

@@ -5,7 +5,7 @@ use crate::ai::blocklist::history_model::CloudConversationData;
 use ai::agent::action_result::FetchConversationResult;
 use futures::future::BoxFuture;
 use futures::FutureExt;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 
 use crate::ai::agent::api::ServerConversationToken;
 use crate::ai::agent::AIAgentActionType;
@@ -78,7 +78,7 @@ fn materialize_conversation(
         ));
     };
 
-    let tasks: Vec<warp_multi_agent_api::Task> = conversation
+    let tasks: Vec<cognix_multi_agent_api::Task> = conversation
         .all_tasks()
         .filter_map(|task| task.source().cloned())
         .collect();

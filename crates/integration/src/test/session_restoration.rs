@@ -1,5 +1,5 @@
 use settings::{RespectUserSyncSetting, SyncToCloud};
-use warp::{
+use cognix::{
     features::FeatureFlag,
     integration_testing::{
         self,
@@ -23,7 +23,7 @@ use warp::{
     },
     workspace::Workspace,
 };
-use warpui::{
+use cognixui::{
     async_assert_eq,
     integration::{AssertionOutcome, TestStep},
     SingletonEntity, ViewHandle,
@@ -83,7 +83,7 @@ pub fn test_session_restoration() -> Builder {
 /// always get added. The mock data for this case looks like this:
 /// | command            | output       | shell | user       | host          |
 /// | ------------------ | ------------ | ----- | ---------- | ------------- |
-/// | echo $TERM_PROGRAM | WarpTerminal | zsh   | local:user | local:host    |
+/// | echo $TERM_PROGRAM | CognixTerminal | zsh   | local:user | local:host    |
 /// | pwd                | /            | bash  | local:user | local:host    |
 /// | uname              | Linux        | zsh   | andy       | ubuntu-test   |
 /// | mkdir secrets      | secrets      | NULL  | NULL       | NULL          |
@@ -409,8 +409,8 @@ pub fn test_restore_snapshot_with_test_json_object() -> Builder {
 
 /// Tests restoring a snapshot that has multiple objects with the same shareable_object_id
 /// in the metadata table.  This test verifies a regression introduced in
-/// https://github.com/warpdotdev/warp-internal/pull/7406 and fixed in
-/// https://github.com/warpdotdev/warp-internal/pull/7480
+/// https://github.com/nrelab/cognix-internal/pull/7406 and fixed in
+/// https://github.com/nrelab/cognix-internal/pull/7480
 ///
 /// The two objects have server ids Workflow-ftv7on4HwTeixO2xF5hmKf and Notebook-Flbu686H9XDCHZlYRriVpB
 /// and shareable_object_id 2.

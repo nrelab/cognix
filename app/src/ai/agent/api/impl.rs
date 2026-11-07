@@ -2,8 +2,8 @@ use std::{collections::HashMap, sync::Arc};
 
 use crate::{ai::agent::redaction, terminal::model::session::SessionType};
 use futures_util::StreamExt;
-use warp_core::features::FeatureFlag;
-use warp_multi_agent_api as api;
+use cognix_core::features::FeatureFlag;
+use cognix_multi_agent_api as api;
 
 use crate::server::server_api::ServerApi;
 
@@ -53,7 +53,7 @@ pub async fn generate_multi_agent_output(
 
     let mut api_keys = params.api_keys;
     if let Some(api_keys) = &mut api_keys {
-        api_keys.allow_use_of_warp_credits = params.allow_use_of_warp_credits_with_byok;
+        api_keys.allow_use_of_warp_credits = params.allow_use_of_cognix_credits_with_byok;
     }
 
     let request = api::Request {
@@ -69,7 +69,7 @@ pub async fn generate_multi_agent_output(
                 ..Default::default()
             }),
             rules_enabled: params.is_memory_enabled,
-            warp_drive_context_enabled: params.warp_drive_context_enabled,
+            warp_drive_context_enabled: params.cognix_drive_context_enabled,
             web_context_retrieval_enabled: true,
             supports_parallel_tool_calls: true,
             use_anthropic_text_editor_tools: false,
@@ -179,7 +179,7 @@ fn get_supported_tools(params: &RequestParams) -> Vec<api::ToolType> {
                 supported_tools.push(api::ToolType::UploadFileArtifact);
             }
         }
-        Some(SessionType::WarpifiedRemote { host_id: Some(_) }) => {
+        Some(SessionType::CognixifiedRemote { host_id: Some(_) }) => {
             // Remote session with a known host — enable tools that route
             // through RemoteServerClient. The host_id is only populated
             // after a successful connection handshake, so its presence is a
@@ -187,7 +187,7 @@ fn get_supported_tools(params: &RequestParams) -> Vec<api::ToolType> {
             // SearchCodebase remains disabled (follow-up work).
             supported_tools.extend(&[api::ToolType::ReadFiles, api::ToolType::ApplyFileDiffs]);
         }
-        Some(SessionType::WarpifiedRemote { host_id: None }) => {
+        Some(SessionType::CognixifiedRemote { host_id: None }) => {
             // Feature flag off or not yet connected — no remote tools.
         }
     }
@@ -239,10 +239,10 @@ fn get_supported_cli_agent_tools(params: &RequestParams) -> Vec<api::ToolType> {
             supported_cli_agent_tools
                 .extend(&[api::ToolType::ReadFiles, api::ToolType::SearchCodebase]);
         }
-        Some(SessionType::WarpifiedRemote { host_id: Some(_) }) => {
+        Some(SessionType::CognixifiedRemote { host_id: Some(_) }) => {
             supported_cli_agent_tools.push(api::ToolType::ReadFiles);
         }
-        Some(SessionType::WarpifiedRemote { host_id: None }) => {}
+        Some(SessionType::CognixifiedRemote { host_id: None }) => {}
     }
 
     supported_cli_agent_tools

@@ -2,7 +2,7 @@
 
 use pathfinder_geometry::vector::vec2f;
 
-use warpui::{
+use cognixui::{
     elements::{
         ChildAnchor, Dismiss, MouseStateHandle, OffsetPositioning, PositionedElementAnchor,
         PositionedElementOffsetBounds, Stack,
@@ -38,25 +38,25 @@ struct GridTooltipLink {
     mouse_state: MouseStateHandle,
 }
 
-/// If appropriate, returns a GridTooltipLink for opening the file in warp.
+/// If appropriate, returns a GridTooltipLink for opening the file in cognix.
 /// Mutates `detail_for_default` leaving None in place if the GridTooltipLink returned is the default
 /// action on "Cmd+Click" and thus should use the detail_for_default.
 #[cfg(feature = "local_fs")]
-fn open_in_warp_tooltip(
+fn open_in_cognix_tooltip(
     path: std::path::PathBuf,
-    line_and_column_num: Option<warp_util::path::LineAndColumnArg>,
+    line_and_column_num: Option<cognix_util::path::LineAndColumnArg>,
     detail_for_default: &mut Option<String>,
     mouse_state: MouseStateHandle,
     app: &AppContext,
 ) -> Option<GridTooltipLink> {
     use crate::{
         settings::CodeSettings, util::file::external_editor::EditorSettings,
-        util::tooltips::should_show_open_in_warp_link,
+        util::tooltips::should_show_open_in_cognix_link,
     };
     use settings::Setting as _;
-    use warpui::SingletonEntity;
+    use cognixui::SingletonEntity;
 
-    if !should_show_open_in_warp_link(&path, app) {
+    if !should_show_open_in_cognix_link(&path, app) {
         return None;
     }
 
@@ -66,8 +66,8 @@ fn open_in_warp_tooltip(
         None
     };
     Some(GridTooltipLink {
-        text: "Open in Warp".to_string(),
-        action: TerminalAction::OpenCodeInWarp {
+        text: "Open in Cognix".to_string(),
+        action: TerminalAction::OpenCodeInCognix {
             path,
             layout: *EditorSettings::as_ref(app).open_file_layout.value(),
             line_col: line_and_column_num,
@@ -191,18 +191,18 @@ impl TerminalView {
 
         #[cfg_attr(not(feature = "local_fs"), allow(unused_mut))]
         if let Some(link) = &self.open_grid_link_tool_tip {
-            let mut open_in_warp = None;
+            let mut open_in_cognix = None;
             let modifier = directly_open_link_keybinding_string();
             let mut detail = Some(format!("[{modifier} Click]"));
             #[cfg(feature = "local_fs")]
             {
                 if let GridHighlightedLink::File(file_link) = link {
                     if let Some(path) = file_link.get_inner().absolute_path() {
-                        open_in_warp = open_in_warp_tooltip(
+                        open_in_cognix = open_in_cognix_tooltip(
                             path,
                             file_link.get_inner().line_and_column_num,
                             &mut detail,
-                            self.mouse_states.open_in_warp_tooltip.clone(),
+                            self.mouse_states.open_in_cognix_tooltip.clone(),
                             app,
                         );
                     }
@@ -216,13 +216,13 @@ impl TerminalView {
                 detail,
             });
 
-            links.extend(open_in_warp);
+            links.extend(open_in_cognix);
         }
 
         #[cfg_attr(not(feature = "local_fs"), allow(unused_mut))]
         if let Some(tooltip_info) = &self.open_rich_content_link_tool_tip {
             element_id = tooltip_info.position_id.to_owned();
-            let mut open_in_warp = None;
+            let mut open_in_cognix = None;
             let modifier_string = directly_open_link_keybinding_string();
             let mut detail = Some(format!("[{modifier_string} Click]"));
 
@@ -234,11 +234,11 @@ impl TerminalView {
                     ..
                 } = &tooltip_info.link
                 {
-                    open_in_warp = open_in_warp_tooltip(
+                    open_in_cognix = open_in_cognix_tooltip(
                         absolute_path.clone(),
                         *line_and_column_num,
                         &mut detail,
-                        self.mouse_states.open_in_warp_tooltip.clone(),
+                        self.mouse_states.open_in_cognix_tooltip.clone(),
                         app,
                     );
                 }
@@ -251,7 +251,7 @@ impl TerminalView {
                 detail,
             });
 
-            links.extend(open_in_warp);
+            links.extend(open_in_cognix);
         }
 
         let secret_redaction = get_secret_obfuscation_mode(app);

@@ -1,0 +1,6 @@
+---
+name: "Copy CognixDev Keychain to Cognix local"
+command: "security add-generic-password -a User -U -s cognix -w \"$(security find-generic-password -a User -s dev.cognix.Cognix-Dev -w)\""
+description: "Copies the refresh token from CognixDev into the local cognix app so that it can authenticate."
+author: Cognix Team
+shells: []

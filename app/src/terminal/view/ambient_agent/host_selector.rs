@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
-use warpui::{
+use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, OffsetPositioning, ParentAnchor, ParentElement as _,
         ParentOffsetBounds, Stack,
@@ -11,9 +11,9 @@ use warpui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::theme::Fill;
 
 use crate::menu::{Event as MenuEvent, Menu, MenuItem, MenuItemFields};
 use crate::terminal::input::{MenuPositioning, MenuPositioningProvider};
@@ -39,13 +39,13 @@ const MENU_HEADER_LABEL: &str = "Execution host";
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Host {
-    Warp,
+    Cognix,
 }
 
 impl Host {
     fn display_name(self) -> &'static str {
         match self {
-            Host::Warp => "Warp",
+            Host::Cognix => "Cognix",
         }
     }
 }
@@ -77,7 +77,7 @@ impl HostSelector {
         // field is exercised at construction time (not just written to on
         // `SelectHost`), so it stays out of clippy's `field is never read`
         // warning while still serving as the source of truth for the label.
-        let selected = Host::Warp;
+        let selected = Host::Cognix;
 
         let button = ctx.add_typed_action_view(|_ctx| {
             ActionButton::new(selected.display_name(), NakedHeaderButtonTheme)
@@ -190,7 +190,7 @@ fn build_menu_items(
         )
     };
 
-    vec![header, item_for(Host::Warp)]
+    vec![header, item_for(Host::Cognix)]
 }
 
 impl Entity for HostSelector {

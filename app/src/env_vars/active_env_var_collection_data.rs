@@ -15,7 +15,7 @@ use crate::{
     AppContext, CloudModel, UpdateManager,
 };
 
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 
 use super::CloudEnvVarCollectionModel;
 

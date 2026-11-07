@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Cross-platform entrypoint for running a local Warp build.
+# Cross-platform entrypoint for running a local Cognix build.
 #
-# On macOS this delegates to `./script/macos/run`, which builds and runs Warp
+# On macOS this delegates to `./script/macos/run`, which builds and runs Cognix
 # as a real `.app` bundle (with code signing, plist updates, etc.). On Linux
 # and Windows it invokes `cargo run` directly for the appropriate binary.
 #
@@ -22,13 +22,13 @@ FEATURES="gui"
 
 ./script/install_channel_config
 
-# If warp_channel_config is on PATH, build the Local channel binary; otherwise build the OSS channel.
-if command -v warp-channel-config &>/dev/null; then
-    WARP_BIN_NAME="warp"
-    WARP_CHANNEL="local"
+# If cognix_channel_config is on PATH, build the Local channel binary; otherwise build the OSS channel.
+if command -v cognix-channel-config &>/dev/null; then
+    COGNIX_BIN_NAME="cognix"
+    COGNIX_CHANNEL="local"
 else
-    WARP_BIN_NAME="warp-oss"
-    WARP_CHANNEL="oss"
+    COGNIX_BIN_NAME="cognix-oss"
+    COGNIX_CHANNEL="oss"
 fi
 
 # Shared argument parsing. macOS-specific flags (--dont-open,
@@ -36,13 +36,13 @@ fi
 # silently ignored on other platforms.
 MAC_ARGS=()
 CARGO_PARAMS=()
-WARP_ARGS=()
+COGNIX_ARGS=()
 
 while (( "$#" )); do
   case "$1" in
     --)
       shift
-      WARP_ARGS=("$@")
+      COGNIX_ARGS=("$@")
       break
       ;;
     --features)
@@ -56,7 +56,7 @@ while (( "$#" )); do
       ;;
     --host-id)
       if [ -n "$2" ] && [ "${2:0:1}" != "-" ]; then
-        export WARP_CLOUD_MODE_DEFAULT_HOST="$2"
+        export COGNIX_CLOUD_MODE_DEFAULT_HOST="$2"
         shift 2
       else
         echo "Error: Argument for $1 is missing" >&2
@@ -88,7 +88,7 @@ while (( "$#" )); do
 done
 
 # These cargo features were removed and replaced by environment variables read
-# by warp-channel-config. Intercept them here so that existing --features
+# by cognix-channel-config. Intercept them here so that existing --features
 # invocations keep working.
 for mapping in \
     "with_local_server:WITH_LOCAL_SERVER" \
@@ -105,21 +105,21 @@ for mapping in \
 done
 
 export FEATURES
-export WARP_BIN_NAME
-export WARP_CHANNEL
+export COGNIX_BIN_NAME
+export COGNIX_CHANNEL
 
 if [[ "$OS_TYPE" = "Darwin" ]]; then
-  if [[ ${#WARP_ARGS[@]} -gt 0 ]]; then
-    exec ./script/macos/run "${MAC_ARGS[@]}" -- "${WARP_ARGS[@]}"
+  if [[ ${#COGNIX_ARGS[@]} -gt 0 ]]; then
+    exec ./script/macos/run "${MAC_ARGS[@]}" -- "${COGNIX_ARGS[@]}"
   else
     exec ./script/macos/run "${MAC_ARGS[@]}"
   fi
 elif [[ "$OS_TYPE" = "Linux" ]] || [[ "$OS_TYPE" =~ ^(MINGW64_NT|MSYS_NT) ]]; then
-  echo "Running cargo run --bin $WARP_BIN_NAME --features \"$FEATURES\" ${CARGO_PARAMS[*]}"
-  if [[ ${#WARP_ARGS[@]} -gt 0 ]]; then
-    cargo run --bin "$WARP_BIN_NAME" --features "$FEATURES" "${CARGO_PARAMS[@]}" -- "${WARP_ARGS[@]}"
+  echo "Running cargo run --bin $COGNIX_BIN_NAME --features \"$FEATURES\" ${CARGO_PARAMS[*]}"
+  if [[ ${#COGNIX_ARGS[@]} -gt 0 ]]; then
+    cargo run --bin "$COGNIX_BIN_NAME" --features "$FEATURES" "${CARGO_PARAMS[@]}" -- "${COGNIX_ARGS[@]}"
   else
-    cargo run --bin "$WARP_BIN_NAME" --features "$FEATURES" "${CARGO_PARAMS[@]}"
+    cargo run --bin "$COGNIX_BIN_NAME" --features "$FEATURES" "${CARGO_PARAMS[@]}"
   fi
 else
   echo "No run script defined for the current platform ($OS_TYPE)!" >&2

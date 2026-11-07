@@ -1,8 +1,8 @@
 use std::ops::BitOrAssign;
 
-use warp_terminal::model::char_or_str::CharOrStr;
-use warp_util::path::LineAndColumnArg;
-use warpui::text::words::is_default_word_boundary;
+use cognix_terminal::model::char_or_str::CharOrStr;
+use cognix_util::path::LineAndColumnArg;
+use cognixui::text::words::is_default_word_boundary;
 
 use crate::terminal::model::secrets::{ObfuscateSecrets, SecretLevel};
 use crate::terminal::model::{blockgrid::BlockGrid, secrets::IsObfuscated};
@@ -82,9 +82,9 @@ fn regex_right() {
     #[rustfmt::skip]
     let blockgrid = mock_blockgrid("\
         testing66\r\n\
-        Warp\n\
+        Cognix\n\
         123\r\n\
-        Warp\r\n\
+        Cognix\r\n\
         123\
     ");
 
@@ -107,9 +107,9 @@ fn regex_left() {
     #[rustfmt::skip]
     let blockgrid = mock_blockgrid("\
         testing66\r\n\
-        Warp\n\
+        Cognix\n\
         123\r\n\
-        Warp\r\n\
+        Cognix\r\n\
         123\
     ");
 
@@ -131,7 +131,7 @@ fn regex_left() {
 fn nested_regex() {
     #[rustfmt::skip]
     let blockgrid = mock_blockgrid("\
-        Wa -> Warp -> rp\r\n\
+        Wa -> Cognix -> rp\r\n\
         rp\
     ");
 
@@ -560,12 +560,12 @@ fn test_line_to_fragments() {
 
 #[test]
 fn test_secrets_serialization() {
-    let mut blockgrid = mock_blockgrid("foo zach@warp.dev bar");
+    let mut blockgrid = mock_blockgrid("foo zach@cognix.dev bar");
     blockgrid.maybe_enable_secret_obfuscation(ObfuscateSecrets::Yes);
     blockgrid.grid_handler_mut().mark_secret_range(
         Point::new(0, 4)..=Point::new(0, 16),
         IsObfuscated::Yes,
-        "zach@warp.dev".to_string(),
+        "zach@cognix.dev".to_string(),
         SecretLevel::User,
     );
 
@@ -592,7 +592,7 @@ fn test_secrets_serialization() {
         .expect("should unobfuscate secret");
 
     assert_eq!(
-        "foo zach@warp.dev bar",
+        "foo zach@cognix.dev bar",
         blockgrid.grid_handler.bounds_to_string(
             Point::new(0, 0),
             Point::new(0, 21),
@@ -683,7 +683,7 @@ fn test_find_url_with_delimiter() {
         })
     );
 
-    let blockgrid = mock_blockgrid("https://google.com/search?q=warp");
+    let blockgrid = mock_blockgrid("https://google.com/search?q=cognix");
     assert_eq!(
         blockgrid
             .grid_handler
@@ -724,7 +724,7 @@ fn test_find_url_wide_characters() {
 #[test]
 fn test_find_url_omits_trailing_periods() {
     // Test that it omits a single trailing period.
-    let blockgrid = mock_blockgrid("Visit https://github.com/warpdotdev/Warp/issues.");
+    let blockgrid = mock_blockgrid("Visit https://github.com/nrelab/cognix/issues.");
     assert_eq!(
         blockgrid
             .grid_handler
@@ -742,7 +742,7 @@ fn test_find_url_omits_trailing_periods() {
     );
 
     // Test that it omits multiple trailing periods.
-    let blockgrid = mock_blockgrid("Visit https://github.com/warpdotdev/Warp/issues...");
+    let blockgrid = mock_blockgrid("Visit https://github.com/nrelab/cognix/issues...");
     assert_eq!(
         blockgrid
             .grid_handler
@@ -760,7 +760,7 @@ fn test_find_url_omits_trailing_periods() {
     );
 
     // Test that it handles a period in the middle of the URL path somewhere.
-    let blockgrid = mock_blockgrid("Visit https://github.com/warp.dev/Warp/issues.");
+    let blockgrid = mock_blockgrid("Visit https://github.com/cognix.dev/Cognix/issues.");
     assert_eq!(
         blockgrid
             .grid_handler

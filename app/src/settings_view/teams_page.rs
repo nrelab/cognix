@@ -58,10 +58,10 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use std::{cmp::Ordering, collections::HashSet};
-use warp_core::ui::theme::color::internal_colors;
-use warpui::FocusContext;
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::FocusContext;
 
-use warpui::{
+use cognixui::{
     clipboard::ClipboardContent,
     elements::{
         Align, Border, ChildAnchor, ClippedScrollStateHandle, ConstrainedBox, Container,
@@ -125,11 +125,11 @@ const OFFLINE_TEXT: &str = "You are offline.";
 
 const LIMIT_HIT_ADMIN_TEXT: &str =
     "You've reached the team member limit for your plan. Upgrade to add more teammates.";
-const LIMIT_HIT_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "You've reached the team member limit for your plan. Contact support@warp.dev to add more teammates.";
+const LIMIT_HIT_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "You've reached the team member limit for your plan. Contact support@cognix.dev to add more teammates.";
 const LIMIT_HIT_NON_ADMIN_TEXT: &str =
     "You've reached the team member limit for your plan. Contact a team admin to add more teammates.";
 
-const DELINQUENT_ADMIN_NON_SELF_SERVE_TEXT: &str = "Team invites have been restricted due to a payment issue. Please contact support@warp.dev to restore access.";
+const DELINQUENT_ADMIN_NON_SELF_SERVE_TEXT: &str = "Team invites have been restricted due to a payment issue. Please contact support@cognix.dev to restore access.";
 const DELINQUENT_NON_ADMIN_TEXT: &str = "Team invites have been restricted due to a payment issue. Please contact a team admin to restore access.";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_1_TEXT: &str =
     "Team invites have been restricted due to a subscription payment issue.";
@@ -137,7 +137,7 @@ const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_PREFIX_TEXT: &str = "Please ";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_LINK_TEXT: &str = "update your payment information";
 const DELINQUENT_ADMIN_SELF_SERVE_LINE_2_SUFFIX_TEXT: &str = " to restore access.";
 
-const TEAM_LIMIT_EXCEEDED_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "You've exceeded the team member limit for your plan. Please contact support@warp.dev to upgrade your team.";
+const TEAM_LIMIT_EXCEEDED_ADMIN_NOT_AUTO_UPGRADEABLE_TEXT: &str = "You've exceeded the team member limit for your plan. Please contact support@cognix.dev to upgrade your team.";
 const TEAM_LIMIT_EXCEEDED_NON_ADMIN_TEXT: &str =
     "You've exceeded the team member limit for your plan. Contact a team admin to upgrade your team.";
 const TEAM_LIMIT_EXCEEDED_ADMIN_UPGRADEABLE: &str =
@@ -188,7 +188,7 @@ pub enum TeamsPageAction {
     SendEmailInvites {
         team_uid: ServerId,
     },
-    OpenWarpDrive,
+    OpenCognixDrive,
     GenerateUpgradeLink {
         team_uid: ServerId,
     },
@@ -297,7 +297,7 @@ impl TryFrom<&TeamsPageAction> for TelemetryEvent {
 #[derive(Clone)]
 pub enum TeamsPageViewEvent {
     TeamsChanged,
-    OpenWarpDrive,
+    OpenCognixDrive,
     ShowToast {
         message: String,
         flavor: ToastFlavor,
@@ -491,7 +491,7 @@ impl TypedActionView for TeamsPageView {
                 self.send_email_invites(*team_uid, ctx);
                 ctx.notify();
             }
-            TeamsPageAction::OpenWarpDrive => ctx.emit(TeamsPageViewEvent::OpenWarpDrive),
+            TeamsPageAction::OpenCognixDrive => ctx.emit(TeamsPageViewEvent::OpenCognixDrive),
             TeamsPageAction::ShowLeaveTeamConfirmationDialog => {
                 self.delete_or_leave_team_confirmation_dialog
                     .update(ctx, |dialog, ctx| {
@@ -930,7 +930,7 @@ impl TeamsPageView {
                 ctx.open_url(upgrade_link);
             }
             UserWorkspacesEvent::GenerateUpgradeLinkRejected(err) => self.show_error(
-                "Failed to generate upgrade link. Please contact us at feedback@warp.dev",
+                "Failed to generate upgrade link. Please contact us at feedback@cognix.dev",
                 Some(err),
                 ctx,
             ),
@@ -938,7 +938,7 @@ impl TeamsPageView {
                 ctx.open_url(billing_session_link);
             }
             UserWorkspacesEvent::GenerateStripeBillingPortalLinkRejected(err) => self.show_error(
-                "Failed to generate billing link. Please contact us at feedback@warp.dev",
+                "Failed to generate billing link. Please contact us at feedback@cognix.dev",
                 Some(err),
                 ctx,
             ),
@@ -950,7 +950,7 @@ impl TeamsPageView {
                 self.show_error("Failed to toggle team discoverability", Some(err), ctx);
             }
             UserWorkspacesEvent::JoinTeamWithTeamDiscoverySuccess => {
-                // Force refresh of Warp Drive objects after joining a team
+                // Force refresh of Cognix Drive objects after joining a team
                 UpdateManager::handle(ctx).update(ctx, move |update_manager, ctx| {
                     update_manager.refresh_updated_objects(ctx);
                 });
@@ -1364,7 +1364,7 @@ impl TeamsPageView {
                 ctx,
             );
         });
-        ctx.dispatch_typed_action(&WorkspaceAction::OpenWarpDrive);
+        ctx.dispatch_typed_action(&WorkspaceAction::OpenCognixDrive);
     }
 
     fn set_team_member_role(
@@ -1778,9 +1778,9 @@ impl TeamsWidget {
         has_admin_permissions: bool,
     ) -> Box<dyn Element> {
         let prorated_message = if has_admin_permissions {
-            "You'll be charged for a portion of the team member's usage of Warp."
+            "You'll be charged for a portion of the team member's usage of Cognix."
         } else {
-            "Your admin will be charged for a portion of the team member's usage of Warp."
+            "Your admin will be charged for a portion of the team member's usage of Cognix."
         };
 
         let additional_members_cost_money_msg = if let Some((monthly_cost, yearly_cost)) =
@@ -1798,7 +1798,7 @@ impl TeamsWidget {
         let currency_icon = Container::new(
             ConstrainedBox::new(
                 Icon::CoinsStacked
-                    .to_warpui_icon(appearance.theme().active_ui_text_color().with_opacity(90))
+                    .to_cognixui_icon(appearance.theme().active_ui_text_color().with_opacity(90))
                     .finish(),
             )
             .with_max_height(20.)
@@ -2063,7 +2063,7 @@ impl TeamsWidget {
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
                     "Contact support",
-                    Icon::Phone.to_warpui_icon(appearance.theme().accent()),
+                    Icon::Phone.to_cognixui_icon(appearance.theme().accent()),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
                     vec2f(14., 14.),
@@ -2092,7 +2092,7 @@ impl TeamsWidget {
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
                     "Manage billing",
-                    Icon::CoinsStacked.to_warpui_icon(appearance.theme().accent()),
+                    Icon::CoinsStacked.to_cognixui_icon(appearance.theme().accent()),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
                     vec2f(14., 14.),
@@ -2123,7 +2123,7 @@ impl TeamsWidget {
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
                     "Open admin panel",
-                    Icon::Users.to_warpui_icon(appearance.theme().accent()),
+                    Icon::Users.to_cognixui_icon(appearance.theme().accent()),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
                     vec2f(14., 14.),
@@ -2976,7 +2976,7 @@ impl TeamsWidget {
         // Instruction text for toggle
         let domain = current_user_email.split('@').nth(1).unwrap_or("");
         let team_discoverability_instructions =
-            format!("Allow Warp users with an @{domain} email to find and join the team.");
+            format!("Allow Cognix users with an @{domain} email to find and join the team.");
         section.add_child(
             Container::new(self.render_sub_text(
                 team_discoverability_instructions,
@@ -3254,7 +3254,7 @@ impl TeamsWidget {
                                 Hoverable::new(handle.clone(), move |_mouse_state| {
                                     Container::new(
                                         ConstrainedBox::new(
-                                            icon.to_warpui_icon(
+                                            icon.to_cognixui_icon(
                                                 appearance
                                                     .theme()
                                                     .active_ui_text_color()
@@ -3287,7 +3287,7 @@ impl TeamsWidget {
                             Container::new(
                                 ConstrainedBox::new(
                                     Icon::DotsVertical
-                                        .to_warpui_icon(
+                                        .to_cognixui_icon(
                                             appearance
                                                 .theme()
                                                 .active_ui_text_color()
@@ -3682,9 +3682,9 @@ impl TeamsWidget {
             .with_margin_left(-4.)
             .finish();
             let checkbox_row_text = if let Some(domain) = view.auth_state.user_email_domain() {
-                format!("Allow Warp users with an @{domain} email to find and join the team.")
+                format!("Allow Cognix users with an @{domain} email to find and join the team.")
             } else {
-                "Allow Warp users with the same email domain as you to find and join the team."
+                "Allow Cognix users with the same email domain as you to find and join the team."
                     .to_string()
             };
             let checkbox_row = Container::new(
@@ -3872,7 +3872,7 @@ impl TeamsWidget {
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
                     text.to_string(),
-                    Icon::CoinsStacked.to_warpui_icon(icon_color),
+                    Icon::CoinsStacked.to_cognixui_icon(icon_color),
                     MainAxisSize::Min,
                     MainAxisAlignment::Center,
                     vec2f(14., 14.),
@@ -4081,17 +4081,17 @@ impl SettingsWidget for TeamsWidget {
 #[cfg(test)]
 #[test]
 pub fn test_valid_domains() {
-    assert!(!TeamsPageView::is_valid_domain("@warp.dev"));
-    assert!(!TeamsPageView::is_valid_domain("warp,"));
-    assert!(!TeamsPageView::is_valid_domain("warpdev"));
+    assert!(!TeamsPageView::is_valid_domain("@cognix.dev"));
+    assert!(!TeamsPageView::is_valid_domain("cognix,"));
+    assert!(!TeamsPageView::is_valid_domain("cognixdev"));
     assert!(!TeamsPageView::is_valid_domain(".dev"));
-    assert!(!TeamsPageView::is_valid_domain("warp..dev"));
+    assert!(!TeamsPageView::is_valid_domain("cognix..dev"));
     assert!(!TeamsPageView::is_valid_domain(" "));
-    assert!(!TeamsPageView::is_valid_domain("warp!.dev"));
-    assert!(!TeamsPageView::is_valid_domain("warp.dev>"));
-    assert!(!TeamsPageView::is_valid_domain("warp.dev."));
-    assert!(TeamsPageView::is_valid_domain("app.warp.dev"));
-    assert!(TeamsPageView::is_valid_domain("warp0.dev0"));
-    assert!(TeamsPageView::is_valid_domain("warp.dev"));
+    assert!(!TeamsPageView::is_valid_domain("cognix!.dev"));
+    assert!(!TeamsPageView::is_valid_domain("cognix.dev>"));
+    assert!(!TeamsPageView::is_valid_domain("cognix.dev."));
+    assert!(TeamsPageView::is_valid_domain("app.cognix.dev"));
+    assert!(TeamsPageView::is_valid_domain("cognix0.dev0"));
+    assert!(TeamsPageView::is_valid_domain("cognix.dev"));
     assert!(TeamsPageView::is_valid_domain("miniclip.com"));
 }

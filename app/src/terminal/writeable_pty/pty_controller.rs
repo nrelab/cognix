@@ -3,8 +3,8 @@ use std::{borrow::Cow, collections::VecDeque, sync::Arc};
 use async_channel::{Receiver, Sender};
 use parking_lot::FairMutex;
 use thiserror::Error;
-use warpui::r#async::block_on;
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use cognixui::r#async::block_on;
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::agent::AIAgentPtyWriteMode;
 use crate::terminal::input::CommandExecutionSource;
@@ -32,11 +32,11 @@ use super::Message;
 /// Byte sequence to emulate the user pressing ENTER, used to execute a command in the shell.
 const COMMAND_ENTER: &[u8] = &[escape_sequences::C0::CR, escape_sequences::C0::LF];
 /// Used to let the shell know we are switching to the PS1 prompt via a bindkey \ep. This will
-/// restore the PS1 from the saved PS1 value (we had unset the PS1 for Warp prompt).
+/// restore the PS1 from the saved PS1 value (we had unset the PS1 for Cognix prompt).
 const SWITCH_TO_PS1_ESCAPE_SEQUENCE: &[u8] = &[escape_sequences::C0::ESC, b'p'];
-/// Used to let the shell know we are switching to the Warp prompt via a bindkey \ew. This will
-/// unset the PS1 to ensure we don't have a double prompt (PS1 and Warp prompt).
-const SWITCH_TO_WARP_PROMPT_ESCAPE_SEQUENCE: &[u8] = &[escape_sequences::C0::ESC, b'w'];
+/// Used to let the shell know we are switching to the Cognix prompt via a bindkey \ew. This will
+/// unset the PS1 to ensure we don't have a double prompt (PS1 and Cognix prompt).
+const SWITCH_TO_COGNIX_PROMPT_ESCAPE_SEQUENCE: &[u8] = &[escape_sequences::C0::ESC, b'w'];
 
 /// Represents a single call to write bytes to the PTY asynchronously.
 enum PtyWrite {
@@ -149,13 +149,13 @@ impl<T: EventLoopSender> PtyController<T> {
                 me.tmux_control_mode = None;
             }
             ModelEvent::HonorPS1OutOfSync => {
-                // We force re-sync the PS1 state of Warp settings with the shell's environment variable, $WARP_HONOR_PS1, via
+                // We force re-sync the PS1 state of Cognix settings with the shell's environment variable, $COGNIX_HONOR_PS1, via
                 // a bindkey (which triggers a shell function).
                 let honor_ps1 = *SessionSettings::as_ref(ctx).honor_ps1;
                 if honor_ps1 {
                     me.send_switch_to_ps1_bindkey(ctx);
                 } else {
-                    me.send_switch_to_warp_prompt_bindkey(ctx);
+                    me.send_switch_to_cognix_prompt_bindkey(ctx);
                 }
             }
             ModelEvent::Handler(AnsiHandlerEvent::TmuxControlModeReady { primary_pane }) => {
@@ -289,12 +289,12 @@ impl<T: EventLoopSender> PtyController<T> {
         }
     }
 
-    /// Sends bindkey to notify shell process to switch to Warp prompt logic for prompt
+    /// Sends bindkey to notify shell process to switch to Cognix prompt logic for prompt
     /// with the combined prompt/command grid (we unset the PS1, but save the value for potential
     /// future restoration).
-    pub fn send_switch_to_warp_prompt_bindkey(&mut self, ctx: &mut ModelContext<Self>) {
+    pub fn send_switch_to_cognix_prompt_bindkey(&mut self, ctx: &mut ModelContext<Self>) {
         self.pending_writes.push_back(PtyWrite::Bytes {
-            bytes: SWITCH_TO_WARP_PROMPT_ESCAPE_SEQUENCE.into(),
+            bytes: SWITCH_TO_COGNIX_PROMPT_ESCAPE_SEQUENCE.into(),
         });
         self.execute_next_queued_write(ctx);
 
@@ -482,7 +482,7 @@ impl<T: EventLoopSender> PtyController<T> {
         shell_type: ShellType,
         ctx: &mut ModelContext<Self>,
     ) {
-        use warp_util::path::ShellFamily;
+        use cognix_util::path::ShellFamily;
 
         // TODO(CORE-2099): Figure out a more robust solution here. Fish users
         // can redefine these functions via fish functions. Ideally this won't

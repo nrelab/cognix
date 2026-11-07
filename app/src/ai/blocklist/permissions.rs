@@ -15,7 +15,7 @@ use crate::{
     settings::{AISettings, AgentModeCodingPermissionsType, AgentModeCommandExecutionPredicate},
     workspaces::{user_workspaces::UserWorkspaces, workspace::AiAutonomySettings},
 };
-use warp_core::execution_mode::AppExecutionMode;
+use cognix_core::execution_mode::AppExecutionMode;
 
 use crate::ai::mcp::mcp_provider_from_file_path;
 #[cfg(not(target_family = "wasm"))]
@@ -23,11 +23,11 @@ use crate::ai::mcp::TemplatableMCPServerManager;
 
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
-use warp_completer::parsers::simple::decompose_command;
-use warp_core::user_preferences::GetUserPreferences;
-use warp_core::{features::FeatureFlag, settings::Setting};
-use warp_util::path::EscapeChar;
-use warpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use cognix_completer::parsers::simple::decompose_command;
+use cognix_core::user_preferences::GetUserPreferences;
+use cognix_core::{features::FeatureFlag, settings::Setting};
+use cognix_util::path::EscapeChar;
+use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 
 use super::BlocklistAIHistoryModel;
 
@@ -206,7 +206,7 @@ impl BlocklistAIPermissions {
             coding_model: profile_data.coding_model.clone(),
             cli_agent_model: profile_data.cli_agent_model.clone(),
             computer_use_model: profile_data.computer_use_model.clone(),
-            autosync_plans_to_warp_drive: profile_data.autosync_plans_to_warp_drive,
+            autosync_plans_to_cognix_drive: profile_data.autosync_plans_to_cognix_drive,
             web_search_enabled: profile_data.web_search_enabled,
         }
     }
@@ -636,7 +636,7 @@ impl BlocklistAIPermissions {
         self.can_read_files(Some(conversation_id), paths, terminal_view_id, ctx)
     }
 
-    /// Returns whether or not Warp can auto-read the given files (e.g. for codebase indexing).
+    /// Returns whether or not Cognix can auto-read the given files (e.g. for codebase indexing).
     pub fn can_read_files(
         &self,
         conversation_id: Option<&AIConversationId>,

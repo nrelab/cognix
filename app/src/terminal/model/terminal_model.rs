@@ -26,7 +26,7 @@ pub use crate::terminal::history::HistoryEntry;
 
 use super::ansi::{
     FinishUpdateValue, InputBufferValue, Mode, PendingHook, TmuxInstallFailedInfo,
-    WarpificationUnavailableReason,
+    CognixificationUnavailableReason,
 };
 use super::block::{
     AgentInteractionMetadata, Block, BlockId, BlockMetadata, BlockSize, BlocklistEnvVarMetadata,
@@ -54,7 +54,7 @@ use super::{tmux, Secret, SecretHandle};
 use crate::terminal::model::ansi::{
     ClearValue, CommandFinishedValue, ExitShellValue, InitShellValue, InitSshValue,
     InitSubshellValue, PreInteractiveSSHSessionValue, PrecmdValue, PreexecValue, SSHValue,
-    SourcedRcFileForWarpValue,
+    SourcedRcFileForCognixValue,
 };
 use crate::terminal::model::grid::IndexRegion;
 use crate::terminal::model::session::SessionInfo;
@@ -62,9 +62,9 @@ use crate::terminal::shell::{ShellName, ShellType};
 
 use crate::terminal::model::secrets::ObfuscateSecrets;
 use session_sharing_protocol::sharer::SessionSourceType;
-use warp_core::report_error;
+use cognix_core::report_error;
 #[cfg(not(target_family = "wasm"))]
-use warpui::util::save_as_file;
+use cognixui::util::save_as_file;
 
 use async_channel::Sender;
 use base64::Engine;
@@ -82,14 +82,14 @@ use std::ops::{Range, RangeInclusive};
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
-use warp_core::features::FeatureFlag;
-use warp_core::semantic_selection::SemanticSelection;
-pub use warp_terminal::model::BlockIndex;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use warpui::assets::asset_cache::Asset;
-use warpui::image_cache::ImageType;
-use warpui::r#async::executor::Background;
-use warpui::AppContext;
+use cognix_core::features::FeatureFlag;
+use cognix_core::semantic_selection::SemanticSelection;
+pub use cognix_terminal::model::BlockIndex;
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use cognixui::assets::asset_cache::Asset;
+use cognixui::image_cache::ImageType;
+use cognixui::r#async::executor::Background;
+use cognixui::AppContext;
 
 /// Max size of the window title stack.
 const TITLE_STACK_MAX_DEPTH: usize = 4096;
@@ -362,7 +362,7 @@ enum IsReceivingHook {
     No,
 }
 
-/// Information needed to render a warpify "success" block upon successful subshell bootstrap.
+/// Information needed to render a cognixify "success" block upon successful subshell bootstrap.
 #[derive(Debug, Clone)]
 pub struct SubshellSuccessBlockInfo {
     /// The ID of the newly bootstrapped subshell session.
@@ -382,15 +382,15 @@ pub struct SubshellSuccessBlockInfo {
 #[derive(Debug, Default, Clone, Copy, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TmuxInstallationState {
-    /// This means tmux was installed by Warp in this session, successfully or unsuccessfully.
+    /// This means tmux was installed by Cognix in this session, successfully or unsuccessfully.
     /// It also means we had root access and used a package manager to install tmux and all
     /// dependencies.
-    InstalledByWarpRootInThisSession,
-    /// This means tmux was installed by Warp in this session, successfully or unsuccessfully.
-    InstalledByWarpInThisSession,
-    InstalledByWarpInPriorSession,
-    /// This means that warp did not install it locally. It was either installed by the user
-    /// or it was installed by warp in a prior session using the package manager.
+    InstalledByCognixRootInThisSession,
+    /// This means tmux was installed by Cognix in this session, successfully or unsuccessfully.
+    InstalledByCognixInThisSession,
+    InstalledByCognixInPriorSession,
+    /// This means that cognix did not install it locally. It was either installed by the user
+    /// or it was installed by cognix in a prior session using the package manager.
     InstalledByUser,
     /// This means we never tried to install tmux in this session.
     #[default]
@@ -402,14 +402,14 @@ impl FromStr for TmuxInstallationState {
 
     fn from_str(input: &str) -> Result<Self, Self::Err> {
         match input {
-            "installed_by_warp_root_in_this_session" => {
-                Ok(TmuxInstallationState::InstalledByWarpRootInThisSession)
+            "installed_by_cognix_root_in_this_session" => {
+                Ok(TmuxInstallationState::InstalledByCognixRootInThisSession)
             }
-            "installed_by_warp_in_this_session" => {
-                Ok(TmuxInstallationState::InstalledByWarpInThisSession)
+            "installed_by_cognix_in_this_session" => {
+                Ok(TmuxInstallationState::InstalledByCognixInThisSession)
             }
-            "warp" | "installed_by_warp_in_prior_session" => {
-                Ok(TmuxInstallationState::InstalledByWarpInPriorSession)
+            "cognix" | "installed_by_cognix_in_prior_session" => {
+                Ok(TmuxInstallationState::InstalledByCognixInPriorSession)
             }
             "user" | "installed_by_user" => Ok(TmuxInstallationState::InstalledByUser),
             "not_installed" => Ok(TmuxInstallationState::NotInstalled),
@@ -419,12 +419,12 @@ impl FromStr for TmuxInstallationState {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct WarpInitiatedTmuxControlMode {
+pub struct CognixInitiatedTmuxControlMode {
     pub start_time: Instant,
     pub tmux_installation: Option<TmuxInstallationState>,
 }
 
-impl WarpInitiatedTmuxControlMode {
+impl CognixInitiatedTmuxControlMode {
     pub fn new(tmux_installation: Option<TmuxInstallationState>) -> Self {
         Self {
             start_time: Instant::now(),
@@ -436,15 +436,15 @@ impl WarpInitiatedTmuxControlMode {
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum TmuxControlModeContext {
     UserInitiated,
-    WarpInitiatedForSsh(WarpInitiatedTmuxControlMode),
+    CognixInitiatedForSsh(CognixInitiatedTmuxControlMode),
 }
 
 impl TmuxControlModeContext {
     pub fn tmux_installation(&self) -> Option<TmuxInstallationState> {
         match self {
             TmuxControlModeContext::UserInitiated => None,
-            TmuxControlModeContext::WarpInitiatedForSsh(warp_initiated) => {
-                warp_initiated.tmux_installation
+            TmuxControlModeContext::CognixInitiatedForSsh(cognix_initiated) => {
+                cognix_initiated.tmux_installation
             }
         }
     }
@@ -488,11 +488,11 @@ pub struct TerminalModel {
     /// machine) and when the remote shell sends the `InitShell` DCS.
     pending_legacy_ssh_session: Option<SSHValue>,
 
-    /// This variable allows us to differentiate between warp-initiated and user-initiated invocations of
-    /// control mode. Whenever we attempt to warpify an ssh session, we track the context of when warp initiated
+    /// This variable allows us to differentiate between cognix-initiated and user-initiated invocations of
+    /// control mode. Whenever we attempt to cognixify an ssh session, we track the context of when cognix initiated
     /// control mode, indicating that we expect the shell to enter control mode. We reset to None whenever
     /// the active block finishes. If we enter control mode and option is None, then we know it's user-initiated.
-    pending_warp_initiated_control_mode: Option<WarpInitiatedTmuxControlMode>,
+    pending_cognix_initiated_control_mode: Option<CognixInitiatedTmuxControlMode>,
 
     tmux_control_mode_context: Option<TmuxControlModeContext>,
 
@@ -635,7 +635,7 @@ pub struct SubshellInitializationInfo {
     pub spawning_command: String,
 
     /// `true` if the subshell bootstrap was triggered by an RC file snippet that emits the
-    /// `SourcedRcFileForWarp` DCS.
+    /// `SourcedRcFileForCognix` DCS.
     pub was_triggered_by_rc_file_snippet: bool,
 
     /// The subshell was triggered from an EVC invocation
@@ -1011,7 +1011,7 @@ impl SelectedBlocks {
 pub enum TerminalInputState {
     /// Alt-screen on which programs like vim run is visible.
     AltScreen,
-    /// Warp Input View is visible.
+    /// Cognix Input View is visible.
     InputEditor,
     /// Block-list is visible but input will go to the running command.
     LongRunningCommand,
@@ -1163,7 +1163,7 @@ impl TerminalModel {
             is_receiving_agent_conversation_replay: false,
             tmux_background_outputs: HashMap::new(),
             tmux_control_mode_context: None,
-            pending_warp_initiated_control_mode: None,
+            pending_cognix_initiated_control_mode: None,
             notify_on_end_of_ssh_login: None,
             is_receiving_hook: IsReceivingHook::No,
             image_id_to_metadata: HashMap::new(),
@@ -1352,7 +1352,7 @@ impl TerminalModel {
     /// link the new server-assigned token to an existing conversation from historical replay.
     pub fn send_agent_response_for_shared_session(
         &mut self,
-        response: &warp_multi_agent_api::ResponseEvent,
+        response: &cognix_multi_agent_api::ResponseEvent,
         response_initiator: Option<ParticipantId>,
         forked_from_conversation_token: Option<String>,
     ) {
@@ -2176,7 +2176,7 @@ impl TerminalModel {
     pub fn set_custom_title(&mut self, custom_title: Option<String>) {
         self.custom_title.clone_from(&custom_title);
         // If the custom title set by the user is None, we "reset" to whatever the title was set by
-        // the shell / Warp itself.
+        // the shell / Cognix itself.
         self.send_title_event(match custom_title {
             Some(_) => custom_title,
             None => self.title.clone(),
@@ -2208,25 +2208,25 @@ impl TerminalModel {
         self.env_var_collection_name = value;
     }
 
-    pub fn set_pending_warp_initiated_control_mode(&mut self) {
+    pub fn set_pending_cognix_initiated_control_mode(&mut self) {
         let tmux_installation = self
             .tmux_control_mode_context
             .and_then(|context| context.tmux_installation());
-        self.pending_warp_initiated_control_mode =
-            Some(WarpInitiatedTmuxControlMode::new(tmux_installation));
+        self.pending_cognix_initiated_control_mode =
+            Some(CognixInitiatedTmuxControlMode::new(tmux_installation));
     }
 
-    pub fn set_pending_warp_initiated_control_mode_with_install_tmux(&mut self, with_root: bool) {
-        self.pending_warp_initiated_control_mode =
-            Some(WarpInitiatedTmuxControlMode::new(Some(if with_root {
-                TmuxInstallationState::InstalledByWarpRootInThisSession
+    pub fn set_pending_cognix_initiated_control_mode_with_install_tmux(&mut self, with_root: bool) {
+        self.pending_cognix_initiated_control_mode =
+            Some(CognixInitiatedTmuxControlMode::new(Some(if with_root {
+                TmuxInstallationState::InstalledByCognixRootInThisSession
             } else {
-                TmuxInstallationState::InstalledByWarpInThisSession
+                TmuxInstallationState::InstalledByCognixInThisSession
             })));
     }
 
-    pub fn clear_pending_warp_initiated_control_mode(&mut self) {
-        self.pending_warp_initiated_control_mode = None;
+    pub fn clear_pending_cognix_initiated_control_mode(&mut self) {
+        self.pending_cognix_initiated_control_mode = None;
     }
 
     /// Informs the terminal model to start watching for ssh output that indicates the session
@@ -2255,7 +2255,7 @@ impl TerminalModel {
     /// a line of output that is not a known SSH output, we consider that to be some mild evidence that
     /// login is complete. Though, because that output line might be a false alarm (i.e., it could be
     /// an SSH banner OR a line like "Permission denied."), we wait some amount of time and check again
-    /// before indicating we're ready for warpification.
+    /// before indicating we're ready for cognixification.
     pub fn check_for_end_of_ssh_login(&mut self, confirmation_check: bool) {
         let Some(mut ssh_login_state) = self.notify_on_end_of_ssh_login.clone() else {
             return;
@@ -2278,7 +2278,7 @@ impl TerminalModel {
             SshLoginState::LastLogin | SshLoginState::PromptDetected => {
                 self.event_proxy
                     .send_terminal_event(Event::DetectedEndOfSshLogin(
-                        SshLoginStatus::ReadyToWarpify,
+                        SshLoginStatus::ReadyToCognixify,
                     ));
 
                 ssh_login_state.notification_state = SshLoginNotificationState::Completed;
@@ -2289,7 +2289,7 @@ impl TerminalModel {
                     if ssh_login_state.notification_state == SshLoginNotificationState::Monitoring {
                         self.event_proxy
                             .send_terminal_event(Event::DetectedEndOfSshLogin(
-                                SshLoginStatus::RecheckBeforeWarpifying,
+                                SshLoginStatus::RecheckBeforeCognixifying,
                             ));
 
                         // We want to avoid emitting redundant events for the initial check.
@@ -2299,7 +2299,7 @@ impl TerminalModel {
                 } else {
                     self.event_proxy
                         .send_terminal_event(Event::DetectedEndOfSshLogin(
-                            SshLoginStatus::ReadyToWarpify,
+                            SshLoginStatus::ReadyToCognixify,
                         ));
 
                     ssh_login_state.notification_state = SshLoginNotificationState::Completed;
@@ -2327,14 +2327,14 @@ impl TerminalModel {
         self.tmux_control_mode_context.is_some()
     }
 
-    pub fn is_pending_warp_initiated_control_mode(&self) -> bool {
-        self.pending_warp_initiated_control_mode.is_some()
+    pub fn is_pending_cognix_initiated_control_mode(&self) -> bool {
+        self.pending_cognix_initiated_control_mode.is_some()
     }
 
-    pub fn is_warpified_ssh(&self) -> bool {
+    pub fn is_cognixified_ssh(&self) -> bool {
         matches!(
             self.tmux_control_mode_context,
-            Some(TmuxControlModeContext::WarpInitiatedForSsh { .. })
+            Some(TmuxControlModeContext::CognixInitiatedForSsh { .. })
         )
     }
 }
@@ -2694,7 +2694,7 @@ impl ansi::Handler for TerminalModel {
         delegate!(self.configure_charset(index, charset));
     }
 
-    fn set_color(&mut self, index: usize, color: warpui::color::ColorU) {
+    fn set_color(&mut self, index: usize, color: cognixui::color::ColorU) {
         self.override_colors[index] = Some(color);
     }
 
@@ -2928,7 +2928,7 @@ impl ansi::Handler for TerminalModel {
                 self.pending_legacy_ssh_session.take(),
                 matches!(
                     self.tmux_control_mode_context,
-                    Some(TmuxControlModeContext::WarpInitiatedForSsh { .. })
+                    Some(TmuxControlModeContext::CognixInitiatedForSsh { .. })
                 ),
                 self.block_list().active_block().session_id(),
             );
@@ -2953,7 +2953,7 @@ impl ansi::Handler for TerminalModel {
     }
 
     fn init_subshell(&mut self, data: InitSubshellValue) {
-        let is_tmux_ssh = self.pending_warp_initiated_control_mode.is_some();
+        let is_tmux_ssh = self.pending_cognix_initiated_control_mode.is_some();
         let shell_type = ShellType::from_name(data.shell.as_str());
         if let Some(shell_type) = shell_type {
             self.event_proxy
@@ -2969,8 +2969,8 @@ impl ansi::Handler for TerminalModel {
             );
             if is_tmux_ssh {
                 self.event_proxy
-                    .send_terminal_event(Event::RemoteWarpificationIsUnavailable(
-                        WarpificationUnavailableReason::UnsupportedShell {
+                    .send_terminal_event(Event::RemoteCognixificationIsUnavailable(
+                        CognixificationUnavailableReason::UnsupportedShell {
                             shell_name: data.shell,
                         },
                     ))
@@ -2978,7 +2978,7 @@ impl ansi::Handler for TerminalModel {
         }
     }
 
-    fn sourced_rc_file(&mut self, data: SourcedRcFileForWarpValue) {
+    fn sourced_rc_file(&mut self, data: SourcedRcFileForCognixValue) {
         // If the blocklist is already bootstrapped, the user's RC file must be sourced in a
         // subshell.
         if self.block_list.is_bootstrapped() {
@@ -2997,7 +2997,7 @@ impl ansi::Handler for TerminalModel {
                 }
                 None => {
                     log::error!(
-                        "Received invalid shell name in SourcedRCFileForWarpValue: {}",
+                        "Received invalid shell name in SourcedRCFileForCognixValue: {}",
                         data.shell
                     );
                 }
@@ -3016,8 +3016,8 @@ impl ansi::Handler for TerminalModel {
                 })),
             _ => self
                 .event_proxy
-                .send_terminal_event(Event::RemoteWarpificationIsUnavailable(
-                    WarpificationUnavailableReason::UnsupportedShell {
+                .send_terminal_event(Event::RemoteCognixificationIsUnavailable(
+                    CognixificationUnavailableReason::UnsupportedShell {
                         shell_name: data.shell,
                     },
                 )),
@@ -3029,14 +3029,14 @@ impl ansi::Handler for TerminalModel {
             .send_terminal_event(Event::FinishUpdate(data));
     }
 
-    fn remote_warpification_is_unavailable(&mut self, data: WarpificationUnavailableReason) {
+    fn remote_cognixification_is_unavailable(&mut self, data: CognixificationUnavailableReason) {
         self.event_proxy
-            .send_terminal_event(Event::RemoteWarpificationIsUnavailable(data));
+            .send_terminal_event(Event::RemoteCognixificationIsUnavailable(data));
     }
 
     fn notify_ssh_tmux_is_installed(&mut self, tmux_installation: TmuxInstallationState) {
-        if let Some(ref mut warp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
-            warp_initiated_for_ssh.tmux_installation = Some(tmux_installation);
+        if let Some(ref mut cognix_initiated_for_ssh) = self.pending_cognix_initiated_control_mode {
+            cognix_initiated_for_ssh.tmux_installation = Some(tmux_installation);
         }
         self.event_proxy
             .send_terminal_event(Event::SshTmuxInstaller(tmux_installation));
@@ -3169,9 +3169,9 @@ impl ansi::Handler for TerminalModel {
                 }
             }
             tmux::ControlModeEvent::Starting => {
-                if let Some(warp_initiated_for_ssh) = self.pending_warp_initiated_control_mode {
+                if let Some(cognix_initiated_for_ssh) = self.pending_cognix_initiated_control_mode {
                     self.tmux_control_mode_context = Some(
-                        TmuxControlModeContext::WarpInitiatedForSsh(warp_initiated_for_ssh),
+                        TmuxControlModeContext::CognixInitiatedForSsh(cognix_initiated_for_ssh),
                     );
                 } else {
                     self.tmux_control_mode_context = Some(TmuxControlModeContext::UserInitiated);
@@ -3582,7 +3582,7 @@ impl ModeProvider for TerminalModel {
     }
 }
 
-/// Validates and decodes in-band command output sent via `warp_send_generator_output_osc_message`.
+/// Validates and decodes in-band command output sent via `cognix_send_generator_output_osc_message`.
 /// Upon success, returns the string content of the generator output. The OSC payload is expected
 /// to conform to the following format:
 ///

@@ -2,7 +2,7 @@
 
 ## Evidence boundary
 
-The installed app at `/Applications/WarpPreview.app` was inspected without
+The installed app at `/Applications/CognixPreview.app` was inspected without
 modification. The executable was **not launched**. No historical source tree or
 verified matching source commit was available. Consequently, this report makes
 no source-level comparison and claims no behavior-level difference. All runtime
@@ -10,10 +10,10 @@ cells below explicitly state that behavior was not observed.
 
 ### Static bundle facts
 
-- `Info.plist` declares `WarpVersion =
+- `Info.plist` declares `CognixVersion =
   v0.2025.06.20.22.47.preview_03`; bundle short version/build is
   `0.2025.06.20.22.47.03`.
-- Bundle identifier: `dev.warp.Warp-Preview`; executable: `preview`.
+- Bundle identifier: `dev.cognix.Cognix-Preview`; executable: `preview`.
 - Mach-O is universal: x86_64 and arm64; executable size is 360,472,896 bytes.
 - Bundle signature verifies. Developer ID is Denver Technologies, Inc.
   (`2BBY89MBSN`), timestamp 24 Jun 2025; Gatekeeper reports accepted,
@@ -22,7 +22,7 @@ cells below explicitly state that behavior was not observed.
   Security, SystemConfiguration, UserNotifications, Sentry, and standard
   system libraries. The bundle contains the executable, Info.plist, icon,
   signature data, Sentry framework and Dock Tile plugin.
-- The plist lists document types, `warppreview` URL handling, macOS privacy
+- The plist lists document types, `cognixpreview` URL handling, macOS privacy
   usage strings, and `SUPPORTS_CHAT_GPT_WORK_WITH_APPS=1`. These are metadata,
   not proof that a particular permission, feature, or network request was used.
 

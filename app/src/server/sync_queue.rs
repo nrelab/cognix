@@ -7,8 +7,8 @@ use std::{
     sync::Arc,
     time::Duration,
 };
-use warp_graphql::scalars::time::ServerTimestamp;
-use warpui::{r#async::FutureId, Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
+use cognix_graphql::scalars::time::ServerTimestamp;
+use cognixui::{r#async::FutureId, Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
 
 use lazy_static::lazy_static;
 use uuid::Uuid;
@@ -1683,7 +1683,7 @@ impl SyncQueue {
 
             if let Some(err) = cause.downcast_ref::<GraphQLError>() {
                 match err {
-                    // This only applies to WarpDev, but if someone's IP address is blocked, there's no
+                    // This only applies to CognixDev, but if someone's IP address is blocked, there's no
                     // point in continuing to dequeue.
                     GraphQLError::StagingAccessBlocked => return true,
                     // If the user isn't authorized, stop dequeuing. In general, this should

@@ -1,14 +1,14 @@
 use std::sync::Arc;
 
 use parking_lot::FairMutex;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::Fill;
-use warpui::assets::asset_cache::AssetSource;
-use warpui::elements::{Container, Element, Empty, MouseStateHandle};
-use warpui::keymap::Keystroke;
-use warpui::platform::OperatingSystem;
-use warpui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::Fill;
+use cognixui::assets::asset_cache::AssetSource;
+use cognixui::elements::{Container, Element, Empty, MouseStateHandle};
+use cognixui::keymap::Keystroke;
+use cognixui::platform::OperatingSystem;
+use cognixui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
 
 use super::{AgentViewState, EphemeralMessageModel, EphemeralMessageModelEvent};
 use crate::ai::agent::conversation::AIConversation;
@@ -716,7 +716,7 @@ fn should_fork_from_last_known_good_state(
         | RenderableAIError::ContextWindowExceeded(_)
         | RenderableAIError::InvalidApiKey { .. }
         | RenderableAIError::AwsBedrockCredentialsExpiredOrInvalid { .. } => false,
-        RenderableAIError::InternalWarpError => true,
+        RenderableAIError::InternalCognixError => true,
         RenderableAIError::Other {
             will_attempt_resume,
             ..

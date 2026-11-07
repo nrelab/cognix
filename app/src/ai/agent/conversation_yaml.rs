@@ -9,7 +9,7 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-use warp_multi_agent_api as api;
+use cognix_multi_agent_api as api;
 
 use api::message::tool_call::Tool;
 use api::message::tool_call_result::Result as ToolCallResultType;
@@ -17,7 +17,7 @@ use api::message::Message;
 
 use super::task::helper::{SubagentExt, ToolExt};
 
-const BASE_DIR_NAME: &str = "warp_conversation_search";
+const BASE_DIR_NAME: &str = "cognix_conversation_search";
 
 /// Returns the base directory for conversation search temp files.
 ///

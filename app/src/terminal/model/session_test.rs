@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use warpui::{
+use cognixui::{
     elements::Empty, platform::WindowStyle, App, AppContext, Element, Entity, ModelHandle,
     TypedActionView, View, ViewContext,
 };

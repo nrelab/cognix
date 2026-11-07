@@ -1,5 +1,5 @@
-use warp_core::context_flag::ContextFlag;
-use warpui::{
+use cognix_core::context_flag::ContextFlag;
+use cognixui::{
     elements::{Container, Flex, MouseStateHandle, ParentElement},
     fonts::Weight,
     ui_components::components::{UiComponent, UiComponentStyles},
@@ -17,21 +17,21 @@ use crate::{
     workflows::{CloudWorkflow, WorkflowViewMode},
 };
 
-use super::{WarpDriveItem, WarpDriveItemId};
+use super::{CognixDriveItem, CognixDriveItemId};
 
 #[derive(Clone)]
-pub struct WarpDriveWorkflow {
+pub struct CognixDriveWorkflow {
     id: CloudObjectTypeAndId,
     workflow: CloudWorkflow,
 }
 
-impl WarpDriveWorkflow {
+impl CognixDriveWorkflow {
     pub fn new(id: CloudObjectTypeAndId, workflow: CloudWorkflow) -> Self {
         Self { id, workflow }
     }
 }
 
-impl WarpDriveItem for WarpDriveWorkflow {
+impl CognixDriveItem for CognixDriveWorkflow {
     fn display_name(&self) -> Option<String> {
         if self.workflow.model().data.name().is_empty() {
             None
@@ -71,7 +71,7 @@ impl WarpDriveItem for WarpDriveWorkflow {
 
     fn preview(&self, appearance: &Appearance) -> Option<Box<dyn Element>> {
         let mut modal =
-            Flex::column().with_cross_axis_alignment(warpui::elements::CrossAxisAlignment::Stretch);
+            Flex::column().with_cross_axis_alignment(cognixui::elements::CrossAxisAlignment::Stretch);
 
         let mut text = Flex::column()
             .with_child(Container::new(self.render_workflow_name(appearance)).finish());
@@ -111,8 +111,8 @@ impl WarpDriveItem for WarpDriveWorkflow {
         Some(modal.finish())
     }
 
-    fn warp_drive_id(&self) -> WarpDriveItemId {
-        WarpDriveItemId::Object(self.id)
+    fn cognix_drive_id(&self) -> CognixDriveItemId {
+        CognixDriveItemId::Object(self.id)
     }
 
     fn sync_status_icon(
@@ -133,12 +133,12 @@ impl WarpDriveItem for WarpDriveWorkflow {
             .get_action_history_summary_for_action_type(&self.id.uid(), ObjectActionType::Execute)
     }
 
-    fn clone_box(&self) -> Box<dyn WarpDriveItem> {
+    fn clone_box(&self) -> Box<dyn CognixDriveItem> {
         Box::new(self.clone())
     }
 }
 
-impl WarpDriveWorkflow {
+impl CognixDriveWorkflow {
     fn render_workflow_name(&self, appearance: &Appearance) -> Box<dyn Element> {
         appearance
             .ui_builder()

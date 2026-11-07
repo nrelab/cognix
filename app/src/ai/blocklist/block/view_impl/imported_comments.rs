@@ -1,7 +1,7 @@
 use crate::ai::blocklist::block::ImportedCommentGroup;
-use warpui::elements::{CrossAxisAlignment, Flex, ParentElement};
-use warpui::prelude::ChildView;
-use warpui::{AppContext, Element};
+use cognixui::elements::{CrossAxisAlignment, Flex, ParentElement};
+use cognixui::prelude::ChildView;
+use cognixui::{AppContext, Element};
 
 pub(crate) fn render_imported_comments(
     group: &ImportedCommentGroup,

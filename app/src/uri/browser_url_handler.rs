@@ -1,6 +1,6 @@
 use url::Url;
 
-const DEFAULT_TITLE: &str = "Warp";
+const DEFAULT_TITLE: &str = "Cognix";
 const BASE_APP_PATH: &str = "/app";
 
 pub fn update_browser_url(url: Option<Url>, force_redirect: bool) {
@@ -23,7 +23,7 @@ pub fn update_browser_url(url: Option<Url>, force_redirect: bool) {
                 .unwrap_or_else(|_| {
                     log::error!("Failed to replace browser state");
                     crate::platform::wasm::emit_event(
-                        crate::platform::wasm::WarpEvent::ErrorLogged {
+                        crate::platform::wasm::CognixEvent::ErrorLogged {
                             error: String::from("Failed to replace browser state"),
                         },
                     );

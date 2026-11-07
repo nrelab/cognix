@@ -5,8 +5,8 @@ use repo_metadata::repositories::DetectedRepositories;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use uuid::Uuid;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::mcp::{
@@ -14,7 +14,7 @@ use crate::{
         ParsedTemplatableMCPServerResult,
     },
     settings::{ai::AISettings, AISettingsChangedEvent},
-    warp_managed_paths_watcher::warp_data_dir,
+    cognix_managed_paths_watcher::cognix_data_dir,
 };
 
 /// Singleton model to manage file-based MCP servers.
@@ -235,7 +235,7 @@ impl FileBasedMCPManager {
     /// config location.
     ///
     /// "Global" means the installation was detected outside of a user repository:
-    /// - For `MCPProvider::Warp`: `warp_data_dir()` (i.e. `~/.warp/.mcp.json`).
+    /// - For `MCPProvider::Cognix`: `cognix_data_dir()` (i.e. `~/.cognix/.mcp.json`).
     /// - For any other provider: the user's home directory (e.g. `~/.claude.json`).
     ///
     /// Project-scoped installations (those detected inside a repo) are not considered
@@ -243,7 +243,7 @@ impl FileBasedMCPManager {
     /// case this returns `true` due to the global reference).
     fn is_global_server(&self, hash: u64) -> bool {
         let home_dir = dirs::home_dir();
-        let warp_root = warp_data_dir();
+        let cognix_root = cognix_data_dir();
         self.file_based_servers_by_root
             .iter()
             .any(|(root_path, provider_map)| {
@@ -252,7 +252,7 @@ impl FileBasedMCPManager {
                         return false;
                     }
                     match provider {
-                        MCPProvider::Warp => root_path == &warp_root,
+                        MCPProvider::Cognix => root_path == &cognix_root,
                         MCPProvider::Claude | MCPProvider::Codex | MCPProvider::Agents => {
                             home_dir.as_ref().is_some_and(|home| root_path == home)
                         }
@@ -262,12 +262,12 @@ impl FileBasedMCPManager {
     }
 
     /// Returns `true` if the server identified by `hash` is referenced from the global
-    /// Warp config (`~/.warp/.mcp.json`). Global Warp servers always auto-spawn.
-    fn is_global_warp_server(&self, hash: u64) -> bool {
-        let warp_root = warp_data_dir();
+    /// Cognix config (`~/.cognix/.mcp.json`). Global Cognix servers always auto-spawn.
+    fn is_global_cognix_server(&self, hash: u64) -> bool {
+        let cognix_root = cognix_data_dir();
         self.file_based_servers_by_root
-            .get(&warp_root)
-            .and_then(|provider_map| provider_map.get(&MCPProvider::Warp))
+            .get(&cognix_root)
+            .and_then(|provider_map| provider_map.get(&MCPProvider::Cognix))
             .is_some_and(|hashes| hashes.contains(&hash))
     }
 
@@ -282,8 +282,8 @@ impl FileBasedMCPManager {
         let mcp_enabled = AISettings::as_ref(ctx).is_file_based_mcp_enabled(ctx);
 
         // Partition servers into three buckets based on scope:
-        // - Global Warp: always auto-spawn.
-        // - Global non-Warp: auto-spawn iff the toggle is on.
+        // - Global Cognix: always auto-spawn.
+        // - Global non-Cognix: auto-spawn iff the toggle is on.
         // - Project-scoped (any provider): never auto-spawn; require explicit opt-in
         //   via the "Detected from {provider}" section of the MCP settings.
         let mut to_spawn = Vec::new();
@@ -291,7 +291,7 @@ impl FileBasedMCPManager {
             let Some(hash) = installation.hash() else {
                 continue;
             };
-            if self.is_global_warp_server(hash) || (self.is_global_server(hash) && mcp_enabled) {
+            if self.is_global_cognix_server(hash) || (self.is_global_server(hash) && mcp_enabled) {
                 to_spawn.push(installation);
             }
 
@@ -333,7 +333,7 @@ impl FileBasedMCPManager {
 
     fn handle_file_based_mcp_enabled_change(&mut self, ctx: &mut ModelContext<Self>) {
         // Only global third-party servers are affected by the toggle:
-        // - Global Warp servers always spawn regardless of the toggle.
+        // - Global Cognix servers always spawn regardless of the toggle.
         // - Project-scoped servers (any provider) are never auto-spawned and their
         //   running state is managed per-card via the MCP settings UI; toggling the
         //   setting must not spawn or despawn them.
@@ -341,7 +341,7 @@ impl FileBasedMCPManager {
             .file_based_servers
             .iter()
             .filter(|(hash, _)| {
-                self.is_global_server(**hash) && !self.is_global_warp_server(**hash)
+                self.is_global_server(**hash) && !self.is_global_cognix_server(**hash)
             })
             .map(|(_, server)| server.clone())
             .collect();
@@ -354,7 +354,7 @@ impl FileBasedMCPManager {
                     .collect_vec(),
             });
         } else {
-            // Toggle on: spawn global third-party servers (global Warp servers are
+            // Toggle on: spawn global third-party servers (global Cognix servers are
             // already running; project-scoped servers are unaffected).
             ctx.emit(FileBasedMCPManagerEvent::SpawnServers {
                 installations: global_third_party_servers,

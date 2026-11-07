@@ -24,8 +24,8 @@ use crate::{
     channel::ChannelState,
     drive::{
         folders::{CloudFolderModel, FolderId},
-        items::WarpDriveItem,
-        CloudObjectTypeAndId, OpenWarpDriveObjectArgs, OpenWarpDriveObjectSettings,
+        items::CognixDriveItem,
+        CloudObjectTypeAndId, OpenCognixDriveObjectArgs, OpenCognixDriveObjectSettings,
     },
     env_vars::CloudEnvVarCollectionModel,
     notebooks::{CloudNotebookModel, NotebookId},
@@ -62,18 +62,18 @@ use std::{
     sync::Arc,
 };
 use url::Url;
-use warp_core::{channel::Channel, features::FeatureFlag};
-use warp_graphql::{
+use cognix_core::{channel::Channel, features::FeatureFlag};
+use cognix_graphql::{
     queries::get_updated_cloud_objects::UpdatedObjectInput, scalars::time::ServerTimestamp,
 };
-use warpui::{AppContext, SingletonEntity};
+use cognixui::{AppContext, SingletonEntity};
 
 pub mod breadcrumbs;
 pub mod grab_edit_access_modal;
 pub mod model;
 pub mod toast_message;
 
-pub use warp_server_client::cloud_object::*;
+pub use cognix_server_client::cloud_object::*;
 
 /// A CloudObject represents
 /// therefore shareable and editable (i.e. Notebooks and Workflows). In order
@@ -182,17 +182,17 @@ pub trait CloudObject: Debug {
     /// in the sync queue item.
     fn update_object_queue_item(&self, revision_ts: Option<Revision>) -> QueueItem;
 
-    /// Returns whether this model type should render as a warp drive item.
-    fn renders_in_warp_drive(&self) -> bool;
+    /// Returns whether this model type should render as a cognix drive item.
+    fn renders_in_cognix_drive(&self) -> bool;
 
     /// Returns whether this model type should show update toasts in the UI.
     fn should_show_activity_toasts(&self) -> bool {
         true
     }
 
-    /// Creates a new Warp Drive item for this object.  Returns None if this
-    /// object is not rendered in Warp Drive.
-    fn to_warp_drive_item(&self, appearance: &Appearance) -> Option<Box<dyn WarpDriveItem>>;
+    /// Creates a new Cognix Drive item for this object.  Returns None if this
+    /// object is not rendered in Cognix Drive.
+    fn to_cognix_drive_item(&self, appearance: &Appearance) -> Option<Box<dyn CognixDriveItem>>;
 
     /// Returns the web link of this object. Will return none if we do not support web links
     /// for this particular object (i.e. if it's not yet sync'd to the server, or if we don't
@@ -463,8 +463,8 @@ pub trait CloudModelType: Debug + Clone + Send + Sync {
     /// Returns the ObjectType for this model.
     fn object_type(&self) -> ObjectType;
 
-    /// Returns whether this model type should render as a warp drive item.
-    fn renders_in_warp_drive(&self) -> bool;
+    /// Returns whether this model type should render as a cognix drive item.
+    fn renders_in_cognix_drive(&self) -> bool;
 
     /// Returns whether this model type should show update toasts in the UI.
     fn should_show_activity_toasts(&self) -> bool {
@@ -477,19 +477,19 @@ pub trait CloudModelType: Debug + Clone + Send + Sync {
         true
     }
 
-    /// Creates a new warp drive item for this model type. Returns None
-    /// if this object does not render in Warp Drive.
-    fn to_warp_drive_item(
+    /// Creates a new cognix drive item for this model type. Returns None
+    /// if this object does not render in Cognix Drive.
+    fn to_cognix_drive_item(
         &self,
         id: SyncId,
         appearance: &Appearance,
         object: &Self::CloudObjectType,
-    ) -> Option<Box<dyn WarpDriveItem>>;
+    ) -> Option<Box<dyn CognixDriveItem>>;
 
-    /// Returns the display name for this model (e.g. to show in the Warp Drive index)
+    /// Returns the display name for this model (e.g. to show in the Cognix Drive index)
     fn display_name(&self) -> String;
 
-    /// Sets the display name to show in the Warp Drive Index.  Setting the name
+    /// Sets the display name to show in the Cognix Drive Index.  Setting the name
     /// is not currently supported by all object types, hence the default empty
     /// implementation.
     fn set_display_name(&mut self, _name: &str) {}
@@ -791,12 +791,12 @@ where
         self.model.update_object_queue_item(revision_ts, self)
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
-        self.model.renders_in_warp_drive()
+    fn renders_in_cognix_drive(&self) -> bool {
+        self.model.renders_in_cognix_drive()
     }
 
-    fn to_warp_drive_item(&self, appearance: &Appearance) -> Option<Box<dyn WarpDriveItem>> {
-        self.model.to_warp_drive_item(self.id, appearance, self)
+    fn to_cognix_drive_item(&self, appearance: &Appearance) -> Option<Box<dyn CognixDriveItem>> {
+        self.model.to_cognix_drive_item(self.id, appearance, self)
     }
 
     fn can_export(&self) -> bool {
@@ -931,11 +931,11 @@ where
 }
 
 /// Extracts the server id and object type from a (caller validated) Drive link.
-/// Intended use is deriving metadata from links such that Warp objects
-/// can be opened natively in Warp with no web interaction.
-pub fn extract_server_id_and_object_type_from_warp_drive_link(
+/// Intended use is deriving metadata from links such that Cognix objects
+/// can be opened natively in Cognix with no web interaction.
+pub fn extract_server_id_and_object_type_from_cognix_drive_link(
     url: &Url,
-) -> Option<OpenWarpDriveObjectArgs> {
+) -> Option<OpenCognixDriveObjectArgs> {
     let server_id = url
         .path_segments()
         .and_then(|mut segments| segments.next_back())
@@ -944,7 +944,7 @@ pub fn extract_server_id_and_object_type_from_warp_drive_link(
 
     let object_type = url.path_segments().and_then(|mut segments| segments.nth(1));
 
-    // Parse the object portion of the path segment (warp.dev/drive/{object})
+    // Parse the object portion of the path segment (cognix.dev/drive/{object})
     // into an object type
     let object_type = match object_type {
         Some("notebook") => ObjectType::Notebook,
@@ -958,13 +958,13 @@ pub fn extract_server_id_and_object_type_from_warp_drive_link(
 
     let invitee_email: Option<String> = query_string.get("invitee_email").map(|s| s.to_string());
 
-    Some(OpenWarpDriveObjectArgs {
+    Some(OpenCognixDriveObjectArgs {
         object_type,
         server_id: match server_id {
             Some(server_id) => server_id.try_into().ok()?,
             _ => return None,
         },
-        settings: OpenWarpDriveObjectSettings {
+        settings: OpenCognixDriveObjectSettings {
             focused_folder_id,
             invitee_email,
         },
@@ -1058,7 +1058,7 @@ pub trait CloudObjectMetadataExt {
     /// Returns None if the revision and last_editor are None.
     fn semantic_editing_history(&self, app: &AppContext) -> Option<String>;
 
-    /// Returns a semantic summary of the object's creator. For example, "Alice" or "joan@warp.dev".
+    /// Returns a semantic summary of the object's creator. For example, "Alice" or "joan@cognix.dev".
     #[cfg_attr(target_family = "wasm", expect(dead_code))]
     fn semantic_creator(&self, app: &AppContext) -> Option<String>;
 
@@ -1071,7 +1071,7 @@ impl CloudObjectMetadataExt for CloudObjectMetadata {
     fn semantic_editing_history(&self, app: &AppContext) -> Option<String> {
         let user_profiles = UserProfiles::as_ref(app);
 
-        // First, the editor. For example, "Joan Didion" or "joan@warp.dev".
+        // First, the editor. For example, "Joan Didion" or "joan@cognix.dev".
         let editor_string = self
             .last_editor_uid
             .as_ref()
@@ -1436,12 +1436,12 @@ impl ServerFolder {
         name: Option<String>,
         metadata: ServerMetadata,
         permissions: ServerPermissions,
-        is_warp_pack: bool,
+        is_cognix_pack: bool,
     ) -> Result<Self> {
         match name {
             Some(name) => Ok(Self {
                 id: SyncId::ServerId(uid),
-                model: CloudFolderModel::new(&name, is_warp_pack),
+                model: CloudFolderModel::new(&name, is_cognix_pack),
                 metadata,
                 permissions,
             }),
@@ -1531,7 +1531,7 @@ impl Space {
     }
 }
 
-/// Enum for specifying the location of a warp drive object.
+/// Enum for specifying the location of a cognix drive object.
 /// Objects can live in top level spaces, or a specific folder.
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub enum CloudObjectLocation {

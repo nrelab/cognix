@@ -1,7 +1,7 @@
 use crate::ai::agent::RenderableAIError;
 use crate::server::server_api::ai::TaskStatusUpdate;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionStatus;
-use warp_graphql::ai::{AgentTaskState, PlatformErrorCode};
+use cognix_graphql::ai::{AgentTaskState, PlatformErrorCode};
 
 use super::{classify_renderable_error, map_cli_session_status};
 
@@ -53,9 +53,9 @@ fn server_overloaded_is_error_with_resource_unavailable() {
 }
 
 #[test]
-fn internal_warp_error_is_error() {
+fn internal_cognix_error_is_error() {
     assert_update(
-        classify_renderable_error(&RenderableAIError::InternalWarpError),
+        classify_renderable_error(&RenderableAIError::InternalCognixError),
         AgentTaskState::Error,
         Some(PlatformErrorCode::InternalError),
         Some("internal error"),

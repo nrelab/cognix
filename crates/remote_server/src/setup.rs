@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
-use warp_core::channel::{Channel, ChannelState};
+use cognix_core::channel::{Channel, ChannelState};
 
 /// State machine for the remote server install → launch → initialize flow.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -116,25 +116,25 @@ pub fn parse_uname_output(output: &str) -> Result<RemotePlatform> {
 
 /// Returns the remote directory where the binary is installed, keyed by channel.
 ///
-/// - stable:      `~/.warp/remote-server`
-/// - preview:     `~/.warp-preview/remote-server`
-/// - dev:         `~/.warp-dev/remote-server`
-/// - local:       `~/.warp-local/remote-server`
-/// - integration: `~/.warp-dev/remote-server`
-/// - warp-oss:    `~/.warp-oss/remote-server`
+/// - stable:      `~/.cognix/remote-server`
+/// - preview:     `~/.cognix-preview/remote-server`
+/// - dev:         `~/.cognix-dev/remote-server`
+/// - local:       `~/.cognix-local/remote-server`
+/// - integration: `~/.cognix-dev/remote-server`
+/// - cognix-oss:    `~/.cognix-oss/remote-server`
 pub fn remote_server_dir() -> String {
-    let warp_dir = match ChannelState::channel() {
-        Channel::Stable => ".warp",
-        Channel::Preview => ".warp-preview",
-        Channel::Dev | Channel::Integration => ".warp-dev",
-        Channel::Local => ".warp-local",
+    let cognix_dir = match ChannelState::channel() {
+        Channel::Stable => ".cognix",
+        Channel::Preview => ".cognix-preview",
+        Channel::Dev | Channel::Integration => ".cognix-dev",
+        Channel::Local => ".cognix-local",
         Channel::Oss => {
-            // TODO(alokedesai): need to figure out how remote server works with warp-oss
+            // TODO(alokedesai): need to figure out how remote server works with cognix-oss
             // For now, return what Dev returns.
-            ".warp-dev"
+            ".cognix-dev"
         }
     };
-    format!("~/{warp_dir}/remote-server")
+    format!("~/{cognix_dir}/remote-server")
 }
 
 /// Returns the binary name, keyed by channel.
@@ -179,8 +179,8 @@ pub fn install_script() -> String {
 
 /// Construct the download URL from the server root URL.
 ///
-/// For example, given `https://app.warp.dev`, returns
-/// `https://app.warp.dev/download/cli`.
+/// For example, given `https://app.cognix.dev`, returns
+/// `https://app.cognix.dev/download/cli`.
 fn download_url() -> String {
     let base = ChannelState::server_root_url();
     let base = base.trim_end_matches('/');
@@ -197,7 +197,7 @@ fn download_channel() -> &'static str {
         Channel::Preview => "preview",
         Channel::Dev | Channel::Local | Channel::Integration => "dev",
         Channel::Oss => {
-            // TODO(alokedesai): need to figure out how remote server works with warp-oss
+            // TODO(alokedesai): need to figure out how remote server works with cognix-oss
             // For now, return what Dev returns.
             "dev"
         }

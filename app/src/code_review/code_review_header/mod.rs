@@ -14,11 +14,11 @@ use crate::{
     view_components::action_button::ActionButton,
 };
 use pathfinder_geometry::vector::vec2f;
-use warp_core::features::FeatureFlag;
-use warpui::elements::{Hoverable, ParentElement};
-use warpui::platform::Cursor;
-use warpui::ui_components::components::{Coords, UiComponent};
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognixui::elements::{Hoverable, ParentElement};
+use cognixui::platform::Cursor;
+use cognixui::ui_components::components::{Coords, UiComponent};
+use cognixui::{
     elements::{
         Align, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CrossAxisAlignment,
         Flex, MainAxisAlignment, MainAxisSize, MouseStateHandle, OffsetPositioning, ParentAnchor,
@@ -271,7 +271,7 @@ impl CodeReviewHeader {
         let header_text = Self::get_header_text(diff_state_model, app);
 
         Container::new(
-            warpui::elements::Text::new_inline(
+            cognixui::elements::Text::new_inline(
                 header_text,
                 appearance.ui_font_family(),
                 appearance.ui_font_size() + 2.,
@@ -329,7 +329,7 @@ impl CodeReviewHeader {
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
                     "Discard all".to_string(),
-                    Icon::ReverseLeft.to_warpui_icon(warp_core::ui::theme::Fill::Solid(
+                    Icon::ReverseLeft.to_cognixui_icon(cognix_core::ui::theme::Fill::Solid(
                         sub_text_color.into_solid(),
                     )),
                     MainAxisSize::Min,
@@ -425,7 +425,7 @@ impl CodeReviewHeader {
             .with_text_and_icon_label(TextAndIcon::new(
                 TextAndIconAlignment::IconFirst,
                 "",
-                Icon::Paperclip.to_warpui_icon(warp_core::ui::theme::Fill::Solid(
+                Icon::Paperclip.to_cognixui_icon(cognix_core::ui::theme::Fill::Solid(
                     theme.main_text_color(theme.background()).into(),
                 )),
                 MainAxisSize::Min,
@@ -445,7 +445,7 @@ impl CodeReviewHeader {
                     .build()
                     .finish()
             })
-            .with_tooltip_position(warpui::ui_components::button::ButtonTooltipPosition::AboveLeft)
+            .with_tooltip_position(cognixui::ui_components::button::ButtonTooltipPosition::AboveLeft)
             .build()
             .on_click(|ctx, _, _| {
                 ctx.dispatch_typed_action(CodeReviewAction::AddDiffSetAsContext(
@@ -470,8 +470,8 @@ impl CodeReviewHeader {
     ) -> Box<dyn Element> {
         let button_container = Container::new(
             ConstrainedBox::new(ChildView::new(header_dropdown_button).finish())
-                .with_height(warp_core::ui::icons::ICON_DIMENSIONS)
-                .with_width(warp_core::ui::icons::ICON_DIMENSIONS)
+                .with_height(cognix_core::ui::icons::ICON_DIMENSIONS)
+                .with_width(cognix_core::ui::icons::ICON_DIMENSIONS)
                 .finish(),
         )
         .with_margin_left(4.)

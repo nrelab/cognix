@@ -1,30 +1,30 @@
 use crate::appearance::Appearance;
-use crate::terminal::model::ansi::WarpificationUnavailableReason;
-use crate::terminal::warpify;
-use crate::terminal::warpify::render::apply_spacing_styles;
-use crate::terminal::warpify::render::build_description_row;
-use crate::terminal::warpify::settings::WarpifySettings;
+use crate::terminal::model::ansi::CognixificationUnavailableReason;
+use crate::terminal::cognixify;
+use crate::terminal::cognixify::render::apply_spacing_styles;
+use crate::terminal::cognixify::render::build_description_row;
+use crate::terminal::cognixify::settings::CognixifySettings;
 use crate::ui_components::icons::Icon as UiIcon;
 use markdown_parser::FormattedText;
 use markdown_parser::FormattedTextFragment;
 use markdown_parser::FormattedTextLine;
-use warp_core::channel::ChannelState;
-use warp_core::ui::theme::WarpTheme;
-use warpui::elements::HighlightedHyperlink;
-use warpui::elements::Hoverable;
-use warpui::elements::Icon;
-use warpui::elements::MainAxisAlignment;
-use warpui::elements::MainAxisSize;
-use warpui::elements::MouseStateHandle;
-use warpui::keymap::FixedBinding;
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::AppContext;
-use warpui::BlurContext;
-use warpui::FocusContext;
-use warpui::{
+use cognix_core::channel::ChannelState;
+use cognix_core::ui::theme::CognixTheme;
+use cognixui::elements::HighlightedHyperlink;
+use cognixui::elements::Hoverable;
+use cognixui::elements::Icon;
+use cognixui::elements::MainAxisAlignment;
+use cognixui::elements::MainAxisSize;
+use cognixui::elements::MouseStateHandle;
+use cognixui::keymap::FixedBinding;
+use cognixui::platform::Cursor;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::components::UiComponent;
+use cognixui::ui_components::components::UiComponentStyles;
+use cognixui::AppContext;
+use cognixui::BlurContext;
+use cognixui::FocusContext;
+use cognixui::{
     elements::{Border, Container, CrossAxisAlignment, Flex, ParentElement},
     Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
@@ -35,17 +35,17 @@ const UNSUPPORTED_TMUX_VERSION_ERROR: &str =
     "The tmux version available on the remote machine is below 3.0. Please install tmux 3.0 or greater using a different method and try again.";
 const TMUX_FAILED_ERROR: &str =
     "tmux failed to execute on the remote machine. Please re-install tmux and try again.";
-const WARPIFY_TIMEOUT_ERROR: &str = "Warpifying the session hit a timeout.";
+const COGNIXIFY_TIMEOUT_ERROR: &str = "Cognixifying the session hit a timeout.";
 const UNSUPPORTED_SHELL_ERROR: &str =
     "Unsupported shell. Please set bash, zsh, or fish as your default shell and try again.";
 const TMUX_INSTALL_FAILED_ERROR: &str =
     "The tmux install hit an unexpected error. Please install tmux manually and try again.";
 
-const SSH_GITHUB_ISSUE_URL: &str = "https://github.com/warpdotdev/Warp/issues/new?assignees=&labels=Bugs,SSH-tmux&projects=&template=03_ssh_tmux.yml";
+const SSH_GITHUB_ISSUE_URL: &str = "https://github.com/nrelab/cognix/issues/new?assignees=&labels=Bugs,SSH-tmux&projects=&template=03_ssh_tmux.yml";
 
 fn get_ssh_github_issue_url(title: &str) -> String {
     let url = if let Some(version) = ChannelState::app_version() {
-        format!("{SSH_GITHUB_ISSUE_URL}&warp-version={version}")
+        format!("{SSH_GITHUB_ISSUE_URL}&cognix-version={version}")
     } else {
         SSH_GITHUB_ISSUE_URL.to_string()
     };
@@ -55,85 +55,85 @@ fn get_ssh_github_issue_url(title: &str) -> String {
     format!("{url}&title={title}")
 }
 
-impl WarpificationUnavailableReason {
+impl CognixificationUnavailableReason {
     fn error_message(&self) -> &'static str {
         match self {
-            WarpificationUnavailableReason::TmuxNotInstalled { .. } => TMUX_NOT_INSTALLED_ERROR,
-            WarpificationUnavailableReason::UnsupportedTmuxVersion { .. } => {
+            CognixificationUnavailableReason::TmuxNotInstalled { .. } => TMUX_NOT_INSTALLED_ERROR,
+            CognixificationUnavailableReason::UnsupportedTmuxVersion { .. } => {
                 UNSUPPORTED_TMUX_VERSION_ERROR
             }
-            WarpificationUnavailableReason::TmuxFailed => TMUX_FAILED_ERROR,
-            WarpificationUnavailableReason::Timeout { .. } => WARPIFY_TIMEOUT_ERROR,
-            WarpificationUnavailableReason::UnsupportedShell { .. } => UNSUPPORTED_SHELL_ERROR,
-            WarpificationUnavailableReason::TmuxInstallFailed { .. } => TMUX_INSTALL_FAILED_ERROR,
+            CognixificationUnavailableReason::TmuxFailed => TMUX_FAILED_ERROR,
+            CognixificationUnavailableReason::Timeout { .. } => COGNIXIFY_TIMEOUT_ERROR,
+            CognixificationUnavailableReason::UnsupportedShell { .. } => UNSUPPORTED_SHELL_ERROR,
+            CognixificationUnavailableReason::TmuxInstallFailed { .. } => TMUX_INSTALL_FAILED_ERROR,
         }
     }
 
     fn error_title(&self) -> &'static str {
         match self {
-            WarpificationUnavailableReason::TmuxNotInstalled { .. } => "tmux Not Installed",
-            WarpificationUnavailableReason::UnsupportedTmuxVersion { .. } => {
+            CognixificationUnavailableReason::TmuxNotInstalled { .. } => "tmux Not Installed",
+            CognixificationUnavailableReason::UnsupportedTmuxVersion { .. } => {
                 "Unsupported Tmux Version"
             }
-            WarpificationUnavailableReason::TmuxFailed => "tmux Failed",
-            WarpificationUnavailableReason::Timeout {
+            CognixificationUnavailableReason::TmuxFailed => "tmux Failed",
+            CognixificationUnavailableReason::Timeout {
                 is_tmux_install, ..
             } => {
                 if *is_tmux_install {
                     "tmux Install Timeout"
                 } else {
-                    "SSH Warpify Timeout"
+                    "SSH Cognixify Timeout"
                 }
             }
-            WarpificationUnavailableReason::UnsupportedShell { .. } => "Unsupported Shell",
-            WarpificationUnavailableReason::TmuxInstallFailed { .. } => "tmux Install Failed",
+            CognixificationUnavailableReason::UnsupportedShell { .. } => "Unsupported Shell",
+            CognixificationUnavailableReason::TmuxInstallFailed { .. } => "tmux Install Failed",
         }
     }
 }
 
 #[derive(Debug, Clone)]
 pub enum SshErrorBlockEvent {
-    ContinueWithoutWarpification,
-    WarpifyWithoutTmux,
+    ContinueWithoutCognixification,
+    CognixifyWithoutTmux,
 }
 
 #[derive(Debug, Clone)]
 pub enum SshErrorBlockAction {
-    ContinueWithoutWarpification,
-    WarpifyWithoutTmux,
+    ContinueWithoutCognixification,
+    CognixifyWithoutTmux,
     OpenUrl(String),
     AddSshHostToDenylist(String),
     Focus,
 }
 
 pub struct SshErrorBlock {
-    error_reason: WarpificationUnavailableReason,
+    error_reason: CognixificationUnavailableReason,
     ssh_host: Option<String>,
-    warpify_without_tmux_button_mouse_state: MouseStateHandle,
+    cognixify_without_tmux_button_mouse_state: MouseStateHandle,
     continue_button_mouse_state: MouseStateHandle,
     report_link_highlight_index: HighlightedHyperlink,
-    never_warpify_mouse_state_handle: MouseStateHandle,
+    never_cognixify_mouse_state_handle: MouseStateHandle,
     block_mouse_state: MouseStateHandle,
     is_focused: bool,
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(
             "enter",
-            SshErrorBlockAction::WarpifyWithoutTmux,
+            SshErrorBlockAction::CognixifyWithoutTmux,
             id!(SshErrorBlock::ui_name()),
         ),
         FixedBinding::new(
             "escape",
-            SshErrorBlockAction::ContinueWithoutWarpification,
+            SshErrorBlockAction::ContinueWithoutCognixification,
             id!(SshErrorBlock::ui_name()),
         ),
         FixedBinding::new(
             "ctrl-c",
-            SshErrorBlockAction::ContinueWithoutWarpification,
+            SshErrorBlockAction::ContinueWithoutCognixification,
             id!(SshErrorBlock::ui_name()),
         ),
     ]);
@@ -141,14 +141,14 @@ pub fn init(app: &mut AppContext) {
 
 impl SshErrorBlock {
     #[allow(clippy::new_without_default)]
-    pub fn new(error_reason: WarpificationUnavailableReason, ssh_host: Option<String>) -> Self {
+    pub fn new(error_reason: CognixificationUnavailableReason, ssh_host: Option<String>) -> Self {
         Self {
             error_reason,
             ssh_host,
-            warpify_without_tmux_button_mouse_state: Default::default(),
+            cognixify_without_tmux_button_mouse_state: Default::default(),
             continue_button_mouse_state: Default::default(),
             report_link_highlight_index: Default::default(),
-            never_warpify_mouse_state_handle: Default::default(),
+            never_cognixify_mouse_state_handle: Default::default(),
             block_mouse_state: Default::default(),
             is_focused: false,
         }
@@ -159,22 +159,22 @@ impl SshErrorBlock {
         ctx.notify();
     }
 
-    fn should_show_report_to_warp_button(&self) -> bool {
+    fn should_show_report_to_cognix_button(&self) -> bool {
         matches!(
             self.error_reason,
-            WarpificationUnavailableReason::Timeout { .. }
-                | WarpificationUnavailableReason::TmuxInstallFailed { .. }
+            CognixificationUnavailableReason::Timeout { .. }
+                | CognixificationUnavailableReason::TmuxInstallFailed { .. }
         )
     }
 
     fn render_title_ui(
         &self,
         app: &AppContext,
-        theme: &WarpTheme,
+        theme: &CognixTheme,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
-        let header_contents = warpify::render::build_header_row(
-            "Error Warpifying session",
+        let header_contents = cognixify::render::build_header_row(
+            "Error Cognixifying session",
             Icon::new(UiIcon::AlertTriangle.into(), theme.ui_error_color()),
             theme,
             appearance,
@@ -182,11 +182,11 @@ impl SshErrorBlock {
         .with_margin_right(8.)
         .finish();
 
-        let right_hand_size = warpify::render::render_never_warpify_ssh_link(
+        let right_hand_size = cognixify::render::render_never_cognixify_ssh_link(
             &self.ssh_host,
             app,
             appearance,
-            self.never_warpify_mouse_state_handle.clone(),
+            self.never_cognixify_mouse_state_handle.clone(),
             move |ctx, ssh_host| {
                 ctx.dispatch_typed_action(SshErrorBlockAction::AddSshHostToDenylist(
                     ssh_host.to_owned(),
@@ -204,7 +204,7 @@ impl SshErrorBlock {
             row.add_child(right_hand_size);
         }
 
-        warpify::render::apply_spacing_styles(Container::new(row.finish())).finish()
+        cognixify::render::apply_spacing_styles(Container::new(row.finish())).finish()
     }
 }
 
@@ -227,7 +227,7 @@ impl View for SshErrorBlock {
 
         content.add_child(self.render_title_ui(app, theme, appearance));
 
-        content.add_child(warpify::render::description_row(
+        content.add_child(cognixify::render::description_row(
             self.error_reason.error_message(),
             theme,
             appearance,
@@ -235,9 +235,9 @@ impl View for SshErrorBlock {
 
         let ui_builder = appearance.ui_builder();
 
-        if self.should_show_report_to_warp_button() {
+        if self.should_show_report_to_cognix_button() {
             let report_issue_text = build_description_row(FormattedText::new([FormattedTextLine::Line(vec![
-                    FormattedTextFragment::plain_text("We are actively working on improving the stability of SSH in Warp. Please consider "),
+                    FormattedTextFragment::plain_text("We are actively working on improving the stability of SSH in Cognix. Please consider "),
                     FormattedTextFragment::hyperlink("filing an issue", get_ssh_github_issue_url(self.error_reason.error_title())),
                     FormattedTextFragment::plain_text(" on GitHub so we can better identify the problem."),
                 ])]),
@@ -256,9 +256,9 @@ impl View for SshErrorBlock {
                     ui_builder
                         .button(
                             ButtonVariant::Accent,
-                            self.warpify_without_tmux_button_mouse_state.clone(),
+                            self.cognixify_without_tmux_button_mouse_state.clone(),
                         )
-                        .with_centered_text_label("Warpify without TMUX".into())
+                        .with_centered_text_label("Cognixify without TMUX".into())
                         .with_style(UiComponentStyles {
                             font_size: Some(appearance.monospace_font_size()),
                             ..Default::default()
@@ -266,7 +266,7 @@ impl View for SshErrorBlock {
                         .build()
                         .with_cursor(Cursor::PointingHand)
                         .on_click(move |ctx, _, _| {
-                            ctx.dispatch_typed_action(SshErrorBlockAction::WarpifyWithoutTmux)
+                            ctx.dispatch_typed_action(SshErrorBlockAction::CognixifyWithoutTmux)
                         })
                         .finish(),
                 )
@@ -279,7 +279,7 @@ impl View for SshErrorBlock {
                         ButtonVariant::Secondary,
                         self.continue_button_mouse_state.clone(),
                     )
-                    .with_centered_text_label("Continue without Warpification".into())
+                    .with_centered_text_label("Continue without Cognixification".into())
                     .with_style(UiComponentStyles {
                         font_size: Some(appearance.monospace_font_size()),
                         ..Default::default()
@@ -287,7 +287,7 @@ impl View for SshErrorBlock {
                     .build()
                     .with_cursor(Cursor::PointingHand)
                     .on_click(move |ctx, _, _| {
-                        ctx.dispatch_typed_action(SshErrorBlockAction::ContinueWithoutWarpification)
+                        ctx.dispatch_typed_action(SshErrorBlockAction::ContinueWithoutCognixification)
                     })
                     .finish(),
             );
@@ -331,21 +331,21 @@ impl TypedActionView for SshErrorBlock {
 
     fn handle_action(&mut self, action: &Self::Action, ctx: &mut ViewContext<Self>) {
         match action {
-            SshErrorBlockAction::WarpifyWithoutTmux => {
-                ctx.emit(SshErrorBlockEvent::WarpifyWithoutTmux)
+            SshErrorBlockAction::CognixifyWithoutTmux => {
+                ctx.emit(SshErrorBlockEvent::CognixifyWithoutTmux)
             }
-            SshErrorBlockAction::ContinueWithoutWarpification => {
-                ctx.emit(SshErrorBlockEvent::ContinueWithoutWarpification)
+            SshErrorBlockAction::ContinueWithoutCognixification => {
+                ctx.emit(SshErrorBlockEvent::ContinueWithoutCognixification)
             }
             SshErrorBlockAction::OpenUrl(url) => {
                 ctx.open_url(url);
             }
             SshErrorBlockAction::AddSshHostToDenylist(ssh_host) => {
-                let settings = WarpifySettings::handle(ctx);
-                settings.update(ctx, |warpify, ctx| {
-                    warpify.denylist_ssh_host(ssh_host, ctx);
+                let settings = CognixifySettings::handle(ctx);
+                settings.update(ctx, |cognixify, ctx| {
+                    cognixify.denylist_ssh_host(ssh_host, ctx);
                 });
-                ctx.emit(SshErrorBlockEvent::ContinueWithoutWarpification);
+                ctx.emit(SshErrorBlockEvent::ContinueWithoutCognixification);
                 ctx.notify()
             }
             SshErrorBlockAction::Focus => {

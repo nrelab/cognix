@@ -18,8 +18,8 @@ use futures::future::join_all;
 use futures::Future;
 use futures_lite::StreamExt;
 use itertools::Itertools;
-use warp_core::command::ExitCode;
-use warpui::{App, ModelHandle};
+use cognix_core::command::ExitCode;
+use cognixui::{App, ModelHandle};
 
 use std::path::PathBuf;
 use std::pin::pin;
@@ -216,7 +216,7 @@ fn test_append_commands() {
                 r#"
                     ls
                     pwd
-                    warp --listen --ports=8080,8081
+                    cognix --listen --ports=8080,8081
                 "#,
             )]);
 
@@ -248,7 +248,7 @@ fn test_append_commands() {
                 assert_eq!(
                     history.commands(session.id()).unwrap_or_default(),
                     vec![
-                        &HistoryEntry::command_only("warp --listen --ports=8080,8081"),
+                        &HistoryEntry::command_only("cognix --listen --ports=8080,8081"),
                         &HistoryEntry::with_session_id(session.id(), "ls"),
                         &HistoryEntry::with_session_id(session.id(), "pwd"),
                         &HistoryEntry::with_session_id(session.id(), "git status"),
@@ -267,7 +267,7 @@ fn test_append_multiple_sessions() {
             sandbox.with_files(vec![Stub::FileWithContentToBeTrimmed(
                 ".bash_history",
                 r#"
-                    cd warp
+                    cd cognix
                     cargo run --bin dev
                 "#,
             )]);
@@ -299,7 +299,7 @@ fn test_append_multiple_sessions() {
                 assert_eq!(
                     history.commands(session.id()).unwrap_or_default(),
                     vec![
-                        &HistoryEntry::command_only("cd warp"),
+                        &HistoryEntry::command_only("cd cognix"),
                         &HistoryEntry::command_only("cargo run --bin dev"),
                         &HistoryEntry::with_session_id(session.id(), "cargo clean"),
                         &HistoryEntry::with_session_id(session.id(), "ls target/"),
@@ -325,7 +325,7 @@ fn test_append_multiple_sessions() {
                 assert_eq!(
                     history.commands(second_session.id()).unwrap_or_default(),
                     vec![
-                        &HistoryEntry::command_only("cd warp"),
+                        &HistoryEntry::command_only("cd cognix"),
                         &HistoryEntry::command_only("cargo run --bin dev"),
                         &HistoryEntry::with_session_id(session.id(), "cargo clean"),
                         &HistoryEntry::with_session_id(second_session.id(), "ls target/"),
@@ -343,7 +343,7 @@ fn test_len() {
             sandbox.with_files(vec![Stub::FileWithContentToBeTrimmed(
                 ".bash_history",
                 r#"
-                    cd warp
+                    cd cognix
                     cargo run --bin dev
                     touch
                 "#,
@@ -388,7 +388,7 @@ fn test_len() {
                 assert_eq!(
                     history.commands(session.id()).unwrap_or_default(),
                     vec![
-                        &HistoryEntry::command_only("cd warp"),
+                        &HistoryEntry::command_only("cd cognix"),
                         &HistoryEntry::command_only("touch"),
                         &HistoryEntry::with_session_id(session.id(), "ls"),
                         &HistoryEntry::with_session_id(session.id(), "echo 'hello'"),
@@ -509,11 +509,11 @@ fn test_multiple_machines() {
             SessionInfo::new_for_test()
                 .with_id(0)
                 .with_shell_type(ShellType::Zsh)
-                .with_session_type(BootstrapSessionType::WarpifiedRemote)
+                .with_session_type(BootstrapSessionType::CognixifiedRemote)
                 .with_hostname("prod".to_string())
                 .with_user("user".to_string())
                 .with_ssh_socket_path(PathBuf::from("~/.ssh/12345"))
-                .with_home_dir("/users/warpuser".to_owned()),
+                .with_home_dir("/users/cognixuser".to_owned()),
             Arc::new(TestCommandExecutor::default()),
         ));
 
@@ -521,11 +521,11 @@ fn test_multiple_machines() {
             SessionInfo::new_for_test()
                 .with_id(1)
                 .with_shell_type(ShellType::Zsh)
-                .with_session_type(BootstrapSessionType::WarpifiedRemote)
+                .with_session_type(BootstrapSessionType::CognixifiedRemote)
                 .with_hostname("dev".to_string())
                 .with_user("user2".to_string())
                 .with_ssh_socket_path(PathBuf::from("~/.ssh/12345"))
-                .with_home_dir("/users/warpuser".to_owned()),
+                .with_home_dir("/users/cognixuser".to_owned()),
             Arc::new(TestCommandExecutor::default()),
         ));
 

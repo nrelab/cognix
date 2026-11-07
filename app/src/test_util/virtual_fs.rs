@@ -1,18 +1,18 @@
 use std::path::PathBuf;
 pub use virtual_fs::{Dirs, Stub, VirtualFS};
 
-pub trait WarpDirs {
+pub trait CognixDirs {
     #[allow(dead_code)]
     fn git_repository_fixture(&self) -> PathBuf {
-        Warp::fixtures().join("git_repository")
+        Cognix::fixtures().join("git_repository")
     }
 }
 
-impl WarpDirs for Dirs {}
+impl CognixDirs for Dirs {}
 
-pub struct Warp;
+pub struct Cognix;
 
-impl Warp {
+impl Cognix {
     #[allow(dead_code)]
     pub fn executable() -> PathBuf {
         let mut path = {
@@ -28,7 +28,7 @@ impl Warp {
                 .unwrap_or_else(|| Self::root().join(format!("target/{}", &build)))
         };
 
-        path.push("warp");
+        path.push("cognix");
         path
     }
 

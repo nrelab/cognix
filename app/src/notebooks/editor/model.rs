@@ -9,8 +9,8 @@ use num_traits::SaturatingSub;
 use regex::Regex;
 use url::Url;
 use vec1::{vec1, Vec1};
-use warpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+use cognixui::{
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, CognixA11yRole},
     clipboard::ClipboardContent,
     AppContext, Entity, ModelAsRef, ModelContext, ModelHandle, SingletonEntity, WindowId,
 };
@@ -26,14 +26,14 @@ use crate::{
     terminal::ShellLaunchData,
 };
 use string_offset::CharOffset;
-use warp_core::features::FeatureFlag;
-use warp_core::semantic_selection::SemanticSelection;
-use warp_editor::{
+use cognix_core::features::FeatureFlag;
+use cognix_core::semantic_selection::SemanticSelection;
+use cognix_editor::{
     content::{buffer::ShouldAutoscroll, selection_model::BufferSelectionModel},
     model::BufferUpdateWrapper,
     render::model::{BlockItem, StyleUpdateAction},
 };
-use warp_editor::{
+use cognix_editor::{
     content::{
         buffer::{
             AutoScrollBehavior, Buffer, BufferEditAction, BufferEvent, BufferSelectAction,
@@ -49,7 +49,7 @@ use warp_editor::{
     search::Searcher,
     selection::{SelectionMode, SelectionModel, TextDirection, TextUnit},
 };
-use warpui::elements::ListIndentLevel;
+use cognixui::elements::ListIndentLevel;
 
 use super::{
     super::telemetry::SelectionMode as TelemetrySelectionMode, embedding_model::NotebookEmbed,
@@ -1289,7 +1289,7 @@ impl NotebooksEditorModel {
         if let Some(command) = child_model.executable_command(ctx) {
             ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                 format!("Selected workflow: {command}"),
-                WarpA11yRole::TextareaRole,
+                CognixA11yRole::TextareaRole,
             ));
         }
 
@@ -1650,7 +1650,7 @@ impl NotebooksEditorModel {
         let text = format!("{style:?} {action}");
         ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
             text,
-            WarpA11yRole::UserAction,
+            CognixA11yRole::UserAction,
         ))
     }
 

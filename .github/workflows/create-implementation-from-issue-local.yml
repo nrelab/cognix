@@ -25,10 +25,10 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    uses: warpdotdev/oz-for-oss/.github/workflows/create-implementation-from-issue.yml@main
+    uses: nrelab/oz-for-oss/.github/workflows/create-implementation-from-issue.yml@main
     with:
       issue_number: ${{ github.event.inputs.issue_number || '' }}
     secrets:
       OZ_MGMT_GHA_APP_ID: ${{ secrets.OZ_MGMT_GHA_APP_ID }}
       OZ_MGMT_GHA_PRIVATE_KEY: ${{ secrets.OZ_MGMT_GHA_PRIVATE_KEY }}
-      WARP_API_KEY: ${{ secrets.OSS_WARP_API_KEY }}
+      COGNIX_API_KEY: ${{ secrets.OSS_COGNIX_API_KEY }}

@@ -20,22 +20,22 @@ use repo_metadata::repositories::DetectedRepositories;
 use std::path::PathBuf;
 use std::sync::Arc;
 use string_offset::CharOffset;
-use warp_core::ui::appearance::Appearance;
-use warp_editor::content::buffer::InitialBufferState;
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warpui::elements::Empty;
-use warpui::platform::WindowStyle;
-use warpui::{App, Element as _, ModelHandle, ViewHandle};
+use cognix_core::ui::appearance::Appearance;
+use cognix_editor::content::buffer::InitialBufferState;
+use cognix_editor::render::element::VerticalExpansionBehavior;
+use cognixui::elements::Empty;
+use cognixui::platform::WindowStyle;
+use cognixui::{App, Element as _, ModelHandle, ViewHandle};
 
 #[derive(Default)]
 struct TestView;
 
-impl warpui::Entity for TestView {
+impl cognixui::Entity for TestView {
     type Event = ();
 }
 
-impl warpui::View for TestView {
-    fn render(&self, _: &warpui::AppContext) -> Box<dyn warpui::Element> {
+impl cognixui::View for TestView {
+    fn render(&self, _: &cognixui::AppContext) -> Box<dyn cognixui::Element> {
         Empty::new().finish()
     }
 
@@ -44,7 +44,7 @@ impl warpui::View for TestView {
     }
 }
 
-impl warpui::TypedActionView for TestView {
+impl cognixui::TypedActionView for TestView {
     type Action = ();
 }
 

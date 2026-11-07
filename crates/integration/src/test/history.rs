@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use crate::Builder;
 use settings::Setting as _;
-use warp::{
+use cognix::{
     integration_testing::{
         self,
         command_search::{assert_command_search_is_open, assert_history_filter_is_active},
@@ -15,7 +15,7 @@ use warp::{
     sqlite_testing::set_user_and_hostname_for_commands,
     terminal::{input::Input, model::session::get_local_hostname, shell::ShellType},
 };
-use warpui::{async_assert, ViewHandle};
+use cognixui::{async_assert, ViewHandle};
 
 use crate::util::{get_local_user, write_histfiles_for_test};
 
@@ -297,7 +297,7 @@ pub fn test_command_search_loads_history_from_nondefault_histfile_path() -> Buil
 /// histfile commands, effectively "enriching" them with metadata.
 ///
 /// Basically, if a user manually deletes a command from their shell histfile, it should not show
-/// up in Warp -- so we effectively do a "left join" on commands from the histfile with commands
+/// up in Cognix -- so we effectively do a "left join" on commands from the histfile with commands
 /// loaded from sqlite.
 pub fn test_histfile_left_joined_with_persisted_history() -> Builder {
     new_builder()

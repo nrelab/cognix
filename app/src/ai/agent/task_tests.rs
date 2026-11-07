@@ -10,7 +10,7 @@ use crate::test_util::ai_agent_tasks::{
 };
 use chrono::Local;
 use prost_types::FieldMask;
-use warp_multi_agent_api as api;
+use cognix_multi_agent_api as api;
 
 use super::{ExtractMessagesError, Task};
 
@@ -562,11 +562,11 @@ fn test_new_moved_messages_subtask_preserves_messages() {
 }
 
 // =============================================================================
-// Tests for Warp docs subagent classification
+// Tests for Cognix docs subagent classification
 // =============================================================================
 
 #[test]
-fn test_is_warp_documentation_search_subagent() {
+fn test_is_cognix_documentation_search_subagent() {
     let parent_id = "parent";
     let subtask_id = "subtask";
     let parent_api_task = create_api_task(
@@ -581,6 +581,6 @@ fn test_is_warp_documentation_search_subagent() {
     let subtask_api_task = create_api_subtask(subtask_id, parent_id, vec![]);
     let subtask = Task::new_restored_subtask(subtask_api_task, &parent_api_task, vec![]);
 
-    assert!(subtask.is_warp_documentation_search_subagent());
+    assert!(subtask.is_cognix_documentation_search_subagent());
     assert!(!subtask.is_conversation_search_subagent());
 }

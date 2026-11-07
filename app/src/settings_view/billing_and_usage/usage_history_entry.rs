@@ -7,9 +7,9 @@ use crate::{
     ui_components::{blended_colors, icons::Icon},
 };
 use chrono::Local;
-use warp_core::ui::appearance::Appearance;
-use warp_graphql::queries::get_conversation_usage::ConversationUsage;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognix_graphql::queries::get_conversation_usage::ConversationUsage;
+use cognixui::{
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex,
         Hoverable, MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, Radius,
@@ -129,7 +129,7 @@ impl UsageHistoryEntry {
         };
         let chevron = ConstrainedBox::new(
             chevron_icon
-                .to_warpui_icon(appearance.theme().foreground())
+                .to_cognixui_icon(appearance.theme().foreground())
                 .finish(),
         )
         .with_width(16.)

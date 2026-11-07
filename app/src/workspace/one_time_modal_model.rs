@@ -8,8 +8,8 @@ use crate::settings::cloud_preferences_syncer::{
 use crate::settings::{AISettings, CodeSettings};
 use crate::terminal::general_settings::GeneralSettings;
 use settings::Setting as _;
-use warp_core::features::FeatureFlag;
-use warpui::{Entity, ModelContext, SingletonEntity, WindowId};
+use cognix_core::features::FeatureFlag;
+use cognixui::{Entity, ModelContext, SingletonEntity, WindowId};
 
 /// A generic model for managing one-time modals that should be shown to users only once.
 ///
@@ -21,8 +21,8 @@ pub struct OneTimeModalModel {
     is_build_plan_migration_modal_open: bool,
     /// Whether the Oz launch modal is currently being shown.
     is_oz_launch_modal_open: bool,
-    /// Whether the OpenWarp launch modal is currently being shown.
-    is_openwarp_launch_modal_open: bool,
+    /// Whether the OpenCognix launch modal is currently being shown.
+    is_opencognix_launch_modal_open: bool,
     /// Whether the HOA onboarding flow is currently being shown.
     is_hoa_onboarding_open: bool,
     /// The window ID where the currently open one-time modal should be displayed.
@@ -75,10 +75,10 @@ impl OneTimeModalModel {
                 });
                 GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
                     if let Err(e) = settings
-                        .did_check_to_trigger_openwarp_launch_modal
+                        .did_check_to_trigger_opencognix_launch_modal
                         .set_value(true, ctx)
                     {
-                        log::warn!("Failed to mark OpenWarp launch modal as dismissed: {e}");
+                        log::warn!("Failed to mark OpenCognix launch modal as dismissed: {e}");
                     }
                 });
             }
@@ -87,7 +87,7 @@ impl OneTimeModalModel {
         Self {
             is_build_plan_migration_modal_open: false,
             is_oz_launch_modal_open: false,
-            is_openwarp_launch_modal_open: false,
+            is_opencognix_launch_modal_open: false,
             is_hoa_onboarding_open: false,
             target_window_id: None,
         }
@@ -107,13 +107,13 @@ impl OneTimeModalModel {
         self.set_oz_launch_modal_open(false, ctx);
     }
 
-    /// Returns whether the OpenWarp launch modal is currently open.
-    pub fn is_openwarp_launch_modal_open(&self) -> bool {
-        self.is_openwarp_launch_modal_open && self.target_window_id.is_some()
+    /// Returns whether the OpenCognix launch modal is currently open.
+    pub fn is_opencognix_launch_modal_open(&self) -> bool {
+        self.is_opencognix_launch_modal_open && self.target_window_id.is_some()
     }
 
-    pub fn mark_openwarp_launch_modal_dismissed(&mut self, ctx: &mut ModelContext<Self>) {
-        self.set_openwarp_launch_modal_open(false, ctx);
+    pub fn mark_opencognix_launch_modal_dismissed(&mut self, ctx: &mut ModelContext<Self>) {
+        self.set_opencognix_launch_modal_open(false, ctx);
     }
 
     /// Returns whether the HOA onboarding flow is currently open.
@@ -128,7 +128,7 @@ impl OneTimeModalModel {
     /// Returns true if any one-time modal is currently open.
     pub fn is_any_modal_open(&self) -> bool {
         (self.is_oz_launch_modal_open
-            || self.is_openwarp_launch_modal_open
+            || self.is_opencognix_launch_modal_open
             || self.is_build_plan_migration_modal_open
             || self.is_hoa_onboarding_open)
             && self.target_window_id.is_some()
@@ -140,8 +140,8 @@ impl OneTimeModalModel {
     }
 
     #[cfg(debug_assertions)]
-    pub fn force_open_openwarp_launch_modal(&mut self, ctx: &mut ModelContext<Self>) {
-        self.set_openwarp_launch_modal_open(true, ctx);
+    pub fn force_open_opencognix_launch_modal(&mut self, ctx: &mut ModelContext<Self>) {
+        self.set_opencognix_launch_modal_open(true, ctx);
     }
 
     pub fn update_target_window_id(&mut self, window_id: WindowId, ctx: &mut ModelContext<Self>) {
@@ -163,13 +163,13 @@ impl OneTimeModalModel {
         false
     }
 
-    fn set_openwarp_launch_modal_open(
+    fn set_opencognix_launch_modal_open(
         &mut self,
         is_open: bool,
         ctx: &mut ModelContext<Self>,
     ) -> bool {
-        if self.is_openwarp_launch_modal_open != is_open {
-            self.is_openwarp_launch_modal_open = is_open;
+        if self.is_opencognix_launch_modal_open != is_open {
+            self.is_opencognix_launch_modal_open = is_open;
             ctx.emit(OneTimeModalEvent::VisibilityChanged { is_open });
             return true;
         }
@@ -192,9 +192,9 @@ impl OneTimeModalModel {
             }
         });
 
-        // The OpenWarp launch modal takes priority over the Oz launch modal
+        // The OpenCognix launch modal takes priority over the Oz launch modal
         // when both are enabled.
-        if self.check_and_trigger_openwarp_launch_modal(ctx) {
+        if self.check_and_trigger_opencognix_launch_modal(ctx) {
             return;
         }
 
@@ -266,33 +266,33 @@ impl OneTimeModalModel {
         should_show_oz_modal
     }
 
-    fn check_and_trigger_openwarp_launch_modal(&mut self, ctx: &mut ModelContext<Self>) -> bool {
+    fn check_and_trigger_opencognix_launch_modal(&mut self, ctx: &mut ModelContext<Self>) -> bool {
         // Only show if the feature flag is enabled.
-        if !FeatureFlag::OpenWarpLaunchModal.is_enabled() {
+        if !FeatureFlag::OpenCognixLaunchModal.is_enabled() {
             return false;
         }
 
         let general_settings = GeneralSettings::as_ref(ctx);
-        let openwarp_modal_shown = *general_settings
-            .did_check_to_trigger_openwarp_launch_modal
+        let opencognix_modal_shown = *general_settings
+            .did_check_to_trigger_opencognix_launch_modal
             .value();
 
-        if openwarp_modal_shown {
+        if opencognix_modal_shown {
             return false;
         }
 
         GeneralSettings::handle(ctx).update(ctx, |settings, ctx| {
             if let Err(e) = settings
-                .did_check_to_trigger_openwarp_launch_modal
+                .did_check_to_trigger_opencognix_launch_modal
                 .set_value(true, ctx)
             {
-                log::warn!("Failed to mark OpenWarp launch modal as dismissed: {e}");
+                log::warn!("Failed to mark OpenCognix launch modal as dismissed: {e}");
             }
         });
 
-        let should_show_openwarp_modal = !matches!(ChannelState::channel(), Channel::Integration);
-        self.set_openwarp_launch_modal_open(should_show_openwarp_modal, ctx);
-        should_show_openwarp_modal
+        let should_show_opencognix_modal = !matches!(ChannelState::channel(), Channel::Integration);
+        self.set_opencognix_launch_modal_open(should_show_opencognix_modal, ctx);
+        should_show_opencognix_modal
     }
 
     pub fn is_build_plan_migration_modal_open(&self) -> bool {

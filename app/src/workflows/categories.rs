@@ -1,6 +1,6 @@
 use itertools::Itertools;
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use cognix_editor::editor::NavigationKey;
+use cognixui::{
     elements::{
         ConstrainedBox, Container, DispatchEventResult, Element, Fill, Flex, ParentElement,
         ScrollStateHandle, Scrollable, ScrollableElement, ScrollbarWidth, Shrinkable, Text,
@@ -18,10 +18,10 @@ use crate::{
     cloud_object::model::persistence::CloudModel, workspaces::user_workspaces::UserWorkspaces,
 };
 use crate::{editor::Event as EditorEvent, send_telemetry_from_ctx};
-use crate::{server::telemetry::TelemetryEvent, user_config::WarpConfig};
+use crate::{server::telemetry::TelemetryEvent, user_config::CognixConfig};
 use crate::{
-    themes::theme::{self, Blend, WarpTheme},
-    user_config::WarpConfigUpdateEvent,
+    themes::theme::{self, Blend, CognixTheme},
+    user_config::CognixConfigUpdateEvent,
 };
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 use std::collections::HashMap;
@@ -29,17 +29,17 @@ use std::ops::Deref;
 #[cfg(feature = "local_fs")]
 use std::path::PathBuf;
 use std::sync::Arc;
-use warp_core::ui::builder::UiBuilder;
-use warp_core::ui::theme::color::internal_colors;
-use warp_workflows::workflows as global_workflows;
-use warpui::accessibility::{AccessibilityContent, WarpA11yRole};
-use warpui::color::ColorU;
-use warpui::elements::{
+use cognix_core::ui::builder::UiBuilder;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_workflows::workflows as global_workflows;
+use cognixui::accessibility::{AccessibilityContent, CognixA11yRole};
+use cognixui::color::ColorU;
+use cognixui::elements::{
     Align, CrossAxisAlignment, EventHandler, Highlight, Hoverable, MainAxisSize, MouseStateHandle,
 };
-use warpui::keymap::FixedBinding;
-use warpui::text_layout::TextStyle;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
+use cognixui::keymap::FixedBinding;
+use cognixui::text_layout::TextStyle;
+use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 
 use super::{workflow::Workflow, WorkflowSource};
 
@@ -54,7 +54,7 @@ const WORKFLOW_LIST_PADDING_MIDDLE: f32 = 5.;
 pub const WORKFLOW_SUBTEXT_FONT_SIZE: f32 = 14.0;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings(vec![
         FixedBinding::new("up", WorkflowsViewAction::Up, id!("WorkflowsView")),
@@ -174,7 +174,7 @@ impl WorkflowViewType {
             WorkflowViewType::Team => "Showing team workflows".into(),
         };
 
-        AccessibilityContent::new_without_help(a11y_content, WarpA11yRole::UserAction)
+        AccessibilityContent::new_without_help(a11y_content, CognixA11yRole::UserAction)
     }
 }
 
@@ -339,7 +339,7 @@ impl SelectionState {
         }
     }
 
-    fn background_color(&self, theme: &WarpTheme) -> theme::Fill {
+    fn background_color(&self, theme: &CognixTheme) -> theme::Fill {
         match self {
             SelectionState::Unselected => theme.surface_2(),
             SelectionState::Selected => theme.surface_2().blend(&theme.accent_overlay()),
@@ -375,7 +375,7 @@ impl CategoriesView {
             Self::categorize_workflows(
                 global_workflows()
                     .into_iter()
-                    .map(Workflow::from) // convert from the public-facing Workflow type to the warp-internal Workflow type
+                    .map(Workflow::from) // convert from the public-facing Workflow type to the cognix-internal Workflow type
                     .map(WorkflowType::Local)
                     .map(Arc::new),
             ),
@@ -406,8 +406,8 @@ impl CategoriesView {
             ctx.notify();
         });
 
-        ctx.subscribe_to_model(&WarpConfig::handle(ctx), |me, _, event, ctx| {
-            if let WarpConfigUpdateEvent::LocalUserWorkflows = event {
+        ctx.subscribe_to_model(&CognixConfig::handle(ctx), |me, _, event, ctx| {
+            if let CognixConfigUpdateEvent::LocalUserWorkflows = event {
                 me.update_workflows(ctx);
             }
         });
@@ -722,7 +722,7 @@ impl CategoriesView {
             );
             ctx.emit_a11y_content(AccessibilityContent::new_without_help(
                 a11y_content_text,
-                WarpA11yRole::MenuItemRole,
+                CognixA11yRole::MenuItemRole,
             ));
         }
     }
@@ -766,7 +766,7 @@ impl CategoriesView {
                 .link(
                     "creating your own workflow".into(),
                     Some(
-                        "https://docs.warp.dev/knowledge-and-collaboration/warp-drive/workflows"
+                        "https://docs.cognix.dev/knowledge-and-collaboration/cognix-drive/workflows"
                             .into(),
                     ),
                     None,
@@ -1156,7 +1156,7 @@ impl CategoriesView {
     }
 
     fn update_workflows(&mut self, ctx: &mut ViewContext<Self>) {
-        let workflows = WarpConfig::as_ref(ctx)
+        let workflows = CognixConfig::as_ref(ctx)
             .local_user_workflows()
             .iter()
             .map(Clone::clone)
@@ -1212,7 +1212,7 @@ impl View for CategoriesView {
         Some(AccessibilityContent::new(
             "Workflows",
             "Search or use arrow up and arrow down keys to navigate and find a workflow. Use enter to confirm the workflow and esc to quit.",
-            WarpA11yRole::MenuRole,
+            CognixA11yRole::MenuRole,
         ))
     }
 

@@ -9,21 +9,21 @@ use async_channel::{self, Receiver, Sender};
 use async_trait::async_trait;
 use chrono::DateTime;
 use parking_lot::{Mutex, MutexGuard};
-use warp_core::command::ExitCode;
-use warp_terminal::model::Point;
-use warpui::r#async::block_on;
+use cognix_core::command::ExitCode;
+use cognix_terminal::model::Point;
+use cognixui::r#async::block_on;
 
 use crate::safe_info;
 use crate::server::datetime_ext::DateTimeExt;
 use crate::terminal::event::ExecutedExecutorCommandEvent;
 use crate::terminal::shell::{Shell, ShellType};
-use warp_util::on_cancel::OnCancelFutureExt;
+use cognix_util::on_cancel::OnCancelFutureExt;
 
 use crate::terminal::model::session::command_executor::{
     shared, CommandExecutor, ExecutorCommandEvent,
 };
 use crate::terminal::SizeInfo;
-use warp_completer::completer::{CommandExitStatus, CommandOutput};
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
 
 use super::ExecuteCommandOptions;
 
@@ -329,7 +329,7 @@ impl InBandCommandExecutor {
 
                 let in_band_command = match shell.shell_type() {
                     ShellType::PowerShell => {
-                        format!("Warp-Run-GeneratorCommand {id} '{escaped_command}' -ErrorAction Ignore")
+                        format!("Cognix-Run-GeneratorCommand {id} '{escaped_command}' -ErrorAction Ignore")
                     }
                     ShellType::Fish => {
                         // Add a leading space for in-band commands in fish, which omits them from
@@ -337,10 +337,10 @@ impl InBandCommandExecutor {
                         // specifying command patterns to be omitted from history. Ignoring
                         // commands with a leading space is default, non-configurable behavior in
                         // fish.
-                        format!(" warp_run_generator_command {id} '{escaped_command}'")
+                        format!(" cognix_run_generator_command {id} '{escaped_command}'")
                     }
                     _ => {
-                        format!("warp_run_generator_command {id} '{escaped_command}'")
+                        format!("cognix_run_generator_command {id} '{escaped_command}'")
                     }
                 };
 
@@ -382,8 +382,8 @@ impl CommandExecutor for InBandCommandExecutor {
     /// the `pty_controller` passed to this executor during construction.
     ///
     /// The given `command` is executed in the active session using the
-    /// `warp_run_generator_command`/`Warp-Run-GeneratorCommand` shell script API that is declared as
-    /// part of Warp's bootstrap script.
+    /// `cognix_run_generator_command`/`Cognix-Run-GeneratorCommand` shell script API that is declared as
+    /// part of Cognix's bootstrap script.
     ///
     /// Internally, `command` is added to a queue of commands to be executed serially (this is to
     /// avoid output from multiple commands corrupting one another since the pty is a single
@@ -415,7 +415,7 @@ impl CommandExecutor for InBandCommandExecutor {
     /// "Cancels" active in-band commands.
     ///
     /// In reality, this does not cancel command execution (that is, however, actually done on the
-    /// shell side in `warp_preexec`). This merely clears the running and pending command IDs from
+    /// shell side in `cognix_preexec`). This merely clears the running and pending command IDs from
     /// the executor's, such that subsequently calling `handle_executed_command_event` with
     /// a cleared command ID is a no-op.
     fn cancel_active_commands(&self) {
@@ -441,8 +441,8 @@ impl CommandExecutor for InBandCommandExecutor {
 /// fish's command history.  Thus we strip leading whitespace before matching the `command`.
 pub fn is_in_band_command(command: &str) -> bool {
     let trimmed = command.trim_start();
-    trimmed.starts_with("Warp-Run-GeneratorCommand ")
-        || trimmed.starts_with("warp_run_generator_command ")
+    trimmed.starts_with("Cognix-Run-GeneratorCommand ")
+        || trimmed.starts_with("cognix_run_generator_command ")
 }
 
 #[cfg(test)]

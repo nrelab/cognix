@@ -1,8 +1,8 @@
 use crate::terminal::model::ansi::color_index;
-use crate::themes::theme::{AnsiColors, WarpTheme};
+use crate::themes::theme::{AnsiColors, CognixTheme};
 use std::fmt;
 use std::ops::{Index, IndexMut};
-use warpui::color::ColorU;
+use cognixui::color::ColorU;
 
 pub const COUNT: usize = 269;
 
@@ -41,8 +41,8 @@ impl Colors {
     }
 }
 
-impl From<WarpTheme> for Colors {
-    fn from(theme: WarpTheme) -> Self {
+impl From<CognixTheme> for Colors {
+    fn from(theme: CognixTheme) -> Self {
         let colors = theme.terminal_colors();
         Colors::new(
             PrimaryColors::new(

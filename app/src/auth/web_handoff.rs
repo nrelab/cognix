@@ -1,7 +1,7 @@
 use anyhow::anyhow;
 use wasm_bindgen::prelude::*;
 
-use warpui::{
+use cognixui::{
     ui_components::components::UiComponent as _, AppContext, Element, Entity, SingletonEntity,
     View, ViewContext,
 };

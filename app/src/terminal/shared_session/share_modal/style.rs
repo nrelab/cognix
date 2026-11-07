@@ -1,5 +1,5 @@
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{
     fonts::Weight,
     ui_components::components::{Coords, UiComponentStyles},
 };

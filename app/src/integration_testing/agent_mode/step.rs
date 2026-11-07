@@ -1,7 +1,7 @@
 use std::{fs::read, io::Cursor, path::Path, time::Duration};
 
 use prost::Message;
-use warpui::{async_assert, integration::TestStep, SingletonEntity};
+use cognixui::{async_assert, integration::TestStep, SingletonEntity};
 
 use crate::ai::execution_profiles::profiles::AIExecutionProfilesModel;
 use crate::ai::execution_profiles::ActionPermission;
@@ -73,7 +73,7 @@ pub fn exit_agent_view() -> TestStep {
 /// See the agent_mode_eval README for more details.
 pub fn hydrate_ai_conversation(file_name: &str) -> TestStep {
     let file_bytes = get_input_data(file_name);
-    let Ok(request) = warp_multi_agent_api::Request::decode(file_bytes) else {
+    let Ok(request) = cognix_multi_agent_api::Request::decode(file_bytes) else {
         panic!("Failed to decode request from protobuf");
     };
 
@@ -160,10 +160,10 @@ pub fn submit_ai_query(query: &str, timeout: Duration) -> TestStep {
 /// Returns an assertion that prints the conversation ID to stdout once available.
 /// This assertion will poll until the conversation token is received from the server.
 fn print_conversation_id_assertion(
-) -> impl FnMut(&mut warpui::App, warpui::WindowId) -> warpui::integration::AssertionOutcome {
+) -> impl FnMut(&mut cognixui::App, cognixui::WindowId) -> cognixui::integration::AssertionOutcome {
     |app, window_id| {
         use crate::BlocklistAIHistoryModel;
-        use warpui::integration::AssertionOutcome;
+        use cognixui::integration::AssertionOutcome;
         let terminal_view = terminal_view(app, window_id, 0, 0);
         BlocklistAIHistoryModel::handle(app).read(app, |history_model, _| {
             if let Some(conversation) = history_model.active_conversation(terminal_view.id()) {

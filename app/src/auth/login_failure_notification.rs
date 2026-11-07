@@ -1,5 +1,5 @@
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use warpui::{
+use cognixui::{
     elements::{
         Border, ConstrainedBox, Container, CrossAxisAlignment, Flex, FormattedTextElement,
         HighlightedHyperlink, Icon, MouseStateHandle, ParentElement, Shrinkable,
@@ -11,7 +11,7 @@ use warpui::{
 use crate::appearance::Appearance;
 
 const LOGIN_TROUBLESHOOTING_DOCS_URL: &str =
-    "https://docs.warp.dev/support-and-community/troubleshooting-and-support/troubleshooting-login-issues";
+    "https://docs.cognix.dev/support-and-community/troubleshooting-and-support/troubleshooting-login-issues";
 
 /// Represents reasons why login failed.
 pub enum LoginFailureReason {
@@ -151,7 +151,7 @@ pub fn render<A: Action + Clone>(
 }
 
 mod styles {
-    use warpui::elements::{CornerRadius, Radius};
+    use cognixui::elements::{CornerRadius, Radius};
 
     pub const NOTIFICATION_CONTAINER_PADDING: f32 = 8.;
     pub const NOTIFICATION_CONTAINER_CORNER_RADIUS: CornerRadius =

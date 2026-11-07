@@ -27,9 +27,9 @@ use crate::{
 };
 use itertools::Itertools;
 
-use warp_core::ui::theme::color::internal_colors;
-use warpui::{elements::Wrap, units::Pixels};
-use warpui::{
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::{elements::Wrap, units::Pixels};
+use cognixui::{
     elements::{
         Align, Border, ClippedScrollStateHandle, ClippedScrollable, Container, CornerRadius, Empty,
         EventHandler, Fill, Flex, Hoverable, MouseState, MouseStateHandle, ParentElement, Radius,
@@ -40,11 +40,11 @@ use warpui::{
     ui_components::components::{Coords, UiComponent, UiComponentStyles},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
-use warpui::{
+use cognixui::{
     elements::{ConstrainedBox, DispatchEventResult},
     presenter::ChildView,
 };
-use warpui::{
+use cognixui::{
     elements::{CrossAxisAlignment, Text},
     keymap::DescriptionContext,
 };
@@ -376,7 +376,7 @@ impl KeybindingRow {
                                 .with_margin_right(CLEAR_CANCEL_BUTTONS_SPACING)
                                 .finish(),
                         )
-                        .with_cross_axis_alignment(warpui::elements::CrossAxisAlignment::Center)
+                        .with_cross_axis_alignment(cognixui::elements::CrossAxisAlignment::Center)
                         .finish(),
                 )
                 .finish(),
@@ -608,7 +608,7 @@ impl KeybindingsView {
 
             self.conflict_map.update(&row.binding.trigger, None);
 
-            // Persist the keybinding into the `.warp` directory so that it will last beyond
+            // Persist the keybinding into the `.cognix` directory so that it will last beyond
             // this session
             write_custom_keybinding(row.binding.name.clone(), UserDefinedKeybinding::Removed);
             update_binding_list(&row.binding.name, None, &mut self.bindings);

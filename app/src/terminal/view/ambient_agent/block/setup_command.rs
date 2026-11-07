@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
 use parking_lot::FairMutex;
-use warp_core::ui::appearance::Appearance;
-use warp_terminal::model::BlockId;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognix_terminal::model::BlockId;
+use cognixui::{
     prelude::{Container, Empty, MouseStateHandle},
     scene::{CornerRadius, Radius},
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,

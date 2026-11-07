@@ -24,14 +24,14 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 use std::sync::mpsc::SyncSender;
-use warp_graphql::scalars::time::ServerTimestamp;
+use cognix_graphql::scalars::time::ServerTimestamp;
 
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::cloud_object::CloudObject;
 use chrono::{DateTime, Duration, Utc};
 use rand::Rng;
-use warp_core::features::FeatureFlag;
+use cognix_core::features::FeatureFlag;
 
 use super::generic_string_model::GenericStringObjectId;
 
@@ -898,7 +898,7 @@ impl CloudModel {
 
             folder.set_model(CloudFolderModel {
                 is_open,
-                is_warp_pack: folder.model.is_warp_pack,
+                is_cognix_pack: folder.model.is_cognix_pack,
                 name: folder.model.name.clone(),
             });
 
@@ -1098,11 +1098,11 @@ impl CloudModel {
             .count()
     }
 
-    /// Number of cloud objects that have errored in some way and are visible in the Warp Drive index
+    /// Number of cloud objects that have errored in some way and are visible in the Cognix Drive index
     pub fn num_visible_errored_objects(&self) -> usize {
         self.objects_by_id
             .values()
-            .filter(|object| object.renders_in_warp_drive() && object.metadata().is_errored())
+            .filter(|object| object.renders_in_cognix_drive() && object.metadata().is_errored())
             .count()
     }
 
@@ -1411,7 +1411,7 @@ impl CloudModel {
     pub fn current_revision(&self, id: &SyncId) -> Option<&Revision> {
         self.objects_by_id
             .get(&id.uid())
-            .and_then(|warp_cloud_object| warp_cloud_object.metadata().revision.as_ref())
+            .and_then(|cognix_cloud_object| cognix_cloud_object.metadata().revision.as_ref())
     }
 
     /// Returns only active (not trashed) notebooks in cloud model.

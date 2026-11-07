@@ -27,8 +27,8 @@ use chrono::{DateTime, Duration, Utc};
 use firebase::FirebaseError;
 use itertools::Itertools;
 use std::sync::Arc;
-use warp_server_client::cloud_object::ServerPermissions;
-use warpui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity};
+use cognix_server_client::cloud_object::ServerPermissions;
+use cognixui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity};
 
 #[cfg(test)]
 use crate::server::server_api::object::MockObjectClient;
@@ -758,7 +758,7 @@ fn test_create_and_update_notebook() {
     });
 }
 
-// regression test for https://linear.app/warpdotdev/issue/CLD-571
+// regression test for https://linear.app/nrelab/issue/CLD-571
 #[test]
 fn test_initial_queue_items_processed_properly() {
     App::test((), |mut app| async move {

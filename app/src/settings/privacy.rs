@@ -3,10 +3,10 @@ use std::sync::Arc;
 
 use anyhow::Result;
 use regex::Regex;
-use warp_core::features::FeatureFlag;
-use warp_core::report_if_error;
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity, UpdateModel};
+use cognix_core::features::FeatureFlag;
+use cognix_core::report_if_error;
+use cognix_core::user_preferences::GetUserPreferences as _;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity, UpdateModel};
 
 use crate::ai::blocklist::telemetry_banner::should_collect_ai_ugc_telemetry;
 use crate::auth::auth_state::AuthState;
@@ -93,7 +93,7 @@ impl PartialEq for CustomSecretRegex {
 
 impl settings_value::SettingsValue for CustomSecretRegex {}
 
-define_settings_group!(WarpDrivePrivacySettings, settings: [
+define_settings_group!(CognixDrivePrivacySettings, settings: [
     is_telemetry_enabled: IsTelemetryEnabled {
         type: bool,
         default: true,
@@ -270,7 +270,7 @@ impl PrivacySettings {
             .unwrap_or(true);
 
         // Make sure the user-preferences stores match what's in memory.
-        // Needed for warp drive preferences to work and no harm in doing in general.
+        // Needed for cognix drive preferences to work and no harm in doing in general.
         let _ = ctx.private_user_preferences().write_value(
             TELEMETRY_ENABLED_DEFAULTS_KEY,
             serde_json::to_string(&is_telemetry_enabled)
@@ -288,22 +288,22 @@ impl PrivacySettings {
         );
 
         // Listen for changes to the cloud model and update ourselves when they happen.
-        ctx.subscribe_to_model(&WarpDrivePrivacySettings::handle(ctx), |me, event, ctx| {
-            let privacy_settings = WarpDrivePrivacySettings::as_ref(ctx);
+        ctx.subscribe_to_model(&CognixDrivePrivacySettings::handle(ctx), |me, event, ctx| {
+            let privacy_settings = CognixDrivePrivacySettings::as_ref(ctx);
             match event {
-                WarpDrivePrivacySettingsChangedEvent::IsTelemetryEnabled { .. } => {
+                CognixDrivePrivacySettingsChangedEvent::IsTelemetryEnabled { .. } => {
                     me.set_is_telemetry_enabled(
                         *privacy_settings.is_telemetry_enabled.value(),
                         ctx,
                     );
                 }
-                WarpDrivePrivacySettingsChangedEvent::IsCrashReportingEnabled { .. } => {
+                CognixDrivePrivacySettingsChangedEvent::IsCrashReportingEnabled { .. } => {
                     me.set_is_crash_reporting_enabled(
                         *privacy_settings.is_crash_reporting_enabled.value(),
                         ctx,
                     );
                 }
-                WarpDrivePrivacySettingsChangedEvent::IsCloudConversationStorageEnabled {
+                CognixDrivePrivacySettingsChangedEvent::IsCloudConversationStorageEnabled {
                     ..
                 } => {
                     me.set_is_cloud_conversation_storage_enabled(
@@ -442,7 +442,7 @@ impl PrivacySettings {
             }
         }
 
-        self.maybe_sync_with_warp_drive_prefs(ctx);
+        self.maybe_sync_with_cognix_drive_prefs(ctx);
     }
 
     fn overwrite_local_settings_if_cloud_disabled(
@@ -529,7 +529,7 @@ impl PrivacySettings {
         if new_value != old_value {
             self.is_crash_reporting_enabled = new_value;
 
-            WarpDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
+            CognixDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
                 log::info!("Setting is_crash_reporting_enabled to {new_value}");
                 let _ = settings
                     .is_crash_reporting_enabled
@@ -565,7 +565,7 @@ impl PrivacySettings {
         if new_value != old_value {
             self.is_telemetry_enabled = new_value;
 
-            WarpDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
+            CognixDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
                 log::info!("Setting is_telemetry_enabled to {new_value}");
                 let _ = settings.is_telemetry_enabled.set_value(new_value, ctx);
             });
@@ -597,7 +597,7 @@ impl PrivacySettings {
 
         self.is_cloud_conversation_storage_enabled = new_value;
 
-        WarpDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
+        CognixDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
             log::info!("Setting is_cloud_conversation_storage_enabled to {new_value}");
             let _ = settings
                 .is_cloud_conversation_storage_enabled
@@ -722,26 +722,26 @@ impl PrivacySettings {
         }
     }
 
-    /// We wait until warp drive prefs have loaded and then either
+    /// We wait until cognix drive prefs have loaded and then either
     /// 1) use them as the data store for is_telemetry_enabled and is_crash_reporting_enabled, if those
-    ///    values are set in warp drive, or
-    /// 2) update the warp drive prefs to match the values from the legacy user_settings endpoint so
-    ///    that we can use warp drive prefs going forward.
-    pub fn maybe_sync_with_warp_drive_prefs(&mut self, ctx: &mut ModelContext<Self>) {
-        // Wait for cloud objects to load, and, if telemetry & crash reporting are synced to warp drive
-        // initialize from the warp drive values.
+    ///    values are set in cognix drive, or
+    /// 2) update the cognix drive prefs to match the values from the legacy user_settings endpoint so
+    ///    that we can use cognix drive prefs going forward.
+    pub fn maybe_sync_with_cognix_drive_prefs(&mut self, ctx: &mut ModelContext<Self>) {
+        // Wait for cloud objects to load, and, if telemetry & crash reporting are synced to cognix drive
+        // initialize from the cognix drive values.
         let update_manager = UpdateManager::as_ref(ctx);
         ctx.spawn(
             update_manager.initial_load_complete(),
-            Self::handle_warp_drive_objects_loaded,
+            Self::handle_cognix_drive_objects_loaded,
         );
     }
 
-    fn handle_warp_drive_objects_loaded(&mut self, _: (), ctx: &mut ModelContext<Self>) {
+    fn handle_cognix_drive_objects_loaded(&mut self, _: (), ctx: &mut ModelContext<Self>) {
         self.initialize_default_regexes_once(ctx);
-        // Check if the warp drive preferences are set. If they are, and telemetry and crash reporting
-        // are set as warp drive prefs, then use those.  Otherwise, update the warp drive prefs to match
-        // the values from the legacy user_settings endpoint so that we can use warp drive prefs going forward.
+        // Check if the cognix drive preferences are set. If they are, and telemetry and crash reporting
+        // are set as cognix drive prefs, then use those.  Otherwise, update the cognix drive prefs to match
+        // the values from the legacy user_settings endpoint so that we can use cognix drive prefs going forward.
         let cloud_model = CloudModel::as_ref(ctx);
         let cloud_prefs = cloud_model.get_all_cloud_preferences_by_storage_key();
         let cloud_telemetry_value =
@@ -784,7 +784,7 @@ impl PrivacySettings {
                 Some(is_cloud_conversation_storage_enabled),
             ) => {
                 log::info!(
-                    "Warp Drive privacy preferences are set, using those for telemetry={is_telemetry_enabled}, \
+                    "Cognix Drive privacy preferences are set, using those for telemetry={is_telemetry_enabled}, \
                     crash_reporting={is_crash_reporting_enabled}, cloud_conversation_storage={is_cloud_conversation_storage_enabled}"
                 );
                 self.set_is_telemetry_enabled(is_telemetry_enabled, ctx);
@@ -796,20 +796,20 @@ impl PrivacySettings {
             }
             _ => {
                 log::info!(
-                    "Warp Drive privacy preferences are not set, syncing local PrivacySettings values to \
-                    WarpDrivePrivacySettings and cloud. telemetry={}, crash_reporting={}, \
+                    "Cognix Drive privacy preferences are not set, syncing local PrivacySettings values to \
+                    CognixDrivePrivacySettings and cloud. telemetry={}, crash_reporting={}, \
                     cloud_conversation_storage={}",
                     self.is_telemetry_enabled,
                     self.is_crash_reporting_enabled,
                     self.is_cloud_conversation_storage_enabled
                 );
-                // First, ensure WarpDrivePrivacySettings (the define_settings_group model)
+                // First, ensure CognixDrivePrivacySettings (the define_settings_group model)
                 // reflects the actual PrivacySettings in-memory values. These may differ
-                // because WarpDrivePrivacySettings defaults to `true` for all three settings,
+                // because CognixDrivePrivacySettings defaults to `true` for all three settings,
                 // while the user may have changed them to `false` via PrivacySettings before
                 // signing up. Without this step, maybe_sync_local_prefs_to_cloud would read
-                // the stale WarpDrivePrivacySettings defaults and push those to the cloud.
-                WarpDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
+                // the stale CognixDrivePrivacySettings defaults and push those to the cloud.
+                CognixDrivePrivacySettings::handle(ctx).update(ctx, |settings, ctx| {
                     report_if_error!(settings
                         .is_telemetry_enabled
                         .set_value(self.is_telemetry_enabled, ctx));

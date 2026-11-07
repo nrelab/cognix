@@ -5,16 +5,16 @@ use crate::ui_components::icons::Icon;
 use super::super::header_content::HeaderRenderContext;
 use super::{ActionPayload, PaneHeaderAction};
 
-use warp_core::ui::icons::ICON_DIMENSIONS;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{
+use cognix_core::ui::icons::ICON_DIMENSIONS;
+use cognix_core::ui::theme::Fill;
+use cognixui::elements::{
     Align, Clipped, ConstrainedBox, Container, CrossAxisAlignment, Flex, Hoverable,
     MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, SavePosition, Shrinkable,
     Text,
 };
-use warpui::text_layout::ClipConfig;
-use warpui::ui_components::components::UiComponent;
-use warpui::Element;
+use cognixui::text_layout::ClipConfig;
+use cognixui::ui_components::components::UiComponent;
+use cognixui::Element;
 
 /// Horizontal padding applied inside each edge column of the three-column header.
 pub const HEADER_EDGE_PADDING: f32 = 4.;

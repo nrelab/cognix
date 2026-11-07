@@ -2,7 +2,7 @@ use std::{io, process::ExitStatus, sync::OnceLock, time::Duration};
 
 use chrono::{DateTime, Utc};
 use serde::Serialize;
-use warp_core::channel::{Channel, ChannelState};
+use cognix_core::channel::{Channel, ChannelState};
 
 #[cfg(not(target_family = "wasm"))]
 mod docker;
@@ -16,30 +16,30 @@ mod namespace;
 /// Environment variable set by the server to identify the isolation platform.
 /// The value should match one of the `IsolationPlatformType` variants in snake_case.
 #[cfg(not(target_family = "wasm"))]
-const WARP_ISOLATION_PLATFORM_ENV: &str = "WARP_ISOLATION_PLATFORM";
+const COGNIX_ISOLATION_PLATFORM_ENV: &str = "COGNIX_ISOLATION_PLATFORM";
 
-/// Environment variable containing the generic Warp-managed workload token that we use
+/// Environment variable containing the generic Cognix-managed workload token that we use
 /// for isolation platforms that don't issue their own tokens.
 #[cfg(not(target_family = "wasm"))]
-const WARP_WORKLOAD_TOKEN_ENV: &str = "WARP_WORKLOAD_TOKEN";
+const COGNIX_WORKLOAD_TOKEN_ENV: &str = "COGNIX_WORKLOAD_TOKEN";
 
-/// A kind of isolation platform. For our usage, isolation platforms are different ways where Warp
+/// A kind of isolation platform. For our usage, isolation platforms are different ways where Cognix
 /// can be sandboxed, such as VMs, containers, or cloud hosts. This may also include weaker forms
 /// of sandboxing such as Git worktrees.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum IsolationPlatformType {
-    /// Warp is running within a Docker container. Note that this does *not* mean this is a Warp-hosted
+    /// Cognix is running within a Docker container. Note that this does *not* mean this is a Cognix-hosted
     /// Docker Sandboxes environment. Instead, it's likely a self-hosted agent.
     #[cfg(not(target_family = "wasm"))]
     Docker,
-    /// Warp is running within a Docker Sandbox, likely as a Warp-hosted agent.
+    /// Cognix is running within a Docker Sandbox, likely as a Cognix-hosted agent.
     #[cfg(not(target_family = "wasm"))]
     DockerSandbox,
-    /// Warp is running within a Kubernetes pod, likely as a self-hosted agent.
+    /// Cognix is running within a Kubernetes pod, likely as a self-hosted agent.
     #[cfg(not(target_family = "wasm"))]
     Kubernetes,
-    /// Warp is running within a Namespace instance, likely as a Warp-hosted agent.
+    /// Cognix is running within a Namespace instance, likely as a Cognix-hosted agent.
     #[cfg(not(target_family = "wasm"))]
     Namespace,
 }
@@ -133,11 +133,11 @@ pub async fn issue_workload_token(
     }
 }
 
-/// Read a platform-agnostic workload token from the `WARP_WORKLOAD_TOKEN` environment variable.
+/// Read a platform-agnostic workload token from the `COGNIX_WORKLOAD_TOKEN` environment variable.
 /// Returns a `WorkloadToken` with no expiration, or an error if the variable is missing/empty.
 #[cfg(not(target_family = "wasm"))]
 fn read_generic_workload_token() -> Result<WorkloadToken, IsolationPlatformError> {
-    let token = std::env::var(WARP_WORKLOAD_TOKEN_ENV)
+    let token = std::env::var(COGNIX_WORKLOAD_TOKEN_ENV)
         .map_err(|_| IsolationPlatformError::GenericWorkloadTokenMissing)?;
     if token.is_empty() {
         return Err(IsolationPlatformError::GenericWorkloadTokenMissing);
@@ -148,17 +148,17 @@ fn read_generic_workload_token() -> Result<WorkloadToken, IsolationPlatformError
     })
 }
 
-/// Parse the `WARP_ISOLATION_PLATFORM` environment variable into a platform type.
+/// Parse the `COGNIX_ISOLATION_PLATFORM` environment variable into a platform type.
 #[cfg(not(target_family = "wasm"))]
 fn platform_from_env() -> Option<IsolationPlatformType> {
-    let value = std::env::var(WARP_ISOLATION_PLATFORM_ENV).ok()?;
+    let value = std::env::var(COGNIX_ISOLATION_PLATFORM_ENV).ok()?;
     match value.as_str() {
         "docker" => Some(IsolationPlatformType::Docker),
         "docker_sandbox" => Some(IsolationPlatformType::DockerSandbox),
         "kubernetes" => Some(IsolationPlatformType::Kubernetes),
         "namespace" => Some(IsolationPlatformType::Namespace),
         other => {
-            log::warn!("Unknown {WARP_ISOLATION_PLATFORM_ENV} value: {other}");
+            log::warn!("Unknown {COGNIX_ISOLATION_PLATFORM_ENV} value: {other}");
             None
         }
     }

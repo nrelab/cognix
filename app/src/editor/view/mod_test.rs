@@ -16,11 +16,11 @@ use itertools::Itertools;
 use pathfinder_geometry::vector::vec2f;
 use settings::ToggleableSetting;
 use unindent::Unindent;
-use warpui::color::ColorU;
-use warpui::platform::WindowStyle;
-use warpui::text_layout::TextFrame;
-use warpui::windowing::WindowManager;
-use warpui::{AddSingletonModel, App, UpdateModel, UpdateView};
+use cognixui::color::ColorU;
+use cognixui::platform::WindowStyle;
+use cognixui::text_layout::TextFrame;
+use cognixui::windowing::WindowManager;
+use cognixui::{AddSingletonModel, App, UpdateModel, UpdateView};
 
 impl EditorView {
     fn selected_ranges(&self, app: &AppContext) -> Vec<Range<DisplayPoint>> {
@@ -472,12 +472,12 @@ fn test_select_word_with_smart_select() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.warp/themes/foo-bar.yaml thing",
+                "word ~/.cognix/themes/foo-bar.yaml thing",
                 Default::default(),
                 ctx,
             );
             editor.select_word(&DisplayPoint::new(0, 8), ctx);
-            assert_eq!(editor.selected_text(ctx), "~/.warp/themes/foo-bar.yaml");
+            assert_eq!(editor.selected_text(ctx), "~/.cognix/themes/foo-bar.yaml");
             editor
         });
     });
@@ -501,12 +501,12 @@ fn test_select_word_with_custom_boundaries() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.warp/themes/foo-bar.yaml thing",
+                "word ~/.cognix/themes/foo-bar.yaml thing",
                 Default::default(),
                 ctx,
             );
             editor.select_word(&DisplayPoint::new(0, 8), ctx);
-            assert_eq!(editor.selected_text(ctx), "/.warp/themes/foo-bar.yaml");
+            assert_eq!(editor.selected_text(ctx), "/.cognix/themes/foo-bar.yaml");
             editor
         });
     });
@@ -526,7 +526,7 @@ fn test_smart_select_with_drag() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.warp/themes/foo-bar.yaml andy@warp.dev",
+                "word ~/.cognix/themes/foo-bar.yaml andy@cognix.dev",
                 Default::default(),
                 ctx,
             );
@@ -534,7 +534,7 @@ fn test_smart_select_with_drag() {
             editor.update_selection(DisplayPoint::new(0, 34), Vector2F::zero(), ctx);
             assert_eq!(
                 editor.selected_text(ctx),
-                "~/.warp/themes/foo-bar.yaml andy"
+                "~/.cognix/themes/foo-bar.yaml andy"
             );
             editor
         });
@@ -2038,7 +2038,7 @@ fn test_delete_and_cut_all_right() -> Result<()> {
 
 #[test]
 fn test_autosuggestions() -> Result<()> {
-    use warpui::text_layout::LayoutCache;
+    use cognixui::text_layout::LayoutCache;
 
     App::test((), |mut app| async move {
         initialize_app(&mut app);
@@ -2316,7 +2316,7 @@ fn test_partial_autosuggestion() -> Result<()> {
 
 #[test]
 fn test_placeholder_text() {
-    use warpui::text_layout::LayoutCache;
+    use cognixui::text_layout::LayoutCache;
 
     App::test((), |mut app| async move {
         initialize_app(&mut app);
@@ -3132,7 +3132,7 @@ fn test_add_next_occurrence() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor =
-                EditorView::new_with_base_text("warpwordwarpwordwarp", Default::default(), ctx);
+                EditorView::new_with_base_text("cognixwordcognixwordcognix", Default::default(), ctx);
             editor
                 .select_ranges(vec![DisplayPoint::new(0, 0)..DisplayPoint::new(0, 4)], ctx)
                 .unwrap();
@@ -3143,7 +3143,7 @@ fn test_add_next_occurrence() {
             assert_eq!(editor.buffer_text(ctx), "wordword");
 
             editor.undo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "warpwordwarpwordwarp");
+            assert_eq!(editor.buffer_text(ctx), "cognixwordcognixwordcognix");
             editor.redo(ctx);
             assert_eq!(editor.buffer_text(ctx), "wordword");
 
@@ -3318,7 +3318,7 @@ fn test_autocomplete_symbols() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor =
-                EditorView::new_with_base_text("word warp word", Default::default(), ctx);
+                EditorView::new_with_base_text("word cognix word", Default::default(), ctx);
 
             editor.set_autocomplete_symbols_allowed(true);
             editor
@@ -3332,12 +3332,12 @@ fn test_autocomplete_symbols() {
                 .unwrap();
             editor.add_next_occurrence(ctx);
             editor.user_insert("[", ctx);
-            assert_eq!(editor.buffer_text(ctx), "[word] warp [word]");
+            assert_eq!(editor.buffer_text(ctx), "[word] cognix [word]");
 
             editor.undo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "word warp word");
+            assert_eq!(editor.buffer_text(ctx), "word cognix word");
             editor.redo(ctx);
-            assert_eq!(editor.buffer_text(ctx), "[word] warp [word]");
+            assert_eq!(editor.buffer_text(ctx), "[word] cognix [word]");
 
             editor
         });
@@ -3358,11 +3358,11 @@ fn test_autocomplete_symbols() {
                 autocomplete_symbols: true,
                 ..Default::default()
             };
-            let mut editor = EditorView::new_with_base_text("word warp word", options, ctx);
+            let mut editor = EditorView::new_with_base_text("word cognix word", options, ctx);
 
             editor.cursor_end(ctx);
             editor.user_insert("(", ctx);
-            assert_eq!(editor.buffer_text(ctx), "word warp word(");
+            assert_eq!(editor.buffer_text(ctx), "word cognix word(");
 
             editor
         });
@@ -4169,7 +4169,7 @@ fn test_paste_clipboard_with_text_only_should_paste_text_normally() {
 
         // Text-only clipboard - should paste text normally
         app.update(|ctx| {
-            let clipboard_content = warpui::clipboard::ClipboardContent {
+            let clipboard_content = cognixui::clipboard::ClipboardContent {
                 plain_text: "hello world".to_string(),
                 paths: None,
                 html: None,
@@ -4185,7 +4185,7 @@ fn test_paste_clipboard_with_text_only_should_paste_text_normally() {
 
         // Empty images array should also fall back to text paste
         app.update(|ctx| {
-            let clipboard_content = warpui::clipboard::ClipboardContent {
+            let clipboard_content = cognixui::clipboard::ClipboardContent {
                 plain_text: "fallback text".to_string(),
                 paths: None,
                 html: None,
@@ -4223,12 +4223,12 @@ fn test_paste_clipboard_with_image_only_should_switch_to_agent_mode() {
 
         // Image-only clipboard - should switch to Agent Mode and attach image
         app.update(|ctx| {
-            let png_image = warpui::clipboard::ImageData {
+            let png_image = cognixui::clipboard::ImageData {
                 data: vec![137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13], // PNG header + minimal data
                 mime_type: "image/png".to_string(),
                 filename: None,
             };
-            let clipboard_content = warpui::clipboard::ClipboardContent {
+            let clipboard_content = cognixui::clipboard::ClipboardContent {
                 plain_text: "".to_string(), // No text
                 paths: None,
                 html: None,
@@ -4266,12 +4266,12 @@ fn test_paste_clipboard_with_supported_image_and_text_should_handle_both() {
 
         // PNG (supported) image and text clipboard - should switch to Agent Mode, attach image, and paste text
         app.update(|ctx| {
-            let png_image = warpui::clipboard::ImageData {
+            let png_image = cognixui::clipboard::ImageData {
                 data: vec![137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13], // PNG header + minimal data
                 mime_type: "image/png".to_string(),
                 filename: Some("test.png".to_string()),
             };
-            let clipboard_content = warpui::clipboard::ClipboardContent {
+            let clipboard_content = cognixui::clipboard::ClipboardContent {
                 plain_text: "some descriptive text".to_string(),
                 paths: None,
                 html: None,
@@ -4310,12 +4310,12 @@ fn test_paste_clipboard_with_unsupported_image_and_text_should_show_error() {
 
         // BMP (unsupported) image and text clipboard - should show error and paste text only
         app.update(|ctx| {
-            let bmp_image = warpui::clipboard::ImageData {
+            let bmp_image = cognixui::clipboard::ImageData {
                 data: vec![66, 77, 54, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0], // BMP header + minimal data
                 mime_type: "image/bmp".to_string(),
                 filename: Some("test.bmp".to_string()),
             };
-            let clipboard_content = warpui::clipboard::ClipboardContent {
+            let clipboard_content = cognixui::clipboard::ClipboardContent {
                 plain_text: "text with unsupported image".to_string(),
                 paths: None,
                 html: None,
@@ -4503,7 +4503,7 @@ fn test_drag_and_drop_files_applies_path_transformer() {
         view.update(&mut app, |view, ctx| {
             view.clear_buffer(ctx);
             view.set_drag_drop_path_transformer(Some(Box::new(
-                warp_util::path::convert_windows_path_to_wsl,
+                cognix_util::path::convert_windows_path_to_wsl,
             )));
             view.drag_and_drop_files(&paths(), ctx);
             assert_eq!(view.buffer_text(ctx), "/mnt/c/foo/bar /mnt/d/baz ");
@@ -4512,7 +4512,7 @@ fn test_drag_and_drop_files_applies_path_transformer() {
         view.update(&mut app, |view, ctx| {
             view.clear_buffer(ctx);
             view.set_drag_drop_path_transformer(Some(Box::new(
-                warp_util::path::convert_windows_path_to_msys2,
+                cognix_util::path::convert_windows_path_to_msys2,
             )));
             view.drag_and_drop_files(&paths(), ctx);
             assert_eq!(view.buffer_text(ctx), "/c/foo/bar /d/baz ");

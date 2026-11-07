@@ -79,7 +79,7 @@ runs:
       run: |
         cd "${{ steps.repo-root.outputs.path }}"
         if ${{ inputs.target_os == 'macos' }}; then
-          # Try to install warp-channel-config but don't complain if it cannot
+          # Try to install cognix-channel-config but don't complain if it cannot
           # be installed.
           ./script/install_channel_config || true
           if ${{ inputs.install_release_deps == 'true' }}; then

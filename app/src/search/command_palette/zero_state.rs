@@ -1,18 +1,18 @@
 mod items;
 pub use items::Items;
-use warp_core::context_flag::ContextFlag;
-use warp_core::features::FeatureFlag;
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::features::FeatureFlag;
 
 use crate::appearance::Appearance;
 use crate::search::command_palette::FilterChipRenderer;
 
-use crate::drive::settings::WarpDriveSettings;
+use crate::drive::settings::CognixDriveSettings;
 use crate::search::QueryFilter;
 use crate::settings::AISettings;
 use crate::workspace::Workspace;
 use std::collections::HashMap;
-use warpui::elements::{Container, Flex, MouseStateHandle, ParentElement, Shrinkable, Wrap};
-use warpui::{
+use cognixui::elements::{Container, Flex, MouseStateHandle, ParentElement, Shrinkable, Wrap};
+use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     WindowId,
 };
@@ -81,10 +81,10 @@ impl ZeroState {
         app: &AppContext,
         window_id: WindowId,
     ) -> impl Iterator<Item = QueryFilter> {
-        let show_warp_drive = WarpDriveSettings::is_warp_drive_enabled(app);
+        let show_cognix_drive = CognixDriveSettings::is_cognix_drive_enabled(app);
 
         let mut valid_filters = vec![];
-        if show_warp_drive {
+        if show_cognix_drive {
             valid_filters.push(QueryFilter::Workflows);
             if FeatureFlag::AgentModeWorkflows.is_enabled()
                 && AISettings::as_ref(app).is_any_ai_enabled(app)
@@ -109,7 +109,7 @@ impl ZeroState {
             }
         }
 
-        if show_warp_drive {
+        if show_cognix_drive {
             valid_filters.push(QueryFilter::Drive);
         }
         valid_filters.extend([QueryFilter::Actions, QueryFilter::Sessions]);

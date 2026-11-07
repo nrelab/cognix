@@ -1,4 +1,4 @@
-//! Commands to interact with ambient agents on Warp's platform.
+//! Commands to interact with ambient agents on Cognix's platform.
 use std::io::Write as _;
 use std::sync::Arc;
 use std::time::Duration;
@@ -27,7 +27,7 @@ use comfy_table::Cell;
 use futures::{future, StreamExt};
 use serde::Serialize;
 
-use warp_cli::{
+use cognix_cli::{
     agent::{Harness, OutputFormat, Prompt, RunCloudArgs},
     json_filter::JsonOutput,
     task::{
@@ -37,10 +37,10 @@ use warp_cli::{
     },
     GlobalOptions,
 };
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warpui::r#async::Timer;
-use warpui::{
+use cognix_core::channel::ChannelState;
+use cognix_core::features::FeatureFlag;
+use cognixui::r#async::Timer;
+use cognixui::{
     platform::TerminationMode, r#async::Spawnable, AppContext, ModelContext, SingletonEntity,
 };
 
@@ -244,8 +244,8 @@ impl AmbientAgentRunner {
         }
 
         let refresh_future = super::common::refresh_workspace_metadata(ctx);
-        let warp_drive_sync_future = super::common::refresh_warp_drive(ctx);
-        let setup_future = future::try_join(refresh_future, warp_drive_sync_future);
+        let cognix_drive_sync_future = super::common::refresh_cognix_drive(ctx);
+        let setup_future = future::try_join(refresh_future, cognix_drive_sync_future);
 
         ctx.spawn(setup_future, move |_runner, setup_result, ctx| {
             if let Err(err) = setup_result {
@@ -538,7 +538,7 @@ impl AmbientAgentRunner {
                             }
                             AmbientAgentEvent::TimedOut => {
                                 let task_id_str = spawned_task_id.as_ref().map_or_else(|| "unknown".to_string(), |id| id.to_string());
-                                println!("Agent session with run ID {task_id_str} is not ready after {}s. Check for a sharing link in the ambient agent management panel. See https://docs.warp.dev/agent-platform/cloud-agents/managing-cloud-agents for details.", TASK_STATUS_POLLING_DURATION.as_secs());
+                                println!("Agent session with run ID {task_id_str} is not ready after {}s. Check for a sharing link in the ambient agent management panel. See https://docs.cognix.dev/agent-platform/cloud-agents/managing-cloud-agents for details.", TASK_STATUS_POLLING_DURATION.as_secs());
                             }
                         },
                         Err(err) => {
@@ -555,7 +555,7 @@ impl AmbientAgentRunner {
                     if should_open {
                         if let Some(session_join_info) = session_join_info {
                             let url =
-                                match (super::is_running_in_warp(), session_join_info.session_id) {
+                                match (super::is_running_in_cognix(), session_join_info.session_id) {
                                     (true, Some(session_id)) => {
                                         shared_session::join_native_intent(&session_id)
                                     }
@@ -1240,7 +1240,7 @@ impl AmbientAgentRunner {
     }
 }
 
-impl warpui::Entity for AmbientAgentRunner {
+impl cognixui::Entity for AmbientAgentRunner {
     type Event = ();
 }
 

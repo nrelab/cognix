@@ -15,8 +15,8 @@ use std::collections::HashSet;
 use std::path::Path;
 use std::path::PathBuf;
 use std::sync::Arc;
-use warp_util::path::CleanPathResult;
-use warpui::{AppContext, Entity, SingletonEntity};
+use cognix_util::path::CleanPathResult;
+use cognixui::{AppContext, Entity, SingletonEntity};
 
 const MAX_RESULTS: usize = 100;
 
@@ -24,7 +24,7 @@ const MAX_RESULTS: usize = 100;
 enum FileRanking {
     None,
     ChangedInGit,
-    OpenedInWarp { timestamp: Instant },
+    OpenedInCognix { timestamp: Instant },
 }
 
 pub struct FileDataSource {
@@ -145,7 +145,7 @@ impl FileDataSource {
             if let Some(last_opened_timestamp) =
                 opened_files.and_then(|opened_files| opened_files.get(&PathBuf::from(&item.path)))
             {
-                file_ranking = FileRanking::OpenedInWarp {
+                file_ranking = FileRanking::OpenedInCognix {
                     timestamp: *last_opened_timestamp,
                 };
             }

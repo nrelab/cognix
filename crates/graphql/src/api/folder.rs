@@ -9,8 +9,8 @@ pub struct Folder {
     pub name: String,
     pub metadata: ObjectMetadata,
     pub permissions: ObjectPermissions,
-    #[cynic(rename = "isWarpPack")]
-    pub is_warp_pack: bool,
+    #[cynic(rename = "isCognixPack")]
+    pub is_cognix_pack: bool,
 }
 
 #[derive(cynic::QueryFragment, Debug, Clone)]

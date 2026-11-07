@@ -7,7 +7,7 @@
 //! Internally, [`Performer`] delegates to finer-grained methods for handling
 //! PTY output implemented by the [`Handler`] trait -- this could be printing to
 //! the terminal, executing actions as a result of CSI or OSC sequences,
-//! executing one of Warp's DCS hooks, etc. [`Handler`] should be implemented by
+//! executing one of Cognix's DCS hooks, etc. [`Handler`] should be implemented by
 //! an app-level model that updates the terminal's state accordingly.
 mod ansi_c_decoder;
 mod dcs_hooks;
@@ -18,8 +18,8 @@ pub use dcs_hooks::*;
 pub use handler::*;
 use instant::Instant;
 use itertools::Itertools;
-pub use warp_terminal::model::ansi::control_sequence_parameters::*;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+pub use cognix_terminal::model::ansi::control_sequence_parameters::*;
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 
 use crate::features::FeatureFlag;
 use crate::terminal::model::completions::{
@@ -49,23 +49,23 @@ use std::str::FromStr as _;
 use std::time::Duration;
 use std::{io, str};
 use vte::{Params, Parser as VteParser, Perform as VtePerform};
-use warpui::color::ColorU;
+use cognixui::color::ColorU;
 
 use super::kitty::parse_kitty_chunk;
 use super::terminal_model::TmuxInstallationState;
 
-/// Marks an OSC as one that is sent by Warp logic registered in the shell.
+/// Marks an OSC as one that is sent by Cognix logic registered in the shell.
 ///
-/// 9277 spells out "WARP" on a dialpad :).
-const WARP_IN_BAND_GENERATOR_OSC_MARKER: &[u8] = b"9277";
-const WARP_IN_BAND_GENERATOR_START_BYTE: &[u8] = b"A";
-const WARP_IN_BAND_GENERATOR_END_BYTE: &[u8] = b"B";
+/// 9277 spells out "COGNIX" on a dialpad :).
+const COGNIX_IN_BAND_GENERATOR_OSC_MARKER: &[u8] = b"9277";
+const COGNIX_IN_BAND_GENERATOR_START_BYTE: &[u8] = b"A";
+const COGNIX_IN_BAND_GENERATOR_END_BYTE: &[u8] = b"B";
 
 /// Marks an OSC that is used for messages containing shell hooks.
-const WARP_OSC_MARKER: &[u8] = b"9278";
+const COGNIX_OSC_MARKER: &[u8] = b"9278";
 /// Marks an OSC that is used for resetting ConPTY's grid. This is useful for performing a series
-/// of checks ensuring that Warp's grids and ConPTY's grid are in sync.
-const WARP_RESET_GRID_OSC_MARKER: &[u8] = b"9279";
+/// of checks ensuring that Cognix's grids and ConPTY's grid are in sync.
+const COGNIX_RESET_GRID_OSC_MARKER: &[u8] = b"9279";
 
 /// The amount of time a single synchronized update can take from the time the corresponding
 /// 'Set Mode' escape sequence is processed before a redraw is forced.
@@ -82,23 +82,23 @@ lazy_static! {
     static ref SYNC_OUTPUT_MAX_BUFFER_SIZE: Byte = Byte::from_u64_with_unit(2, ByteUnit::MiB).expect("Can create byte size for sync output max buffer size");
 }
 
-const WARP_COMPLETIONS_OSC_MARKER: &[u8] = b"9280";
-const WARP_COMPLETIONS_START_BYTE: &[u8] = b"A";
-const WARP_COMPLETIONS_END_BYTE: &[u8] = b"B";
-const WARP_COMPLETIONS_MATCH_RESULT_BYTE: &[u8] = b"C";
+const COGNIX_COMPLETIONS_OSC_MARKER: &[u8] = b"9280";
+const COGNIX_COMPLETIONS_START_BYTE: &[u8] = b"A";
+const COGNIX_COMPLETIONS_END_BYTE: &[u8] = b"B";
+const COGNIX_COMPLETIONS_MATCH_RESULT_BYTE: &[u8] = b"C";
 
 /// Denotes an OSC that sends metadata about the last match result.
 /// The sequence begins with `D?` followed by the field that should be updated.
 /// For example: `D?description'{OSC_PAYLOAD}` updates the description of the last match.
-const WARP_COMPLETIONS_MATCH_UPDATE_METADATA: &[u8] = b"D?";
+const COGNIX_COMPLETIONS_MATCH_UPDATE_METADATA: &[u8] = b"D?";
 
 /// Marks an OSC that tells the terminal that the shell is ready to receive
 /// the the string to run completions for.
-const WARP_COMPLETIONS_PROMPT_BYTE: &[u8] = b"P";
+const COGNIX_COMPLETIONS_PROMPT_BYTE: &[u8] = b"P";
 
-const WARP_KV_START_BYTE: &[u8] = b"A";
-const WARP_KV_ENTRY_BYTE: &[u8] = b"B";
-const WARP_KV_END_BYTE: &[u8] = b"C";
+const COGNIX_KV_START_BYTE: &[u8] = b"A";
+const COGNIX_KV_ENTRY_BYTE: &[u8] = b"B";
+const COGNIX_KV_END_BYTE: &[u8] = b"C";
 
 /// Parse colors in XParseColor format.
 #[allow(dead_code)]
@@ -224,7 +224,7 @@ struct TmuxControlModeState {
 /// to issue multiple updates to the state of the PTY without causing a redraw
 /// between each update.
 ///
-/// There are two mechanisms to prevent Warp from falling too behind:
+/// There are two mechanisms to prevent Cognix from falling too behind:
 /// 1. a timeout. After [`SYNC_OUTPUT_MAX_TIMEOUT`] has elapsed, a redraw will be forced.
 /// 2. a max buffer limit. After [`SYNC_OUTPUT_MAX_BUFFER_SIZE`] bytes have been buffered,
 ///    a redraw will be forced.
@@ -616,16 +616,16 @@ impl<'a, H: Handler + 'a, W: io::Write> Performer<'a, H, W> {
             Ok(DProtoHook::Clear { value }) => self.handler.clear(value),
             Ok(DProtoHook::InitSubshell { value }) => self.handler.init_subshell(value),
             Ok(DProtoHook::InitSsh { value }) => self.handler.init_ssh(value),
-            Ok(DProtoHook::SourcedRcFileForWarp { .. }) => {
-                // The SourcedRCFileForWarp hook should only be emitted by the
+            Ok(DProtoHook::SourcedRcFileForCognix { .. }) => {
+                // The SourcedRCFileForCognix hook should only be emitted by the
                 // shell without hex encoding. The RC file snippet given to
                 // users is not hex-encoded for the sake of transparency and
                 // debugability.
-                log::error!("Received hex-encoded SourcedRcFileForWarp escape sequence.");
+                log::error!("Received hex-encoded SourcedRcFileForCognix escape sequence.");
             }
             Ok(DProtoHook::FinishUpdate { value }) => self.handler.finish_update(value),
-            Ok(DProtoHook::RemoteWarpificationIsUnavailable { value }) => {
-                self.handler.remote_warpification_is_unavailable(value)
+            Ok(DProtoHook::RemoteCognixificationIsUnavailable { value }) => {
+                self.handler.remote_cognixification_is_unavailable(value)
             }
             Ok(DProtoHook::SshTmuxInstaller { value }) => {
                 if let Ok(tmux_installation) = TmuxInstallationState::from_str(&value) {
@@ -647,7 +647,7 @@ impl<'a, H: Handler + 'a, W: io::Write> Performer<'a, H, W> {
     /// Calls the appropriate `ansi::Handler` function according to the given hook. This function
     /// assumes that the hook was never encoded.
     fn handle_unencoded_hook(&mut self, hook: Result<DProtoHook, serde_json::Error>) {
-        // Currently, only the `SourcedRcFileForWarp`, `InitShell`, `InitSubshell`, and `InitSsh`
+        // Currently, only the `SourcedRcFileForCognix`, `InitShell`, `InitSubshell`, and `InitSsh`
         // DCS's may be emitted without hex-encoding -- other DCS hooks should be sent hex-encoded.
         // This is because we can guarantee that theses RC file hook don't contain non-ASCII chars
         // that might otherwise corrupt parsing of the PTY output (the same can't be said for the
@@ -657,17 +657,17 @@ impl<'a, H: Handler + 'a, W: io::Write> Performer<'a, H, W> {
             Ok(DProtoHook::InitSubshell { value }) => {
                 self.handler.init_subshell(value);
             }
-            Ok(DProtoHook::SourcedRcFileForWarp { value }) => {
+            Ok(DProtoHook::SourcedRcFileForCognix { value }) => {
                 self.handler.sourced_rc_file(value);
             }
             Ok(DProtoHook::InitSsh { value }) => {
                 self.handler.init_ssh(value);
             }
             Ok(_) => {
-                log::error!("Received non hex-encoded hook that is not SourcedRcFileForWarp");
+                log::error!("Received non hex-encoded hook that is not SourcedRcFileForCognix");
             }
             Err(err) => {
-                log::warn!("Received malformed SourcedRcFileForWarp hook {err:#}");
+                log::warn!("Received malformed SourcedRcFileForCognix hook {err:#}");
             }
         }
     }
@@ -697,14 +697,14 @@ impl<'a, H: Handler + 'a, W: io::Write> Performer<'a, H, W> {
 
     fn handle_kv_marker(&mut self, params: &[&[u8]]) {
         match params.get(2) {
-            Some(&WARP_KV_START_BYTE) => {
+            Some(&COGNIX_KV_START_BYTE) => {
                 let Some(hook) = params.get(3).map(|data| String::from_utf8_lossy(data)) else {
                     log::error!("Start pending hook OSC did not contain shell hook");
                     return;
                 };
                 self.handler.start_receiving_hook(hook.into());
             }
-            Some(&WARP_KV_END_BYTE) => {
+            Some(&COGNIX_KV_END_BYTE) => {
                 let Some(pending_shell_hook) = self.handler.finish_receiving_hook() else {
                     return;
                 };
@@ -715,7 +715,7 @@ impl<'a, H: Handler + 'a, W: io::Write> Performer<'a, H, W> {
                 );
                 self.handle_decoded_hook(Ok(hook));
             }
-            Some(&WARP_KV_ENTRY_BYTE) => {
+            Some(&COGNIX_KV_ENTRY_BYTE) => {
                 let Some(key) = params.get(3) else {
                     log::error!("Pending hook update OSC did not contain key");
                     return;
@@ -1074,22 +1074,22 @@ where
                 }
             }
 
-            // Received a Warp OSC used for in-band generators.
-            WARP_IN_BAND_GENERATOR_OSC_MARKER => match params.get(1) {
-                Some(&WARP_IN_BAND_GENERATOR_START_BYTE) => {
-                    log::info!("Received a Warp OSC marker for starting in-band command output.");
+            // Received a Cognix OSC used for in-band generators.
+            COGNIX_IN_BAND_GENERATOR_OSC_MARKER => match params.get(1) {
+                Some(&COGNIX_IN_BAND_GENERATOR_START_BYTE) => {
+                    log::info!("Received a Cognix OSC marker for starting in-band command output.");
                     self.handler.start_in_band_command_output();
                 }
-                Some(&WARP_IN_BAND_GENERATOR_END_BYTE) => {
+                Some(&COGNIX_IN_BAND_GENERATOR_END_BYTE) => {
                     self.handler.end_in_band_command_output(true);
                 }
                 _ => {
-                    log::warn!("Received a Warp OSC marker missing required param.");
+                    log::warn!("Received a Cognix OSC marker missing required param.");
                 }
             },
 
-            // Received a Warp OSC used for shell hooks.
-            WARP_OSC_MARKER => {
+            // Received a Cognix OSC used for shell hooks.
+            COGNIX_OSC_MARKER => {
                 let Some(json_marker_char) = params
                     .get(1)
                     .map(|json_marker_bytes| String::from_utf8_lossy(json_marker_bytes))
@@ -1106,12 +1106,12 @@ where
                             .get(2)
                             .map(|osc_data| String::from_utf8_lossy(osc_data))
                         else {
-                            log::error!("Warp OSC marker did not contain payload");
+                            log::error!("Cognix OSC marker did not contain payload");
                             return;
                         };
                         safe_debug!(
-                            safe: ("Received Warp OSC string for shell hook"),
-                            full: ("Received Warp OSC string for shell hook with JSON payload: {:?}", data_str)
+                            safe: ("Received Cognix OSC string for shell hook"),
+                            full: ("Received Cognix OSC string for shell hook with JSON payload: {:?}", data_str)
                         );
                         let decoded_data = hex::decode(&*data_str);
                         self.handle_decoded_data(decoded_data);
@@ -1122,12 +1122,12 @@ where
                             .get(2)
                             .map(|osc_data| String::from_utf8_lossy(osc_data))
                         else {
-                            log::error!("Warp OSC marker did not contain payload");
+                            log::error!("Cognix OSC marker did not contain payload");
                             return;
                         };
                         safe_debug!(
-                            safe: ("Received Warp OSC string for shell hook"),
-                            full: ("Received Warp OSC string for shell hook with JSON payload: {:?}", data_str)
+                            safe: ("Received Cognix OSC string for shell hook"),
+                            full: ("Received Cognix OSC string for shell hook with JSON payload: {:?}", data_str)
                         );
                         let hook = serde_json::from_str::<DProtoHook>(&data_str);
                         self.handle_unencoded_hook(hook)
@@ -1139,35 +1139,35 @@ where
                 }
             }
 
-            WARP_RESET_GRID_OSC_MARKER => {
-                log::debug!("Received Warp OSC string for reset grid");
+            COGNIX_RESET_GRID_OSC_MARKER => {
+                log::debug!("Received Cognix OSC string for reset grid");
                 self.handler.on_reset_grid();
             }
 
-            // Received a Warp OSC used for completions.
-            WARP_COMPLETIONS_OSC_MARKER => match params.get(1) {
-                Some(&WARP_COMPLETIONS_START_BYTE) => {
+            // Received a Cognix OSC used for completions.
+            COGNIX_COMPLETIONS_OSC_MARKER => match params.get(1) {
+                Some(&COGNIX_COMPLETIONS_START_BYTE) => {
                     let Some(format) = params
                         .get(2)
                         .map(|osc_data| String::from_utf8_lossy(osc_data))
                         .and_then(|format| CompletionsShellData::from_format_type(&format))
                     else {
-                        log::warn!("Warp start completions OSC marker contained invalid format.");
+                        log::warn!("Cognix start completions OSC marker contained invalid format.");
                         return;
                     };
                     self.handler.start_completions_output(format);
                 }
-                Some(&WARP_COMPLETIONS_END_BYTE) => {
+                Some(&COGNIX_COMPLETIONS_END_BYTE) => {
                     self.handler.end_completions_output();
                 }
-                Some(&WARP_COMPLETIONS_MATCH_RESULT_BYTE) => {
+                Some(&COGNIX_COMPLETIONS_MATCH_RESULT_BYTE) => {
                     // The payload for the OSC is contained in the third parameter.
                     let Some(data_str) = params
                         .get(2)
                         .map(|osc_data| String::from_utf8_lossy(osc_data))
                     else {
                         log::warn!(
-                            "Warp completions match result OSC marker did not contain payload"
+                            "Cognix completions match result OSC marker did not contain payload"
                         );
                         return;
                     };
@@ -1177,7 +1177,7 @@ where
                     self.handler
                         .on_completion_result_received(shell_completion_result);
                 }
-                Some(bytes) if bytes.starts_with(WARP_COMPLETIONS_MATCH_UPDATE_METADATA) => {
+                Some(bytes) if bytes.starts_with(COGNIX_COMPLETIONS_MATCH_UPDATE_METADATA) => {
                     let Ok(parameter) = String::from_utf8(bytes.to_vec()) else {
                         log::warn!(
                             "Unable to convert update completions match parameter into a string"
@@ -1191,7 +1191,7 @@ where
                         .map(|osc_data| String::from_utf8_lossy(osc_data))
                     else {
                         log::warn!(
-                            "Warp completions match metadata OSC marker did not contain payload"
+                            "Cognix completions match metadata OSC marker did not contain payload"
                         );
                         return;
                     };
@@ -1206,15 +1206,15 @@ where
                             );
                         }
                         _ => {
-                            log::warn!("Invalid Warp OSC marker parameter for completions match metadata: {parameter}");
+                            log::warn!("Invalid Cognix OSC marker parameter for completions match metadata: {parameter}");
                         }
                     }
                 }
-                Some(&WARP_COMPLETIONS_PROMPT_BYTE) => {
+                Some(&COGNIX_COMPLETIONS_PROMPT_BYTE) => {
                     self.handler.send_completions_prompt();
                 }
                 _ => {
-                    log::warn!("Received a Warp OSC completions marker missing required param.");
+                    log::warn!("Received a Cognix OSC completions marker missing required param.");
                 }
             },
 

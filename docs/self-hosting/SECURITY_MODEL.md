@@ -21,7 +21,7 @@ local-shell workflow.
 User / local shell
    | terminal input, environment, process output
    v
-Warp app and PTY / optional local terminal-server process
+Cognix app and PTY / optional local terminal-server process
    | IPC and local persistence
    +-----------------> local files, secure storage, SQLite
    |

@@ -16,11 +16,11 @@ gap remains; confidence expresses confidence in the evidence and gap.
   `app/src/bin/local.rs:11`, `script/install_channel_config`.
 - **Evidence:** The app binary uses `include_str!` for channel JSON under
   `OUT_DIR`. The untouched `./script/presubmit` attempt failed because
-  `target/debug/build/warp-*/out/local_config.json` was absent. The installer
-  pins `warp-channel-config` revision
+  `target/debug/build/cognix-*/out/local_config.json` was absent. The installer
+  pins `cognix-channel-config` revision
   `97a199b5bba11af9c7d3bd43dfb3669316d1f0f8` and checks SSH access.
 - **Reproduction:** On this checkout, run the pinned-toolchain presubmit
-  without the generated local config; compilation of bin `warp` fails at the
+  without the generated local config; compilation of bin `cognix` fails at the
   `include_str!`.
 - **Severity / confidence:** High / high for build reproducibility; no claim
   that the upstream CI build is broken.
@@ -62,7 +62,7 @@ gap remains; confidence expresses confidence in the evidence and gap.
   injection and isolated integration test HOME. **Rollback:** Test-only first;
   any later policy can be feature-gated.
 
-### GAP-003 — AI access is coupled to the Warp server API in the inspected path
+### GAP-003 — AI access is coupled to the Cognix server API in the inspected path
 
 - **Location:** `app/src/lib.rs:1028–1030`,
   `app/src/server/server_api.rs:1339`, `app/Cargo.toml` (`ai` dependency).
@@ -74,7 +74,7 @@ gap remains; confidence expresses confidence in the evidence and gap.
   `ServerApiProvider`; no external-provider behavior test was performed.
 - **Severity / confidence:** Medium / high for the inspected path, not a claim
   that no other provider exists anywhere in the repository.
-- **User impact:** A fork may have to replace Warp-specific AI API semantics
+- **User impact:** A fork may have to replace Cognix-specific AI API semantics
   before using an alternate provider.
 - **Recommended change:** Inventory the AI call surface and data contracts;
   add a provider boundary only around demonstrated coupling. Keep provider

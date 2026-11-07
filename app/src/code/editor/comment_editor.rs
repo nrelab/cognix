@@ -17,9 +17,9 @@ use crate::view_components::action_button::{
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::Vector2F;
 use std::cell::RefCell;
-use warp_core::ui::{appearance::Appearance, theme::Fill};
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warpui::{
+use cognix_core::ui::{appearance::Appearance, theme::Fill};
+use cognix_editor::render::element::VerticalExpansionBehavior;
+use cognixui::{
     elements::{
         Border, ChildView, Clipped, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Flex, MainAxisAlignment, MainAxisSize, ParentElement, Radius, Shrinkable, Text,
@@ -326,7 +326,7 @@ impl CommentEditor {
         let theme = appearance.theme();
         let sub_text_color = theme.sub_text_color(Fill::Solid(background)).into_solid();
         let icon = Icon::Github
-            .to_warpui_icon(Fill::Solid(sub_text_color))
+            .to_cognixui_icon(Fill::Solid(sub_text_color))
             .finish();
 
         let label = Text::new(

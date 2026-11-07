@@ -1,8 +1,8 @@
-use warpui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{
     menu::{MenuItem, MenuItemFields},
-    settings::WarpPromptSeparator,
+    settings::CognixPromptSeparator,
     terminal::{
         model::session::Sessions,
         session_settings::{SessionSettings, ToolbarChipSelection},
@@ -15,12 +15,12 @@ use super::{
     ContextChipKind,
 };
 
-/// The type of warp prompt being used
+/// The type of cognix prompt being used
 #[derive(Clone)]
 pub enum PromptType {
-    /// A warp prompt that refreshes chip values on its own. Typical for local sessions.
+    /// A cognix prompt that refreshes chip values on its own. Typical for local sessions.
     Dynamic { prompt: ModelHandle<CurrentPrompt> },
-    /// A warp prompt that does not change unless explicitly overwritten. Used for viewers of shared sessions.
+    /// A cognix prompt that does not change unless explicitly overwritten. Used for viewers of shared sessions.
     Static { snapshot: PromptSnapshot },
 }
 
@@ -46,7 +46,7 @@ impl PromptType {
     pub fn new_static(
         chips: Vec<ChipResult>,
         same_line_prompt_enabled: bool,
-        separator: WarpPromptSeparator,
+        separator: CognixPromptSeparator,
     ) -> Self {
         PromptType::Static {
             snapshot: PromptSnapshot::from_chips(chips, same_line_prompt_enabled, separator),
@@ -162,7 +162,7 @@ impl PromptType {
             .collect()
     }
 
-    /// Whether same line prompt is enabled for the Warp Prompt.
+    /// Whether same line prompt is enabled for the Cognix Prompt.
     pub fn same_line_prompt_enabled(&self, ctx: &AppContext) -> bool {
         match self {
             Self::Dynamic { prompt } => prompt.as_ref(ctx).same_line_prompt_enabled(),
@@ -170,8 +170,8 @@ impl PromptType {
         }
     }
 
-    /// The separator for the Warp prompt.
-    pub fn separator(&self, ctx: &AppContext) -> WarpPromptSeparator {
+    /// The separator for the Cognix prompt.
+    pub fn separator(&self, ctx: &AppContext) -> CognixPromptSeparator {
         match self {
             Self::Dynamic { prompt } => prompt.as_ref(ctx).separator(),
             Self::Static { snapshot } => snapshot.separator(),

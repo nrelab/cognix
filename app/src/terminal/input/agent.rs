@@ -22,10 +22,10 @@ use crate::{
     terminal::{settings::TerminalSettings, view::TerminalAction},
     BlocklistAIHistoryModel,
 };
-use warp_core::settings::Setting;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::elements::Expanded;
-use warpui::{
+use cognix_core::settings::Setting;
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::elements::Expanded;
+use cognixui::{
     elements::{
         Align, AnchorPair, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         DispatchEventResult, DropTarget, Element, EventHandler, Flex, Hoverable, MainAxisSize,
@@ -600,11 +600,11 @@ impl Input {
 
 pub mod styles {
     use pathfinder_color::ColorU;
-    use warp_core::ui::theme::WarpTheme;
+    use cognix_core::ui::theme::CognixTheme;
 
     use crate::ui_components::blended_colors;
 
-    pub fn default_border_color(theme: &WarpTheme) -> ColorU {
+    pub fn default_border_color(theme: &CognixTheme) -> ColorU {
         blended_colors::neutral_2(theme)
     }
 }

@@ -24,15 +24,15 @@ use itertools::Itertools;
 use lazy_static::lazy_static;
 use unicode_width::UnicodeWidthChar;
 use urlocator::{UrlLocation, UrlLocator};
-use warp_core::features::FeatureFlag;
-use warp_core::semantic_selection::{SemanticSelection, SMART_SELECT_MATCH_WINDOW_LIMIT};
-use warp_core::{safe_assert, safe_assert_eq};
-use warp_terminal::model::grid::CellType;
-use warp_terminal::model::grid::FlatStorage;
-pub use warp_terminal::model::TermMode;
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use warp_util::path::CleanPathResult;
-use warpui::color::ColorU;
+use cognix_core::features::FeatureFlag;
+use cognix_core::semantic_selection::{SemanticSelection, SMART_SELECT_MATCH_WINDOW_LIMIT};
+use cognix_core::{safe_assert, safe_assert_eq};
+use cognix_terminal::model::grid::CellType;
+use cognix_terminal::model::grid::FlatStorage;
+pub use cognix_terminal::model::TermMode;
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use cognix_util::path::CleanPathResult;
+use cognixui::color::ColorU;
 
 use crate::terminal::event_listener::ChannelEventListener;
 use crate::terminal::model::ansi::{self, Color, CursorStyle, Handler, NamedColor};
@@ -282,8 +282,8 @@ impl AbsoluteRectangle {
 }
 
 /// Whether or not this Grid should keep track of a "Reset Grid" OSC. On Windows, ConPTY has an internal
-/// grid that needs to be kept in sync with Warp's grids. We do this via clearing the ConPTY
-/// grid before Warp starts populating a new grid.
+/// grid that needs to be kept in sync with Cognix's grids. We do this via clearing the ConPTY
+/// grid before Cognix starts populating a new grid.
 ///
 /// See here for more: https://docs.google.com/document/d/11fU_vVW8CH72W92QUnFJ1Kl31fGWNGbjkQQCK3TUaYk/edit?usp=sharing
 #[derive(Default, Clone, Copy)]
@@ -2475,7 +2475,7 @@ impl GridHandler {
     /// appropriately.
     #[cfg(test)]
     pub(super) fn input_at_cursor(&mut self, text: &str) {
-        use warp_terminal::model::VisiblePoint;
+        use cognix_terminal::model::VisiblePoint;
 
         let columns = self.columns();
         let mut last_row = self.grid.cursor.point.row;

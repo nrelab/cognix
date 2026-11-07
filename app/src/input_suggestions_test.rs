@@ -1,17 +1,17 @@
 use chrono::Local;
 use std::collections::HashSet;
-use warp_core::ui::appearance::Appearance;
-use warpui::{platform::WindowStyle, App};
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{platform::WindowStyle, App};
 
 use crate::ai::blocklist::AIQueryHistory;
 use crate::input_suggestions::{filter_tab_suggestions, HistoryOrder};
 use crate::terminal::model::session::SessionId;
 use crate::terminal::HistoryEntry;
-use warp_completer::completer::{
+use cognix_completer::completer::{
     EngineFileType, Match, MatchStrategy, MatchedSuggestion, Priority, Suggestion,
     SuggestionResults, SuggestionType, TopLevelCommandCaseSensitivity,
 };
-use warp_completer::meta::Span;
+use cognix_completer::meta::Span;
 
 use super::{HistoryInputSuggestion, InputSuggestions, TabCompletionsPreselectOption};
 
@@ -36,7 +36,7 @@ fn test_basic_tab_prefix() {
         prefix_matched_suggestion("stash"),
         prefix_matched_suggestion("status"),
         prefix_matched_suggestion("stats/")
-            .with_file_type(warp_completer::completer::EngineFileType::Directory),
+            .with_file_type(cognix_completer::completer::EngineFileType::Directory),
     ];
 
     let suggestion_results = SuggestionResults {

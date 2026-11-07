@@ -36,13 +36,13 @@ use std::{
     path::{Path, PathBuf},
     sync::Arc,
 };
-use warp_core::features::FeatureFlag;
-use warp_core::ui::Icon;
-use warp_util::path::LineAndColumnArg;
-use warpui::elements::{ChildAnchor, Empty, PositionedElementAnchor};
-use warpui::keymap::EditableBinding;
-use warpui::EntityId;
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::Icon;
+use cognix_util::path::LineAndColumnArg;
+use cognixui::elements::{ChildAnchor, Empty, PositionedElementAnchor};
+use cognixui::keymap::EditableBinding;
+use cognixui::EntityId;
+use cognixui::{
     elements::{
         resizable_state_handle, Container, DragBarSide, Element, MainAxisSize, MouseStateHandle,
         Resizable, ResizableStateHandle,
@@ -50,7 +50,7 @@ use warpui::{
     AppContext, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle, WeakViewHandle,
 };
-use warpui::{
+use cognixui::{
     elements::{
         ChildView, Clipped, ConstrainedBox, CrossAxisAlignment, Flex, MainAxisAlignment,
         ParentElement, Shrinkable, Text,
@@ -65,8 +65,8 @@ use warpui::{
 pub enum ReviewDestination {
     /// No terminal is available to receive comments.
     None,
-    /// A Warp agent terminal is available (input box visible, not executing).
-    Warp,
+    /// A Cognix agent terminal is available (input box visible, not executing).
+    Cognix,
     /// A CLI agent (e.g. Claude Code, Gemini) is running in a terminal.
     Cli(CLIAgent),
 }
@@ -97,7 +97,7 @@ impl ReviewTerminalUnavailableReason {
             Self::NoSelectedRepo => "no repo is selected for code review",
             Self::SessionPathUnavailable => "session cwd is unavailable or not local",
             Self::SessionOutsideSelectedRepo => "session cwd is not inside selected repo",
-            Self::AIDisabled => "AI is disabled for Warp review destinations",
+            Self::AIDisabled => "AI is disabled for Cognix review destinations",
             Self::TerminalExecuting => "terminal is currently executing a command",
             Self::InputBoxNotVisible => "terminal input box is not visible",
         }
@@ -156,7 +156,7 @@ impl CodeReviewState {
                 dropdown.set_font_color(font_color, ctx);
                 dropdown.set_font_size(ui_font_size, ctx);
                 dropdown.set_vertical_margin(0., ctx);
-                dropdown.set_top_bar_height(warp_core::ui::icons::ICON_DIMENSIONS, ctx);
+                dropdown.set_top_bar_height(cognix_core::ui::icons::ICON_DIMENSIONS, ctx);
                 dropdown.set_padding(HEADER_BUTTON_PADDING, ctx);
                 dropdown
             }),
@@ -345,7 +345,7 @@ pub struct RightPanelView {
 
 impl RightPanelView {
     pub fn init(app: &mut AppContext) {
-        use warpui::keymap::macros::*;
+        use cognixui::keymap::macros::*;
 
         app.register_editable_bindings([EditableBinding::new(
             "workspace:toggle_maximize_code_review_panel",
@@ -838,8 +838,8 @@ impl RightPanelView {
     #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
     fn render_maximize_pane_button(&self) -> Box<dyn Element> {
         ConstrainedBox::new(ChildView::new(&self.maximize_button).finish())
-            .with_height(warp_core::ui::icons::ICON_DIMENSIONS)
-            .with_width(warp_core::ui::icons::ICON_DIMENSIONS)
+            .with_height(cognix_core::ui::icons::ICON_DIMENSIONS)
+            .with_width(cognix_core::ui::icons::ICON_DIMENSIONS)
             .finish()
     }
 
@@ -1454,7 +1454,7 @@ impl RightPanelView {
     /// (CLI agents are long-running commands that accept review input).
     ///
     /// When `ai_enabled` is `false`, only terminals with an active CLI agent are
-    /// considered available (non-CLI Warp terminals require AI to be on).
+    /// considered available (non-CLI Cognix terminals require AI to be on).
     fn is_terminal_available_for_review(
         tv: &ViewHandle<TerminalView>,
         repo_path: &Path,
@@ -1557,7 +1557,7 @@ impl RightPanelView {
                 tv.read(ctx, |t, ctx| {
                     t.active_cli_agent(ctx)
                         .map(ReviewDestination::Cli)
-                        .unwrap_or(ReviewDestination::Warp)
+                        .unwrap_or(ReviewDestination::Cognix)
                 })
             })
             .unwrap_or(ReviewDestination::None);

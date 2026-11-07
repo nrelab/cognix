@@ -1,8 +1,8 @@
 use pathfinder_color::ColorU;
 use settings::Setting as _;
-use warp_editor::editor::NavigationKey;
-use warpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+use cognix_editor::editor::NavigationKey;
+use cognixui::{
+    accessibility::{AccessibilityContent, CognixA11yRole},
     elements::{
         Align, ChildAnchor, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         DispatchEventResult, Element, Empty, EventHandler, Fill, Flex, Hoverable, Icon,
@@ -22,7 +22,7 @@ use warpui::{
 };
 
 use crate::resource_center::{mark_feature_used_and_write_to_user_defaults, Tip, TipAction};
-use crate::themes::theme::{RespectSystemTheme, ThemeKind, WarpTheme};
+use crate::themes::theme::{RespectSystemTheme, ThemeKind, CognixTheme};
 use crate::util::traffic_lights::traffic_light_data;
 use crate::workspace::PANEL_HEADER_HEIGHT;
 use crate::{
@@ -34,7 +34,7 @@ use crate::{
     report_if_error,
     settings::{respect_system_theme, ThemeSettings},
     themes::theme::SelectedSystemThemes,
-    user_config::{load_theme_configs, themes_dir, WarpConfig, WarpConfigUpdateEvent},
+    user_config::{load_theme_configs, themes_dir, CognixConfig, CognixConfigUpdateEvent},
     util::traffic_lights::{TrafficLightData, TrafficLightSide},
     window_settings::WindowSettings,
 };
@@ -44,7 +44,7 @@ use crate::{
     server::telemetry::TelemetryEvent, ui_components::window_focus_dimming::WindowFocusDimming,
 };
 use crate::{
-    themes::theme::WarpThemeConfig,
+    themes::theme::CognixThemeConfig,
     ui_components::buttons::{close_button, icon_button},
     ui_components::icons,
 };
@@ -150,7 +150,7 @@ pub struct ThemeChooser {
     search_editor: ViewHandle<EditorView>,
     referral_theme_status: ModelHandle<ReferralThemeStatus>,
     tips_completed: ModelHandle<TipsCompleted>,
-    window_id: warpui::WindowId,
+    window_id: cognixui::WindowId,
 }
 
 #[derive(Debug)]
@@ -165,7 +165,7 @@ pub enum ThemeChooserAction {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings(vec![
         FixedBinding::new("up", ThemeChooserAction::Up, id!("ThemeChooser")),
@@ -177,7 +177,7 @@ pub fn init(app: &mut AppContext) {
 
 fn theme_chooser_items(
     referral_theme_status: &ReferralThemeStatus,
-    theme_config: &WarpThemeConfig,
+    theme_config: &CognixThemeConfig,
 ) -> Vec<ThemeChooserItem> {
     let sent_referral_theme_active = referral_theme_status.sent_referral_theme_active();
     let received_referral_theme_active = referral_theme_status.received_referral_theme_active();
@@ -224,9 +224,9 @@ impl ThemeChooser {
             me.update_themes(ctx);
         });
 
-        let warp_config_handle = WarpConfig::handle(ctx);
-        ctx.subscribe_to_model(&warp_config_handle, |me, _, event, ctx| {
-            if let WarpConfigUpdateEvent::Themes = event {
+        let cognix_config_handle = CognixConfig::handle(ctx);
+        ctx.subscribe_to_model(&cognix_config_handle, |me, _, event, ctx| {
+            if let CognixConfigUpdateEvent::Themes = event {
                 me.update_themes(ctx);
                 ctx.notify();
             }
@@ -247,7 +247,7 @@ impl ThemeChooser {
 
         let themes = theme_chooser_items(
             referral_theme_status.as_ref(ctx),
-            WarpConfig::as_ref(ctx).theme_config(),
+            CognixConfig::as_ref(ctx).theme_config(),
         );
 
         Self {
@@ -311,8 +311,8 @@ impl ThemeChooser {
         ctx.spawn(
             async move { load_theme_configs(&themes_dir()) },
             move |theme_chooser, loaded_themes, ctx| {
-                ctx.update_model(&WarpConfig::handle(ctx), move |warp_config, ctx| {
-                    warp_config.update_theme_config(loaded_themes, ctx);
+                ctx.update_model(&CognixConfig::handle(ctx), move |cognix_config, ctx| {
+                    cognix_config.update_theme_config(loaded_themes, ctx);
                 });
                 theme_chooser.update_themes(ctx);
                 theme_chooser.select_and_save_theme(&theme, ctx);
@@ -324,8 +324,8 @@ impl ThemeChooser {
         ctx.spawn(
             async move { load_theme_configs(&themes_dir()) },
             move |theme_chooser, loaded_themes, ctx| {
-                ctx.update_model(&WarpConfig::handle(ctx), move |warp_config, ctx| {
-                    warp_config.update_theme_config(loaded_themes, ctx);
+                ctx.update_model(&CognixConfig::handle(ctx), move |cognix_config, ctx| {
+                    cognix_config.update_theme_config(loaded_themes, ctx);
                 });
                 theme_chooser.update_themes(ctx);
                 theme_chooser.select_latest_theme(ctx);
@@ -518,7 +518,7 @@ impl ThemeChooser {
     fn update_themes(&mut self, ctx: &mut ViewContext<Self>) {
         *self.themes = theme_chooser_items(
             self.referral_theme_status.as_ref(ctx),
-            WarpConfig::as_ref(ctx).theme_config(),
+            CognixConfig::as_ref(ctx).theme_config(),
         );
     }
 
@@ -794,16 +794,16 @@ impl ThemeChooser {
                     .collect::<Vec<_>>()
                     .into_iter()
             });
-            let warp_theme = appearance.theme();
+            let cognix_theme = appearance.theme();
 
             Scrollable::vertical(
                 self.scroll_state.clone(),
                 list.finish_scrollable(),
                 SCROLLBAR_WIDTH,
-                warp_theme
-                    .disabled_text_color(warp_theme.surface_2())
+                cognix_theme
+                    .disabled_text_color(cognix_theme.surface_2())
                     .into(),
-                warp_theme.main_text_color(warp_theme.surface_2()).into(),
+                cognix_theme.main_text_color(cognix_theme.surface_2()).into(),
                 Fill::None,
             )
             .finish()
@@ -848,7 +848,7 @@ impl View for ThemeChooser {
         Some(AccessibilityContent::new(
                 "Theme chooser. Unfortunately, theme chooser window isn't compatible with screen readers yet.",
                 "Press escape to close.",
-                WarpA11yRole::WindowRole,
+                CognixA11yRole::WindowRole,
         ))
     }
 
@@ -878,21 +878,21 @@ impl View for ThemeChooser {
 #[derive(Clone)]
 struct ThemeChooserItem {
     pub kind: ThemeKind,
-    warp_theme: WarpTheme,
+    cognix_theme: CognixTheme,
     mouse_state: MouseStateHandle,
 }
 
 impl ThemeChooserItem {
-    pub fn new(kind: ThemeKind, warp_theme: WarpTheme) -> Self {
+    pub fn new(kind: ThemeKind, cognix_theme: CognixTheme) -> Self {
         Self {
             kind,
-            warp_theme,
+            cognix_theme,
             mouse_state: MouseStateHandle::default(),
         }
     }
 
     fn render_thumbnail(&self, font_family: FamilyId) -> Box<dyn Element> {
-        theme::render_preview(&self.warp_theme, font_family, None)
+        theme::render_preview(&self.cognix_theme, font_family, None)
     }
 
     pub fn render(

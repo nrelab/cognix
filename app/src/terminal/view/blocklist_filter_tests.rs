@@ -1,4 +1,4 @@
-use warp_multi_agent_api as api;
+use cognix_multi_agent_api as api;
 
 use crate::ai::agent::{
     conversation::{AIConversation, AIConversationId},
@@ -37,15 +37,15 @@ fn create_restored_conversation(
 }
 
 #[test]
-fn test_should_show_task_in_blocklist_hides_warp_docs_subagent_task() {
+fn test_should_show_task_in_blocklist_hides_cognix_docs_subagent_task() {
     let conversation = create_restored_conversation(
         api::message::tool_call::subagent::Metadata::WarpDocumentationSearch(()),
     );
 
     let subtask = conversation
         .all_tasks()
-        .find(|task| task.is_warp_documentation_search_subagent())
-        .expect("warp docs subagent task should exist");
+        .find(|task| task.is_cognix_documentation_search_subagent())
+        .expect("cognix docs subagent task should exist");
 
     assert!(!should_show_task_in_blocklist(subtask));
 }
@@ -65,7 +65,7 @@ fn test_should_show_task_in_blocklist_hides_conversation_search_subagent_task() 
 }
 
 #[test]
-fn test_exchanges_for_blocklist_excludes_warp_docs_subagent_exchanges() {
+fn test_exchanges_for_blocklist_excludes_cognix_docs_subagent_exchanges() {
     let conversation = create_restored_conversation(
         api::message::tool_call::subagent::Metadata::WarpDocumentationSearch(()),
     );

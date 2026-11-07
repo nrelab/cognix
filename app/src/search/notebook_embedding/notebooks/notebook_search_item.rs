@@ -1,5 +1,5 @@
 use ordered_float::OrderedFloat;
-use warpui::{
+use cognixui::{
     elements::{
         ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, MainAxisAlignment,
         MainAxisSize, ParentElement, Text,
@@ -13,7 +13,7 @@ use crate::search::result_renderer::ItemHighlightState;
 use crate::{
     appearance::Appearance,
     cloud_object::CloudObject,
-    drive::{cloud_object_styling::warp_drive_icon_color, DriveObjectType},
+    drive::{cloud_object_styling::cognix_drive_icon_color, DriveObjectType},
     search::{
         item::IconLocation,
         notebook_embedding::{
@@ -52,8 +52,8 @@ impl SearchItem for NotebookSearchItem {
         Container::new(
             ConstrainedBox::new(
                 Icon::Notebook
-                    .to_warpui_icon(
-                        warp_drive_icon_color(
+                    .to_cognixui_icon(
+                        cognix_drive_icon_color(
                             appearance,
                             DriveObjectType::Notebook {
                                 is_ai_document: false,
@@ -117,7 +117,7 @@ impl SearchItem for NotebookSearchItem {
                 .finish();
             let warning_icon = ConstrainedBox::new(
                 Icon::Warning
-                    .to_warpui_icon(appearance.theme().ui_warning_color().into())
+                    .to_cognixui_icon(appearance.theme().ui_warning_color().into())
                     .finish(),
             )
             .with_width(warning_font_size)

@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use warp_core::context_flag::ContextFlag;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity};
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, SingletonEntity};
 
 pub mod categories;
 use anyhow::Result;
@@ -28,8 +28,8 @@ use crate::cloud_object::{
 };
 use crate::server::cloud_objects::update_manager::InitiatedBy;
 
-use crate::drive::items::workflow::WarpDriveWorkflow;
-use crate::drive::items::WarpDriveItem;
+use crate::drive::items::workflow::CognixDriveWorkflow;
+use crate::drive::items::CognixDriveItem;
 use crate::drive::CloudObjectTypeAndId;
 use crate::notebooks::{NotebookId, NotebookLocation};
 use crate::persistence::ModelEvent;
@@ -53,25 +53,25 @@ pub enum WorkflowSource {
         team_uid: ServerId,
     },
     PersonalCloud,
-    WarpAI,
+    CognixAI,
     Notebook {
         notebook_id: Option<NotebookId>,
         team_uid: Option<ServerId>,
         location: NotebookLocation,
     },
 
-    /// A hardcoded workflow type that allows Warp to surface features as Workflows (e.g.
+    /// A hardcoded workflow type that allows Cognix to surface features as Workflows (e.g.
     /// a command to see our network log)
     App,
 }
 
 #[derive(Copy, Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash, PartialOrd)]
 pub enum WorkflowSelectionSource {
-    WarpDrive,
+    CognixDrive,
     CommandPalette,
     UniversalSearch,
     Voltron,
-    WarpAI,
+    CognixAI,
     Notebook,
     SlashMenu,
     UpArrowHistory,
@@ -146,7 +146,7 @@ crate::server_id_traits! { WorkflowId, "Workflow" }
 pub enum AIWorkflowOrigin {
     CommandSearch,
     AgentMode,
-    LegacyWarpAI,
+    LegacyCognixAI,
 }
 
 /// Wrapper type for a workflow that may be saved locally or using cloud sync.
@@ -156,7 +156,7 @@ pub enum WorkflowType {
     Local(Workflow),
     /// Saved workflows from personal or team collections, saved using cloud-sync.
     Cloud(Box<CloudWorkflow>),
-    /// Ephemeral/transient workflows created from Warp AI output
+    /// Ephemeral/transient workflows created from Cognix AI output
     AIGenerated {
         workflow: Workflow,
         origin: AIWorkflowOrigin,
@@ -344,17 +344,17 @@ impl CloudModelType for CloudWorkflowModel {
             .await
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         true
     }
 
-    fn to_warp_drive_item(
+    fn to_cognix_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         workflow: &CloudWorkflow,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveWorkflow::new(
+    ) -> Option<Box<dyn CognixDriveItem>> {
+        Some(Box::new(CognixDriveWorkflow::new(
             self.cloud_object_type_and_id(id),
             workflow.clone(),
         )))

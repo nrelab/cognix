@@ -11,8 +11,8 @@ use syntect::{
     parsing::SyntaxSet,
     util::LinesWithEndings,
 };
-use warp_completer::signatures::CommandRegistry;
-use warp_editor::{
+use cognix_completer::signatures::CommandRegistry;
+use cognix_editor::{
     content::{
         anchor::Anchor,
         buffer::{Buffer, BufferEvent, EditOrigin},
@@ -26,9 +26,9 @@ use warp_editor::{
 };
 
 use markdown_parser::markdown_parser::CODE_BLOCK_DEFAULT_MARKDOWN_LANG;
-use warp_util::user_input::UserInput;
-use warpui::{elements::Align, r#async::SpawnedFutureHandle, AppContext};
-use warpui::{
+use cognix_util::user_input::UserInput;
+use cognixui::{elements::Align, r#async::SpawnedFutureHandle, AppContext};
+use cognixui::{
     elements::{
         Border, Container, CrossAxisAlignment, Empty, Flex, MainAxisAlignment, MouseStateHandle,
         ParentElement, Shrinkable, Text,
@@ -603,7 +603,7 @@ impl RunnableCommandModel for NotebookCommand {
                         appearance.ui_font_size(),
                     )
                     .with_style(Properties {
-                        weight: warpui::fonts::Weight::Light,
+                        weight: cognixui::fonts::Weight::Light,
                         ..Default::default()
                     })
                     .with_color(

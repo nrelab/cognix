@@ -13,7 +13,7 @@ use crate::{
     },
     test_util::settings::initialize_settings_for_tests,
 };
-use warpui::App;
+use cognixui::App;
 
 #[test]
 fn logged_out_ai_request_shows_failure_in_transcript() {

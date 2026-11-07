@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
-use warp_graphql::scalars::time::ServerTimestamp;
-use warpui::AppContext;
-use warpui_extras::secure_storage::{self, AppContextExt};
+use cognix_graphql::scalars::time::ServerTimestamp;
+use cognixui::AppContext;
+use cognixui_extras::secure_storage::{self, AppContextExt};
 
 use crate::auth::{
     user::{AnonymousUserType, FirebaseAuthTokens, PersonalObjectLimits, UserMetadata},

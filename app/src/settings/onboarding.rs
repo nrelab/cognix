@@ -1,6 +1,6 @@
 use crate::ai::execution_profiles::profiles::AIExecutionProfilesModel;
 use crate::ai::execution_profiles::{ActionPermission, WriteToPtyPermission};
-use crate::drive::settings::WarpDriveSettings;
+use crate::drive::settings::CognixDriveSettings;
 use crate::report_if_error;
 use crate::settings::ai::DefaultSessionMode;
 use crate::settings::{AISettings, CodeSettings};
@@ -9,8 +9,8 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use onboarding::slides::{AgentAutonomy, AgentDevelopmentSettings};
 use onboarding::{SelectedSettings, SessionDefault, UICustomizationSettings};
 use settings::Setting as _;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity as _};
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, SingletonEntity as _};
 
 /// Applies onboarding settings based on the user's selected mode.
 pub fn apply_onboarding_settings(selected_settings: &SelectedSettings, app: &mut AppContext) {
@@ -33,7 +33,7 @@ pub fn apply_onboarding_settings(selected_settings: &SelectedSettings, app: &mut
             show_agent_notifications,
         } => {
             // In old onboarding, there's nothing to set for terminal intent.
-            if !FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if !FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
                 true
             } else {
                 if let Some(ui) = ui_customization {
@@ -52,7 +52,7 @@ pub fn apply_onboarding_settings(selected_settings: &SelectedSettings, app: &mut
         }
     };
 
-    if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+    if FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
         AISettings::handle(app).update(app, |settings, ctx| {
             report_if_error!(settings.is_any_ai_enabled.set_value(is_ai_enabled, ctx));
         });
@@ -67,7 +67,7 @@ fn apply_ui_customization_settings(
     app: &mut AppContext,
 ) {
     // Customize UI slide should only exist with this flag enabled.
-    if !FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+    if !FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
         return;
     }
     TabSettings::handle(app).update(app, |settings, ctx| {
@@ -79,10 +79,10 @@ fn apply_ui_customization_settings(
             .set_value(ui.show_code_review_button, ctx));
     });
 
-    WarpDriveSettings::handle(app).update(app, |settings, ctx| {
+    CognixDriveSettings::handle(app).update(app, |settings, ctx| {
         report_if_error!(settings
-            .enable_warp_drive
-            .set_value(ui.show_warp_drive, ctx));
+            .enable_cognix_drive
+            .set_value(ui.show_cognix_drive, ctx));
     });
 
     CodeSettings::handle(app).update(app, |settings, ctx| {

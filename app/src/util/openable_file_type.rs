@@ -1,10 +1,10 @@
-//! File type detection utilities for determining if files can be opened in Warp.
+//! File type detection utilities for determining if files can be opened in Cognix.
 
 #[cfg(feature = "local_fs")]
 use crate::util::file::external_editor::{settings::EditorChoice, Editor, EditorSettings};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
-pub use warp_util::file_type::{is_binary_file, is_file_content_binary, is_markdown_file};
+pub use cognix_util::file_type::{is_binary_file, is_file_content_binary, is_markdown_file};
 
 #[derive(
     Debug,
@@ -26,7 +26,7 @@ pub enum EditorLayout {
     NewTab,
 }
 
-/// The type of file that can be opened in Warp. The in-product treatment for "opening" a file
+/// The type of file that can be opened in Cognix. The in-product treatment for "opening" a file
 /// depends on its type.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum OpenableFileType {
@@ -41,9 +41,9 @@ pub enum OpenableFileType {
 /// The target application or viewer to use when opening a file.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FileTarget {
-    /// Open in Warp's Markdown viewer.
+    /// Open in Cognix's Markdown viewer.
     MarkdownViewer(EditorLayout),
-    /// Open in Warp's Code Editor.
+    /// Open in Cognix's Code Editor.
     CodeEditor(EditorLayout),
     /// Open in an external editor (e.g. VS Code, Emacs).
     #[cfg(feature = "local_fs")]
@@ -81,9 +81,9 @@ pub fn is_supported_image_file(path: impl AsRef<Path>) -> bool {
         .unwrap_or(false)
 }
 
-/// Determines if a file can be opened in Warp and returns its type.
+/// Determines if a file can be opened in Cognix and returns its type.
 /// Returns `None` if the file is binary and should not be opened.
-pub fn is_file_openable_in_warp(path: &Path) -> Option<OpenableFileType> {
+pub fn is_file_openable_in_cognix(path: &Path) -> Option<OpenableFileType> {
     if is_binary_file(path) {
         return None;
     }
@@ -99,17 +99,17 @@ pub fn is_file_openable_in_warp(path: &Path) -> Option<OpenableFileType> {
     }
 }
 
-/// Only use this for UI elements that must explicitly open a file in Warp (i.e. "Open in New Tab").
+/// Only use this for UI elements that must explicitly open a file in Cognix (i.e. "Open in New Tab").
 /// Prefer `resolve_file_target` for all other cases to respect users' preferences.
-/// This would also force any binary file to be opened in Warp's Code Editor, so you should likely check
-/// `is_file_openable_in_warp` before rendering any such UI Elements.
+/// This would also force any binary file to be opened in Cognix's Code Editor, so you should likely check
+/// `is_file_openable_in_cognix` before rendering any such UI Elements.
 #[cfg(feature = "local_fs")]
-pub fn resolve_file_target_to_open_in_warp(
+pub fn resolve_file_target_to_open_in_cognix(
     path: &Path,
     settings: &EditorSettings,
     layout: Option<EditorLayout>,
 ) -> FileTarget {
-    let openable_file_type = is_file_openable_in_warp(path);
+    let openable_file_type = is_file_openable_in_cognix(path);
     let is_markdown = matches!(openable_file_type, Some(OpenableFileType::Markdown));
     let layout = layout.unwrap_or(*settings.open_file_layout);
 
@@ -143,18 +143,18 @@ pub fn resolve_file_target_with_editor_choice(
     default_layout: EditorLayout,
     layout: Option<EditorLayout>,
 ) -> FileTarget {
-    let is_openable_in_warp = is_file_openable_in_warp(path);
-    let is_markdown = matches!(is_openable_in_warp, Some(OpenableFileType::Markdown));
+    let is_openable_in_cognix = is_file_openable_in_cognix(path);
+    let is_markdown = matches!(is_openable_in_cognix, Some(OpenableFileType::Markdown));
     let layout = layout.unwrap_or(default_layout);
-    let is_openable_in_warp = is_openable_in_warp.is_some();
+    let is_openable_in_cognix = is_openable_in_cognix.is_some();
 
     // 1. Markdown Viewer (only if user preference specified)
     if is_markdown && prefer_markdown_viewer {
         return FileTarget::MarkdownViewer(layout);
     }
 
-    // 2. Warp Code Editor (Explicit user preference)
-    if is_openable_in_warp && matches!(editor_choice, EditorChoice::Warp) {
+    // 2. Cognix Code Editor (Explicit user preference)
+    if is_openable_in_cognix && matches!(editor_choice, EditorChoice::Cognix) {
         return FileTarget::CodeEditor(layout);
     }
 
@@ -164,7 +164,7 @@ pub fn resolve_file_target_with_editor_choice(
     }
 
     // 4. Binary files -> System Default
-    if !is_openable_in_warp {
+    if !is_openable_in_cognix {
         return FileTarget::SystemGeneric;
     }
 
@@ -172,7 +172,7 @@ pub fn resolve_file_target_with_editor_choice(
     match editor_choice {
         EditorChoice::ExternalEditor(editor) => FileTarget::ExternalEditor(editor),
         EditorChoice::SystemDefault => FileTarget::SystemDefault,
-        EditorChoice::Warp | EditorChoice::EnvEditor => unreachable!("Already matched above"),
+        EditorChoice::Cognix | EditorChoice::EnvEditor => unreachable!("Already matched above"),
     }
 }
 
@@ -185,20 +185,20 @@ mod tests {
 
     #[test]
     fn test_binary_files_not_openable() {
-        assert!(is_file_openable_in_warp(Path::new("image.png")).is_none());
-        assert!(is_file_openable_in_warp(Path::new("video.mp4")).is_none());
-        assert!(is_file_openable_in_warp(Path::new("binary.exe")).is_none());
-        assert!(is_file_openable_in_warp(Path::new("archive.zip")).is_none());
+        assert!(is_file_openable_in_cognix(Path::new("image.png")).is_none());
+        assert!(is_file_openable_in_cognix(Path::new("video.mp4")).is_none());
+        assert!(is_file_openable_in_cognix(Path::new("binary.exe")).is_none());
+        assert!(is_file_openable_in_cognix(Path::new("archive.zip")).is_none());
     }
 
     #[test]
     #[cfg(feature = "local_fs")]
-    fn test_open_code_panels_file_editor_default_is_warp() {
+    fn test_open_code_panels_file_editor_default_is_cognix() {
         use crate::util::file::external_editor::settings::OpenCodePanelsFileEditor;
 
         assert_eq!(
             OpenCodePanelsFileEditor::default_value(),
-            EditorChoice::Warp
+            EditorChoice::Cognix
         );
     }
 
@@ -218,10 +218,10 @@ mod tests {
 
     #[test]
     #[cfg(feature = "local_fs")]
-    fn test_resolve_file_target_warp_uses_default_layout() {
+    fn test_resolve_file_target_cognix_uses_default_layout() {
         let target = resolve_file_target_with_editor_choice(
             Path::new("data.txt"),
-            EditorChoice::Warp,
+            EditorChoice::Cognix,
             true, /* prefer_markdown_viewer */
             EditorLayout::NewTab,
             None,
@@ -235,7 +235,7 @@ mod tests {
     fn test_resolve_file_target_binary_is_system_generic() {
         let target = resolve_file_target_with_editor_choice(
             Path::new("image.png"),
-            EditorChoice::Warp,
+            EditorChoice::Cognix,
             true, /* prefer_markdown_viewer */
             EditorLayout::SplitPane,
             None,
@@ -260,19 +260,19 @@ mod tests {
     #[test]
     fn test_markdown_files() {
         assert_eq!(
-            is_file_openable_in_warp(Path::new("README.md")),
+            is_file_openable_in_cognix(Path::new("README.md")),
             Some(OpenableFileType::Markdown)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("doc.markdown")),
+            is_file_openable_in_cognix(Path::new("doc.markdown")),
             Some(OpenableFileType::Markdown)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("README")),
+            is_file_openable_in_cognix(Path::new("README")),
             Some(OpenableFileType::Markdown)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("CHANGELOG")),
+            is_file_openable_in_cognix(Path::new("CHANGELOG")),
             Some(OpenableFileType::Markdown)
         );
     }
@@ -281,19 +281,19 @@ mod tests {
     #[cfg(feature = "local_fs")]
     fn test_code_files() {
         assert_eq!(
-            is_file_openable_in_warp(Path::new("main.rs")),
+            is_file_openable_in_cognix(Path::new("main.rs")),
             Some(OpenableFileType::Code)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("app.js")),
+            is_file_openable_in_cognix(Path::new("app.js")),
             Some(OpenableFileType::Code)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("script.py")),
+            is_file_openable_in_cognix(Path::new("script.py")),
             Some(OpenableFileType::Code)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("config.json")),
+            is_file_openable_in_cognix(Path::new("config.json")),
             Some(OpenableFileType::Code)
         );
     }
@@ -302,19 +302,19 @@ mod tests {
     #[cfg(not(feature = "local_fs"))]
     fn test_code_files() {
         assert_eq!(
-            is_file_openable_in_warp(Path::new("main.rs")),
+            is_file_openable_in_cognix(Path::new("main.rs")),
             Some(OpenableFileType::Text)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("app.js")),
+            is_file_openable_in_cognix(Path::new("app.js")),
             Some(OpenableFileType::Text)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("script.py")),
+            is_file_openable_in_cognix(Path::new("script.py")),
             Some(OpenableFileType::Text)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("config.json")),
+            is_file_openable_in_cognix(Path::new("config.json")),
             Some(OpenableFileType::Text)
         );
     }
@@ -323,15 +323,15 @@ mod tests {
     fn test_text_files() {
         // Files that are text but don't have language support
         assert_eq!(
-            is_file_openable_in_warp(Path::new("data.txt")),
+            is_file_openable_in_cognix(Path::new("data.txt")),
             Some(OpenableFileType::Text)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("data.csv")),
+            is_file_openable_in_cognix(Path::new("data.csv")),
             Some(OpenableFileType::Text)
         );
         assert_eq!(
-            is_file_openable_in_warp(Path::new("file.svg")),
+            is_file_openable_in_cognix(Path::new("file.svg")),
             Some(OpenableFileType::Text)
         );
     }

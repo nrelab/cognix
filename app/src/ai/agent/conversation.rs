@@ -26,17 +26,17 @@ use std::{collections::HashMap, fmt::Display};
 use super::task_store::TaskStore;
 use uuid::Uuid;
 use vec1::{Size0Error, Vec1};
-use warp_core::command::ExitCode;
-use warp_core::execution_mode::AppExecutionMode;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::WarpTheme;
-use warp_multi_agent_api::response_event::stream_finished;
-use warp_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
-use warpui::color::ColorU;
-use warpui::{EntityId, ModelContext, SingletonEntity};
+use cognix_core::command::ExitCode;
+use cognix_core::execution_mode::AppExecutionMode;
+use cognix_core::features::FeatureFlag;
+use cognix_core::send_telemetry_from_ctx;
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::theme::CognixTheme;
+use cognix_multi_agent_api::response_event::stream_finished;
+use cognix_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
+use cognixui::color::ColorU;
+use cognixui::{EntityId, ModelContext, SingletonEntity};
 
 use crate::ai::agent::{AIIdentifiers, CancellationReason};
 use crate::{
@@ -124,7 +124,7 @@ pub struct AIConversation {
     /// Unique ID for this conversation.
     id: AIConversationId,
 
-    /// Whether this conversation is being shared from a different warp instance
+    /// Whether this conversation is being shared from a different cognix instance
     /// (i.e. is not a local conversation).
     is_viewing_shared_session: bool,
     task_store: TaskStore,
@@ -823,11 +823,11 @@ impl AIConversation {
     ///
     /// This filters the full task list using DFS linearization to determine
     /// which tasks have open subagent tool calls without corresponding results.
-    pub fn compute_active_tasks(&self) -> Vec<warp_multi_agent_api::Task> {
+    pub fn compute_active_tasks(&self) -> Vec<cognix_multi_agent_api::Task> {
         use std::collections::HashMap;
 
         let root_task_id = self.get_root_task_id().to_string();
-        let all_tasks: HashMap<&str, &warp_multi_agent_api::Task> = self
+        let all_tasks: HashMap<&str, &cognix_multi_agent_api::Task> = self
             .all_tasks()
             .filter_map(|task| {
                 let source = task.source()?;
@@ -1146,7 +1146,7 @@ impl AIConversation {
         });
     }
 
-    /// Updates the notebook_uid for a plan artifact when it's synced to Warp Drive.
+    /// Updates the notebook_uid for a plan artifact when it's synced to Cognix Drive.
     pub fn update_plan_notebook_uid(
         &mut self,
         document_uid: AIDocumentId,
@@ -1471,7 +1471,7 @@ impl AIConversation {
     pub fn initialize_output_for_response_stream(
         &mut self,
         stream_id: &ResponseStreamId,
-        init_event: warp_multi_agent_api::response_event::StreamInit,
+        init_event: cognix_multi_agent_api::response_event::StreamInit,
         terminal_view_id: EntityId,
         ctx: &mut ModelContext<BlocklistAIHistoryModel>,
     ) -> Result<(), UpdateConversationError> {
@@ -1552,10 +1552,10 @@ impl AIConversation {
             let mut token_usage: HashMap<_, ModelTokenUsage> = HashMap::new();
             for (model_id, usage) in usage_metadata.warp_token_usage {
                 let entry = token_usage.entry(model_id.clone()).or_default();
-                entry.warp_tokens += usage.total_tokens;
+                entry.cognix_tokens += usage.total_tokens;
                 for (category, tokens) in usage.token_usage_by_category {
                     *entry
-                        .warp_token_usage_by_category
+                        .cognix_token_usage_by_category
                         .entry(category)
                         .or_default() += tokens;
                 }
@@ -1980,10 +1980,10 @@ impl AIConversation {
         &mut self,
         response_stream_id: &ResponseStreamId,
         terminal_view_id: EntityId,
-        action: warp_multi_agent_api::client_action::Action,
+        action: cognix_multi_agent_api::client_action::Action,
         ctx: &mut ModelContext<BlocklistAIHistoryModel>,
     ) -> Result<(), UpdateConversationError> {
-        use warp_multi_agent_api::client_action::*;
+        use cognix_multi_agent_api::client_action::*;
         match action {
             Action::BeginTransaction(_) => {
                 self.begin_transaction();
@@ -3134,7 +3134,7 @@ impl AIConversation {
     /// Converts the conversation into a vector of serialized AI and command blocks.
     /// When we open a new tab to restore a conversation in, we need to precompute this serialized list of blocks
     /// to pass into the TerminalModel constructor since command blocks must be created
-    /// before the warp input block to not break bootstrapping.
+    /// before the cognix input block to not break bootstrapping.
     /// Only the command blocks are actually created in the terminal model, but this sequencing is used later in the TerminalView
     /// to know where to insert AI blocks relative to the command blocks.
     pub fn to_serialized_blocklist_items(&self) -> Vec<SerializedBlockListItem> {
@@ -3506,7 +3506,7 @@ pub enum AIAgentSerializedBlockFormat {
 /// Describes the format capabilities of a conversation.
 #[derive(Debug, Clone)]
 pub struct AIAgentConversationFormat {
-    /// Whether there is a Warp MAA task list available for this conversation.
+    /// Whether there is a Cognix MAA task list available for this conversation.
     pub has_task_list: bool,
     /// The format of the TUI serialized block, if available.
     pub block_snapshot: Option<AIAgentSerializedBlockFormat>,
@@ -3661,7 +3661,7 @@ impl std::fmt::Display for ConversationStatus {
 }
 
 impl ConversationStatus {
-    pub fn render_icon(&self, appearance: &Appearance) -> warpui::elements::Icon {
+    pub fn render_icon(&self, appearance: &Appearance) -> cognixui::elements::Icon {
         match self {
             ConversationStatus::InProgress => in_progress_icon(appearance),
             ConversationStatus::Success => succeeded_icon(appearance),
@@ -3671,7 +3671,7 @@ impl ConversationStatus {
         }
     }
 
-    pub fn status_icon_and_color(&self, theme: &WarpTheme) -> (Icon, ColorU) {
+    pub fn status_icon_and_color(&self, theme: &CognixTheme) -> (Icon, ColorU) {
         match self {
             ConversationStatus::InProgress => (Icon::ClockLoader, theme.ansi_fg_magenta()),
             ConversationStatus::Success => (Icon::Check, theme.ansi_fg_green()),

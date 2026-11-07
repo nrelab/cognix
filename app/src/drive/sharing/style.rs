@@ -1,10 +1,10 @@
 use std::borrow::Cow;
 
-use warp_core::ui::{
+use cognix_core::ui::{
     appearance::Appearance,
     theme::{color::internal_colors, Fill},
 };
-use warpui::{
+use cognixui::{
     color::ColorU,
     elements::{CornerRadius, Radius},
     fonts::Weight,

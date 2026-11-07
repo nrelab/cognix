@@ -33,24 +33,24 @@ use lsp::LspManagerModel;
 use repo_metadata::repositories::DetectedRepositories;
 use std::path::PathBuf;
 use std::sync::Arc;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::appearance::Appearance;
-use warp_editor::content::buffer::InitialBufferState;
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warp_editor::render::model::LineCount;
-use warpui::elements::{Empty, MouseStateHandle};
-use warpui::platform::WindowStyle;
-use warpui::{App, ViewHandle};
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::appearance::Appearance;
+use cognix_editor::content::buffer::InitialBufferState;
+use cognix_editor::render::element::VerticalExpansionBehavior;
+use cognix_editor::render::model::LineCount;
+use cognixui::elements::{Empty, MouseStateHandle};
+use cognixui::platform::WindowStyle;
+use cognixui::{App, ViewHandle};
 
 #[derive(Default)]
 struct TestView;
 
-impl warpui::Entity for TestView {
+impl cognixui::Entity for TestView {
     type Event = ();
 }
 
-impl warpui::View for TestView {
-    fn render(&self, _: &warpui::AppContext) -> Box<dyn warpui::Element> {
+impl cognixui::View for TestView {
+    fn render(&self, _: &cognixui::AppContext) -> Box<dyn cognixui::Element> {
         Empty::new().finish()
     }
 
@@ -59,7 +59,7 @@ impl warpui::View for TestView {
     }
 }
 
-impl warpui::TypedActionView for TestView {
+impl cognixui::TypedActionView for TestView {
     type Action = ();
 }
 
@@ -244,7 +244,7 @@ use crate::view_components::action_button::{ActionButton, NakedTheme};
 struct TestContext {
     repo_path: PathBuf,
     #[allow(dead_code)]
-    window_id: warpui::WindowId,
+    window_id: cognixui::WindowId,
     state: LoadedState,
     code_review_view: ViewHandle<CodeReviewView>,
 }
@@ -291,7 +291,7 @@ impl TestContext {
 /// Must be called within an App context.
 fn create_loaded_state_with_editors(
     app: &mut App,
-    window_id: warpui::WindowId,
+    window_id: cognixui::WindowId,
     file_editors: Vec<(PathBuf, ViewHandle<LocalCodeEditorView>)>,
 ) -> LoadedState {
     let file_states = file_editors

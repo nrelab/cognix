@@ -7,30 +7,30 @@ use anyhow::{anyhow, Result};
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use url::Url;
-use warp_core::errors::ErrorExt;
-use warp_core::features::FeatureFlag;
-use warpui::elements::ChildAnchor;
-use warpui::elements::Container;
-use warpui::elements::Fill;
-use warpui::elements::HighlightedHyperlink;
-use warpui::elements::MouseStateHandle;
-use warpui::elements::OffsetPositioning;
-use warpui::elements::ParentAnchor;
-use warpui::elements::ParentElement;
-use warpui::elements::ParentOffsetBounds;
-use warpui::elements::Stack;
-use warpui::keymap::FixedBinding;
-use warpui::AppContext;
-use warpui::FocusContext;
-use warpui::SingletonEntity;
-use warpui::TypedActionView;
+use cognix_core::errors::ErrorExt;
+use cognix_core::features::FeatureFlag;
+use cognixui::elements::ChildAnchor;
+use cognixui::elements::Container;
+use cognixui::elements::Fill;
+use cognixui::elements::HighlightedHyperlink;
+use cognixui::elements::MouseStateHandle;
+use cognixui::elements::OffsetPositioning;
+use cognixui::elements::ParentAnchor;
+use cognixui::elements::ParentElement;
+use cognixui::elements::ParentOffsetBounds;
+use cognixui::elements::Stack;
+use cognixui::keymap::FixedBinding;
+use cognixui::AppContext;
+use cognixui::FocusContext;
+use cognixui::SingletonEntity;
+use cognixui::TypedActionView;
 
 use crate::auth::auth_view_body::AuthViewBody;
 use crate::modal::Modal;
 use std::collections::HashMap;
-use warpui::elements::ChildView;
-use warpui::ui_components::components::{Coords, UiComponentStyles};
-use warpui::{Element, Entity, View, ViewContext, ViewHandle};
+use cognixui::elements::ChildView;
+use cognixui::ui_components::components::{Coords, UiComponentStyles};
+use cognixui::{Element, Entity, View, ViewContext, ViewHandle};
 
 use super::auth_manager::AuthManager;
 use super::auth_manager::AuthManagerEvent;
@@ -39,10 +39,10 @@ use super::auth_view_body::AuthViewBodyEvent;
 use super::credentials::RefreshToken;
 use super::login_failure_notification::{self, LoginFailureReason};
 use super::UserUid;
-use warpui::actions::StandardAction;
+use cognixui::actions::StandardAction;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([
         // Bindings for paste require the StandardAction and CustomAction binding to work on all platforms.
@@ -107,7 +107,7 @@ pub struct AuthRedirectPayload {
 }
 
 impl AuthRedirectPayload {
-    /// Attempts to parse the `AuthRedirectPayload` from URL sent to Warp. To parse successfully, the URL
+    /// Attempts to parse the `AuthRedirectPayload` from URL sent to Cognix. To parse successfully, the URL
     /// must be of format {scheme}://auth/desktop_redirect?refresh_token={token}.
     pub fn from_url(url: Url) -> Result<Self> {
         if url.host_str() != Some(AUTH_URL_HOST) {
@@ -244,7 +244,7 @@ impl AuthView {
     }
 
     /// Parses the given 'clipboard_content' string into a URL which is assumed to represent the
-    /// OAuth redirect URL containing the user's refresh token after the user authenticated Warp.
+    /// OAuth redirect URL containing the user's refresh token after the user authenticated Cognix.
     fn handle_pasted_auth_url(&mut self, pasted_url: String, ctx: &mut ViewContext<Self>) {
         self.set_auth_token_input_editable(false, ctx);
         match AuthRedirectPayload::from_raw_url(pasted_url) {

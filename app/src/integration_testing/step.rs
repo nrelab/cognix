@@ -1,4 +1,4 @@
-use warpui::{
+use cognixui::{
     async_assert,
     integration::{AssertionCallback, TestStep},
 };

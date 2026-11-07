@@ -1,4 +1,4 @@
-# Warp local-first refactoring: executive summary
+# Cognix local-first refactoring: executive summary
 
 Assessment date: 2026-10-28
 
@@ -10,7 +10,7 @@ state are present. The same application also initializes or owns substantial
 authentication, server API, AI, telemetry, and cloud-sync functionality. The
 evidence does **not** establish that the full GUI starts or remains useful
 offline, nor that the app can be self-hosted without replacing or configuring
-Warp-operated services.
+Cognix-operated services.
 
 The Preview binary is available for static inspection, but its runtime behavior
 was not compared with a source-built app. A source build of the app executable
@@ -34,14 +34,14 @@ test-only name clarification; runtime behavior remains unchanged.
   `gcloud` are installed. `pwsh` is absent, so the non-CI presubmit script
   skips PowerShell analysis. These probes do not establish that every native
   SDK/toolchain component is installed.
-- The repository has `README.md`, `CONTRIBUTING.md`, `WARP.md`, many Cargo
+- The repository has `README.md`, `CONTRIBUTING.md`, `COGNIX.md`, many Cargo
   manifests, and 216 PRODUCT/TECH spec files. No `AGENTS.md` or FAQ file was
   found in the repository or its parent search scope.
 - Targeted spec review found prior work on offline settings-file conflict
   handling (`specs/danielpeng/QUALITY-474/`) and retryable network failures
   (`specs/APP-4014/`). These are narrower behaviors, not proof of a general
   offline mode.
-- Historical app: `WarpVersion` is
+- Historical app: `CognixVersion` is
   `v0.2025.06.20.22.47.preview_03`; the signed executable is a 360,472,896-byte
   universal x86_64/arm64 Mach-O. The bundle signature verifies and Gatekeeper
   reports a notarized Developer ID application.
@@ -51,14 +51,14 @@ test-only name clarification; runtime behavior remains unchanged.
 | Command / inspection | Result |
 |---|---|
 | `cargo fmt -- --check` via `./script/presubmit` | Passed. |
-| Pinned-toolchain `./script/presubmit` | Clippy/build stopped: `include_str!` could not find `target/debug/build/warp-*/out/local_config.json` at `app/src/bin/channel_config.rs:30`; no app executable produced. |
+| Pinned-toolchain `./script/presubmit` | Clippy/build stopped: `include_str!` could not find `target/debug/build/cognix-*/out/local_config.json` at `app/src/bin/channel_config.rs:30`; no app executable produced. |
 | `cargo nextest run --no-fail-fast --workspace --exclude command-signatures-v2` | Compiled test targets and began 5,660 tests. Stopped after reaching at least 248/5,660; four observed SSH integration tests failed because their remote connection was closed. This is not a full-suite result. |
-| `cargo nextest run -p warp_core -p warp_terminal -p warp_editor -p warpui_core` | Passed: 812 tests, 9 skipped. |
+| `cargo nextest run -p cognix_core -p cognix_terminal -p cognix_editor -p cognixui_core` | Passed: 812 tests, 9 skipped. |
 | Preview `codesign --verify --deep --strict` and `spctl -a -vv` | Signature valid; accepted as notarized Developer ID. Static inspection only. |
 
 The `local_config.json` failure is a reproducibility dependency, not evidence
 of a source-code defect. `script/install_channel_config` pins the separate
-`warp-channel-config` repository at
+`cognix-channel-config` repository at
 `97a199b5bba11af9c7d3bd43dfb3669316d1f0f8` and checks for SSH access. It was
 not installed during this analysis.
 

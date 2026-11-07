@@ -1,6 +1,6 @@
 use vim::vim::VimMode;
-use warp_core::features::FeatureFlag;
-use warpui::{keymap::Keystroke, platform::WindowStyle, App};
+use cognix_core::features::FeatureFlag;
+use cognixui::{keymap::Keystroke, platform::WindowStyle, App};
 
 use crate::editor::{DisplayPoint, EditorOptions, EditorView};
 

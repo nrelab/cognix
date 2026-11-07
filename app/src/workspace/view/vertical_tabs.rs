@@ -24,7 +24,7 @@ use std::sync::{Arc, Mutex};
 use crate::appearance::Appearance;
 use crate::context_chips::display_chip::GitLineChanges;
 use crate::context_chips::github_pr_display_text_from_url;
-use crate::drive::{cloud_object_styling::warp_drive_icon_color, DriveObjectType};
+use crate::drive::{cloud_object_styling::cognix_drive_icon_color, DriveObjectType};
 use crate::editor::EditorView;
 use crate::pane_group::pane::IPaneType;
 use crate::pane_group::TerminalPane;
@@ -56,15 +56,15 @@ use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use settings::Setting as _;
 use std::path::{Path, PathBuf};
-use warp_core::context_flag::ContextFlag;
-use warp_core::telemetry::TelemetryEvent as _;
-use warp_core::ui::color::blend::Blend;
-use warp_core::ui::color::coloru_with_opacity;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::{AnsiColorIdentifier, Fill as WarpThemeFill, WarpTheme};
-use warp_core::ui::Icon as WarpIcon;
-use warpui::elements::DispatchEventResult;
-use warpui::elements::{
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::telemetry::TelemetryEvent as _;
+use cognix_core::ui::color::blend::Blend;
+use cognix_core::ui::color::coloru_with_opacity;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::theme::{AnsiColorIdentifier, Fill as CognixThemeFill, CognixTheme};
+use cognix_core::ui::Icon as CognixIcon;
+use cognixui::elements::DispatchEventResult;
+use cognixui::elements::{
     resizable_state_handle, Border, ChildAnchor, Clipped, ClippedScrollStateHandle,
     ClippedScrollable, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DragAxis,
     DragBarSide, Draggable, DropShadow, DropTarget, Element, Empty, EventHandler, Expanded,
@@ -73,13 +73,13 @@ use warpui::elements::{
     PositionedElementOffsetBounds, Radius, Resizable, ResizableStateHandle, SavePosition,
     ScrollTarget, ScrollToPositionMode, ScrollbarWidth, Shrinkable, Stack, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::prelude::{Align, MainAxisAlignment};
-use warpui::text_layout::ClipConfig;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::ui_components::text_input::TextInput;
-use warpui::{AppContext, EntityId, SingletonEntity, ViewHandle, WindowId};
+use cognixui::fonts::{Properties, Weight};
+use cognixui::platform::Cursor;
+use cognixui::prelude::{Align, MainAxisAlignment};
+use cognixui::text_layout::ClipConfig;
+use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
+use cognixui::ui_components::text_input::TextInput;
+use cognixui::{AppContext, EntityId, SingletonEntity, ViewHandle, WindowId};
 
 const PANEL_WIDTH: f32 = 248.;
 const MIN_PANEL_WIDTH: f32 = 200.;
@@ -254,13 +254,13 @@ enum TerminalPrimaryLineFont {
     Monospace,
 }
 
-fn oz_icon_fill(theme: &WarpTheme) -> WarpThemeFill {
+fn oz_icon_fill(theme: &CognixTheme) -> CognixThemeFill {
     theme.main_text_color(theme.background())
 }
 
 fn render_pane_icon_with_status(
     variant: IconWithStatusVariant,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     let sizing = match &variant {
         IconWithStatusVariant::OzAgent { .. } => &VERTICAL_TABS_AGENT_SIZING,
@@ -286,7 +286,7 @@ fn pane_row_background(
     is_selected: bool,
     is_hovered: bool,
     is_being_dragged: bool,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Option<ThemeFill> {
     if let Some(color) = pane_color {
         let opacity = if is_selected || is_hovered {
@@ -309,7 +309,7 @@ fn render_pane_row_element(
     padding: Padding,
     defer_events_to_children: bool,
     content: Box<dyn Element>,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     let detail_target = supports_vertical_tabs_detail_sidecar(&props.typed).then(|| {
         detail_target_for_hovered_row(
@@ -1087,7 +1087,7 @@ fn vertical_tabs_tab_bar_location(insert_index: usize, tab_count: usize) -> TabB
     }
 }
 
-fn render_vertical_tab_hover_indicator(theme: &WarpTheme) -> Box<dyn Element> {
+fn render_vertical_tab_hover_indicator(theme: &CognixTheme) -> Box<dyn Element> {
     ConstrainedBox::new(
         Container::new(Empty::new().finish())
             .with_background(ThemeFill::Solid(theme.accent().into()))
@@ -1118,7 +1118,7 @@ fn render_vertical_tab_insertion_target(
     insert_index: usize,
     tab_count: usize,
     is_drag_target: bool,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     let content = if is_drag_target {
         render_vertical_tab_hover_indicator(theme)
@@ -1143,7 +1143,7 @@ fn add_vertical_tab_insertion_target_overlay(
     is_drag_target: bool,
     parent_anchor: ParentAnchor,
     child_anchor: ChildAnchor,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) {
     stack.add_positioned_overlay_child(
         render_vertical_tab_insertion_target(insert_index, tab_count, is_drag_target, theme),
@@ -1166,7 +1166,7 @@ fn render_control_bar(
     let theme = appearance.theme();
     let sub_text = theme.sub_text_color(theme.background());
 
-    let search_icon = ConstrainedBox::new(WarpIcon::Search.to_warpui_icon(sub_text).finish())
+    let search_icon = ConstrainedBox::new(CognixIcon::Search.to_cognixui_icon(sub_text).finish())
         .with_width(SEARCH_ICON_SIZE)
         .with_height(SEARCH_ICON_SIZE)
         .finish();
@@ -1226,38 +1226,38 @@ fn render_detail_kind_badge_icon(
             if let Some(icon) = cli_agent_session.and_then(|session| session.agent.icon()) {
                 let color = cli_agent_session
                     .and_then(|session| session.agent.brand_color())
-                    .map(WarpThemeFill::Solid)
+                    .map(CognixThemeFill::Solid)
                     .unwrap_or_else(|| theme.accent());
-                return icon.to_warpui_icon(color).finish();
+                return icon.to_cognixui_icon(color).finish();
             }
 
             let icon = if terminal_view.is_ambient_agent_session(app) {
-                WarpIcon::OzCloud
+                CognixIcon::OzCloud
             } else if terminal_view
                 .selected_conversation_display_title(app)
                 .is_some()
             {
-                WarpIcon::Oz
+                CognixIcon::Oz
             } else {
-                WarpIcon::Terminal
+                CognixIcon::Terminal
             };
             let color = match icon {
-                WarpIcon::Oz | WarpIcon::OzCloud => oz_icon_fill(theme),
-                WarpIcon::Terminal => disabled_text,
+                CognixIcon::Oz | CognixIcon::OzCloud => oz_icon_fill(theme),
+                CognixIcon::Terminal => disabled_text,
                 _ => sub_text,
             };
-            icon.to_warpui_icon(color).finish()
+            icon.to_cognixui_icon(color).finish()
         }
         TypedPane::Code(_) => icon_from_file_path(&props.title, appearance)
-            .unwrap_or_else(|| WarpIcon::Code2.to_warpui_icon(sub_text).finish()),
+            .unwrap_or_else(|| CognixIcon::Code2.to_cognixui_icon(sub_text).finish()),
         typed => {
             let fill = typed
-                .warp_drive_object_type()
+                .cognix_drive_object_type()
                 .map(|object_type| {
-                    WarpThemeFill::Solid(warp_drive_icon_color(appearance, object_type))
+                    CognixThemeFill::Solid(cognix_drive_icon_color(appearance, object_type))
                 })
                 .unwrap_or(sub_text);
-            typed.icon().to_warpui_icon(fill).finish()
+            typed.icon().to_cognixui_icon(fill).finish()
         }
     }
 }
@@ -1276,8 +1276,8 @@ fn render_settings_button(
         state.settings_button_mouse_state.clone(),
         move |hover_state| {
             let icon = ConstrainedBox::new(
-                WarpIcon::Settings
-                    .to_warpui_icon(if is_popup_open { main_text } else { sub_text })
+                CognixIcon::Settings
+                    .to_cognixui_icon(if is_popup_open { main_text } else { sub_text })
                     .finish(),
             )
             .with_width(16.)
@@ -2084,13 +2084,13 @@ fn render_group_action_buttons(
     action_buttons_mouse_state: MouseStateHandle,
     kebab_mouse_state: MouseStateHandle,
     close_mouse_state: MouseStateHandle,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     let meta_color = theme.sub_text_color(theme.background());
 
     let kebab_button = Hoverable::new(kebab_mouse_state, move |button_state| {
         let mut container = Container::new(
-            ConstrainedBox::new(WarpIcon::DotsVertical.to_warpui_icon(meta_color).finish())
+            ConstrainedBox::new(CognixIcon::DotsVertical.to_cognixui_icon(meta_color).finish())
                 .with_width(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .with_height(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .finish(),
@@ -2113,7 +2113,7 @@ fn render_group_action_buttons(
 
     let close_button = Hoverable::new(close_mouse_state, move |button_state| {
         let mut container = Container::new(
-            ConstrainedBox::new(WarpIcon::X.to_warpui_icon(meta_color).finish())
+            ConstrainedBox::new(CognixIcon::X.to_cognixui_icon(meta_color).finish())
                 .with_width(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .with_height(GROUP_ACTION_BUTTON_ICON_SIZE)
                 .finish(),
@@ -2231,8 +2231,8 @@ fn resolve_icon_with_status_variant(
     let main_text = theme.main_text_color(theme.background());
     let sub_text = theme.sub_text_color(theme.background());
 
-    let drive_color = |object_type: DriveObjectType| -> WarpThemeFill {
-        WarpThemeFill::Solid(warp_drive_icon_color(appearance, object_type))
+    let drive_color = |object_type: DriveObjectType| -> CognixThemeFill {
+        CognixThemeFill::Solid(cognix_drive_icon_color(appearance, object_type))
     };
 
     match typed {
@@ -2275,7 +2275,7 @@ fn resolve_icon_with_status_variant(
             } else {
                 // Plain terminal: use foreground color per design spec
                 IconWithStatusVariant::Neutral {
-                    icon: WarpIcon::Terminal,
+                    icon: CognixIcon::Terminal,
                     icon_color: main_text,
                 }
             }
@@ -2285,7 +2285,7 @@ fn resolve_icon_with_status_variant(
                 IconWithStatusVariant::NeutralElement { icon_element }
             } else {
                 IconWithStatusVariant::Neutral {
-                    icon: WarpIcon::Code2,
+                    icon: CognixIcon::Code2,
                     icon_color: sub_text,
                 }
             }
@@ -2295,7 +2295,7 @@ fn resolve_icon_with_status_variant(
             icon: typed.icon(),
             icon_color: main_text,
         },
-        // Warp Drive object types use their established index colors
+        // Cognix Drive object types use their established index colors
         TypedPane::Notebook { is_plan } => IconWithStatusVariant::Neutral {
             icon: typed.icon(),
             icon_color: drive_color(DriveObjectType::Notebook {
@@ -2341,10 +2341,10 @@ fn has_unread_activity(typed: &TypedPane<'_>, app: &AppContext) -> bool {
 
 const INDICATOR_DOT_SIZE: f32 = 8.;
 
-fn render_title_indicator(theme: &WarpTheme) -> Box<dyn Element> {
+fn render_title_indicator(theme: &CognixTheme) -> Box<dyn Element> {
     ConstrainedBox::new(
-        WarpIcon::CircleFilled
-            .to_warpui_icon(theme.accent())
+        CognixIcon::CircleFilled
+            .to_cognixui_icon(theme.accent())
             .finish(),
     )
     .with_width(INDICATOR_DOT_SIZE)
@@ -2507,13 +2507,13 @@ impl TypedPane<'_> {
         }
     }
 
-    fn warp_drive_object_type(&self) -> Option<DriveObjectType> {
-        typed_pane_warp_drive_object_type(self)
+    fn cognix_drive_object_type(&self) -> Option<DriveObjectType> {
+        typed_pane_cognix_drive_object_type(self)
     }
 
     fn supports_vertical_tabs_detail_sidecar(&self) -> bool {
         matches!(self, TypedPane::Terminal(_) | TypedPane::Code(_))
-            || self.warp_drive_object_type().is_some()
+            || self.cognix_drive_object_type().is_some()
     }
     fn kind_label(&self) -> &'static str {
         match self {
@@ -2555,24 +2555,24 @@ impl TypedPane<'_> {
         }
     }
 
-    fn icon(&self) -> WarpIcon {
+    fn icon(&self) -> CognixIcon {
         match self {
-            TypedPane::Terminal(_) => WarpIcon::Terminal,
-            TypedPane::Code(_) => WarpIcon::Code2,
-            TypedPane::CodeDiff => WarpIcon::Diff,
-            TypedPane::File => WarpIcon::File,
-            TypedPane::Notebook { is_plan: true } => WarpIcon::Compass,
-            TypedPane::Notebook { is_plan: false } => WarpIcon::Notebook,
-            TypedPane::Workflow { is_ai_prompt: true } => WarpIcon::Prompt,
+            TypedPane::Terminal(_) => CognixIcon::Terminal,
+            TypedPane::Code(_) => CognixIcon::Code2,
+            TypedPane::CodeDiff => CognixIcon::Diff,
+            TypedPane::File => CognixIcon::File,
+            TypedPane::Notebook { is_plan: true } => CognixIcon::Compass,
+            TypedPane::Notebook { is_plan: false } => CognixIcon::Notebook,
+            TypedPane::Workflow { is_ai_prompt: true } => CognixIcon::Prompt,
             TypedPane::Workflow {
                 is_ai_prompt: false,
-            } => WarpIcon::Workflow,
-            TypedPane::Settings | TypedPane::EnvironmentManagement => WarpIcon::Gear,
-            TypedPane::EnvVarCollection => WarpIcon::EnvVarCollection,
-            TypedPane::AIFact => WarpIcon::BookOpen,
-            TypedPane::AIDocument => WarpIcon::Compass,
-            TypedPane::ExecutionProfileEditor => WarpIcon::Lightning,
-            TypedPane::Other => WarpIcon::File,
+            } => CognixIcon::Workflow,
+            TypedPane::Settings | TypedPane::EnvironmentManagement => CognixIcon::Gear,
+            TypedPane::EnvVarCollection => CognixIcon::EnvVarCollection,
+            TypedPane::AIFact => CognixIcon::BookOpen,
+            TypedPane::AIDocument => CognixIcon::Compass,
+            TypedPane::ExecutionProfileEditor => CognixIcon::Lightning,
+            TypedPane::Other => CognixIcon::File,
         }
     }
 }
@@ -2594,7 +2594,7 @@ fn pane_display_title_and_subtitle(
             .unwrap_or_default();
         let home_dir = dirs::home_dir();
         let home_str = home_dir.as_ref().and_then(|path| path.to_str());
-        let parent = warp_util::path::user_friendly_path(&parent_raw, home_str).to_string();
+        let parent = cognix_util::path::user_friendly_path(&parent_raw, home_str).to_string();
         (filename, parent)
     } else {
         (
@@ -3333,7 +3333,7 @@ fn compact_branch_subtitle_display(
 
 fn render_git_branch_text(
     branch: &str,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
     font_size: f32,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -3341,7 +3341,7 @@ fn render_git_branch_text(
         .with_cross_axis_alignment(CrossAxisAlignment::Center)
         .with_spacing(2.)
         .with_child(
-            ConstrainedBox::new(UiIcon::GitBranch.to_warpui_icon(text_color).finish())
+            ConstrainedBox::new(UiIcon::GitBranch.to_cognixui_icon(text_color).finish())
                 .with_width(font_size - 2.)
                 .with_height(font_size - 2.)
                 .finish(),
@@ -3366,7 +3366,7 @@ enum MetadataLeftContent {
 
 fn render_text_line(
     text: &str,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
     clip: ClipConfig,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -3399,7 +3399,7 @@ fn render_inline_tab_rename_editor(
 fn render_title_override(
     props: &PaneProps<'_>,
     font_size: f32,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
     clip: ClipConfig,
     appearance: &Appearance,
     app: &AppContext,
@@ -3433,7 +3433,7 @@ fn render_pane_title_slot(
     props: &PaneProps<'_>,
     generated_title: impl FnOnce() -> Box<dyn Element>,
     font_size: f32,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
     clip: ClipConfig,
     appearance: &Appearance,
     app: &AppContext,
@@ -3629,12 +3629,12 @@ fn render_summary_pane_kind_icon_circle(
     let (icon_element, background): (Box<dyn Element>, ElementFill) = match kind {
         SummaryPaneKind::OzAgent { is_ambient } => {
             let icon = if is_ambient {
-                WarpIcon::OzCloud
+                CognixIcon::OzCloud
             } else {
-                WarpIcon::Oz
+                CognixIcon::Oz
             };
             (
-                icon.to_warpui_icon(oz_icon_fill(theme)).finish(),
+                icon.to_cognixui_icon(oz_icon_fill(theme)).finish(),
                 theme.background().into(),
             )
         }
@@ -3643,12 +3643,12 @@ fn render_summary_pane_kind_icon_circle(
             let icon_element = agent
                 .icon()
                 .map(|icon| {
-                    icon.to_warpui_icon(WarpThemeFill::Solid(icon_color))
+                    icon.to_cognixui_icon(CognixThemeFill::Solid(icon_color))
                         .finish()
                 })
                 .unwrap_or_else(|| {
-                    WarpIcon::Terminal
-                        .to_warpui_icon(theme.sub_text_color(theme.background()))
+                    CognixIcon::Terminal
+                        .to_cognixui_icon(theme.sub_text_color(theme.background()))
                         .finish()
                 });
             (
@@ -3663,8 +3663,8 @@ fn render_summary_pane_kind_icon_circle(
         }
         SummaryPaneKind::Code { title } => (
             icon_from_file_path(&title, appearance).unwrap_or_else(|| {
-                WarpIcon::Code2
-                    .to_warpui_icon(theme.sub_text_color(theme.background()))
+                CognixIcon::Code2
+                    .to_cognixui_icon(theme.sub_text_color(theme.background()))
                     .finish()
             }),
             internal_colors::fg_overlay_2(theme).into(),
@@ -3683,7 +3683,7 @@ fn render_summary_pane_kind_icon_circle(
         | SummaryPaneKind::Other => {
             let (icon, icon_color) = summary_pane_kind_icon(kind, appearance);
             (
-                icon.to_warpui_icon(icon_color).finish(),
+                icon.to_cognixui_icon(icon_color).finish(),
                 internal_colors::fg_overlay_2(theme).into(),
             )
         }
@@ -3705,36 +3705,36 @@ fn render_summary_pane_kind_icon_circle(
 fn summary_pane_kind_icon(
     kind: SummaryPaneKind,
     appearance: &Appearance,
-) -> (WarpIcon, WarpThemeFill) {
+) -> (CognixIcon, CognixThemeFill) {
     let theme = appearance.theme();
     let main_text = theme.main_text_color(theme.background());
     let sub_text = theme.sub_text_color(theme.background());
-    let drive_color = |object_type: DriveObjectType| -> WarpThemeFill {
-        WarpThemeFill::Solid(warp_drive_icon_color(appearance, object_type))
+    let drive_color = |object_type: DriveObjectType| -> CognixThemeFill {
+        CognixThemeFill::Solid(cognix_drive_icon_color(appearance, object_type))
     };
 
     match kind {
-        SummaryPaneKind::Terminal => (WarpIcon::Terminal, main_text),
+        SummaryPaneKind::Terminal => (CognixIcon::Terminal, main_text),
         SummaryPaneKind::OzAgent { is_ambient } => (
             if is_ambient {
-                WarpIcon::OzCloud
+                CognixIcon::OzCloud
             } else {
-                WarpIcon::Oz
+                CognixIcon::Oz
             },
             main_text,
         ),
         SummaryPaneKind::CLIAgent { agent } => (
-            agent.icon().unwrap_or(WarpIcon::Terminal),
-            WarpThemeFill::Solid(agent.brand_icon_color()),
+            agent.icon().unwrap_or(CognixIcon::Terminal),
+            CognixThemeFill::Solid(agent.brand_icon_color()),
         ),
-        SummaryPaneKind::Code { .. } => (WarpIcon::Code2, sub_text),
-        SummaryPaneKind::CodeDiff => (WarpIcon::Diff, sub_text),
-        SummaryPaneKind::File => (WarpIcon::File, sub_text),
+        SummaryPaneKind::Code { .. } => (CognixIcon::Code2, sub_text),
+        SummaryPaneKind::CodeDiff => (CognixIcon::Diff, sub_text),
+        SummaryPaneKind::File => (CognixIcon::File, sub_text),
         SummaryPaneKind::Notebook { is_plan } => (
             if is_plan {
-                WarpIcon::Compass
+                CognixIcon::Compass
             } else {
-                WarpIcon::Notebook
+                CognixIcon::Notebook
             },
             drive_color(DriveObjectType::Notebook {
                 is_ai_document: is_plan,
@@ -3742,9 +3742,9 @@ fn summary_pane_kind_icon(
         ),
         SummaryPaneKind::Workflow { is_ai_prompt } => (
             if is_ai_prompt {
-                WarpIcon::Prompt
+                CognixIcon::Prompt
             } else {
-                WarpIcon::Workflow
+                CognixIcon::Workflow
             },
             if is_ai_prompt {
                 drive_color(DriveObjectType::AgentModeWorkflow)
@@ -3753,16 +3753,16 @@ fn summary_pane_kind_icon(
             },
         ),
         SummaryPaneKind::Settings | SummaryPaneKind::EnvironmentManagement => {
-            (WarpIcon::Gear, main_text)
+            (CognixIcon::Gear, main_text)
         }
         SummaryPaneKind::EnvVarCollection => (
-            WarpIcon::EnvVarCollection,
+            CognixIcon::EnvVarCollection,
             drive_color(DriveObjectType::EnvVarCollection),
         ),
-        SummaryPaneKind::AIFact => (WarpIcon::BookOpen, drive_color(DriveObjectType::AIFact)),
-        SummaryPaneKind::AIDocument => (WarpIcon::Compass, sub_text),
-        SummaryPaneKind::ExecutionProfileEditor => (WarpIcon::Lightning, sub_text),
-        SummaryPaneKind::Other => (WarpIcon::File, sub_text),
+        SummaryPaneKind::AIFact => (CognixIcon::BookOpen, drive_color(DriveObjectType::AIFact)),
+        SummaryPaneKind::AIDocument => (CognixIcon::Compass, sub_text),
+        SummaryPaneKind::ExecutionProfileEditor => (CognixIcon::Lightning, sub_text),
+        SummaryPaneKind::Other => (CognixIcon::File, sub_text),
     }
 }
 
@@ -3817,7 +3817,7 @@ fn render_summary_branch_line(
 fn render_terminal_primary_line_for_view(
     terminal_view: &TerminalView,
     appearance: &Appearance,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
     app: &AppContext,
 ) -> Box<dyn Element> {
     let title_text = terminal_view.terminal_title_from_shell();
@@ -3853,7 +3853,7 @@ fn render_terminal_primary_line(
     primary_line: TerminalPrimaryLineData,
     terminal_view: &TerminalView,
     appearance: &Appearance,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
 ) -> Box<dyn Element> {
     let theme = appearance.theme();
 
@@ -3871,7 +3871,7 @@ fn render_terminal_primary_line(
             .with_child(
                 ConstrainedBox::new(
                     UiIcon::AlertTriangle
-                        .to_warpui_icon(error_color.into())
+                        .to_cognixui_icon(error_color.into())
                         .finish(),
                 )
                 .with_width(BADGE_ICON_SIZE)
@@ -4154,7 +4154,7 @@ fn render_pull_request_badge_content(label: &str, appearance: &Appearance) -> Bo
         .with_cross_axis_alignment(CrossAxisAlignment::Center)
         .with_spacing(4.)
         .with_child(
-            ConstrainedBox::new(UiIcon::Github.to_warpui_icon(main_text_color).finish())
+            ConstrainedBox::new(UiIcon::Github.to_cognixui_icon(main_text_color).finish())
                 .with_width(BADGE_ICON_SIZE)
                 .with_height(BADGE_ICON_SIZE)
                 .finish(),
@@ -4171,7 +4171,7 @@ fn compute_tab_group_color_mode(
     tab: &TabData,
     pane_group: &PaneGroup,
     visible_pane_ids: &[PaneId],
-    theme: &WarpTheme,
+    theme: &CognixTheme,
     app: &AppContext,
 ) -> TabGroupColorMode {
     // Manual override applies to the whole group.
@@ -4200,8 +4200,8 @@ fn compute_tab_group_color_mode(
                 })
             } else if let Some(code_view) = pane_group.code_view_from_pane_id(pane_id, app) {
                 // Code pane: determine color from the open file path using longest-prefix
-                // matching against configured directories, so e.g. warp-internal/code.rs
-                // inherits the color assigned to warp-internal.
+                // matching against configured directories, so e.g. cognix-internal/code.rs
+                // inherits the color assigned to cognix-internal.
                 code_view
                     .as_ref(app)
                     .local_path(app)
@@ -4466,7 +4466,7 @@ pub(super) fn render_settings_popup(
                 Expanded::new(
                     1.,
                     render_popup_segment(
-                        WarpIcon::Menu01,
+                        CognixIcon::Menu01,
                         matches!(current_mode, VerticalTabsViewMode::Compact),
                         state.compact_segment_mouse_state.clone(),
                         VerticalTabsViewMode::Compact,
@@ -4480,7 +4480,7 @@ pub(super) fn render_settings_popup(
                 Expanded::new(
                     1.,
                     render_popup_segment(
-                        WarpIcon::Grid,
+                        CognixIcon::Grid,
                         matches!(current_mode, VerticalTabsViewMode::Expanded),
                         state.expanded_segment_mouse_state.clone(),
                         VerticalTabsViewMode::Expanded,
@@ -4505,7 +4505,7 @@ pub(super) fn render_settings_popup(
         .finish();
 
     // Divider between toggle and "Pane title as" section
-    let make_divider = |theme: &WarpTheme| {
+    let make_divider = |theme: &CognixTheme| {
         Container::new(
             ConstrainedBox::new(
                 Container::new(Empty::new().finish())
@@ -4706,7 +4706,7 @@ fn render_compact_subtitle_option(
     mouse_state: MouseStateHandle,
     value: VerticalTabsCompactSubtitle,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4716,7 +4716,7 @@ fn render_compact_subtitle_option(
     let main_text = theme.main_text_color(theme.background());
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_selected {
-            ConstrainedBox::new(WarpIcon::Check.to_warpui_icon(main_text).finish())
+            ConstrainedBox::new(CognixIcon::Check.to_cognixui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4759,7 +4759,7 @@ fn render_tab_item_mode_option(
     mouse_state: MouseStateHandle,
     value: VerticalTabsTabItemMode,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4769,7 +4769,7 @@ fn render_tab_item_mode_option(
     let main_text = theme.main_text_color(theme.background());
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_selected {
-            ConstrainedBox::new(WarpIcon::Check.to_warpui_icon(main_text).finish())
+            ConstrainedBox::new(CognixIcon::Check.to_cognixui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4812,7 +4812,7 @@ fn render_primary_info_option(
     mouse_state: MouseStateHandle,
     value: VerticalTabsPrimaryInfo,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4822,7 +4822,7 @@ fn render_primary_info_option(
     let main_text = theme.main_text_color(theme.background());
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_selected {
-            ConstrainedBox::new(WarpIcon::Check.to_warpui_icon(main_text).finish())
+            ConstrainedBox::new(CognixIcon::Check.to_cognixui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4871,7 +4871,7 @@ fn render_show_toggle_option(
     action: WorkspaceAction,
     info_tooltip: Option<ShowToggleInfoTooltip>,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     const ICON_SIZE: f32 = 16.;
     const FONT_SIZE: f32 = 12.;
@@ -4889,7 +4889,7 @@ fn render_show_toggle_option(
 
     Hoverable::new(mouse_state, move |hover_state| {
         let check_icon: Box<dyn Element> = if is_enabled {
-            ConstrainedBox::new(WarpIcon::Check.to_warpui_icon(main_text).finish())
+            ConstrainedBox::new(CognixIcon::Check.to_cognixui_icon(main_text).finish())
                 .with_width(ICON_SIZE)
                 .with_height(ICON_SIZE)
                 .finish()
@@ -4912,7 +4912,7 @@ fn render_show_toggle_option(
         {
             let builder = ui_builder.clone();
             let info_icon = Hoverable::new(info_ms, move |info_hover| {
-                let icon = ConstrainedBox::new(UiIcon::Info.to_warpui_icon(info_color).finish())
+                let icon = ConstrainedBox::new(UiIcon::Info.to_cognixui_icon(info_color).finish())
                     .with_width(INFO_ICON_SIZE)
                     .with_height(INFO_ICON_SIZE)
                     .finish();
@@ -4959,12 +4959,12 @@ fn render_show_toggle_option(
 }
 
 fn render_popup_segment(
-    icon: WarpIcon,
+    icon: CognixIcon,
     is_selected: bool,
     mouse_state: MouseStateHandle,
     mode: VerticalTabsViewMode,
-    theme: &WarpTheme,
-    icon_color: WarpThemeFill,
+    theme: &CognixTheme,
+    icon_color: CognixThemeFill,
 ) -> Box<dyn Element> {
     Hoverable::new(mouse_state, move |hover_state| {
         let background = if is_selected {
@@ -4977,7 +4977,7 @@ fn render_popup_segment(
 
         Container::new(
             Align::new(
-                ConstrainedBox::new(icon.to_warpui_icon(icon_color).finish())
+                ConstrainedBox::new(icon.to_cognixui_icon(icon_color).finish())
                     .with_width(COMPACT_ICON_SIZE)
                     .with_height(COMPACT_ICON_SIZE)
                     .finish(),
@@ -5002,7 +5002,7 @@ fn render_popup_text_segment(
     mouse_state: MouseStateHandle,
     granularity: VerticalTabsDisplayGranularity,
     appearance: &Appearance,
-    theme: &WarpTheme,
+    theme: &CognixTheme,
 ) -> Box<dyn Element> {
     let label = label.to_string();
     let main_text = theme.main_text_color(theme.background());
@@ -5170,25 +5170,25 @@ fn detail_sidecar_width_and_bounds(available_width: f32) -> (f32, PositionedElem
 }
 
 struct DetailSidecarTextColors {
-    main: WarpThemeFill,
-    sub: WarpThemeFill,
-    disabled: WarpThemeFill,
+    main: CognixThemeFill,
+    sub: CognixThemeFill,
+    disabled: CognixThemeFill,
 }
 
-fn detail_sidecar_background(theme: &WarpTheme) -> ColorU {
+fn detail_sidecar_background(theme: &CognixTheme) -> ColorU {
     theme
         .background()
         .blend(&internal_colors::fg_overlay_2(theme))
         .into_solid()
 }
 
-fn detail_sidecar_border_fill(theme: &WarpTheme) -> ThemeFill {
+fn detail_sidecar_border_fill(theme: &CognixTheme) -> ThemeFill {
     theme
         .background()
         .blend(&internal_colors::fg_overlay_4(theme))
 }
 
-fn detail_sidecar_text_colors(theme: &WarpTheme) -> DetailSidecarTextColors {
+fn detail_sidecar_text_colors(theme: &CognixTheme) -> DetailSidecarTextColors {
     let bg = ThemeFill::Solid(detail_sidecar_background(theme));
     DetailSidecarTextColors {
         main: theme.main_text_color(bg),
@@ -5201,7 +5201,7 @@ fn render_detail_badge(
     label: impl Into<String>,
     icon: Option<Box<dyn Element>>,
     background: Option<ThemeFill>,
-    text_color: WarpThemeFill,
+    text_color: CognixThemeFill,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let mut content = Flex::row()
@@ -5244,14 +5244,14 @@ fn render_detail_status_pill(
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_spacing(4.)
             .with_child(
-                ConstrainedBox::new(icon.to_warpui_icon(WarpThemeFill::Solid(color)).finish())
+                ConstrainedBox::new(icon.to_cognixui_icon(CognixThemeFill::Solid(color)).finish())
                     .with_width(12.)
                     .with_height(12.)
                     .finish(),
             )
             .with_child(
                 Text::new_inline(status.to_string(), appearance.ui_font_family(), 10.)
-                    .with_color(WarpThemeFill::Solid(color).into())
+                    .with_color(CognixThemeFill::Solid(color).into())
                     .finish(),
             )
             .finish(),
@@ -5265,7 +5265,7 @@ fn render_detail_status_pill(
 fn render_detail_wrapping_text(
     text: impl Into<String>,
     font_size: f32,
-    color: WarpThemeFill,
+    color: CognixThemeFill,
     style: Option<Properties>,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
@@ -5280,7 +5280,7 @@ fn render_detail_wrapping_text(
 
 fn render_terminal_detail_primary_line(
     primary_line: &TerminalPrimaryLineData,
-    color: WarpThemeFill,
+    color: CognixThemeFill,
     appearance: &Appearance,
 ) -> Box<dyn Element> {
     let font_family = match primary_line {
@@ -5525,7 +5525,7 @@ fn render_code_detail_section(
         .finish()
 }
 
-fn render_warp_drive_object_detail_section(
+fn render_cognix_drive_object_detail_section(
     props: &PaneProps<'_>,
     appearance: &Appearance,
     app: &AppContext,
@@ -5560,7 +5560,7 @@ fn code_detail_kind_label(file_name: &str) -> Option<String> {
     language_by_filename(Path::new(file_name)).map(|language| language.display_name().to_string())
 }
 
-fn typed_pane_warp_drive_object_type(typed: &TypedPane<'_>) -> Option<DriveObjectType> {
+fn typed_pane_cognix_drive_object_type(typed: &TypedPane<'_>) -> Option<DriveObjectType> {
     match typed {
         TypedPane::Notebook { is_plan } => Some(DriveObjectType::Notebook {
             is_ai_document: *is_plan,
@@ -5602,7 +5602,7 @@ fn render_detail_section(
         | TypedPane::Workflow { .. }
         | TypedPane::EnvVarCollection
         | TypedPane::AIFact
-        | TypedPane::AIDocument => render_warp_drive_object_detail_section(props, appearance, app),
+        | TypedPane::AIDocument => render_cognix_drive_object_detail_section(props, appearance, app),
         TypedPane::CodeDiff
         | TypedPane::File
         | TypedPane::Settings

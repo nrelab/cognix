@@ -13,14 +13,14 @@ use std::{
     str,
     time::Duration,
 };
-use warp_core::safe_error;
+use cognix_core::safe_error;
 
 use anyhow::{anyhow, bail, ensure, Context, Result};
 use channel_versions::VersionInfo;
 use nix::unistd::{fchown, getgid};
 use nix::{errno::Errno, unistd::getuid};
-use warp_core::macos::get_bundle_path;
-use warpui::{AppContext, ModelContext, SingletonEntity};
+use cognix_core::macos::get_bundle_path;
+use cognixui::{AppContext, ModelContext, SingletonEntity};
 
 use crate::{
     appearance::AppearanceManager,
@@ -45,7 +45,7 @@ const OLD_EXECUTABLE_FILE_NAME: &str = "old";
 const PERMISSIONS_TMP_FILE_NAME: &str = "permission_test";
 
 fn old_executable_file_path() -> PathBuf {
-    warp_core::paths::state_dir().join(OLD_EXECUTABLE_FILE_NAME)
+    cognix_core::paths::state_dir().join(OLD_EXECUTABLE_FILE_NAME)
 }
 
 /// Removes the old executable dir from the app bundle. This is necessary because after an
@@ -138,24 +138,24 @@ pub(super) fn relaunch() -> Result<()> {
     let bundle_path = PathBuf::from(get_bundle_path()?);
     // Set the -n option to open a new instance of the app even if one is
     // running so we still launch the new version even if the user was running
-    // multiple instances of Warp.
+    // multiple instances of Cognix.
     let mut launch_command = OsString::from("/usr/bin/open -n ");
     launch_command.push(bundle_path.as_os_str());
     // Pass a flag to the app to let it know it was restarted as part of the
     // autoupdate process.
-    launch_command.push(format!(" --args {}", warp_cli::finish_update_flag()));
+    launch_command.push(format!(" --args {}", cognix_cli::finish_update_flag()));
     // If we're testing with a local copy of channel_versions.json, have the
     // newly-started binary also reference that same file (so we can test
     // displaying an updated changelog after an autoupdate).
-    if let Ok(path) = env::var("WARP_CHANNEL_VERSIONS_PATH") {
-        launch_command.push(format!(" --env WARP_CHANNEL_VERSIONS_PATH={path}"));
+    if let Ok(path) = env::var("COGNIX_CHANNEL_VERSIONS_PATH") {
+        launch_command.push(format!(" --env COGNIX_CHANNEL_VERSIONS_PATH={path}"));
     }
 
-    // We need to make sure that the current Warp process is no longer running
+    // We need to make sure that the current Cognix process is no longer running
     // before we spawn the new one, otherwise we can end up showing multiple
     // icons in the macOS dock.  To do this, we use an intermediary /bin/sh
     // process that watches for this process to terminate, and then spawns a
-    // new Warp process.
+    // new Cognix process.
     //
     // Wait until the current process is no longer running, checking every
     // 200ms.  Once the current process has terminated, launch the new one.
@@ -190,7 +190,7 @@ pub async fn cleanup(update_id: &str) {
 /// This helps prevent accumulation of old update directories from failed downloads,
 /// race conditions, or incomplete cleanups.
 pub async fn cleanup_all_except(preserve_update_id: Option<&str>) {
-    let mut autoupdate_dir = warp_core::paths::cache_dir();
+    let mut autoupdate_dir = cognix_core::paths::cache_dir();
     autoupdate_dir.push("autoupdate");
 
     if !autoupdate_dir.exists() {
@@ -247,7 +247,7 @@ pub async fn cleanup_all_except(preserve_update_id: Option<&str>) {
     }
 }
 
-/// Determines if the user needs authorization in order to update Warp.
+/// Determines if the user needs authorization in order to update Cognix.
 async fn needs_authorization(bundle_path: &Path) -> Result<bool> {
     // For the bundle path itself, check permissions without creating a test file so as to not
     // interfere with code signing.
@@ -272,8 +272,8 @@ async fn needs_authorization(bundle_path: &Path) -> Result<bool> {
 }
 
 /// Determines if a directory is writable as part of an update. This means:
-/// * Warp can create files in the directory
-/// * Warp can modify the permissions of created files
+/// * Cognix can create files in the directory
+/// * Cognix can modify the permissions of created files
 async fn is_directory_writable(directory: &Path) -> Result<bool> {
     // Just because we have writability access does not mean we can set the correct owner/group.
     // Test if we can set the owner/group on a temporarily created file. If we can, then we can
@@ -308,14 +308,14 @@ async fn is_directory_writable(directory: &Path) -> Result<bool> {
 }
 
 /// Verifies that the staged bundle path has a valid macOS code signature, and that its
-/// team identifier matches Warp's team identifier.
+/// team identifier matches Cognix's team identifier.
 async fn verify_code_signature(component: &str, path: &Path) -> Result<()> {
     // Verify the signature of the staged update bundle with team identifier
     let codesign_verify_output = Command::new("/usr/bin/codesign")
         .arg("-v")
         .arg(format!(
             "-R=certificate leaf[subject.OU] = \"{}\"",
-            warp_core::macos::APPLE_TEAM_ID
+            cognix_core::macos::APPLE_TEAM_ID
         ))
         .arg(path)
         .output()
@@ -408,7 +408,7 @@ async fn apply_update(channel: Channel, version_info: &VersionInfo, update_id: &
         .await
         .is_ok()
     {
-        // If we performed this process already but didn't relaunch Warp, the old executable will
+        // If we performed this process already but didn't relaunch Cognix, the old executable will
         // still be located in the user application data directory.  In that case, leave it there.
         log::info!("Already autoupdated without relaunching; ignoring executable from old bundle");
     } else {
@@ -664,7 +664,7 @@ async fn download_dmg(
 }
 
 fn get_download_dir(update_id: &str) -> PathBuf {
-    let mut dir = warp_core::paths::cache_dir();
+    let mut dir = cognix_core::paths::cache_dir();
     dir.push("autoupdate");
     dir.push(update_id);
     dir
@@ -682,8 +682,8 @@ async fn mount_dmg(dmg_dir: &Path, update_id: &str) -> Result<PathBuf> {
     hdiutil_cmd.args(["attach", "-mountpoint"]);
     hdiutil_cmd.arg(&volume);
     // Explanation of flags:
-    // -nobrowse: Do not show the Warp DMG in Finder or similar apps.
-    // -noautoopen: Do not open the Warp DMG in Finder.
+    // -nobrowse: Do not show the Cognix DMG in Finder or similar apps.
+    // -noautoopen: Do not open the Cognix DMG in Finder.
     // -readonly: For safety, we mount read-only since there's no need to modify the new app version.
     // -autofsck: Ensure that the DMG contents are verified. This is on by default for quarantined images, but macOS
     //    doesn't necessarily recognize our download as such.
@@ -732,12 +732,12 @@ fn dmg_name(channel: Channel) -> String {
 
 fn app_name_prefix(channel: Channel) -> &'static str {
     match channel {
-        Channel::Stable => "Warp",
-        Channel::Preview => "WarpPreview",
-        Channel::Local => "warp",
+        Channel::Stable => "Cognix",
+        Channel::Preview => "CognixPreview",
+        Channel::Local => "cognix",
         Channel::Integration => "integration",
-        Channel::Dev => "WarpDev",
-        Channel::Oss => "warp-oss",
+        Channel::Dev => "CognixDev",
+        Channel::Oss => "cognix-oss",
     }
 }
 
@@ -745,10 +745,10 @@ fn executable_name(channel: Channel) -> &'static str {
     match channel {
         Channel::Stable => "stable",
         Channel::Preview => "preview",
-        Channel::Local => "warp",
+        Channel::Local => "cognix",
         Channel::Integration => "integration",
         Channel::Dev => "dev",
-        Channel::Oss => "warp-oss",
+        Channel::Oss => "cognix-oss",
     }
 }
 

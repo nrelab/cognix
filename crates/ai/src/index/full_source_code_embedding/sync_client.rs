@@ -8,7 +8,7 @@ use std::{
     mem,
     sync::Arc,
 };
-use warp_core::sync_queue::{IsTransientError, SyncQueue, SyncQueueTaskTrait};
+use cognix_core::sync_queue::{IsTransientError, SyncQueue, SyncQueueTaskTrait};
 
 use super::{CodebaseContextConfig, NodeHash};
 

@@ -3,13 +3,13 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::telemetry::OnboardingEvent;
 use crate::visuals::project_visual;
 use ui_components::{button, keyboard_shortcut, Component as _, Options as _};
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::{
+use cognix_core::send_telemetry_from_ctx;
+use cognix_core::ui::{
     appearance::Appearance, color::coloru_with_opacity, theme::color::internal_colors, Icon,
 };
-use warpui::prelude::{MainAxisAlignment, MainAxisSize, Vector2F};
-use warpui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
-use warpui::{
+use cognixui::prelude::{MainAxisAlignment, MainAxisSize, Vector2F};
+use cognixui::ui_components::button::{ButtonVariant, TextAndIcon, TextAndIconAlignment};
+use cognixui::{
     elements::{
         Align, ClippedScrollStateHandle, ConstrainedBox, Container, CrossAxisAlignment, Flex,
         MouseStateHandle, ParentElement, Shrinkable,
@@ -134,7 +134,7 @@ impl ProjectSlide {
 
         let subtitle = appearance
             .ui_builder()
-            .paragraph("Set up a project to optimize it for coding in Warp.")
+            .paragraph("Set up a project to optimize it for coding in Cognix.")
             .with_style(UiComponentStyles {
                 font_size: Some(20.),
                 font_weight: Some(Weight::Normal),
@@ -174,7 +174,7 @@ impl ProjectSlide {
                 TextAndIcon::new(
                     TextAndIconAlignment::IconFirst,
                     selected_local_folder.to_owned(),
-                    Icon::Folder.to_warpui_icon(theme.foreground()),
+                    Icon::Folder.to_cognixui_icon(theme.foreground()),
                     MainAxisSize::Max,
                     MainAxisAlignment::Center,
                     Vector2F::new(16., 16.),
@@ -204,7 +204,7 @@ impl ProjectSlide {
                 );
 
                 let folder_icon =
-                    ConstrainedBox::new(Icon::Folder.to_warpui_icon(theme.foreground()).finish())
+                    ConstrainedBox::new(Icon::Folder.to_cognixui_icon(theme.foreground()).finish())
                         .with_width(16.)
                         .with_height(16.)
                         .finish();
@@ -291,14 +291,14 @@ impl ProjectSlide {
         );
 
         let theme_picker_last =
-            warp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
+            cognix_core::features::FeatureFlag::OpenCognixNewSettingsModes.is_enabled();
 
         let (label, keystroke, action) = match settings {
             ProjectOnboardingSettings::Project { .. } => (
                 if theme_picker_last {
                     "Next"
                 } else {
-                    "Get Warping"
+                    "Get Cognixing"
                 },
                 Keystroke::parse("enter").unwrap_or_default(),
                 ProjectSlideAction::NextClicked,
@@ -483,7 +483,7 @@ impl ProjectSlide {
         }
 
         self.onboarding_state.update(ctx, |model, ctx| {
-            if warp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if cognix_core::features::FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
                 model.next(ctx);
             } else {
                 model.complete(ctx);
@@ -494,7 +494,7 @@ impl ProjectSlide {
     fn skip(&mut self, ctx: &mut ViewContext<Self>) {
         self.onboarding_state.update(ctx, |model, ctx| {
             model.set_project_selected_local_folder(None, ctx);
-            if warp_core::features::FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if cognix_core::features::FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
                 model.next(ctx);
             } else {
                 model.complete(ctx);

@@ -8,17 +8,17 @@
 //! Then, you can use the global [`ServerExperiments`] model
 //! to update and query the latest experiment state.
 //!
-//! See [here](https://www.notion.so/warpdev/Server-side-experiments-dynamic-feature-enablement-c0fb9aed695d4178a19b8830e3269094)
+//! See [here](https://www.notion.so/cognixdev/Server-side-experiments-dynamic-feature-enablement-c0fb9aed695d4178a19b8830e3269094)
 //! for a full guide on the server-side experiment framework.
 
 use crate::features::FeatureFlag;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::CustomerType;
-use warpui::AppContext;
+use cognixui::AppContext;
 #[cfg(not(test))]
-use warpui::SingletonEntity as _;
+use cognixui::SingletonEntity as _;
 #[cfg(test)]
-use warpui::SingletonEntity;
+use cognixui::SingletonEntity;
 
 mod convert;
 mod model;
@@ -34,8 +34,8 @@ pub enum ServerExperiment {
     EnvVarsEarlyAccessExperiment,
     AgentModeAnalyticsExperiment,
     WindowsLaunchExperiment,
-    TmuxSshWarpificationControl,
-    TmuxSshWarpificationExperiment,
+    TmuxSshCognixificationControl,
+    TmuxSshCognixificationExperiment,
     CodebaseContextExperiment,
     CodebaseContextControl,
     SuggestedCodeDiffsControl,
@@ -92,8 +92,8 @@ impl ServerExperiment {
                 // TODO(alokedesai): Clean this up now that we no longer gate access to the Windows
                 // build on an allowlist.
             }
-            Self::TmuxSshWarpificationControl => FeatureFlag::SSHTmuxWrapper.set_enabled(false),
-            Self::TmuxSshWarpificationExperiment => {
+            Self::TmuxSshCognixificationControl => FeatureFlag::SSHTmuxWrapper.set_enabled(false),
+            Self::TmuxSshCognixificationExperiment => {
                 // Only enable the TMUX-based experience if not on windows. ConPTY doesn't support
                 // DCS, which we need in order to use tmux control mode.
                 if cfg!(not(windows)) {

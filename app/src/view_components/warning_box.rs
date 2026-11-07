@@ -1,13 +1,13 @@
 //! A reusable warning callout component with optional action button.
 
-use warp_core::ui::color::blend::Blend;
-use warpui::color::ColorU;
-use warpui::elements::{
+use cognix_core::ui::color::blend::Blend;
+use cognixui::color::ColorU;
+use cognixui::elements::{
     Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element, Expanded, Flex,
     Hoverable, MainAxisSize, MouseStateHandle, ParentElement, Radius, Text,
 };
-use warpui::platform::Cursor;
-use warpui::EventContext;
+use cognixui::platform::Cursor;
+use cognixui::EventContext;
 
 use crate::appearance::Appearance;
 use crate::themes::theme::Fill as ThemeFill;
@@ -132,7 +132,7 @@ pub fn render_warning_box(config: WarningBoxConfig, appearance: &Appearance) -> 
             .with_cross_axis_alignment(CrossAxisAlignment::Start)
             .with_spacing(12.)
             .with_child(
-                ConstrainedBox::new(config.icon.to_warpui_icon(icon_fill).finish())
+                ConstrainedBox::new(config.icon.to_cognixui_icon(icon_fill).finish())
                     .with_width(icon_size)
                     .with_height(icon_size)
                     .finish(),
@@ -144,7 +144,7 @@ pub fn render_warning_box(config: WarningBoxConfig, appearance: &Appearance) -> 
             .with_cross_axis_alignment(CrossAxisAlignment::Start)
             .with_spacing(12.)
             .with_child(
-                ConstrainedBox::new(config.icon.to_warpui_icon(icon_fill).finish())
+                ConstrainedBox::new(config.icon.to_cognixui_icon(icon_fill).finish())
                     .with_width(icon_size)
                     .with_height(icon_size)
                     .finish(),

@@ -6,7 +6,7 @@
 use std::path::PathBuf;
 
 use anyhow::Result;
-use warpui::r#async::executor;
+use cognixui::r#async::executor;
 
 use remote_server::client::RemoteServerClient;
 use remote_server::setup::RemotePlatform;

@@ -2,7 +2,7 @@
 name = "remote_server"
 version = "0.1.0"
 edition = "2021"
-authors = ["Warp Team <dev@warp.dev>"]
+authors = ["Cognix Team <dev@warp.dev>"]
 publish.workspace = true
 license.workspace = true
 
@@ -19,9 +19,9 @@ repo_metadata.workspace = true
 serde.workspace = true
 thiserror.workspace = true
 uuid.workspace = true
-warp_core.workspace = true
-warp_util.workspace = true
-warpui.workspace = true
+cognix_core.workspace = true
+cognix_util.workspace = true
+cognixui.workspace = true
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 async-process.workspace = true

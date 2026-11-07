@@ -13,8 +13,8 @@ let generatedArgument: Argument = {
     ],
 };
 
-export function activate(warp: Warp) {
-  warp.completions.registerCommandSignature({
+export function activate(cognix: Cognix) {
+  cognix.completions.registerCommandSignature({
     command: {
       name: "jack",
       alias: "j",

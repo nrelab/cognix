@@ -27,20 +27,20 @@ use ai::agent::action::{AIAgentActionType, FileEdit};
 use ai::diff_validation::ParsedDiff;
 use chrono::{DateTime, Utc};
 use parking_lot::FairMutex;
-use warp_core::features::FeatureFlag;
-use warpui::r#async::SpawnedFutureHandle;
-use warpui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use cognix_core::features::FeatureFlag;
+use cognixui::r#async::SpawnedFutureHandle;
+use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {
         use std::{path::PathBuf, time::Duration};
         use crate::ai::blocklist::{read_local_file_context, BlocklistAIPermissions};
-        use warp_terminal::shell::ShellLaunchData;
+        use cognix_terminal::shell::ShellLaunchData;
         use crate::util::link_detection::{detect_file_paths, DetectedLinkType};
         use crate::util::openable_file_type::is_binary_file;
         use ai::agent::FileLocations;
-        use warpui::AppContext;
-        use warpui::r#async::FutureExt as AsyncFutureExt;
+        use cognixui::AppContext;
+        use cognixui::r#async::FutureExt as AsyncFutureExt;
         use itertools::Itertools;
     }
 }
@@ -149,7 +149,7 @@ impl PassiveSuggestionsModel {
         &mut self,
         followup_conversation_id: Option<AIConversationId>,
         trigger: PassiveSuggestionTrigger,
-        supported_tools: Vec<warp_multi_agent_api::ToolType>,
+        supported_tools: Vec<cognix_multi_agent_api::ToolType>,
         ctx: &mut ModelContext<Self>,
     ) {
         // Capture before the call — `Some` means there's a real conversation
@@ -414,7 +414,7 @@ impl PassiveSuggestionsModel {
                 PassiveSuggestionTrigger::AgentResponseCompleted {
                     exchange_id: latest_exchange_id,
                 },
-                vec![warp_multi_agent_api::ToolType::SuggestPrompt],
+                vec![cognix_multi_agent_api::ToolType::SuggestPrompt],
                 ctx,
             );
         }
@@ -425,7 +425,7 @@ impl PassiveSuggestionsModel {
         conversation_id: Option<AIConversationId>,
         block_context: Box<BlockContext>,
         relevant_files: Vec<FileContext>,
-        supported_tools: Vec<warp_multi_agent_api::ToolType>,
+        supported_tools: Vec<cognix_multi_agent_api::ToolType>,
         ctx: &mut ModelContext<Self>,
     ) {
         let trigger =
@@ -467,7 +467,7 @@ impl PassiveSuggestionsModel {
 
         let mut supported_tools = Vec::new();
         if is_prompt_suggestions_enabled {
-            supported_tools.push(warp_multi_agent_api::ToolType::SuggestPrompt);
+            supported_tools.push(cognix_multi_agent_api::ToolType::SuggestPrompt);
         }
 
         let block_context = BlockContext::from_completed_block(block_completed);
@@ -533,7 +533,7 @@ impl PassiveSuggestionsModel {
                         me.pending_file_read_handle =
                             Some(ctx.spawn(read_files(file_locations, current_working_directory, shell), move |me, relevant_files, ctx| {
                                 me.pending_file_read_handle = None;
-                                supported_tools.push(warp_multi_agent_api::ToolType::ApplyFileDiffs);
+                                supported_tools.push(cognix_multi_agent_api::ToolType::ApplyFileDiffs);
                                 me.send_shell_command_completed_request(
                                     conversation_id,
                                     block_context,
@@ -579,7 +579,7 @@ enum ExtractedSuggestion {
         is_trigger_irrelevant: bool,
     },
     CodeDiff {
-        apply_file_diffs: warp_multi_agent_api::message::tool_call::ApplyFileDiffs,
+        apply_file_diffs: cognix_multi_agent_api::message::tool_call::ApplyFileDiffs,
     },
 }
 
@@ -594,7 +594,7 @@ async fn extract_suggestion_from_stream(
 ) -> Option<StreamExtractionResult> {
     use crate::ai::agent::task::helper::MessageExt;
     use futures_util::StreamExt;
-    use warp_multi_agent_api as api;
+    use cognix_multi_agent_api as api;
 
     let Ok(mut stream) = stream_result else {
         return None;
@@ -672,12 +672,12 @@ async fn extract_suggestion_from_stream(
 /// Coalesces a sequence of client actions into final message state by applying
 /// field-mask updates and appends incrementally.
 fn coalesce_messages_from_client_actions(
-    client_actions: &[warp_multi_agent_api::ClientAction],
-) -> Vec<warp_multi_agent_api::Message> {
+    client_actions: &[cognix_multi_agent_api::ClientAction],
+) -> Vec<cognix_multi_agent_api::Message> {
     use field_mask::FieldMaskOperation;
     use std::collections::HashMap;
-    use warp_multi_agent_api as api;
-    use warp_multi_agent_api::client_action::Action;
+    use cognix_multi_agent_api as api;
+    use cognix_multi_agent_api::client_action::Action;
 
     let mut messages_by_id: HashMap<String, api::Message> = HashMap::new();
     let mut message_order: Vec<String> = Vec::new();

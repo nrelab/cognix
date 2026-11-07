@@ -6,7 +6,7 @@ use enum_iterator::Sequence;
 use lsp::supported_servers::LSPServerType;
 #[cfg(not(target_family = "wasm"))]
 use repo_metadata::repositories::DetectedRepositories;
-use warpui::{Entity, ModelContext, SingletonEntity as _};
+use cognixui::{Entity, ModelContext, SingletonEntity as _};
 
 use crate::{
     ai::persisted_workspace::PersistedWorkspace,
@@ -54,7 +54,7 @@ pub enum InitStepStatus {
     Pending,
     /// Ready for user interaction (contains data for view to render)
     Ready(InitStepData),
-    /// User initiated action, e.g. AI generating WARP.md
+    /// User initiated action, e.g. AI generating COGNIX.md
     Running,
     /// Done (accepted, skipped, or auto-completed)
     Completed(InitActionResult),
@@ -176,7 +176,7 @@ impl InitProjectModel {
     }
 
     /// Check if there are any steps that need user action
-    pub fn should_have_available_steps(path: &Path, ctx: &warpui::AppContext) -> bool {
+    pub fn should_have_available_steps(path: &Path, ctx: &cognixui::AppContext) -> bool {
         // Note that we consider auto-indexing setting to true to satisfy the codebase context step.
         // This avoids the potential race condition with the banner showing just when we start auto-indexing.
         let has_pending_codebase_context = UserWorkspaces::as_ref(ctx)
@@ -521,13 +521,13 @@ impl InitProjectModel {
                     p.file_name()
                         .map(|n| {
                             let name = n.to_string_lossy().to_lowercase();
-                            name == "agents.md" || name == "warp.md"
+                            name == "agents.md" || name == "cognix.md"
                         })
                         .unwrap_or(false)
                 });
 
                 if has_agents_md {
-                    // Already has AGENTS.md or WARP.md, mark as completed
+                    // Already has AGENTS.md or COGNIX.md, mark as completed
                     me.set_step(
                         InitStepKind::ProjectScopedRules,
                         Some(InitStep::new_completed(

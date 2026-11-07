@@ -28,20 +28,20 @@ use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::vec2f;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use warp_core::channel::{Channel, ChannelState};
-use warp_core::features::FeatureFlag;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::icons::ICON_DIMENSIONS;
-use warp_editor::render::element::VerticalExpansionBehavior;
-use warp_util::path::LineAndColumnArg;
-use warpui::elements::Rect;
-use warpui::fonts::Style;
-use warpui::text::point::Point;
-use warpui::text_layout::ClipConfig;
+use cognix_core::channel::{Channel, ChannelState};
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::icons::ICON_DIMENSIONS;
+use cognix_editor::render::element::VerticalExpansionBehavior;
+use cognix_util::path::LineAndColumnArg;
+use cognixui::elements::Rect;
+use cognixui::fonts::Style;
+use cognixui::text::point::Point;
+use cognixui::text_layout::ClipConfig;
 
 #[cfg(feature = "local_fs")]
-use warpui::clipboard::ClipboardContent;
-use warpui::{
+use cognixui::clipboard::ClipboardContent;
+use cognixui::{
     elements::{
         AcceptedByDropTarget, Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox,
         Container, CornerRadius, CrossAxisAlignment, Draggable, DraggableState, DropTarget, Empty,
@@ -378,8 +378,8 @@ impl CodeView {
                             ctx,
                         )
                         .with_horizontal_scrollbar_appearance(
-                            warpui::elements::new_scrollable::ScrollableAppearance::new(
-                                warpui::elements::ScrollbarWidth::Auto,
+                            cognixui::elements::new_scrollable::ScrollableAppearance::new(
+                                cognixui::elements::ScrollbarWidth::Auto,
                                 true,
                             ),
                         )
@@ -419,8 +419,8 @@ impl CodeView {
                 ctx,
             )
             .with_horizontal_scrollbar_appearance(
-                warpui::elements::new_scrollable::ScrollableAppearance::new(
-                    warpui::elements::ScrollbarWidth::Auto,
+                cognixui::elements::new_scrollable::ScrollableAppearance::new(
+                    cognixui::elements::ScrollbarWidth::Auto,
                     true,
                 ),
             )

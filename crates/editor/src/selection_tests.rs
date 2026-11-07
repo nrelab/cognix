@@ -3,8 +3,8 @@ use std::sync::Arc;
 use serde_yaml::Value;
 use sum_tree::SumTree;
 use vec1::vec1;
-use warp_core::features::FeatureFlag;
-use warpui::{App, ModelAsRef, units::IntoPixels};
+use cognix_core::features::FeatureFlag;
+use cognixui::{App, ModelAsRef, units::IntoPixels};
 
 use crate::{
     content::{
@@ -22,8 +22,8 @@ use crate::{
     selection::SelectionMode,
 };
 use string_offset::CharOffset;
-use warpui::assets::asset_cache::AssetSource;
-use warpui::text::word_boundaries::WordBoundariesPolicy;
+use cognixui::assets::asset_cache::AssetSource;
+use cognixui::text::word_boundaries::WordBoundariesPolicy;
 
 use super::{SelectionModel, TextDirection, TextUnit};
 
@@ -37,7 +37,7 @@ impl SelectionModel {
     }
 }
 
-fn selection_model_with_rendered_mermaid(app: &mut App) -> warpui::ModelHandle<SelectionModel> {
+fn selection_model_with_rendered_mermaid(app: &mut App) -> cognixui::ModelHandle<SelectionModel> {
     app.add_model(|ctx| {
         let buffer = ctx.add_model(|_| Buffer::new(Box::new(|_, _| IndentBehavior::Ignore)));
         let buffer_selection = ctx.add_model(|_| BufferSelectionModel::new(buffer.clone()));
@@ -354,10 +354,10 @@ fn test_word_and_line_boundary_movement_with_block_item() {
             buffer.update(ctx, |buffer, ctx| {
                 *buffer = Buffer::from_markdown(
                     r#"text
-```warp-embedded-object
+```cognix-embedded-object
 id: workflow-123
 ```
-```warp-embedded-object
+```cognix-embedded-object
 id: workflow-123
 type: workflow
 author: kevin

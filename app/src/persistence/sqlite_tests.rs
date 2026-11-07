@@ -1,7 +1,7 @@
 use std::{path::PathBuf, sync::Arc};
 
-use warp_core::features::FeatureFlag;
-use warp_graphql::scalars::time::ServerTimestamp;
+use cognix_core::features::FeatureFlag;
+use cognix_graphql::scalars::time::ServerTimestamp;
 
 use crate::{
     app_state::{
@@ -145,9 +145,9 @@ fn test_terminal_window_snapshot(vertical_tabs_panel_open: bool) -> WindowSnapsh
         fullscreen_state: Default::default(),
         quake_mode: false,
         universal_search_width: None,
-        warp_ai_width: None,
+        cognix_ai_width: None,
         voltron_width: None,
-        warp_drive_index_width: None,
+        cognix_drive_index_width: None,
         left_panel_open: false,
         vertical_tabs_panel_open,
         left_panel_width: None,
@@ -159,7 +159,7 @@ fn test_terminal_window_snapshot(vertical_tabs_panel_open: bool) -> WindowSnapsh
 #[test]
 fn test_sqlite_round_trips_vertical_tabs_panel_open() {
     let tempdir = tempfile::tempdir().expect("tempdir should be created");
-    let database_path = tempdir.path().join("warp.sqlite");
+    let database_path = tempdir.path().join("cognix.sqlite");
     let mut conn = setup_database(&database_path).expect("database should initialize");
 
     let app_state = AppState {
@@ -192,7 +192,7 @@ fn test_sqlite_round_trips_vertical_tabs_panel_open() {
 #[test]
 fn test_sqlite_round_trips_custom_vertical_tabs_title() {
     let tempdir = tempfile::tempdir().expect("tempdir should be created");
-    let database_path = tempdir.path().join("warp.sqlite");
+    let database_path = tempdir.path().join("cognix.sqlite");
     let mut conn = setup_database(&database_path).expect("database should initialize");
 
     let app_state = AppState {
@@ -228,9 +228,9 @@ fn test_sqlite_round_trips_custom_vertical_tabs_title() {
             fullscreen_state: Default::default(),
             quake_mode: false,
             universal_search_width: None,
-            warp_ai_width: None,
+            cognix_ai_width: None,
             voltron_width: None,
-            warp_drive_index_width: None,
+            cognix_drive_index_width: None,
             left_panel_open: false,
             vertical_tabs_panel_open: false,
             left_panel_width: None,
@@ -264,7 +264,7 @@ fn test_sqlite_round_trips_custom_vertical_tabs_title() {
 #[test]
 fn test_sqlite_round_trips_code_pane_with_multiple_tabs() {
     let tempdir = tempfile::tempdir().expect("tempdir should be created");
-    let database_path = tempdir.path().join("warp.sqlite");
+    let database_path = tempdir.path().join("cognix.sqlite");
     let mut conn = setup_database(&database_path).expect("database should initialize");
 
     let app_state = AppState {
@@ -300,9 +300,9 @@ fn test_sqlite_round_trips_code_pane_with_multiple_tabs() {
             fullscreen_state: Default::default(),
             quake_mode: false,
             universal_search_width: None,
-            warp_ai_width: None,
+            cognix_ai_width: None,
             voltron_width: None,
-            warp_drive_index_width: None,
+            cognix_drive_index_width: None,
             left_panel_open: false,
             vertical_tabs_panel_open: false,
             left_panel_width: None,

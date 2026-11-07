@@ -1,12 +1,12 @@
 use crate::features::FeatureFlag;
 use serde_json::{json, Value};
 use strum_macros::{EnumDiscriminants, EnumIter};
-use warp_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
+use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 #[derive(Debug, EnumDiscriminants)]
 #[strum_discriminants(derive(EnumIter))]
 pub(super) enum CliTelemetryEvent {
-    /// Executing `warp agent run`
+    /// Executing `cognix agent run`
     AgentRun {
         gui: bool,
         requested_mcp_servers: usize,
@@ -16,101 +16,101 @@ pub(super) enum CliTelemetryEvent {
         /// Which execution harness was selected (e.g. "oz", "claude").
         harness: String,
     },
-    /// Executing `warp agent run-ambient`
+    /// Executing `cognix agent run-ambient`
     AgentRunAmbient,
-    /// Executing `warp agent profile list`
+    /// Executing `cognix agent profile list`
     AgentProfileList,
-    /// Executing `warp agent list`
+    /// Executing `cognix agent list`
     AgentList,
-    /// Executing `warp environment list`
+    /// Executing `cognix environment list`
     EnvironmentList,
-    /// Executing `warp environment create`
+    /// Executing `cognix environment create`
     EnvironmentCreate,
-    /// Executing `warp environment delete`
+    /// Executing `cognix environment delete`
     EnvironmentDelete,
-    /// Executing `warp environment update`
+    /// Executing `cognix environment update`
     EnvironmentUpdate,
-    /// Executing `warp environment get`
+    /// Executing `cognix environment get`
     EnvironmentGet,
-    /// Executing `warp environment image list`
+    /// Executing `cognix environment image list`
     EnvironmentImageList,
-    /// Executing `warp mcp list`
+    /// Executing `cognix mcp list`
     MCPList,
-    /// Executing `warp model list`
+    /// Executing `cognix model list`
     ModelList,
-    /// Executing `warp task list`
+    /// Executing `cognix task list`
     TaskList,
-    /// Executing `warp task get`
+    /// Executing `cognix task get`
     TaskGet,
-    /// Executing `warp run conversation get`
+    /// Executing `cognix run conversation get`
     ConversationGet,
-    /// Executing `warp run get <id> --conversation`
+    /// Executing `cognix run get <id> --conversation`
     RunConversationGet,
-    /// Executing `warp run message watch`
+    /// Executing `cognix run message watch`
     RunMessageWatch { harness: &'static str },
-    /// Executing `warp run message send`
+    /// Executing `cognix run message send`
     RunMessageSend { harness: &'static str },
-    /// Executing `warp run message list`
+    /// Executing `cognix run message list`
     RunMessageList { harness: &'static str },
-    /// Executing `warp run message read`
+    /// Executing `cognix run message read`
     RunMessageRead { harness: &'static str },
-    /// Executing `warp run message mark-delivered`
+    /// Executing `cognix run message mark-delivered`
     RunMessageMarkDelivered { harness: &'static str },
-    /// Executing `warp login`
+    /// Executing `cognix login`
     Login,
-    /// Executing `warp logout`
+    /// Executing `cognix logout`
     Logout,
-    /// Executing `warp whoami`
+    /// Executing `cognix whoami`
     Whoami,
-    /// Executing `warp provider setup`
+    /// Executing `cognix provider setup`
     ProviderSetup,
-    /// Executing `warp provider list`
+    /// Executing `cognix provider list`
     ProviderList,
-    /// Executing `warp integration create`
+    /// Executing `cognix integration create`
     IntegrationCreate,
-    /// Executing `warp integration update`
+    /// Executing `cognix integration update`
     IntegrationUpdate,
-    /// Executing `warp integration list`
+    /// Executing `cognix integration list`
     IntegrationList,
-    /// Executing `warp artifact upload`
+    /// Executing `cognix artifact upload`
     ArtifactUpload,
-    /// Executing `warp artifact get`
+    /// Executing `cognix artifact get`
     ArtifactGet,
-    /// Executing `warp artifact download`
+    /// Executing `cognix artifact download`
     ArtifactDownload,
-    /// Executing `warp schedule create`
+    /// Executing `cognix schedule create`
     ScheduleCreate,
-    /// Executing `warp schedule list`
+    /// Executing `cognix schedule list`
     ScheduleList,
-    /// Executing `warp schedule get`
+    /// Executing `cognix schedule get`
     ScheduleGet,
-    /// Executing `warp schedule pause`
+    /// Executing `cognix schedule pause`
     SchedulePause,
-    /// Executing `warp schedule unpause`
+    /// Executing `cognix schedule unpause`
     ScheduleUnpause,
-    /// Executing `warp schedule update`
+    /// Executing `cognix schedule update`
     ScheduleUpdate,
-    /// Executing `warp schedule delete`
+    /// Executing `cognix schedule delete`
     ScheduleDelete,
-    /// Executing `warp secret create`
+    /// Executing `cognix secret create`
     SecretCreate,
-    /// Executing `warp secret delete`
+    /// Executing `cognix secret delete`
     SecretDelete,
-    /// Executing `warp secret update`
+    /// Executing `cognix secret update`
     SecretUpdate,
-    /// Executing `warp secret list`
+    /// Executing `cognix secret list`
     SecretList,
-    /// Executing `warp federate issue-token`
+    /// Executing `cognix federate issue-token`
     FederateIssueToken,
-    /// Executing `warp federate issue-gcp-token`
+    /// Executing `cognix federate issue-gcp-token`
     FederateIssueGcpToken,
-    /// Executing `warp harness-support ping`
+    /// Executing `cognix harness-support ping`
     HarnessSupportPing,
-    /// Executing `warp harness-support report-artifact`
+    /// Executing `cognix harness-support report-artifact`
     HarnessSupportReportArtifact { artifact_type: &'static str },
-    /// Executing `warp harness-support notify-user`
+    /// Executing `cognix harness-support notify-user`
     HarnessSupportNotifyUser,
-    /// Executing `warp harness-support finish-task`
+    /// Executing `cognix harness-support finish-task`
     HarnessSupportFinishTask { success: bool },
 }
 
@@ -204,7 +204,7 @@ impl TelemetryEvent for CliTelemetryEvent {
     }
 
     fn event_descs() -> impl Iterator<Item = Box<dyn TelemetryEventDesc>> {
-        warp_core::telemetry::enum_events::<Self>()
+        cognix_core::telemetry::enum_events::<Self>()
     }
 }
 
@@ -279,122 +279,122 @@ impl TelemetryEventDesc for CliTelemetryEventDiscriminants {
 
     fn description(&self) -> &'static str {
         match self {
-            CliTelemetryEventDiscriminants::AgentRun => "Ran an agent from the Warp CLI",
+            CliTelemetryEventDiscriminants::AgentRun => "Ran an agent from the Cognix CLI",
             CliTelemetryEventDiscriminants::AgentRunAmbient => {
-                "Ran an ambient agent from the Warp CLI"
+                "Ran an ambient agent from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::AgentProfileList => {
-                "Listed agent profiles from the Warp CLI"
+                "Listed agent profiles from the Cognix CLI"
             }
-            CliTelemetryEventDiscriminants::AgentList => "Listed agents from the Warp CLI",
+            CliTelemetryEventDiscriminants::AgentList => "Listed agents from the Cognix CLI",
             CliTelemetryEventDiscriminants::EnvironmentList => {
-                "Listed cloud environments from the Warp CLI"
+                "Listed cloud environments from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentCreate => {
-                "Created a cloud environment from the Warp CLI"
+                "Created a cloud environment from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentDelete => {
-                "Deleted a cloud environment from the Warp CLI"
+                "Deleted a cloud environment from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentUpdate => {
-                "Updated a cloud environment from the Warp CLI"
+                "Updated a cloud environment from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentGet => {
-                "Got cloud environment details from the Warp CLI"
+                "Got cloud environment details from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::EnvironmentImageList => {
-                "Listed available base images from the Warp CLI"
+                "Listed available base images from the Cognix CLI"
             }
-            CliTelemetryEventDiscriminants::MCPList => "Listed MCP servers from the Warp CLI",
-            CliTelemetryEventDiscriminants::ModelList => "Listed models from the Warp CLI",
-            CliTelemetryEventDiscriminants::TaskList => "Listed tasks from the Warp CLI",
-            CliTelemetryEventDiscriminants::TaskGet => "Got status of task from the Warp CLI",
+            CliTelemetryEventDiscriminants::MCPList => "Listed MCP servers from the Cognix CLI",
+            CliTelemetryEventDiscriminants::ModelList => "Listed models from the Cognix CLI",
+            CliTelemetryEventDiscriminants::TaskList => "Listed tasks from the Cognix CLI",
+            CliTelemetryEventDiscriminants::TaskGet => "Got status of task from the Cognix CLI",
             CliTelemetryEventDiscriminants::ConversationGet => {
-                "Got conversation by ID from the Warp CLI"
+                "Got conversation by ID from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::RunConversationGet => {
-                "Got run conversation from the Warp CLI"
+                "Got run conversation from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageWatch => {
-                "Watched run messages from the Warp CLI"
+                "Watched run messages from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageSend => {
-                "Sent a run message from the Warp CLI"
+                "Sent a run message from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageList => {
-                "Listed run messages from the Warp CLI"
+                "Listed run messages from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageRead => {
-                "Read a run message from the Warp CLI"
+                "Read a run message from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::RunMessageMarkDelivered => {
-                "Marked a run message as delivered from the Warp CLI"
+                "Marked a run message as delivered from the Cognix CLI"
             }
-            CliTelemetryEventDiscriminants::Login => "Logged in via the Warp CLI",
-            CliTelemetryEventDiscriminants::Logout => "Logged out via the Warp CLI",
-            CliTelemetryEventDiscriminants::Whoami => "Printed current user info from the Warp CLI",
-            CliTelemetryEventDiscriminants::ProviderSetup => "Set up a provider via the Warp CLI",
-            CliTelemetryEventDiscriminants::ProviderList => "Listed providers from the Warp CLI",
+            CliTelemetryEventDiscriminants::Login => "Logged in via the Cognix CLI",
+            CliTelemetryEventDiscriminants::Logout => "Logged out via the Cognix CLI",
+            CliTelemetryEventDiscriminants::Whoami => "Printed current user info from the Cognix CLI",
+            CliTelemetryEventDiscriminants::ProviderSetup => "Set up a provider via the Cognix CLI",
+            CliTelemetryEventDiscriminants::ProviderList => "Listed providers from the Cognix CLI",
             CliTelemetryEventDiscriminants::IntegrationCreate => {
-                "Created an integration from the Warp CLI"
+                "Created an integration from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::IntegrationUpdate => {
-                "Updated an integration from the Warp CLI"
+                "Updated an integration from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::IntegrationList => {
-                "Listed integrations from the Warp CLI"
+                "Listed integrations from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ArtifactUpload => {
-                "Uploaded an artifact from the Warp CLI"
+                "Uploaded an artifact from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ArtifactGet => {
-                "Got artifact metadata from the Warp CLI"
+                "Got artifact metadata from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ArtifactDownload => {
-                "Downloaded an artifact from the Warp CLI"
+                "Downloaded an artifact from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleCreate => {
-                "Created a scheduled agent from the Warp CLI"
+                "Created a scheduled agent from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleList => {
-                "Listed scheduled agents from the Warp CLI"
+                "Listed scheduled agents from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleGet => {
-                "Got scheduled agent configuration from the Warp CLI"
+                "Got scheduled agent configuration from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::SchedulePause => {
-                "Paused a scheduled agent from the Warp CLI"
+                "Paused a scheduled agent from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleUnpause => {
-                "Unpaused a scheduled agent from the Warp CLI"
+                "Unpaused a scheduled agent from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleUpdate => {
-                "Updated a scheduled agent from the Warp CLI"
+                "Updated a scheduled agent from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::ScheduleDelete => {
-                "Deleted a scheduled agent from the Warp CLI"
+                "Deleted a scheduled agent from the Cognix CLI"
             }
-            CliTelemetryEventDiscriminants::SecretCreate => "Created a secret from the Warp CLI",
-            CliTelemetryEventDiscriminants::SecretDelete => "Deleted a secret from the Warp CLI",
-            CliTelemetryEventDiscriminants::SecretUpdate => "Updated a secret from the Warp CLI",
-            CliTelemetryEventDiscriminants::SecretList => "Listed secrets from the Warp CLI",
+            CliTelemetryEventDiscriminants::SecretCreate => "Created a secret from the Cognix CLI",
+            CliTelemetryEventDiscriminants::SecretDelete => "Deleted a secret from the Cognix CLI",
+            CliTelemetryEventDiscriminants::SecretUpdate => "Updated a secret from the Cognix CLI",
+            CliTelemetryEventDiscriminants::SecretList => "Listed secrets from the Cognix CLI",
             CliTelemetryEventDiscriminants::FederateIssueToken => {
-                "Issued a federated identity token from the Warp CLI"
+                "Issued a federated identity token from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::FederateIssueGcpToken => {
-                "Issued a GCP federated identity token from the Warp CLI"
+                "Issued a GCP federated identity token from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportPing => {
-                "Pinged harness-support from the Warp CLI"
+                "Pinged harness-support from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportReportArtifact => {
-                "Reported an artifact via harness-support from the Warp CLI"
+                "Reported an artifact via harness-support from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportNotifyUser => {
-                "Sent a user notification via harness-support from the Warp CLI"
+                "Sent a user notification via harness-support from the Cognix CLI"
             }
             CliTelemetryEventDiscriminants::HarnessSupportFinishTask => {
-                "Reported task completion via harness-support from the Warp CLI"
+                "Reported task completion via harness-support from the Cognix CLI"
             }
         }
     }
@@ -421,4 +421,4 @@ impl TelemetryEventDesc for CliTelemetryEventDiscriminants {
     }
 }
 
-warp_core::register_telemetry_event!(CliTelemetryEvent);
+cognix_core::register_telemetry_event!(CliTelemetryEvent);

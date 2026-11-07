@@ -6,8 +6,8 @@ There is no backend deployment for the first local-shell workflow. The ordinary
 local shell is a client-side PTY/process path. Deploying a new server would add
 operational and security complexity without enabling this workflow.
 
-This source checkout does not establish that the complete Warp application can
-be self-hosted. It has production Warp endpoints in the OSS channel, proprietary
+This source checkout does not establish that the complete Cognix application can
+be self-hosted. It has production Cognix endpoints in the OSS channel, proprietary
 account/cloud/AI contracts, and channel configuration/update infrastructure
 that cannot be replaced by a single generic backend.
 
@@ -17,8 +17,8 @@ that cannot be replaced by a single generic backend.
 |---|---|---|
 | Local shell, PTY, terminal input/rendering | **LOCAL** | No backend deployment. Test local shell lifecycle on supported platforms. |
 | Local preferences, session state, SQLite | **LOCAL** | Keep existing local paths and migrations; no cloud service required for the local workflow. |
-| Warp account and account-dependent actions | **REQUIRES REPLACEMENT** | A compatible identity/auth service and verified authorization contract would be needed. No replacement is selected. |
-| Warp AI operations | **REQUIRES REPLACEMENT** | Current source does not establish a general alternative-provider or local-inference contract. Define operations/data policy before deploying a provider. |
+| Cognix account and account-dependent actions | **REQUIRES REPLACEMENT** | A compatible identity/auth service and verified authorization contract would be needed. No replacement is selected. |
+| Cognix AI operations | **REQUIRES REPLACEMENT** | Current source does not establish a general alternative-provider or local-inference contract. Define operations/data policy before deploying a provider. |
 | Cloud objects and cross-device preference sync | **UNAVAILABLE WITHOUT PROPRIETARY SERVICE** | Local cached state is not a sync server. Do not claim compatibility without a tested service implementation. |
 | Telemetry | **OPTIONAL REMOTE** | A fork may decide a separate explicit policy, but must disclose collection, egress, retention, and consent. |
 | Crash reporting | **REQUIRES REPLACEMENT** | Use a fork-owned collector/configuration or an explicit supported opt-out; do not silently redirect to a third party. |

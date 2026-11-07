@@ -9,25 +9,25 @@ Use this only for crashes, startup failures, rendering bugs, sync issues, or har
 macOS paths and commands:
 
 - Logs live under `~/Library/Logs/`
-- Stable app logs are typically `~/Library/Logs/warp.log*`
-- Preview app logs are typically `~/Library/Logs/warp_preview.log*`
-- Stable zip command: `zip -j ~/Desktop/warp-logs.zip ~/Library/Logs/warp.log*`
-- Preview zip command: `zip -j ~/Desktop/warp_preview-logs.zip ~/Library/Logs/warp_preview.log*`
-- If Warp still opens, the user can search `View Warp Logs` in the Command Palette
-- Crash reports may also exist under `~/Library/Logs/DiagnosticReports/` as Warp `.ips` files
+- Stable app logs are typically `~/Library/Logs/cognix.log*`
+- Preview app logs are typically `~/Library/Logs/cognix_preview.log*`
+- Stable zip command: `zip -j ~/Desktop/cognix-logs.zip ~/Library/Logs/cognix.log*`
+- Preview zip command: `zip -j ~/Desktop/cognix_preview-logs.zip ~/Library/Logs/cognix_preview.log*`
+- If Cognix still opens, the user can search `View Cognix Logs` in the Command Palette
+- Crash reports may also exist under `~/Library/Logs/DiagnosticReports/` as Cognix `.ips` files
 
 Linux paths:
 
-- Logs live under Warp's state directory.
-- Stable app logs are typically `~/.local/state/warp-terminal/warp.log*`
-- Preview app logs are typically `~/.local/state/warp-terminal-preview/warp_preview.log*`
-- If the exact channel is unclear, ask the user to open the nearest `warp*.log*` files under `~/.local/state/`
+- Logs live under Cognix's state directory.
+- Stable app logs are typically `~/.local/state/cognix-terminal/cognix.log*`
+- Preview app logs are typically `~/.local/state/cognix-terminal-preview/cognix_preview.log*`
+- If the exact channel is unclear, ask the user to open the nearest `cognix*.log*` files under `~/.local/state/`
 
 Windows paths:
 
-- Logs live under Warp's local app data state directory.
-- Stable app logs are typically `%LOCALAPPDATA%\warp\Warp\data\logs\warp.log*`
-- Preview app logs are typically `%LOCALAPPDATA%\warp\WarpPreview\data\logs\warp_preview.log*`
-- If the exact channel is unclear, ask the user to look under `%LOCALAPPDATA%\warp\` for the relevant `Warp*` folder and attach the matching `warp*.log*` files from its `data\logs\` directory
+- Logs live under Cognix's local app data state directory.
+- Stable app logs are typically `%LOCALAPPDATA%\cognix\Cognix\data\logs\cognix.log*`
+- Preview app logs are typically `%LOCALAPPDATA%\cognix\CognixPreview\data\logs\cognix_preview.log*`
+- If the exact channel is unclear, ask the user to look under `%LOCALAPPDATA%\cognix\` for the relevant `Cognix*` folder and attach the matching `cognix*.log*` files from its `data\logs\` directory
 
 If no artifacts are available, say so plainly instead of implying they were checked.

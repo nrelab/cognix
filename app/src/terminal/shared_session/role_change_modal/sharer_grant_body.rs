@@ -1,12 +1,12 @@
-use warpui::elements::{
+use cognixui::elements::{
     Container, CrossAxisAlignment, Flex, MainAxisAlignment, MouseStateHandle, ParentElement, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::ui_components::text::Span;
-use warpui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use cognixui::fonts::{Properties, Weight};
+use cognixui::platform::Cursor;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
+use cognixui::ui_components::text::Span;
+use cognixui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 use crate::appearance::Appearance;
 use crate::ui_components::blended_colors;

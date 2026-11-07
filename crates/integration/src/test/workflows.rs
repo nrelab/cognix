@@ -1,8 +1,8 @@
 use std::time::Duration;
-use warp::integration_testing::workflow::{
+use cognix::integration_testing::workflow::{
     assert_no_team_workflow_pane_open, assert_open_team_workflow_pane_count_equals,
 };
-use warp::{
+use cognix::{
     integration_testing::{
         self,
         assertions::{go_offline, go_online, join_a_workspace},
@@ -21,7 +21,7 @@ use warp::{
     },
     workflows::CategoriesView,
 };
-use warpui::{async_assert_eq, integration::TestStep, ViewHandle};
+use cognixui::{async_assert_eq, integration::TestStep, ViewHandle};
 
 use crate::Builder;
 
@@ -87,13 +87,13 @@ pub fn test_create_team_workflow_pane_from_command_palette() -> Builder {
         )
 }
 
-/// Adds a workflow file, containing two workflows, to a `.warp/workflows`
+/// Adds a workflow file, containing two workflows, to a `.cognix/workflows`
 /// directory under a git repository and verifies that the workflows appear
 /// in the workflow menu.
 pub fn test_loading_project_workflows() -> Builder {
     new_builder()
         .with_setup(move |utils| {
-            utils.set_env("WARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
+            utils.set_env("COGNIX_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
         })
         .with_step(wait_until_bootstrapped_single_pane_for_tab(0))
         .with_step(
@@ -104,7 +104,7 @@ pub fn test_loading_project_workflows() -> Builder {
 
                     workflows.read(app, |workflows, _| {
                         // Note that this can be a synchronous assertion because unlike the next assertion,
-                        // we don't have concurrency with a WarpConfig watcher thread
+                        // we don't have concurrency with a CognixConfig watcher thread
                         async_assert_eq!(
                             workflows.project_workflows().count(),
                             0,
@@ -128,7 +128,7 @@ pub fn test_loading_project_workflows() -> Builder {
                     "test_workflow.yaml",
                     &utils
                         .test_dir()
-                        .join("repo/.warp/workflows/test_workflow.yaml"),
+                        .join("repo/.cognix/workflows/test_workflow.yaml"),
                 );
             }),
         )

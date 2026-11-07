@@ -1,7 +1,7 @@
 use regex::Regex;
 use serial_test::serial;
-use warpui::elements::Text;
-use warpui::fonts::FamilyId;
+use cognixui::elements::Text;
+use cognixui::fonts::FamilyId;
 
 use crate::terminal::model::secrets::{self, SecretLevel};
 
@@ -310,7 +310,7 @@ fn test_merge_ranges_with_same_end() {
 #[test]
 fn test_detect_secrets_no_regexes_configured() {
     // With no regexes configured, no secrets should be detected
-    let text = "foo warp-server-staging.firebaseapp.com bar";
+    let text = "foo cognix-server-staging.firebaseapp.com bar";
     let detected_secrets = find_secrets_in_text(text);
     assert_eq!(detected_secrets, vec![]);
 }
@@ -378,7 +378,7 @@ fn test_detect_secrets_multiple_secrets() {
     );
 
     // Using custom secret, github token, firebase domain, and stripe key as secrets.
-    let text = "ABCD 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 foo baz warp-server-staging.firebaseapp.com bar \n foo sk_live_4eC39HqLyjWDarjtT1zdp7dc qux foo";
+    let text = "ABCD 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 foo baz cognix-server-staging.firebaseapp.com bar \n foo sk_live_4eC39HqLyjWDarjtT1zdp7dc qux foo";
     let detected_secrets = find_secrets_in_text(text);
     assert_eq!(
         detected_secrets,

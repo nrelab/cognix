@@ -7,7 +7,7 @@ use chrono::Utc;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::{cmp::Ordering, path::PathBuf};
-use warp_graphql::billing::{AddonCreditAutoReloadStatus, ServiceAgreement, ServiceAgreementType};
+use cognix_graphql::billing::{AddonCreditAutoReloadStatus, ServiceAgreement, ServiceAgreementType};
 
 use super::team::{MembershipRole, Team};
 
@@ -156,7 +156,7 @@ impl Workspace {
     /// Returns None if auto-reload is not configured or if the denomination can't be found in pricing options.
     pub fn get_auto_reload_price_cents(
         &self,
-        addon_credits_options: &[warp_graphql::billing::AddonCreditsOption],
+        addon_credits_options: &[cognix_graphql::billing::AddonCreditsOption],
     ) -> Option<i32> {
         let selected_credits = self
             .settings
@@ -287,7 +287,7 @@ pub enum DelinquencyStatus {
 
 /// Rust representation of feature policies from the GraphQL Schema.
 #[derive(Clone, Debug, Copy, Serialize, Deserialize)]
-pub struct WarpAiPolicy {
+pub struct CognixAiPolicy {
     pub limit: i64,
     pub is_code_suggestions_toggleable: bool,
     pub is_prompt_suggestions_toggleable: bool,
@@ -396,7 +396,7 @@ pub enum HostEnablementSetting {
 pub struct Tier {
     pub name: String,
     pub description: String,
-    pub warp_ai_policy: Option<WarpAiPolicy>,
+    pub cognix_ai_policy: Option<CognixAiPolicy>,
     pub workspace_size_policy: Option<WorkspaceSizePolicy>,
     pub shared_notebooks_policy: Option<SharedNotebooksPolicy>,
     pub shared_workflows_policy: Option<SharedWorkflowsPolicy>,
@@ -558,9 +558,9 @@ impl BillingMetadata {
             || self.delinquency_status == DelinquencyStatus::Unpaid
     }
 
-    // Whether the enterprise customer is our Stable Warp Enterprise team (internal team of Warpers).
-    pub fn is_warp_plan(&self) -> bool {
-        self.tier.name == "Warp Plan"
+    // Whether the enterprise customer is our Stable Cognix Enterprise team (internal team of Cognixers).
+    pub fn is_cognix_plan(&self) -> bool {
+        self.tier.name == "Cognix Plan"
     }
 
     pub fn has_active_subscription(&self) -> bool {

@@ -1,5 +1,5 @@
 use futures::{future::BoxFuture, FutureExt};
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{
     ai::{
@@ -20,13 +20,13 @@ use super::{ActionExecution, AnyActionExecution, ExecuteActionInput, PreprocessA
 
 pub struct CreateDocumentsExecutor {
     active_session: ModelHandle<ActiveSession>,
-    terminal_view_id: warpui::EntityId,
+    terminal_view_id: cognixui::EntityId,
 }
 
 impl CreateDocumentsExecutor {
     pub fn new(
         active_session: ModelHandle<ActiveSession>,
-        terminal_view_id: warpui::EntityId,
+        terminal_view_id: cognixui::EntityId,
     ) -> Self {
         Self {
             active_session,
@@ -104,18 +104,18 @@ impl CreateDocumentsExecutor {
 
                 let profile = AIExecutionProfilesModel::as_ref(ctx)
                     .active_profile(Some(self.terminal_view_id), ctx);
-                let should_autosync = profile.data().autosync_plans_to_warp_drive;
+                let should_autosync = profile.data().autosync_plans_to_cognix_drive;
 
                 if should_autosync {
                     model.update(ctx, |model, model_ctx| {
-                        model.sync_to_warp_drive(id, model_ctx);
+                        model.sync_to_cognix_drive(id, model_ctx);
                     });
                 }
 
                 // Add plan artifact to the conversation.
                 let artifact = Artifact::Plan {
                     document_uid: id.to_string(),
-                    notebook_uid: None, // Will be updated when synced to Warp Drive
+                    notebook_uid: None, // Will be updated when synced to Cognix Drive
                     title: Some(document.title.clone()),
                 };
                 let terminal_view_id = self.terminal_view_id;

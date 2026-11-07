@@ -1,7 +1,7 @@
 use serde::Serialize;
 use serde_json::json;
 use strum_macros::{EnumDiscriminants, EnumIter};
-use warp_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
+use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 use crate::ai::agent_management::cloud_setup_guide_view::SetupGuideDocs;
 
@@ -111,9 +111,9 @@ pub enum AgentManagementTelemetryEvent {
     /// User clicked "Continue locally" in the details panel
     #[cfg(not(target_family = "wasm"))]
     DetailsPanelContinueLocally,
-    /// User clicked "Open in Warp" in the tombstone (wasm)
+    /// User clicked "Open in Cognix" in the tombstone (wasm)
     #[cfg(target_family = "wasm")]
-    TombstoneOpenInWarp,
+    TombstoneOpenInCognix,
     /// User cancelled a cloud run
     CloudRunCancelled { task_id: String },
     /// User forked a conversation
@@ -193,7 +193,7 @@ impl TelemetryEvent for AgentManagementTelemetryEvent {
             #[cfg(not(target_family = "wasm"))]
             AgentManagementTelemetryEvent::DetailsPanelContinueLocally => None,
             #[cfg(target_family = "wasm")]
-            AgentManagementTelemetryEvent::TombstoneOpenInWarp => None,
+            AgentManagementTelemetryEvent::TombstoneOpenInCognix => None,
             AgentManagementTelemetryEvent::CloudRunCancelled { task_id } => {
                 Some(json!({ "task_id": task_id }))
             }
@@ -216,7 +216,7 @@ impl TelemetryEvent for AgentManagementTelemetryEvent {
     }
 
     fn event_descs() -> impl Iterator<Item = Box<dyn TelemetryEventDesc>> {
-        warp_core::telemetry::enum_events::<Self>()
+        cognix_core::telemetry::enum_events::<Self>()
     }
 }
 
@@ -245,7 +245,7 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
             #[cfg(not(target_family = "wasm"))]
             Self::DetailsPanelContinueLocally => "AgentManagement.DetailsPanelContinueLocally",
             #[cfg(target_family = "wasm")]
-            Self::TombstoneOpenInWarp => "AgentManagement.TombstoneOpenInWarp",
+            Self::TombstoneOpenInCognix => "AgentManagement.TombstoneOpenInCognix",
             Self::CloudRunCancelled => "AgentManagement.CloudRunCancelled",
             Self::ConversationForked => "AgentManagement.ConversationForked",
         }
@@ -279,7 +279,7 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
                 "User clicked Continue locally in the details panel"
             }
             #[cfg(target_family = "wasm")]
-            Self::TombstoneOpenInWarp => "User clicked Open in Warp in the tombstone",
+            Self::TombstoneOpenInCognix => "User clicked Open in Cognix in the tombstone",
             Self::CloudRunCancelled => "User cancelled a cloud run",
             Self::ConversationForked => "User forked a conversation",
         }
@@ -290,4 +290,4 @@ impl TelemetryEventDesc for AgentManagementTelemetryEventDiscriminants {
     }
 }
 
-warp_core::register_telemetry_event!(AgentManagementTelemetryEvent);
+cognix_core::register_telemetry_event!(AgentManagementTelemetryEvent);

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use warp_server_client::cloud_object::Owner;
+use cognix_server_client::cloud_object::Owner;
 
 use crate::{
     auth::AuthStateProvider,
@@ -16,13 +16,13 @@ use crate::{
     server::{ids::SyncId, sync_queue::QueueItem},
     workspaces::user_workspaces::UserWorkspaces,
 };
-use warpui::{AppContext, SingletonEntity as _};
+use cognixui::{AppContext, SingletonEntity as _};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct GithubRepo {
-    /// Repository owner (e.g. "warpdotdev")
+    /// Repository owner (e.g. "nrelab")
     pub owner: String,
-    /// Repository name (e.g. "warp-internal")
+    /// Repository name (e.g. "cognix-internal")
     pub repo: String,
 }
 
@@ -83,7 +83,7 @@ impl ProvidersConfig {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-/// An AmbientAgentEnvironment represents an environment that we would run a Warp agent in.
+/// An AmbientAgentEnvironment represents an environment that we would run a Cognix agent in.
 pub struct AmbientAgentEnvironment {
     /// Environment name
     #[serde(default)]

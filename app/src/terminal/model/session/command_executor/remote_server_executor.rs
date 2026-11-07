@@ -5,16 +5,16 @@ use std::sync::Arc;
 use crate::remote_server::client::RemoteServerClient;
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use warp_completer::completer::{CommandExitStatus, CommandOutput};
-use warp_core::command::ExitCode;
-use warp_core::SessionId;
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
+use cognix_core::command::ExitCode;
+use cognix_core::SessionId;
 
 use crate::remote_server::proto::run_command_response;
 use crate::terminal::model::session::command_executor::{CommandExecutor, ExecuteCommandOptions};
 use crate::terminal::shell::Shell;
 
 /// `CommandExecutor` implementation that executes commands via a persistent
-/// `warp remote-server` process running on the remote host over SSH.
+/// `cognix remote-server` process running on the remote host over SSH.
 ///
 /// The executor is always constructed with a live `RemoteServerClient` that
 /// was obtained from [`crate::remote_server::manager::RemoteServerManager`]

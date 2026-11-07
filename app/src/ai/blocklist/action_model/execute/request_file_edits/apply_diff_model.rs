@@ -11,8 +11,8 @@
 use ai::diff_validation::AIRequestedCodeDiff;
 use futures::FutureExt;
 use vec1::Vec1;
-use warpui::r#async::BoxFuture;
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity as _};
+use cognixui::r#async::BoxFuture;
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity as _};
 
 use crate::ai::agent::{AIIdentifiers, FileEdit};
 use crate::ai::blocklist::SessionContext;

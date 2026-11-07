@@ -13,9 +13,9 @@ use markdown_parser::parse_markdown;
 use pathfinder_color::ColorU;
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
-use warp_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
+use cognix_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
 
-use warpui::{AppContext, SingletonEntity};
+use cognixui::{AppContext, SingletonEntity};
 
 use crate::ai::agent::{AgentReviewCommentBatch, DiffSetHunk};
 use crate::ai::blocklist::CLAUDE_ORANGE;
@@ -24,11 +24,11 @@ use crate::code_review::comments::AttachedReviewCommentTarget;
 use crate::server::telemetry::CLIAgentType;
 use crate::ui_components::icons::Icon;
 use crate::workspaces::user_workspaces::UserWorkspaces;
-use warp_completer::parsers::simple::top_level_command;
-use warp_util::path::EscapeChar;
+use cognix_completer::parsers::simple::top_level_command;
+use cognix_util::path::EscapeChar;
 
 /// UID for the Uber team.
-/// See https://warp.metabaseapp.com/dashboard/1454?team_id=46347
+/// See https://cognix.metabaseapp.com/dashboard/1454?team_id=46347
 const UBER_TEAM_UID: &str = "BdVbYjy9LRZcZrYBemSfAF";
 
 /// Gemini brand blue color

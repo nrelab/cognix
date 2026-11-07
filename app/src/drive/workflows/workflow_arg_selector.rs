@@ -1,9 +1,9 @@
 use itertools::Itertools;
 use std::{collections::HashMap, rc::Rc};
 use strum::IntoEnumIterator;
-use warp_core::ui::{appearance::Appearance, theme::Fill};
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use cognix_core::ui::{appearance::Appearance, theme::Fill};
+use cognix_editor::editor::NavigationKey;
+use cognixui::{
     elements::{
         Align, Border, ChildAnchor, ChildView, ClippedScrollStateHandle, ClippedScrollable,
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss, Empty, EventHandler,
@@ -33,9 +33,9 @@ use crate::{
     workflows::workflow::ArgumentType,
 };
 
-use warpui::platform::Cursor;
+use cognixui::platform::Cursor;
 
-use warpui::{
+use cognixui::{
     elements::{ParentAnchor, ParentOffsetBounds},
     fonts::FamilyId,
 };
@@ -610,7 +610,7 @@ impl WorkflowArgSelector {
     fn render_search_icon(&self, appearance: &Appearance) -> Box<dyn Element> {
         ConstrainedBox::new(
             icons::Icon::SearchSmall
-                .to_warpui_icon(appearance.theme().active_ui_text_color())
+                .to_cognixui_icon(appearance.theme().active_ui_text_color())
                 .finish(),
         )
         .with_width(12.)
@@ -865,7 +865,7 @@ impl WorkflowArgSelector {
                         ScrollbarWidth::Auto,
                         theme.disabled_text_color(theme.background()).into(),
                         theme.main_text_color(theme.background()).into(),
-                        warpui::elements::Fill::None,
+                        cognixui::elements::Fill::None,
                     )
                     .finish(),
                 )

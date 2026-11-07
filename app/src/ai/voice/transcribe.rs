@@ -1,5 +1,5 @@
 //! This module contains all auxiliary code for hitting the Transcribe endpoint in
-//! warp-server that serves Voice.
+//! cognix-server that serves Voice.
 
 mod api;
 

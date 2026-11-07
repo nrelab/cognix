@@ -19,9 +19,9 @@ use crate::{
     },
 };
 use serde::{Deserialize, Serialize};
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity};
+use cognix_core::channel::ChannelState;
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, SingletonEntity};
 
 use super::llms::LLMId;
 
@@ -248,8 +248,8 @@ pub struct AIExecutionProfile {
     pub cli_agent_model: Option<LLMId>,
     pub computer_use_model: Option<LLMId>,
 
-    /// Whether plans created by the agent should be automatically synced to Warp Drive
-    pub autosync_plans_to_warp_drive: bool,
+    /// Whether plans created by the agent should be automatically synced to Cognix Drive
+    pub autosync_plans_to_cognix_drive: bool,
 
     /// Whether the agent may use web search when helpful for completing tasks
     pub web_search_enabled: bool,
@@ -276,7 +276,7 @@ impl Default for AIExecutionProfile {
             coding_model: None,
             cli_agent_model: None,
             computer_use_model: None,
-            autosync_plans_to_warp_drive: true,
+            autosync_plans_to_cognix_drive: true,
             web_search_enabled: true,
         }
     }
@@ -327,7 +327,7 @@ impl AIExecutionProfile {
             coding_model: None,
             cli_agent_model: None,
             computer_use_model: None,
-            autosync_plans_to_warp_drive: false,
+            autosync_plans_to_cognix_drive: false,
             web_search_enabled: true,
         }
     }
@@ -381,7 +381,7 @@ impl AIExecutionProfile {
             coding_model: None,
             cli_agent_model: None,
             computer_use_model: None,
-            autosync_plans_to_warp_drive: FeatureFlag::SyncAmbientPlans.is_enabled(),
+            autosync_plans_to_cognix_drive: FeatureFlag::SyncAmbientPlans.is_enabled(),
             web_search_enabled: true,
         }
     }
@@ -460,7 +460,7 @@ impl StringModel for AIExecutionProfile {
             })
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         false
     }
 }

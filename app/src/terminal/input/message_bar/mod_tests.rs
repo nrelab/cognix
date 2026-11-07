@@ -1,6 +1,6 @@
-use warp_core::ui::Icon;
-use warpui::assets::asset_cache::AssetSource;
-use warpui::elements::MouseStateHandle;
+use cognix_core::ui::Icon;
+use cognixui::assets::asset_cache::AssetSource;
+use cognixui::elements::MouseStateHandle;
 
 use super::{ChipHorizontalAlignment, MessageItem};
 

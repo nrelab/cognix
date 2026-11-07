@@ -21,8 +21,8 @@ use crate::{
 use chrono::{DateTime, Utc};
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use std::collections::HashMap;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognixui::{
     elements::{
         Align, Border, ChildView, ConstrainedBox, Container, CrossAxisAlignment, Element, Empty,
         Expanded, Flex, FormattedTextElement, HighlightedHyperlink, MainAxisSize, MouseStateHandle,
@@ -38,7 +38,7 @@ use warpui::{
 
 const MODAL_WIDTH: f32 = 460.;
 const MODAL_HEIGHT: f32 = 320.;
-const API_KEY_DOCS_URL: &str = "https://docs.warp.dev/reference/cli/api-keys";
+const API_KEY_DOCS_URL: &str = "https://docs.cognix.dev/reference/cli/api-keys";
 
 #[derive(Clone, Copy)]
 pub enum PlatformPageViewEvent {
@@ -85,10 +85,10 @@ impl PlatformPageView {
                                 let uid = gql_key.uid.into_inner();
                                 me.ensure_expire_button_for_key(ctx, uid.clone());
                                 let scope = match gql_key.owner_type {
-                                    warp_graphql::object_permissions::OwnerType::User => {
+                                    cognix_graphql::object_permissions::OwnerType::User => {
                                         ApiKeyScope::Personal
                                     }
-                                    warp_graphql::object_permissions::OwnerType::Team => {
+                                    cognix_graphql::object_permissions::OwnerType::Team => {
                                         ApiKeyScope::Team
                                     }
                                 };
@@ -141,7 +141,7 @@ impl PlatformPageView {
                         right: 24.,
                     }),
                     font_size: Some(16.),
-                    font_weight: Some(warpui::fonts::Weight::Bold),
+                    font_weight: Some(cognixui::fonts::Weight::Bold),
                     ..Default::default()
                 })
                 .with_body_style(UiComponentStyles {
@@ -212,8 +212,8 @@ impl PlatformPageView {
                 self.ensure_expire_button_for_key(ctx, uid.clone());
 
                 let scope = match api_key.owner_type {
-                    warp_graphql::object_permissions::OwnerType::User => ApiKeyScope::Personal,
-                    warp_graphql::object_permissions::OwnerType::Team => ApiKeyScope::Team,
+                    cognix_graphql::object_permissions::OwnerType::User => ApiKeyScope::Personal,
+                    cognix_graphql::object_permissions::OwnerType::Team => ApiKeyScope::Team,
                 };
                 let ui_key = APIKeyProperties::new(
                     uid,
@@ -378,7 +378,7 @@ impl PlatformPageWidget {
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let text = vec![
-            FormattedTextFragment::plain_text("Create and manage API keys to allow other Oz cloud agents to access your Warp account.\nFor more information, visit the "),
+            FormattedTextFragment::plain_text("Create and manage API keys to allow other Oz cloud agents to access your Cognix account.\nFor more information, visit the "),
             FormattedTextFragment::hyperlink("Documentation.", API_KEY_DOCS_URL),
         ];
 
@@ -645,7 +645,7 @@ impl PlatformPageWidget {
                     .with_child(
                         ConstrainedBox::new(
                             Icon::Key
-                                .to_warpui_icon(appearance.theme().nonactive_ui_text_color())
+                                .to_cognixui_icon(appearance.theme().nonactive_ui_text_color())
                                 .finish(),
                         )
                         .with_width(48.)
@@ -669,7 +669,7 @@ impl PlatformPageWidget {
                     .with_child(
                         Container::new(
                             Text::new(
-                                "Create a key to manage external access to Warp",
+                                "Create a key to manage external access to Cognix",
                                 appearance.ui_font_family(),
                                 CONTENT_FONT_SIZE,
                             )

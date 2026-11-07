@@ -1,10 +1,10 @@
 use std::collections::{HashMap, HashSet};
 
-use warpui::elements::{Element, Empty, Flex, MouseStateHandle, ParentElement};
-use warpui::platform::Cursor;
-use warpui::prelude::Container;
-use warpui::ui_components::components::UiComponent;
-use warpui::{
+use cognixui::elements::{Element, Empty, Flex, MouseStateHandle, ParentElement};
+use cognixui::platform::Cursor;
+use cognixui::prelude::Container;
+use cognixui::ui_components::components::UiComponent;
+use cognixui::{
     AppContext, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
 
@@ -218,7 +218,7 @@ impl View for ChildAgentStatusCard {
 
             let dismiss_button = close_button(appearance, dismiss_mouse_state)
                 .build()
-                .on_click(move |ctx: &mut warpui::EventContext<'_>, _, _| {
+                .on_click(move |ctx: &mut cognixui::EventContext<'_>, _, _| {
                     ctx.dispatch_typed_action(ChildAgentStatusCardAction::Dismiss(conversation_id));
                 })
                 .with_cursor(Cursor::PointingHand)

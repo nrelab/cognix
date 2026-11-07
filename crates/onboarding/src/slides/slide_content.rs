@@ -1,5 +1,5 @@
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{
     elements::{
         Align, ClippedScrollStateHandle, ClippedScrollable, Container, CrossAxisAlignment, Flex,
         MainAxisSize, ParentElement, ScrollbarWidth, Shrinkable,

@@ -26,19 +26,19 @@ use std::{
     ops::Range,
     sync::Arc,
 };
-use warp_completer::completer::Description;
-use warpui::text::point::Point;
+use cognix_completer::completer::Description;
+use cognixui::text::point::Point;
 
 use string_offset::ByteOffset;
 
-use warpui::fonts::{FamilyId, Properties};
-use warpui::platform::LineStyle;
-use warpui::text_layout::{
+use cognixui::fonts::{FamilyId, Properties};
+use cognixui::platform::LineStyle;
+use cognixui::text_layout::{
     default_compute_baseline_position_fn, ClipConfig, ComputeBaselinePositionFn, StyleAndFont,
     TextAlignment, TextStyle, DEFAULT_TOP_BOTTOM_RATIO,
 };
-use warpui::EntityId;
-use warpui::{
+use cognixui::EntityId;
+use cognixui::{
     fonts::Cache as FontCache,
     text_layout::{self, LayoutCache},
     AppContext, ModelHandle,

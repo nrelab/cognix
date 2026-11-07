@@ -10,7 +10,7 @@ use onboarding::{ProjectOnboardingSettings, SelectedSettings};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
-use warpui::{SingletonEntity as _, ViewContext};
+use cognixui::{SingletonEntity as _, ViewContext};
 
 /// Configuration for starting the agent onboarding tutorial.
 #[derive(Debug, Clone)]
@@ -145,7 +145,7 @@ impl Workspace {
     ) {
         // With new onboarding, skip the guided tour when AI is not enabled
         // (e.g. terminal-intent users or users who disabled AI).
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled()
+        if FeatureFlag::OpenCognixNewSettingsModes.is_enabled()
             && !*AISettings::as_ref(ctx).is_any_ai_enabled
         {
             return;

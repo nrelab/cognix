@@ -14,7 +14,7 @@
 mod proxy;
 
 use super::server_model::{ConnectionId, ServerModel};
-use warpui::r#async::executor;
+use cognixui::r#async::executor;
 
 /// Run the `remote-server-proxy` subcommand.
 ///
@@ -31,23 +31,23 @@ pub fn run_proxy() -> anyhow::Result<()> {
 /// Run the `remote-server-daemon` subcommand.
 ///
 /// Binds a Unix domain socket and writes a PID file, then delegates the
-/// WarpUI app startup to [`super::run_daemon_app`] with the Unix-specific
+/// CognixUI app startup to [`super::run_daemon_app`] with the Unix-specific
 /// `ServerModel` constructor.
 pub fn run_daemon() -> anyhow::Result<()> {
     // Log to a rotating file so daemon output is preserved across invocations.
     // The file is written to the same directory as client logs (~/Library/Logs
-    // on macOS, ~/.local/share/warp-terminal on Linux). Since the daemon runs
+    // on macOS, ~/.local/share/cognix-terminal on Linux). Since the daemon runs
     // on the remote host, there is no conflict with client-side log files.
-    warp_logging::init(warp_logging::LogConfig {
+    cognix_logging::init(cognix_logging::LogConfig {
         is_cli: true,
-        log_destination: Some(warp_logging::LogDestination::File),
+        log_destination: Some(cognix_logging::LogDestination::File),
     })?;
 
-    // socket_path: ~/.warp[-channel]/remote-server/server.sock
+    // socket_path: ~/.cognix[-channel]/remote-server/server.sock
     //   The Unix domain socket the daemon binds on.  Proxy processes connect
     //   to it and bridge their SSH stdio channel through it.
     //
-    // pid_path:    ~/.warp[-channel]/remote-server/server.pid
+    // pid_path:    ~/.cognix[-channel]/remote-server/server.pid
     //   Contains the daemon's PID.  Proxy processes read it and use
     //   kill(pid, 0) to detect whether the daemon is still alive before
     //   deciding whether to start a new one.
@@ -134,7 +134,7 @@ pub fn run_daemon() -> anyhow::Result<()> {
 pub(super) async fn handle_daemon_connection(
     conn_id: ConnectionId,
     stream: async_io::Async<std::os::unix::net::UnixStream>,
-    spawner: warpui::ModelSpawner<ServerModel>,
+    spawner: cognixui::ModelSpawner<ServerModel>,
     exec: std::sync::Arc<executor::Background>,
 ) {
     use futures::io::{AsyncWriteExt, BufReader, BufWriter};

@@ -11,9 +11,9 @@ use std::{
     collections::{HashMap, HashSet},
     time::Duration,
 };
-use warp_core::channel::ChannelState;
-use warp_core::{features::FeatureFlag, report_error};
-use warp_multi_agent_api::ConversationData;
+use cognix_core::channel::ChannelState;
+use cognix_core::{features::FeatureFlag, report_error};
+use cognix_multi_agent_api::ConversationData;
 
 use super::auth::AuthClient;
 use super::ServerApi;
@@ -48,7 +48,7 @@ use crate::{
         RequestUsageInfo,
     },
     ai_assistant::{
-        execution_context::WarpAiExecutionContext, requests::GenerateDialogueResult,
+        execution_context::CognixAiExecutionContext, requests::GenerateDialogueResult,
         utils::TranscriptPart, AIGeneratedCommand, GenerateCommandsFromNaturalLanguageError,
     },
     drive::workflows::ai_assist::{GeneratedCommandMetadata, GeneratedCommandMetadataError},
@@ -61,12 +61,12 @@ use ai::index::full_source_code_embedding::{
     store_client::{IntermediateNode, StoreClient},
     CodebaseContextConfig, ContentHash, EmbeddingConfig, NodeHash, RepoMetadata,
 };
-use warp_graphql::client::Operation;
+use cognix_graphql::client::Operation;
 #[cfg(not(feature = "agent_mode_evals"))]
-use warp_graphql::queries::get_request_limit_info::{
+use cognix_graphql::queries::get_request_limit_info::{
     GetRequestLimitInfo, GetRequestLimitInfoVariables,
 };
-use warp_graphql::{
+use cognix_graphql::{
     ai::{AgentTaskState, PlatformErrorCode},
     mutations::{
         confirm_file_artifact_upload::{
@@ -199,10 +199,10 @@ pub struct SpawnAgentRequest {
     /// Not yet wired through the local start_agent flow.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent_run_id: Option<String>,
-    /// Base64-encoded `warp.multi_agent.v1.Skill` payloads to restore as runtime skills.
+    /// Base64-encoded `cognix.multi_agent.v1.Skill` payloads to restore as runtime skills.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub runtime_skills: Vec<String>,
-    /// Base64-encoded `warp.multi_agent.v1.Attachment` payloads to restore as referenced attachments.
+    /// Base64-encoded `cognix.multi_agent.v1.Attachment` payloads to restore as referenced attachments.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub referenced_attachments: Vec<String>,
 }
@@ -732,14 +732,14 @@ pub trait AIClient: 'static + Send + Sync {
     async fn generate_commands_from_natural_language(
         &self,
         prompt: String,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<CognixAiExecutionContext>,
     ) -> Result<Vec<AIGeneratedCommand>, GenerateCommandsFromNaturalLanguageError>;
 
     async fn generate_dialogue_answer(
         &self,
         transcript: Vec<TranscriptPart>,
         prompt: String,
-        ai_execution_context: Option<WarpAiExecutionContext>,
+        ai_execution_context: Option<CognixAiExecutionContext>,
     ) -> anyhow::Result<GenerateDialogueResult>;
 
     async fn generate_metadata_for_command(
@@ -958,7 +958,7 @@ pub trait AIClient: 'static + Send + Sync {
 }
 
 fn into_file_artifact_record(
-    artifact: warp_graphql::mutations::create_file_artifact_upload_target::FileArtifact,
+    artifact: cognix_graphql::mutations::create_file_artifact_upload_target::FileArtifact,
 ) -> FileArtifactRecord {
     FileArtifactRecord {
         artifact_uid: artifact.artifact_uid.into_inner(),
@@ -976,7 +976,7 @@ impl AIClient for ServerApi {
         &self,
         prompt: String,
         // TODO: use relevant context from RequestContext and deprecate usage of ai_execution_context
-        _ai_execution_context: Option<WarpAiExecutionContext>,
+        _ai_execution_context: Option<CognixAiExecutionContext>,
     ) -> Result<Vec<AIGeneratedCommand>, GenerateCommandsFromNaturalLanguageError> {
         let default_err = GenerateCommandsFromNaturalLanguageError::Other;
 
@@ -1015,7 +1015,7 @@ impl AIClient for ServerApi {
         transcript: Vec<TranscriptPart>,
         prompt: String,
         // TODO: use relevant context from RequestContext and deprecate usage of ai_execution_context
-        _ai_execution_context: Option<WarpAiExecutionContext>,
+        _ai_execution_context: Option<CognixAiExecutionContext>,
     ) -> anyhow::Result<GenerateDialogueResult> {
         let graphql_transcript: Vec<TranscriptPartGraphql> = transcript
             .into_iter()
@@ -1119,7 +1119,7 @@ impl AIClient for ServerApi {
         let response = self.send_graphql_request(operation, None).await?;
 
         match response.user {
-            warp_graphql::queries::get_request_limit_info::UserResult::UserOutput(user_output) => {
+            cognix_graphql::queries::get_request_limit_info::UserResult::UserOutput(user_output) => {
                 let request_limit_info = user_output.user.request_limit_info.into();
 
                 let workspace_bonus_grants = user_output
@@ -1155,10 +1155,10 @@ impl AIClient for ServerApi {
                     bonus_grants,
                 })
             }
-            warp_graphql::queries::get_request_limit_info::UserResult::UserFacingError(e) => {
+            cognix_graphql::queries::get_request_limit_info::UserResult::UserFacingError(e) => {
                 Err(anyhow!(get_user_facing_error_message(e)))
             }
-            warp_graphql::queries::get_request_limit_info::UserResult::Unknown => {
+            cognix_graphql::queries::get_request_limit_info::UserResult::Unknown => {
                 Err(anyhow!("failed to get request limit info"))
             }
         }
@@ -1172,9 +1172,9 @@ impl AIClient for ServerApi {
         let response = self.send_graphql_request(operation, None).await?;
 
         match response.user {
-            warp_graphql::queries::get_feature_model_choices::UserResult::UserOutput(
-                warp_graphql::queries::get_feature_model_choices::UserOutput {
-                    user: warp_graphql::queries::get_feature_model_choices::User { mut workspaces },
+            cognix_graphql::queries::get_feature_model_choices::UserResult::UserOutput(
+                cognix_graphql::queries::get_feature_model_choices::UserOutput {
+                    user: cognix_graphql::queries::get_feature_model_choices::User { mut workspaces },
                 },
             ) if !workspaces.is_empty() => {
                 // This is safe (`remove()` can panic) because we ensure workspaces is non-empty
@@ -1208,7 +1208,7 @@ impl AIClient for ServerApi {
         let response = operation
             .send_request(
                 self.client.clone(),
-                warp_graphql::client::RequestOptions {
+                cognix_graphql::client::RequestOptions {
                     auth_token,
                     ..default_request_options()
                 },
@@ -1480,7 +1480,7 @@ impl AIClient for ServerApi {
         &self,
         server_conversation_token: ServerConversationToken,
     ) -> anyhow::Result<(ConversationData, ServerAIConversationMetadata), anyhow::Error> {
-        use warp_graphql::queries::list_ai_conversations::{
+        use cognix_graphql::queries::list_ai_conversations::{
             ListAIConversations, ListAIConversationsInput, ListAIConversationsResult,
             ListAIConversationsVariables,
         };
@@ -1528,7 +1528,7 @@ impl AIClient for ServerApi {
         if !FeatureFlag::CloudConversations.is_enabled() {
             return Ok(vec![]);
         }
-        use warp_graphql::queries::list_ai_conversations::{
+        use cognix_graphql::queries::list_ai_conversations::{
             ListAIConversationMetadata, ListAIConversationMetadataResult,
             ListAIConversationMetadataVariables, ListAIConversationsInput,
         };
@@ -1568,11 +1568,11 @@ impl AIClient for ServerApi {
         &self,
         server_conversation_token: ServerConversationToken,
     ) -> anyhow::Result<AIAgentConversationFormat, anyhow::Error> {
-        use warp_graphql::queries::get_ai_conversation_format::{
+        use cognix_graphql::queries::get_ai_conversation_format::{
             GetAIConversationFormat, GetAIConversationFormatResult,
             GetAIConversationFormatVariables,
         };
-        use warp_graphql::queries::list_ai_conversations::ListAIConversationsInput;
+        use cognix_graphql::queries::list_ai_conversations::ListAIConversationsInput;
 
         let conversation_id = server_conversation_token.as_str().to_string();
         let operation = GetAIConversationFormat::build(GetAIConversationFormatVariables {
@@ -1955,13 +1955,13 @@ impl AIClient for ServerApi {
     }
 }
 
-impl TryFrom<warp_graphql::queries::get_feature_model_choices::FeatureModelChoice>
+impl TryFrom<cognix_graphql::queries::get_feature_model_choices::FeatureModelChoice>
     for ModelsByFeature
 {
     type Error = anyhow::Error;
 
     fn try_from(
-        value: warp_graphql::queries::get_feature_model_choices::FeatureModelChoice,
+        value: cognix_graphql::queries::get_feature_model_choices::FeatureModelChoice,
     ) -> Result<Self, Self::Error> {
         Ok(Self {
             agent_mode: value.agent_mode.try_into()?,
@@ -1972,10 +1972,10 @@ impl TryFrom<warp_graphql::queries::get_feature_model_choices::FeatureModelChoic
     }
 }
 
-impl TryFrom<warp_graphql::workspace::FeatureModelChoice> for ModelsByFeature {
+impl TryFrom<cognix_graphql::workspace::FeatureModelChoice> for ModelsByFeature {
     type Error = anyhow::Error;
 
-    fn try_from(value: warp_graphql::workspace::FeatureModelChoice) -> Result<Self, Self::Error> {
+    fn try_from(value: cognix_graphql::workspace::FeatureModelChoice) -> Result<Self, Self::Error> {
         Ok(Self {
             agent_mode: value.agent_mode.try_into()?,
             coding: value.coding.try_into()?,
@@ -1985,11 +1985,11 @@ impl TryFrom<warp_graphql::workspace::FeatureModelChoice> for ModelsByFeature {
     }
 }
 
-impl TryFrom<warp_graphql::queries::get_feature_model_choices::AvailableLlms> for AvailableLLMs {
+impl TryFrom<cognix_graphql::queries::get_feature_model_choices::AvailableLlms> for AvailableLLMs {
     type Error = anyhow::Error;
 
     fn try_from(
-        value: warp_graphql::queries::get_feature_model_choices::AvailableLlms,
+        value: cognix_graphql::queries::get_feature_model_choices::AvailableLlms,
     ) -> Result<Self, Self::Error> {
         Self::new(
             value.default_id.into(),
@@ -1999,10 +1999,10 @@ impl TryFrom<warp_graphql::queries::get_feature_model_choices::AvailableLlms> fo
     }
 }
 
-impl TryFrom<warp_graphql::workspace::AvailableLlms> for AvailableLLMs {
+impl TryFrom<cognix_graphql::workspace::AvailableLlms> for AvailableLLMs {
     type Error = anyhow::Error;
 
-    fn try_from(value: warp_graphql::workspace::AvailableLlms) -> Result<Self, Self::Error> {
+    fn try_from(value: cognix_graphql::workspace::AvailableLlms) -> Result<Self, Self::Error> {
         Self::new(
             value.default_id.into(),
             value.choices.into_iter().map(LLMInfo::from),
@@ -2011,8 +2011,8 @@ impl TryFrom<warp_graphql::workspace::AvailableLlms> for AvailableLLMs {
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::LlmInfo> for LLMInfo {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::LlmInfo) -> Self {
+impl From<cognix_graphql::queries::get_feature_model_choices::LlmInfo> for LLMInfo {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::LlmInfo) -> Self {
         let host_configs = {
             let mut map = std::collections::HashMap::new();
             for config in value.host_configs {
@@ -2044,8 +2044,8 @@ impl From<warp_graphql::queries::get_feature_model_choices::LlmInfo> for LLMInfo
     }
 }
 
-impl From<warp_graphql::workspace::LlmInfo> for LLMInfo {
-    fn from(value: warp_graphql::workspace::LlmInfo) -> Self {
+impl From<cognix_graphql::workspace::LlmInfo> for LLMInfo {
+    fn from(value: cognix_graphql::workspace::LlmInfo) -> Self {
         let host_configs = {
             let mut map = std::collections::HashMap::new();
             for config in value.host_configs {
@@ -2077,10 +2077,10 @@ impl From<warp_graphql::workspace::LlmInfo> for LLMInfo {
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::RoutingHostConfig>
+impl From<cognix_graphql::queries::get_feature_model_choices::RoutingHostConfig>
     for RoutingHostConfig
 {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::RoutingHostConfig) -> Self {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::RoutingHostConfig) -> Self {
         Self {
             enabled: value.enabled,
             model_routing_host: value.model_routing_host.into(),
@@ -2088,8 +2088,8 @@ impl From<warp_graphql::queries::get_feature_model_choices::RoutingHostConfig>
     }
 }
 
-impl From<warp_graphql::workspace::RoutingHostConfig> for RoutingHostConfig {
-    fn from(value: warp_graphql::workspace::RoutingHostConfig) -> Self {
+impl From<cognix_graphql::workspace::RoutingHostConfig> for RoutingHostConfig {
+    fn from(value: cognix_graphql::workspace::RoutingHostConfig) -> Self {
         Self {
             enabled: value.enabled,
             model_routing_host: value.model_routing_host.into(),
@@ -2097,16 +2097,16 @@ impl From<warp_graphql::workspace::RoutingHostConfig> for RoutingHostConfig {
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::LlmModelHost> for LLMModelHost {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::LlmModelHost) -> Self {
+impl From<cognix_graphql::queries::get_feature_model_choices::LlmModelHost> for LLMModelHost {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::LlmModelHost) -> Self {
         match value {
-            warp_graphql::queries::get_feature_model_choices::LlmModelHost::DirectApi => {
+            cognix_graphql::queries::get_feature_model_choices::LlmModelHost::DirectApi => {
                 LLMModelHost::DirectApi
             }
-            warp_graphql::queries::get_feature_model_choices::LlmModelHost::AwsBedrock => {
+            cognix_graphql::queries::get_feature_model_choices::LlmModelHost::AwsBedrock => {
                 LLMModelHost::AwsBedrock
             }
-            warp_graphql::queries::get_feature_model_choices::LlmModelHost::Other(value) => {
+            cognix_graphql::queries::get_feature_model_choices::LlmModelHost::Other(value) => {
                 report_error!(anyhow!(
                     "Unknown LlmModelHost '{value}'. Make sure to update client GraphQL types!"
                 ));
@@ -2116,23 +2116,23 @@ impl From<warp_graphql::queries::get_feature_model_choices::LlmModelHost> for LL
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::LlmProvider> for LLMProvider {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::LlmProvider) -> Self {
+impl From<cognix_graphql::queries::get_feature_model_choices::LlmProvider> for LLMProvider {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::LlmProvider) -> Self {
         match value {
-            warp_graphql::queries::get_feature_model_choices::LlmProvider::Openai => {
+            cognix_graphql::queries::get_feature_model_choices::LlmProvider::Openai => {
                 LLMProvider::OpenAI
             }
-            warp_graphql::queries::get_feature_model_choices::LlmProvider::Anthropic => {
+            cognix_graphql::queries::get_feature_model_choices::LlmProvider::Anthropic => {
                 LLMProvider::Anthropic
             }
-            warp_graphql::queries::get_feature_model_choices::LlmProvider::Google => {
+            cognix_graphql::queries::get_feature_model_choices::LlmProvider::Google => {
                 LLMProvider::Google
             }
-            warp_graphql::queries::get_feature_model_choices::LlmProvider::Xai => LLMProvider::Xai,
-            warp_graphql::queries::get_feature_model_choices::LlmProvider::Unknown => {
+            cognix_graphql::queries::get_feature_model_choices::LlmProvider::Xai => LLMProvider::Xai,
+            cognix_graphql::queries::get_feature_model_choices::LlmProvider::Unknown => {
                 LLMProvider::Unknown
             }
-            warp_graphql::queries::get_feature_model_choices::LlmProvider::Other(value) => {
+            cognix_graphql::queries::get_feature_model_choices::LlmProvider::Other(value) => {
                 report_error!(anyhow!(
                     "Invalid LlmProvider '{value}'. Make sure to update client GraphQL types!"
                 ));
@@ -2142,15 +2142,15 @@ impl From<warp_graphql::queries::get_feature_model_choices::LlmProvider> for LLM
     }
 }
 
-impl From<warp_graphql::workspace::LlmProvider> for LLMProvider {
-    fn from(value: warp_graphql::workspace::LlmProvider) -> Self {
+impl From<cognix_graphql::workspace::LlmProvider> for LLMProvider {
+    fn from(value: cognix_graphql::workspace::LlmProvider) -> Self {
         match value {
-            warp_graphql::workspace::LlmProvider::Openai => LLMProvider::OpenAI,
-            warp_graphql::workspace::LlmProvider::Anthropic => LLMProvider::Anthropic,
-            warp_graphql::workspace::LlmProvider::Google => LLMProvider::Google,
-            warp_graphql::workspace::LlmProvider::Xai => LLMProvider::Xai,
-            warp_graphql::workspace::LlmProvider::Unknown => LLMProvider::Unknown,
-            warp_graphql::workspace::LlmProvider::Other(value) => {
+            cognix_graphql::workspace::LlmProvider::Openai => LLMProvider::OpenAI,
+            cognix_graphql::workspace::LlmProvider::Anthropic => LLMProvider::Anthropic,
+            cognix_graphql::workspace::LlmProvider::Google => LLMProvider::Google,
+            cognix_graphql::workspace::LlmProvider::Xai => LLMProvider::Xai,
+            cognix_graphql::workspace::LlmProvider::Unknown => LLMProvider::Unknown,
+            cognix_graphql::workspace::LlmProvider::Other(value) => {
                 report_error!(anyhow!(
                     "Invalid LlmProvider '{value}'. Make sure to update client GraphQL types!"
                 ));
@@ -2160,8 +2160,8 @@ impl From<warp_graphql::workspace::LlmProvider> for LLMProvider {
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::LlmSpec> for LLMSpec {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::LlmSpec) -> Self {
+impl From<cognix_graphql::queries::get_feature_model_choices::LlmSpec> for LLMSpec {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::LlmSpec) -> Self {
         Self {
             cost: value.cost as f32,
             quality: value.quality as f32,
@@ -2170,8 +2170,8 @@ impl From<warp_graphql::queries::get_feature_model_choices::LlmSpec> for LLMSpec
     }
 }
 
-impl From<warp_graphql::workspace::LlmSpec> for LLMSpec {
-    fn from(value: warp_graphql::workspace::LlmSpec) -> Self {
+impl From<cognix_graphql::workspace::LlmSpec> for LLMSpec {
+    fn from(value: cognix_graphql::workspace::LlmSpec) -> Self {
         Self {
             cost: value.cost as f32,
             quality: value.quality as f32,
@@ -2180,8 +2180,8 @@ impl From<warp_graphql::workspace::LlmSpec> for LLMSpec {
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::LlmUsageMetadata> for LLMUsageMetadata {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::LlmUsageMetadata) -> Self {
+impl From<cognix_graphql::queries::get_feature_model_choices::LlmUsageMetadata> for LLMUsageMetadata {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::LlmUsageMetadata) -> Self {
         Self {
             request_multiplier: value.request_multiplier.max(1) as usize,
             credit_multiplier: value.credit_multiplier.map(|v| v as f32),
@@ -2189,8 +2189,8 @@ impl From<warp_graphql::queries::get_feature_model_choices::LlmUsageMetadata> fo
     }
 }
 
-impl From<warp_graphql::workspace::LlmUsageMetadata> for LLMUsageMetadata {
-    fn from(value: warp_graphql::workspace::LlmUsageMetadata) -> Self {
+impl From<cognix_graphql::workspace::LlmUsageMetadata> for LLMUsageMetadata {
+    fn from(value: cognix_graphql::workspace::LlmUsageMetadata) -> Self {
         Self {
             request_multiplier: value.request_multiplier.max(1) as usize,
             credit_multiplier: value.credit_multiplier.map(|v| v as f32),
@@ -2198,50 +2198,50 @@ impl From<warp_graphql::workspace::LlmUsageMetadata> for LLMUsageMetadata {
     }
 }
 
-impl From<warp_graphql::queries::get_feature_model_choices::DisableReason> for DisableReason {
-    fn from(value: warp_graphql::queries::get_feature_model_choices::DisableReason) -> Self {
+impl From<cognix_graphql::queries::get_feature_model_choices::DisableReason> for DisableReason {
+    fn from(value: cognix_graphql::queries::get_feature_model_choices::DisableReason) -> Self {
         match value {
-            warp_graphql::queries::get_feature_model_choices::DisableReason::AdminDisabled => {
+            cognix_graphql::queries::get_feature_model_choices::DisableReason::AdminDisabled => {
                 DisableReason::AdminDisabled
             }
-            warp_graphql::queries::get_feature_model_choices::DisableReason::OutOfRequests => {
+            cognix_graphql::queries::get_feature_model_choices::DisableReason::OutOfRequests => {
                 DisableReason::OutOfRequests
             }
-            warp_graphql::queries::get_feature_model_choices::DisableReason::ProviderOutage => {
+            cognix_graphql::queries::get_feature_model_choices::DisableReason::ProviderOutage => {
                 DisableReason::ProviderOutage
             }
-            warp_graphql::queries::get_feature_model_choices::DisableReason::RequiresUpgrade => {
+            cognix_graphql::queries::get_feature_model_choices::DisableReason::RequiresUpgrade => {
                 DisableReason::RequiresUpgrade
             }
-            warp_graphql::queries::get_feature_model_choices::DisableReason::Other(_) => {
+            cognix_graphql::queries::get_feature_model_choices::DisableReason::Other(_) => {
                 DisableReason::Unavailable
             }
         }
     }
 }
 
-impl From<warp_graphql::workspace::DisableReason> for DisableReason {
-    fn from(value: warp_graphql::workspace::DisableReason) -> Self {
+impl From<cognix_graphql::workspace::DisableReason> for DisableReason {
+    fn from(value: cognix_graphql::workspace::DisableReason) -> Self {
         match value {
-            warp_graphql::workspace::DisableReason::AdminDisabled => DisableReason::AdminDisabled,
-            warp_graphql::workspace::DisableReason::OutOfRequests => DisableReason::OutOfRequests,
-            warp_graphql::workspace::DisableReason::ProviderOutage => DisableReason::ProviderOutage,
-            warp_graphql::workspace::DisableReason::RequiresUpgrade => {
+            cognix_graphql::workspace::DisableReason::AdminDisabled => DisableReason::AdminDisabled,
+            cognix_graphql::workspace::DisableReason::OutOfRequests => DisableReason::OutOfRequests,
+            cognix_graphql::workspace::DisableReason::ProviderOutage => DisableReason::ProviderOutage,
+            cognix_graphql::workspace::DisableReason::RequiresUpgrade => {
                 DisableReason::RequiresUpgrade
             }
-            warp_graphql::workspace::DisableReason::Other(_) => DisableReason::Unavailable,
+            cognix_graphql::workspace::DisableReason::Other(_) => DisableReason::Unavailable,
         }
     }
 }
 
 // Conversions for AIConversationMetadata from GraphQL types
 
-fn convert_harness(harness: warp_graphql::ai::AgentHarness) -> AIAgentHarness {
+fn convert_harness(harness: cognix_graphql::ai::AgentHarness) -> AIAgentHarness {
     match harness {
-        warp_graphql::ai::AgentHarness::Oz => AIAgentHarness::Oz,
-        warp_graphql::ai::AgentHarness::ClaudeCode => AIAgentHarness::ClaudeCode,
-        warp_graphql::ai::AgentHarness::Gemini => AIAgentHarness::Gemini,
-        warp_graphql::ai::AgentHarness::Other(value) => {
+        cognix_graphql::ai::AgentHarness::Oz => AIAgentHarness::Oz,
+        cognix_graphql::ai::AgentHarness::ClaudeCode => AIAgentHarness::ClaudeCode,
+        cognix_graphql::ai::AgentHarness::Gemini => AIAgentHarness::Gemini,
+        cognix_graphql::ai::AgentHarness::Other(value) => {
             report_error!(anyhow!(
                 "Invalid AgentHarness '{value}'. Make sure to update client GraphQL types!"
             ));
@@ -2251,15 +2251,15 @@ fn convert_harness(harness: warp_graphql::ai::AgentHarness) -> AIAgentHarness {
 }
 
 fn convert_block_snapshot_format(
-    format: warp_graphql::ai::SerializedBlockFormat,
+    format: cognix_graphql::ai::SerializedBlockFormat,
 ) -> AIAgentSerializedBlockFormat {
     match format {
-        warp_graphql::ai::SerializedBlockFormat::JsonV1 => AIAgentSerializedBlockFormat::JsonV1,
+        cognix_graphql::ai::SerializedBlockFormat::JsonV1 => AIAgentSerializedBlockFormat::JsonV1,
     }
 }
 
 fn convert_conversation_format(
-    format: warp_graphql::ai::AIConversationFormat,
+    format: cognix_graphql::ai::AIConversationFormat,
 ) -> AIAgentConversationFormat {
     AIAgentConversationFormat {
         has_task_list: format.has_task_list,
@@ -2283,10 +2283,10 @@ fn convert_usage_metadata(
     }
 }
 
-impl TryFrom<warp_graphql::ai::AIConversation> for ServerAIConversationMetadata {
+impl TryFrom<cognix_graphql::ai::AIConversation> for ServerAIConversationMetadata {
     type Error = anyhow::Error;
 
-    fn try_from(value: warp_graphql::ai::AIConversation) -> Result<Self, Self::Error> {
+    fn try_from(value: cognix_graphql::ai::AIConversation) -> Result<Self, Self::Error> {
         let usage = convert_usage_metadata(
             value.usage.usage_metadata.summarized,
             value.usage.usage_metadata.context_window_usage,
@@ -2323,13 +2323,13 @@ impl TryFrom<warp_graphql::ai::AIConversation> for ServerAIConversationMetadata 
     }
 }
 
-impl TryFrom<warp_graphql::queries::list_ai_conversations::AIConversationMetadata>
+impl TryFrom<cognix_graphql::queries::list_ai_conversations::AIConversationMetadata>
     for ServerAIConversationMetadata
 {
     type Error = anyhow::Error;
 
     fn try_from(
-        value: warp_graphql::queries::list_ai_conversations::AIConversationMetadata,
+        value: cognix_graphql::queries::list_ai_conversations::AIConversationMetadata,
     ) -> Result<Self, Self::Error> {
         let usage = convert_usage_metadata(
             value.usage.usage_metadata.summarized,

@@ -1,5 +1,5 @@
 use crate::terminal::HistoryEntry;
-use warpui::Entity;
+use cognixui::Entity;
 
 /// Responsible for managing the history of a shared session for a viewer.
 #[derive(Default)]

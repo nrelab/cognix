@@ -1,14 +1,14 @@
 use itertools::Itertools;
-use warp_core::ui::theme::Fill;
+use cognix_core::ui::theme::Fill;
 
 use pathfinder_geometry::vector::vec2f;
 use serde::Serialize;
-use warpui::keymap::FixedBinding;
-use warpui::platform::Cursor;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use cognixui::keymap::FixedBinding;
+use cognixui::platform::Cursor;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 
-use warpui::{
+use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 
@@ -20,7 +20,7 @@ use crate::context_chips::{
 };
 
 use crate::server::telemetry::{PromptChoice, TelemetryEvent};
-use crate::settings::{FontSettings, WarpPromptSeparator};
+use crate::settings::{FontSettings, CognixPromptSeparator};
 use crate::terminal::blockgrid_element::BlockGridElement;
 use crate::terminal::SizeInfo;
 use settings::Setting as _;
@@ -31,7 +31,7 @@ use crate::terminal::session_settings::SessionSettings;
 use crate::view_components::{Dropdown, DropdownItem};
 use crate::Appearance;
 use crate::{report_if_error, send_telemetry_from_ctx};
-use warpui::elements::{
+use cognixui::elements::{
     Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Empty, Flex, Hoverable, MainAxisAlignment, MainAxisSize, MouseStateHandle,
     OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Radius, Stack,
@@ -57,12 +57,12 @@ const MODAL_CONTENT_FONT_SIZE: f32 = 14.;
 const CHECKBOX_SIZE: f32 = 16.;
 
 const MODAL_TITLE: &str = "Edit prompt";
-const WARP_PROMPT_SECTION_HEADER: &str = "Warp terminal prompt";
+const COGNIX_PROMPT_SECTION_HEADER: &str = "Cognix terminal prompt";
 const SHELL_PROMPT_SECTION_HEADER: &str = "Shell prompt (PS1)";
 const RESTORE_DEFAULT_BUTTON: &str = "Restore default";
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",
@@ -86,8 +86,8 @@ pub enum EditorModalEvent {
 struct MouseStateHandles {
     cancel_button_handle: MouseStateHandle,
     save_button_handle: MouseStateHandle,
-    restore_default_warp_prompt_handle: MouseStateHandle,
-    warp_prompt_mouse_state_handle: MouseStateHandle,
+    restore_default_cognix_prompt_handle: MouseStateHandle,
+    cognix_prompt_mouse_state_handle: MouseStateHandle,
     ps1_mouse_state_handle: MouseStateHandle,
     same_line_prompt_checkbox_state_handle: MouseStateHandle,
 }
@@ -113,11 +113,11 @@ pub struct EditorModal {
     /// used for saving changes.
     same_line_prompt_enabled: bool,
 
-    /// Dropdown to select the separator for the Warp prompt, in the case of
-    /// same line prompt. This separator is added at the end of the Warp prompt.
-    warp_prompt_separator_dropdown: ViewHandle<Dropdown<EditorModalAction>>,
-    /// The separator currently selected for the Warp prompt.
-    warp_prompt_separator: WarpPromptSeparator,
+    /// Dropdown to select the separator for the Cognix prompt, in the case of
+    /// same line prompt. This separator is added at the end of the Cognix prompt.
+    cognix_prompt_separator_dropdown: ViewHandle<Dropdown<EditorModalAction>>,
+    /// The separator currently selected for the Cognix prompt.
+    cognix_prompt_separator: CognixPromptSeparator,
 
     /// True if there was any change while the modal was open.
     is_dirty: bool,
@@ -128,17 +128,17 @@ pub struct EditorModal {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum PromptType {
     PS1,
-    Warp,
-    WarpDefault,
+    Cognix,
+    CognixDefault,
 }
 
 impl PromptType {
-    fn warp_prompt_from_settings(app: &AppContext) -> PromptType {
+    fn cognix_prompt_from_settings(app: &AppContext) -> PromptType {
         let session_settings = SessionSettings::as_ref(app);
         if matches!(*session_settings.saved_prompt, PromptSelection::Default) {
-            PromptType::WarpDefault
+            PromptType::CognixDefault
         } else {
-            PromptType::Warp
+            PromptType::Cognix
         }
     }
 
@@ -147,7 +147,7 @@ impl PromptType {
         if *session_settings.honor_ps1 {
             PromptType::PS1
         } else {
-            Self::warp_prompt_from_settings(app)
+            Self::cognix_prompt_from_settings(app)
         }
     }
 }
@@ -158,10 +158,10 @@ pub enum EditorModalAction {
     Save,
     Chip(ChipConfiguratorAction),
     UsePS1,
-    UseWarpPrompt,
-    ResetWarpPrompt,
+    UseCognixPrompt,
+    ResetCognixPrompt,
     ToggleSameLinePrompt,
-    SetWarpPromptSeparator { separator: WarpPromptSeparator },
+    SetCognixPromptSeparator { separator: CognixPromptSeparator },
 }
 
 impl EditorModal {
@@ -173,40 +173,40 @@ impl EditorModal {
             .value()
             .same_line_prompt_enabled();
 
-        let warp_prompt_separator = match SessionSettings::as_ref(ctx).saved_prompt.value() {
+        let cognix_prompt_separator = match SessionSettings::as_ref(ctx).saved_prompt.value() {
             PromptSelection::CustomChipSelection(config) => config.separator(),
-            // If the "default Warp prompt" i.e. no context chips, is selected, then default to no Warp prompt separator.
-            _ => WarpPromptSeparator::None,
+            // If the "default Cognix prompt" i.e. no context chips, is selected, then default to no Cognix prompt separator.
+            _ => CognixPromptSeparator::None,
         };
-        let warp_prompt_separator_label = warp_prompt_separator.dropdown_item_label().to_owned();
+        let cognix_prompt_separator_label = cognix_prompt_separator.dropdown_item_label().to_owned();
 
-        let warp_prompt_separator_dropdown = ctx.add_typed_action_view(|ctx| {
+        let cognix_prompt_separator_dropdown = ctx.add_typed_action_view(|ctx| {
             let mut dropdown = Dropdown::new(ctx);
             dropdown.set_top_bar_max_width(DROPDOWN_WIDTH);
             dropdown.set_menu_width(DROPDOWN_WIDTH, ctx);
             let items = vec![
                 DropdownItem::new(
-                    WarpPromptSeparator::None.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::None,
+                    CognixPromptSeparator::None.dropdown_item_label(),
+                    EditorModalAction::SetCognixPromptSeparator {
+                        separator: CognixPromptSeparator::None,
                     },
                 ),
                 DropdownItem::new(
-                    WarpPromptSeparator::PercentSign.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::PercentSign,
+                    CognixPromptSeparator::PercentSign.dropdown_item_label(),
+                    EditorModalAction::SetCognixPromptSeparator {
+                        separator: CognixPromptSeparator::PercentSign,
                     },
                 ),
                 DropdownItem::new(
-                    WarpPromptSeparator::DollarSign.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::DollarSign,
+                    CognixPromptSeparator::DollarSign.dropdown_item_label(),
+                    EditorModalAction::SetCognixPromptSeparator {
+                        separator: CognixPromptSeparator::DollarSign,
                     },
                 ),
                 DropdownItem::new(
-                    WarpPromptSeparator::ChevronSymbol.dropdown_item_label(),
-                    EditorModalAction::SetWarpPromptSeparator {
-                        separator: WarpPromptSeparator::ChevronSymbol,
+                    CognixPromptSeparator::ChevronSymbol.dropdown_item_label(),
+                    EditorModalAction::SetCognixPromptSeparator {
+                        separator: CognixPromptSeparator::ChevronSymbol,
                     },
                 ),
             ];
@@ -218,7 +218,7 @@ impl EditorModal {
             }
 
             dropdown.set_items(items, ctx);
-            dropdown.set_selected_by_name(warp_prompt_separator_label, ctx);
+            dropdown.set_selected_by_name(cognix_prompt_separator_label, ctx);
             dropdown
         });
 
@@ -230,8 +230,8 @@ impl EditorModal {
             prompt_type,
             chip_runtime_capabilities: Default::default(),
             same_line_prompt_enabled,
-            warp_prompt_separator_dropdown,
-            warp_prompt_separator,
+            cognix_prompt_separator_dropdown,
+            cognix_prompt_separator,
         }
     }
 
@@ -292,16 +292,16 @@ impl EditorModal {
         ctx.notify();
     }
 
-    /// Updates the state of the Warp prompt separator dropdown to be enabled/disabled based on the current state of the modal.
-    fn update_warp_separator_dropdown_state(&mut self, ctx: &mut ViewContext<Self>) {
-        // If we are using the Warp prompt and SLP is enabled, then we enable the dropdown. Otherwise, disable it.
+    /// Updates the state of the Cognix prompt separator dropdown to be enabled/disabled based on the current state of the modal.
+    fn update_cognix_separator_dropdown_state(&mut self, ctx: &mut ViewContext<Self>) {
+        // If we are using the Cognix prompt and SLP is enabled, then we enable the dropdown. Otherwise, disable it.
         if self.prompt_type != PromptType::PS1 && self.same_line_prompt_enabled {
-            self.warp_prompt_separator_dropdown
+            self.cognix_prompt_separator_dropdown
                 .update(ctx, |dropdown, ctx| {
                     dropdown.set_enabled(ctx);
                 });
         } else {
-            self.warp_prompt_separator_dropdown
+            self.cognix_prompt_separator_dropdown
                 .update(ctx, |dropdown, ctx| {
                     dropdown.set_disabled(ctx);
                 });
@@ -312,17 +312,17 @@ impl EditorModal {
         if self.is_dirty {
             match self.prompt_type {
                 PromptType::PS1 => {
-                    // TODO: we need to stop the Warp prompt generators from running at this point
+                    // TODO: we need to stop the Cognix prompt generators from running at this point
                     SessionSettings::handle(ctx).update(ctx, |settings, ctx| {
                         report_if_error!(settings.honor_ps1.set_value(true, ctx));
                     });
                 }
-                PromptType::WarpDefault => {
+                PromptType::CognixDefault => {
                     Prompt::handle(ctx).update(ctx, |prompt, ctx| {
                         report_if_error!(prompt.reset(ctx));
                     });
                 }
-                PromptType::Warp => {
+                PromptType::Cognix => {
                     let new_setup = self
                         .chip_configurator
                         .used_chips
@@ -346,7 +346,7 @@ impl EditorModal {
                         report_if_error!(prompt.update(
                             new_setup,
                             self.same_line_prompt_enabled,
-                            self.warp_prompt_separator,
+                            self.cognix_prompt_separator,
                             ctx
                         ));
                     });
@@ -355,8 +355,8 @@ impl EditorModal {
 
             let prompt_info = match self.prompt_type {
                 PromptType::PS1 => PromptChoice::PS1,
-                PromptType::WarpDefault => PromptChoice::Default,
-                PromptType::Warp => PromptChoice::Custom {
+                PromptType::CognixDefault => PromptChoice::Default,
+                PromptType::Cognix => PromptChoice::Custom {
                     builtin_chips: self
                         .chip_configurator
                         .used_chips
@@ -403,33 +403,33 @@ impl TypedActionView for EditorModal {
                 let mutated = self.chip_configurator.handle_action(chip_action, ctx);
                 if mutated {
                     self.is_dirty = true;
-                    self.prompt_type = PromptType::Warp;
+                    self.prompt_type = PromptType::Cognix;
                 }
                 ctx.notify();
             }
             Self::Action::UsePS1 => {
                 self.is_dirty = true;
                 self.prompt_type = PromptType::PS1;
-                // Disable the Warp separator dropdown (only applies to Warp prompt).
-                self.update_warp_separator_dropdown_state(ctx);
+                // Disable the Cognix separator dropdown (only applies to Cognix prompt).
+                self.update_cognix_separator_dropdown_state(ctx);
                 ctx.notify();
             }
-            Self::Action::UseWarpPrompt => {
+            Self::Action::UseCognixPrompt => {
                 self.is_dirty = true;
-                self.prompt_type = PromptType::warp_prompt_from_settings(ctx);
-                // Enable the Warp separator dropdown, if SLP is on.
-                self.update_warp_separator_dropdown_state(ctx);
+                self.prompt_type = PromptType::cognix_prompt_from_settings(ctx);
+                // Enable the Cognix separator dropdown, if SLP is on.
+                self.update_cognix_separator_dropdown_state(ctx);
                 ctx.notify();
             }
-            Self::Action::ResetWarpPrompt => {
+            Self::Action::ResetCognixPrompt => {
                 self.is_dirty = true;
-                self.prompt_type = PromptType::WarpDefault;
+                self.prompt_type = PromptType::CognixDefault;
 
                 let default_prompt = PromptConfiguration::default_prompt();
                 self.same_line_prompt_enabled = default_prompt.same_line_prompt_enabled();
-                self.warp_prompt_separator = default_prompt.separator();
-                // Disable the Warp separator dropdown, since SLP is off for the default Warp prompt.
-                self.update_warp_separator_dropdown_state(ctx);
+                self.cognix_prompt_separator = default_prompt.separator();
+                // Disable the Cognix separator dropdown, since SLP is off for the default Cognix prompt.
+                self.update_cognix_separator_dropdown_state(ctx);
                 let restored_chips = default_prompt.chip_kinds();
                 self.update_used_chips(restored_chips, ctx);
                 ctx.notify();
@@ -438,16 +438,16 @@ impl TypedActionView for EditorModal {
                 self.is_dirty = true;
                 self.same_line_prompt_enabled = !self.same_line_prompt_enabled;
 
-                // In case we had previously picked default Warp prompt, but now the user toggled
+                // In case we had previously picked default Cognix prompt, but now the user toggled
                 // same line prompt - it's no longer the default prompt.
-                self.prompt_type = PromptType::Warp;
+                self.prompt_type = PromptType::Cognix;
 
-                self.update_warp_separator_dropdown_state(ctx);
+                self.update_cognix_separator_dropdown_state(ctx);
                 ctx.notify();
             }
-            Self::Action::SetWarpPromptSeparator { separator } => {
+            Self::Action::SetCognixPromptSeparator { separator } => {
                 self.is_dirty = true;
-                self.warp_prompt_separator = *separator;
+                self.cognix_prompt_separator = *separator;
                 ctx.notify();
             }
         }
@@ -487,7 +487,7 @@ impl EditorModal {
             .span(MODAL_TITLE.to_string())
             .with_style(UiComponentStyles {
                 font_size: Some(MODAL_TITLE_FONT_SIZE),
-                font_weight: Some(warpui::fonts::Weight::Bold),
+                font_weight: Some(cognixui::fonts::Weight::Bold),
                 ..Default::default()
             })
             .build()
@@ -496,7 +496,7 @@ impl EditorModal {
 
     fn render_unused_chips(&self, appearance: &Appearance) -> Box<dyn Element> {
         self.chip_configurator.render_unused_chips_bank(
-            EditorModalAction::UseWarpPrompt,
+            EditorModalAction::UseCognixPrompt,
             EditorModalAction::Chip,
             appearance,
         )
@@ -504,7 +504,7 @@ impl EditorModal {
 
     fn render_used_chips(&self, appearance: &Appearance) -> Box<dyn Element> {
         self.chip_configurator.render_used_drop_zone(
-            EditorModalAction::UseWarpPrompt,
+            EditorModalAction::UseCognixPrompt,
             EditorModalAction::Chip,
             appearance,
         )
@@ -564,13 +564,13 @@ impl EditorModal {
         .finish()
     }
 
-    fn render_restore_default_warp_prompt_button(
+    fn render_restore_default_cognix_prompt_button(
         &self,
         appearance: &Appearance,
     ) -> Box<dyn Element> {
         let button = Hoverable::new(
             self.mouse_state_handles
-                .restore_default_warp_prompt_handle
+                .restore_default_cognix_prompt_handle
                 .clone(),
             |_state| {
                 appearance
@@ -584,17 +584,17 @@ impl EditorModal {
                     .finish()
             },
         )
-        .on_click(|ctx, _, _| ctx.dispatch_typed_action(EditorModalAction::ResetWarpPrompt))
+        .on_click(|ctx, _, _| ctx.dispatch_typed_action(EditorModalAction::ResetCognixPrompt))
         .with_cursor(Cursor::PointingHand);
 
-        if matches!(self.prompt_type, PromptType::WarpDefault) && !self.is_dirty {
+        if matches!(self.prompt_type, PromptType::CognixDefault) && !self.is_dirty {
             button.disable().finish()
         } else {
             button.finish()
         }
     }
 
-    // TODO: consider supporting SLP with the new Warp prompt.
+    // TODO: consider supporting SLP with the new Cognix prompt.
     #[allow(dead_code)]
     fn render_same_line_prompt_section(&self, appearance: &Appearance) -> Box<dyn Element> {
         let label = appearance
@@ -650,14 +650,14 @@ impl EditorModal {
                 .finish(),
             )
             .with_child(
-                Container::new(ChildView::new(&self.warp_prompt_separator_dropdown).finish())
+                Container::new(ChildView::new(&self.cognix_prompt_separator_dropdown).finish())
                     .with_margin_left(DROPDOWN_LABEL_MARGIN_RIGHT)
                     .finish(),
             )
             .finish()
     }
 
-    fn render_warp_prompt_section(&self, appearance: &Appearance) -> Box<dyn Element> {
+    fn render_cognix_prompt_section(&self, appearance: &Appearance) -> Box<dyn Element> {
         let body = Flex::column()
             .with_child(
                 Container::new(self.render_unused_chips(appearance))
@@ -675,30 +675,30 @@ impl EditorModal {
             .with_child(
                 appearance
                     .ui_builder()
-                    .span(WARP_PROMPT_SECTION_HEADER.to_string())
+                    .span(COGNIX_PROMPT_SECTION_HEADER.to_string())
                     .with_style(UiComponentStyles {
                         font_size: Some(MODAL_CONTENT_FONT_SIZE),
-                        font_weight: Some(warpui::fonts::Weight::Semibold),
+                        font_weight: Some(cognixui::fonts::Weight::Semibold),
                         ..Default::default()
                     })
                     .build()
                     .finish(),
             )
-            .with_child(self.render_restore_default_warp_prompt_button(appearance))
+            .with_child(self.render_restore_default_cognix_prompt_button(appearance))
             .with_main_axis_alignment(MainAxisAlignment::SpaceBetween)
             .with_main_axis_size(MainAxisSize::Max)
             .finish();
 
         self.render_prompt_section(
             appearance,
-            matches!(self.prompt_type, PromptType::Warp | PromptType::WarpDefault),
+            matches!(self.prompt_type, PromptType::Cognix | PromptType::CognixDefault),
             header_row,
             None,
             body,
             self.mouse_state_handles
-                .warp_prompt_mouse_state_handle
+                .cognix_prompt_mouse_state_handle
                 .clone(),
-            EditorModalAction::UseWarpPrompt,
+            EditorModalAction::UseCognixPrompt,
         )
     }
 
@@ -727,7 +727,7 @@ impl EditorModal {
             .span(SHELL_PROMPT_SECTION_HEADER.to_string())
             .with_style(UiComponentStyles {
                 font_size: Some(MODAL_CONTENT_FONT_SIZE),
-                font_weight: Some(warpui::fonts::Weight::Semibold),
+                font_weight: Some(cognixui::fonts::Weight::Semibold),
                 ..Default::default()
             })
             .build()
@@ -794,9 +794,9 @@ impl EditorModal {
 
         // We disable the save button in a couple of cases:
         // - there are no changes
-        // - the Warp prompt is used but there are no chips selected
+        // - the Cognix prompt is used but there are no chips selected
         let save_disabled = !self.is_dirty
-            || (matches!(self.prompt_type, PromptType::Warp)
+            || (matches!(self.prompt_type, PromptType::Cognix)
                 && self.chip_configurator.used_chips.is_empty());
         let save_button = self.render_primary_button(
             "Save changes".to_string(),
@@ -845,7 +845,7 @@ impl View for EditorModal {
             ConstrainedBox::new(
                 column
                     .with_child(
-                        Container::new(self.render_warp_prompt_section(appearance))
+                        Container::new(self.render_cognix_prompt_section(appearance))
                             .with_margin_bottom(MARGIN_BETWEEN_MODAL_SECTIONS)
                             .finish(),
                     )

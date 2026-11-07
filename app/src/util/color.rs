@@ -1,2 +1,2 @@
-pub use warp_core::ui::color::contrast::*;
-pub use warp_core::ui::color::*;
+pub use cognix_core::ui::color::contrast::*;
+pub use cognix_core::ui::color::*;

@@ -7,14 +7,14 @@ use crate::view_components::DismissibleToast;
 use crate::workspace::ToastStack;
 use std::default::Default;
 use std::path::PathBuf;
-use warpui::fonts::Weight;
-use warpui::keymap::FixedBinding;
-use warpui::platform::{FilePickerConfiguration, FileType};
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::{Coords, UiComponentStyles};
-use warpui::ViewHandle;
-use warpui::{AppContext, SingletonEntity as _};
-use warpui::{Element, Entity, TypedActionView, View, ViewContext};
+use cognixui::fonts::Weight;
+use cognixui::keymap::FixedBinding;
+use cognixui::platform::{FilePickerConfiguration, FileType};
+use cognixui::presenter::ChildView;
+use cognixui::ui_components::components::{Coords, UiComponentStyles};
+use cognixui::ViewHandle;
+use cognixui::{AppContext, SingletonEntity as _};
+use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
 
 const THEME_CREATOR_MODAL_HEADER: &str = "Create new theme from image";
 
@@ -34,7 +34,7 @@ pub enum ThemeCreatorModalEvent {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",

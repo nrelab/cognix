@@ -3,7 +3,7 @@ use crate::search::searcher::{CustomTokenizer, MIN_MEMORY_BUDGET};
 use itertools::Itertools;
 use std::sync::Arc;
 use tantivy::tokenizer::{TextAnalyzer, Token};
-use warpui::r#async::executor::Background;
+use cognixui::r#async::executor::Background;
 
 fn token_stream_helper(text: &str) -> Vec<Token> {
     let mut a = TextAnalyzer::from(CustomTokenizer::default());
@@ -40,28 +40,28 @@ fn test_tokenizer_simple() {
 }
 
 #[test]
-fn test_tokenizer_warp_special_chars() {
-    // Test string includes warp-related terms with hyphen, underscore, forward slash, backslash, and colon
-    let test_string = "warp-cli/launch_command:run C:\\\\Program_Files\\\\Warp\\\\core-engine.dll check_status:/dev/warp_drive-0";
+fn test_tokenizer_cognix_special_chars() {
+    // Test string includes cognix-related terms with hyphen, underscore, forward slash, backslash, and colon
+    let test_string = "cognix-cli/launch_command:run C:\\\\Program_Files\\\\Cognix\\\\core-engine.dll check_status:/dev/cognix_drive-0";
     let tokens = token_stream_helper(test_string);
 
     assert_eq!(tokens.len(), 25);
-    assert_token(&tokens[0], 0, "warp-cli/launch_command:run", 0, 27);
-    assert_token(&tokens[1], 1, "warp", 0, 4);
-    assert_token(&tokens[2], 2, "cli", 5, 8);
-    assert_token(&tokens[3], 3, "launch_command", 9, 23);
-    assert_token(&tokens[4], 4, "launch", 9, 15);
-    assert_token(&tokens[5], 5, "command", 16, 23);
-    assert_token(&tokens[6], 6, "run", 24, 27);
+    assert_token(&tokens[0], 0, "cognix-cli/launch_command:run", 0, 29);
+    assert_token(&tokens[1], 1, "cognix", 0, 6);
+    assert_token(&tokens[2], 2, "cli", 7, 10);
+    assert_token(&tokens[3], 3, "launch_command", 11, 25);
+    assert_token(&tokens[4], 4, "launch", 11, 17);
+    assert_token(&tokens[5], 5, "command", 18, 25);
+    assert_token(&tokens[6], 6, "run", 26, 29);
     assert_token(
         &tokens[7],
         7,
-        "C:\\\\Program_Files\\\\Warp\\\\core-engine",
-        28,
-        64,
+        "C:\\\\Program_Files\\\\Cognix\\\\core-engine",
+        30,
+        68,
     );
-    assert_token(&tokens[15], 15, "dll", 65, 68);
-    assert_token(&tokens[16], 16, "check_status:/dev/warp_drive-0", 69, 99);
+    assert_token(&tokens[15], 15, "dll", 69, 72);
+    assert_token(&tokens[16], 16, "check_status:/dev/cognix_drive-0", 73, 105);
 }
 
 #[test]
@@ -74,7 +74,7 @@ fn test_searcher() {
         search_fields: [name: 1.0],
         id_fields: [id: u64]
     );
-    let search_strings = ["run warp on web server", "run warp-on-web server"];
+    let search_strings = ["run cognix on web server", "run cognix-on-web server"];
 
     let searcher = TEST_SCHEMA.create_searcher(MIN_MEMORY_BUDGET);
     searcher
@@ -89,7 +89,7 @@ fn test_searcher() {
         )
         .unwrap();
 
-    let result = searcher.search_full_doc("warp on web").unwrap();
+    let result = searcher.search_full_doc("cognix on web").unwrap();
     assert_eq!(
         result.len(),
         2,
@@ -106,14 +106,14 @@ fn test_searcher() {
         "should highlight the correct positions"
     );
 
-    let result = searcher.search_full_doc("warp-on-web").unwrap();
+    let result = searcher.search_full_doc("cognix-on-web").unwrap();
     assert_eq!(
         result.len(),
         1,
         "should only match the second search string"
     );
     assert_eq!(
-        result[0].values.name, "run warp-on-web server",
+        result[0].values.name, "run cognix-on-web server",
         "should match the second search string"
     );
     assert_eq!(
@@ -134,7 +134,7 @@ fn test_searcher_scores() {
         id_fields: [id: u64]
     );
 
-    let search_strings = ["run warp on web server", "run warp_on_web:server"];
+    let search_strings = ["run cognix on web server", "run cognix_on_web:server"];
 
     let searcher = TEST_SCHEMA.create_searcher(MIN_MEMORY_BUDGET);
     searcher
@@ -149,7 +149,7 @@ fn test_searcher_scores() {
         )
         .unwrap();
 
-    let result = searcher.search_full_doc("warp").unwrap();
+    let result = searcher.search_full_doc("cognix").unwrap();
     assert_eq!(
         result.len(),
         2,
@@ -165,7 +165,7 @@ fn test_searcher_scores() {
         "the score difference of similar strings should be less than 15%"
     );
 
-    let result = searcher.search_full_doc("warp on web").unwrap();
+    let result = searcher.search_full_doc("cognix on web").unwrap();
     let score_delta = result[0].score - result[1].score;
     assert!(
         score_delta / result[0].score < 0.15,
@@ -188,8 +188,8 @@ fn test_searcher_async() {
         "Fix clippy formatting after commit",
         "Undo the last git commit",
         "Run cargo fmt on changed files",
-        "Run warp-on-web",
-        "Run fresh warp-local and clear warp-dev permissions",
+        "Run cognix-on-web",
+        "Run fresh cognix-local and clear cognix-dev permissions",
         "Give user unlimited AI",
     ];
     let background_executor = Arc::new(Background::default());
@@ -274,7 +274,7 @@ fn test_searcher_async() {
         .collect_vec();
     assert_eq!(result.len(), 1, "there should be exactly 1 match for id 4");
     assert_eq!(
-        result[0].name, "Run fresh warp-local and clear warp-dev permissions",
+        result[0].name, "Run fresh cognix-local and clear cognix-dev permissions",
         "the original document with id 4 should be unchanged"
     );
 

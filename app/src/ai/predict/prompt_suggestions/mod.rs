@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use warpui::{keymap::Keystroke, AppContext};
+use cognixui::{keymap::Keystroke, AppContext};
 
 use crate::{terminal::TerminalModel, util::bindings::keybinding_name_to_keystroke};
 

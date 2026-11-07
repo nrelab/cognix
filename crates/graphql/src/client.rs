@@ -5,7 +5,7 @@ use http::StatusCode;
 use instant::Duration;
 use reqwest::header::CONTENT_TYPE;
 use serde::{de::DeserializeOwned, Serialize};
-use warp_core::{channel::ChannelState, operating_system_info::OperatingSystemInfo};
+use cognix_core::{channel::ChannelState, operating_system_info::OperatingSystemInfo};
 
 use crate::{
     error::{UserFacingError, UserFacingErrorInterface},
@@ -36,7 +36,7 @@ pub trait Operation<QF> {
 }
 
 /// The various errors we could encounter when making a GraphQL request to
-/// warp-server.
+/// cognix-server.
 #[derive(Debug, thiserror::Error)]
 pub enum GraphQLError {
     /// Encountered an error while sending the request.

@@ -16,15 +16,15 @@ use crate::{
 use std::sync::Arc;
 use unindent::Unindent;
 use vim::vim::{MotionType, VimMode};
-use warp_core::{features::FeatureFlag, settings::Setting, ui::appearance::Appearance};
-use warp_editor::model::CoreEditorModel;
-use warp_editor::{
+use cognix_core::{features::FeatureFlag, settings::Setting, ui::appearance::Appearance};
+use cognix_editor::model::CoreEditorModel;
+use cognix_editor::{
     content::buffer::{InitialBufferState, ToBufferCharOffset, ToBufferPoint},
     render::element::VerticalExpansionBehavior,
 };
-use warp_util::user_input::UserInput;
-use warpui::text::point::Point;
-use warpui::{
+use cognix_util::user_input::UserInput;
+use cognixui::text::point::Point;
+use cognixui::{
     keymap::Keystroke, platform::WindowStyle, App, SingletonEntity, TypedActionView, UpdateModel,
     ViewHandle,
 };
@@ -1022,11 +1022,11 @@ fn test_vim_delete_word_dge() {
 
     App::test((), |mut app| async move {
         initialize_code_editor_app(&mut app);
-        let editor = add_code_editor("echo hello-hi warp-dev", &mut app);
+        let editor = add_code_editor("echo hello-hi cognix-dev", &mut app);
 
         set_cursor_position(&editor, 1, 20, &mut app);
         vim_user_insert(&editor, "dge", &mut app);
-        assert_eq!(buffer_text(&editor, &app), "echo hello-hi warpev");
+        assert_eq!(buffer_text(&editor, &app), "echo hello-hi cognixev");
         assert_eq!(cursor_position(&editor, &app), (1, 18));
 
         vim_user_insert(&editor, "dge", &mut app);

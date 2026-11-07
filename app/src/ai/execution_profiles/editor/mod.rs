@@ -26,13 +26,13 @@ use crate::{
 use ai::api_keys::{ApiKeyManager, ApiKeyManagerEvent};
 use itertools::Itertools;
 use regex::Regex;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::fonts::Properties;
-use warpui::platform::Cursor;
-use warpui::ui_components::switch::SwitchStateHandle;
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::fonts::Properties;
+use cognixui::platform::Cursor;
+use cognixui::ui_components::switch::SwitchStateHandle;
 
 use std::path::{Path, PathBuf};
-use warpui::{
+use cognixui::{
     elements::{
         Align, Border, ChildView, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox,
         Container, CrossAxisAlignment, Expanded, Flex, Highlight, MouseStateHandle, ParentElement,
@@ -56,8 +56,8 @@ fn render_upgrade_footer(
     let text_color = theme.main_text_color(surface);
 
     let info_icon = ConstrainedBox::new(
-        warp_core::ui::Icon::Info
-            .to_warpui_icon(text_color)
+        cognix_core::ui::Icon::Info
+            .to_cognixui_icon(text_color)
             .finish(),
     )
     .with_width(16.)
@@ -1296,7 +1296,7 @@ impl View for ExecutionProfileEditorView {
             ScrollbarWidth::Auto,
             appearance.theme().nonactive_ui_detail().into(),
             appearance.theme().active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .finish()
     }
@@ -1452,7 +1452,7 @@ impl TypedActionView for ExecutionProfileEditorView {
             }
             ExecutionProfileEditorViewAction::SetPlanAutoSync { enabled } => {
                 AIExecutionProfilesModel::handle(ctx).update(ctx, |profiles_model, ctx| {
-                    profiles_model.set_autosync_plans_to_warp_drive(self.profile_id, *enabled, ctx);
+                    profiles_model.set_autosync_plans_to_cognix_drive(self.profile_id, *enabled, ctx);
                 });
                 ctx.notify();
             }
@@ -1474,17 +1474,17 @@ impl BackingView for ExecutionProfileEditorView {
     fn handle_pane_header_overflow_menu_action(
         &mut self,
         _action: &Self::PaneHeaderOverflowMenuAction,
-        _ctx: &mut warpui::ViewContext<Self>,
+        _ctx: &mut cognixui::ViewContext<Self>,
     ) {
         self.handle_action(_action, _ctx)
     }
 
-    fn close(&mut self, ctx: &mut warpui::ViewContext<Self>) {
+    fn close(&mut self, ctx: &mut cognixui::ViewContext<Self>) {
         self.save_profile_name_if_valid(ctx);
         ctx.emit(ExecutionProfileEditorViewEvent::Pane(PaneEvent::Close));
     }
 
-    fn focus_contents(&mut self, ctx: &mut warpui::ViewContext<Self>) {
+    fn focus_contents(&mut self, ctx: &mut cognixui::ViewContext<Self>) {
         self.focus(ctx);
     }
 
@@ -1497,7 +1497,7 @@ impl BackingView for ExecutionProfileEditorView {
             title: HEADER_TEXT.into(),
             title_secondary: None,
             title_style: None,
-            title_clip_config: warpui::text_layout::ClipConfig::start(),
+            title_clip_config: cognixui::text_layout::ClipConfig::start(),
             title_max_width: None,
             left_of_title: None,
             right_of_title: None,

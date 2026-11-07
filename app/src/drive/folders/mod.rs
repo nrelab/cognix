@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use super::items::folder::WarpDriveFolder;
-use super::items::WarpDriveItem;
+use super::items::folder::CognixDriveFolder;
+use super::items::CognixDriveItem;
 use super::CloudObjectTypeAndId;
 use crate::server::cloud_objects::update_manager::InitiatedBy;
 use crate::{
@@ -21,8 +21,8 @@ use crate::{
 use anyhow::Result;
 use async_trait::async_trait;
 
-// Re-exported from warp_server_client.
-pub use warp_server_client::ids::FolderId;
+// Re-exported from cognix_server_client.
+pub use cognix_server_client::ids::FolderId;
 
 /// The model for a `CloudFolder`.
 #[derive(Clone, Debug, PartialEq)]
@@ -32,15 +32,15 @@ pub struct CloudFolderModel {
     // CloudViewModel. Right now, every server folder uses CloudFolderModel, which means it
     // hardcodes a value of `false` for this property since it can't know what the local state is.
     pub is_open: bool,
-    pub is_warp_pack: bool,
+    pub is_cognix_pack: bool,
 }
 
 impl CloudFolderModel {
-    pub fn new(name: &str, is_warp_pack: bool) -> Self {
+    pub fn new(name: &str, is_cognix_pack: bool) -> Self {
         Self {
             name: name.to_owned(),
             is_open: false,
-            is_warp_pack,
+            is_cognix_pack,
         }
     }
 }
@@ -125,7 +125,7 @@ impl CloudModelType for CloudFolderModel {
             return Some(CloudFolderModel {
                 name: server_folder.model.name.clone(),
                 is_open: self.is_open,
-                is_warp_pack: server_folder.model.is_warp_pack,
+                is_cognix_pack: server_folder.model.is_cognix_pack,
             });
         }
         None
@@ -158,17 +158,17 @@ impl CloudModelType for CloudFolderModel {
             .await
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         true
     }
 
-    fn to_warp_drive_item(
+    fn to_cognix_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         folder: &CloudFolder,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveFolder::new(
+    ) -> Option<Box<dyn CognixDriveItem>> {
+        Some(Box::new(CognixDriveFolder::new(
             self.cloud_object_type_and_id(id),
             folder.clone(),
         )))

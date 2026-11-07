@@ -1,10 +1,10 @@
 use enum_iterator::{all, Sequence};
 use itertools::{Either, Itertools};
-use warpui::elements::CornerRadius;
-use warpui::presenter::ChildView;
-use warpui::units::Pixels;
-use warpui::FocusContext;
-use warpui::{
+use cognixui::elements::CornerRadius;
+use cognixui::presenter::ChildView;
+use cognixui::units::Pixels;
+use cognixui::FocusContext;
+use cognixui::{
     elements::{
         Align, Border, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container,
         CrossAxisAlignment, Element, Fill, Flex, MainAxisSize, MouseStateHandle, ParentElement,
@@ -25,7 +25,7 @@ use crate::{
     util::bindings::filter_bindings_including_keystroke,
     workspace::WorkspaceAction,
 };
-use warpui::ModelHandle;
+use cognixui::ModelHandle;
 
 use crate::{
     editor::{
@@ -66,7 +66,7 @@ pub struct KeybindingsView {
 
 /// Keybindings are sorted into these sections,
 /// where "Fundamentals" is the default for any remaining non-categorized ones.
-/// This should always align with documentation: https://docs.warp.dev/getting-started/keyboard-shortcuts
+/// This should always align with documentation: https://docs.cognix.dev/getting-started/keyboard-shortcuts
 #[derive(Clone, Eq, PartialEq, Sequence)]
 pub enum KeybindingSection {
     Essentials,

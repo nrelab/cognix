@@ -3,9 +3,9 @@
 ## Decision
 
 No backend is implemented in this milestone. The local-shell workflow does
-not require a client-to-Warp API. The current source shows that the app's
+not require a client-to-Cognix API. The current source shows that the app's
 remote capabilities use multiple existing service contracts; it does not
-provide a complete, authorized specification for replacing Warp's services.
+provide a complete, authorized specification for replacing Cognix's services.
 
 Do not infer a deployable service contract from the endpoint roots alone.
 Operation schemas, authorization, entitlement, data retention, and compatibility
@@ -23,7 +23,7 @@ is started.
 | Telemetry | [`app/src/server/telemetry/`](../../app/src/server/telemetry/) | Events can be queued and sent through the server API when event, privacy, and build gates permit. | Optional for a fork only after explicit egress and retention policy decisions. |
 | Crash reporting | [`app/src/crash_reporting/`](../../app/src/crash_reporting/) | Build/config/privacy gated. | Requires a fork-owned collector/configuration or explicit user-controlled disablement; no silent change. |
 | Updates | [`app/src/autoupdate/`](../../app/src/autoupdate/), [`app/src/server/server_api.rs`](../../app/src/server/server_api.rs) | Version checks use `/client_version/daily` or `/client_version` when updater polling is enabled. | Requires fork-owned update metadata, hosting, signing, and verification. |
-| Terminal sessions | [`app/src/terminal/local_tty/spawner.rs`](../../app/src/terminal/local_tty/spawner.rs) | Local shell process through local PTY; optional local terminal-server subprocess. | No Warp backend contract is needed for ordinary local commands. |
+| Terminal sessions | [`app/src/terminal/local_tty/spawner.rs`](../../app/src/terminal/local_tty/spawner.rs) | Local shell process through local PTY; optional local terminal-server subprocess. | No Cognix backend contract is needed for ordinary local commands. |
 
 ## Required contract record before a replacement
 
@@ -63,9 +63,9 @@ activity depending on build and runtime configuration.
 ## Configuration contract warning
 
 `Channel::Oss` is a release channel that does not honor server URL overrides.
-The current `WARP.md` local-server snippet used `cargo run --features
+The current `COGNIX.md` local-server snippet used `cargo run --features
 with_local_server`, but this is not a current Cargo feature. `script/run`
-translates that legacy argument for `warp-channel-config`; the installer is
+translates that legacy argument for `cognix-channel-config`; the installer is
 pinned to a separate private SSH repository. Therefore the source checkout
 does not currently demonstrate a supported, external-contributor path for
 pointing the OSS binary at a self-hosted API.

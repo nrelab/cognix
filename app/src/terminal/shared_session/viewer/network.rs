@@ -6,7 +6,7 @@ use anyhow::bail;
 use async_channel::Receiver;
 use instant::Instant;
 use std::{pin::pin, sync::Arc};
-use warpui::r#async::{SpawnedFutureHandle, Timer};
+use cognixui::r#async::{SpawnedFutureHandle, Timer};
 
 use futures_util::{stream::AbortHandle, SinkExt, StreamExt};
 
@@ -32,8 +32,8 @@ use session_sharing_protocol::{
 };
 
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognixui::{
     Entity, ModelContext, ModelHandle, RequestState, RetryOption, SingletonEntity, WeakViewHandle,
 };
 use websocket::{Message, Sink, Stream, WebsocketMessage as _};
@@ -227,7 +227,7 @@ impl Network {
         let session_id = SessionId::new();
         let viewer_id = ParticipantId::new();
         let viewer_firebase_uid = UserUid::new("mock_firebase_uid");
-        let active_prompt = ActivePrompt::WarpPrompt("test warp prompt".to_owned());
+        let active_prompt = ActivePrompt::WarpPrompt("test cognix prompt".to_owned());
 
         let model = Network {
             heartbeat,

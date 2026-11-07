@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use view::command_dialog::EnvVarSecretCommand;
-use warp_util::path::ShellFamily;
+use cognix_util::path::ShellFamily;
 
 pub mod active_env_var_collection_data;
 pub mod env_var_collection_block;
@@ -17,7 +17,7 @@ use crate::{
         GenericCloudObject, GenericStringObjectFormat, GenericStringObjectUniqueKey,
         JsonObjectType, Revision, ServerCloudObject,
     },
-    drive::items::{env_var_collection::WarpDriveEnvVarCollection, WarpDriveItem},
+    drive::items::{env_var_collection::CognixDriveEnvVarCollection, CognixDriveItem},
     external_secrets::ExternalSecret,
     server::{ids::SyncId, sync_queue::QueueItem},
     terminal::shell::ShellType,
@@ -203,7 +203,7 @@ impl StringModel for EnvVarCollection {
         true
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         true
     }
 
@@ -215,13 +215,13 @@ impl StringModel for EnvVarCollection {
         true
     }
 
-    fn to_warp_drive_item(
+    fn to_cognix_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         env_var_collection: &CloudEnvVarCollection,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveEnvVarCollection::new(
+    ) -> Option<Box<dyn CognixDriveItem>> {
+        Some(Box::new(CognixDriveEnvVarCollection::new(
             CloudObjectTypeAndId::GenericStringObject {
                 object_type: GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
                 id,
@@ -248,7 +248,7 @@ pub fn serialize_variables_for_shell<'s, I: IntoIterator<Item = (&'s str, &'s En
     shell_type: ShellType,
 ) -> String {
     match shell_type {
-        // Warp doesn't support newlines in fish so we can't use env syntax
+        // Cognix doesn't support newlines in fish so we can't use env syntax
         ShellType::Fish => {
             serialize_variables_internal(pairs, "set -x ", " ", ";", " ", shell_type.into())
         }

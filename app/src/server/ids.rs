@@ -1,5 +1,5 @@
-// Re-export types from warp_server_client.
-pub use warp_server_client::ids::{
+// Re-export types from cognix_server_client.
+pub use cognix_server_client::ids::{
     parse_sqlite_id_to_uid, ApiKeyUid, ClientId, HashableId, HashedSqliteId, ObjectUid, ServerId,
     ServerIdAndType, SyncId, ToServerId,
 };
@@ -8,8 +8,8 @@ pub use warp_server_client::ids::{
 /// ServerId. It implements different To/From and Display, and HashableId traits.
 /// Takes type and desired prefix for HashableId.
 ///
-/// Note: This macro uses `$crate::server::ids::*` paths, so it only works within the warp crate.
-/// For types defined in warp_server_client, use `warp_server_client::server_id_traits!` instead.
+/// Note: This macro uses `$crate::server::ids::*` paths, so it only works within the cognix crate.
+/// For types defined in cognix_server_client, use `cognix_server_client::server_id_traits!` instead.
 #[macro_export]
 macro_rules! server_id_traits {
     ($t:ty, $prefix:literal) => {

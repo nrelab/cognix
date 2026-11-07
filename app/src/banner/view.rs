@@ -3,8 +3,8 @@ use std::{marker::PhantomData, rc::Rc};
 use markdown_parser::{
     FormattedText, FormattedTextFragment, FormattedTextInline, FormattedTextLine,
 };
-use warpui::elements::HyperlinkLens;
-use warpui::{
+use cognixui::elements::HyperlinkLens;
+use cognixui::{
     elements::{
         ConstrainedBox, Container, CrossAxisAlignment, Flex, FormattedTextElement,
         HighlightedHyperlink, HyperlinkUrl, MainAxisAlignment, MainAxisSize, MouseStateHandle,
@@ -33,7 +33,7 @@ pub enum DismissalType {
     Temporary,
 
     /// The banner should not be shown again to the user, whether in a new or existing session.
-    /// Dismissal state should also persist across app sessions (e.g. when Warp is restarted).
+    /// Dismissal state should also persist across app sessions (e.g. when Cognix is restarted).
     Permanent,
 }
 
@@ -213,7 +213,7 @@ impl<T: Action + Clone> Banner<T> {
 
     fn render_icon(appearance: &Appearance, icon: &Icon) -> Box<dyn Element> {
         let icon_size = font_size(appearance);
-        ConstrainedBox::new(icon.to_warpui_icon(appearance.theme().accent()).finish())
+        ConstrainedBox::new(icon.to_cognixui_icon(appearance.theme().accent()).finish())
             .with_width(icon_size)
             .with_height(icon_size)
             .finish()

@@ -8,7 +8,7 @@ use std::{
 use markdown_parser::{parse_html, parse_markdown, FormattedText};
 use pathfinder_geometry::vector::vec2f;
 use string_offset::CharOffset;
-use warp_editor::{
+use cognix_editor::{
     content::{
         anchor::Anchor,
         text::{BufferTextStyle, CodeBlockType, TextStyles},
@@ -26,9 +26,9 @@ use warp_editor::{
     selection::{TextDirection, TextUnit},
 };
 
-use warp_util::{path::LineAndColumnArg, user_input::UserInput};
-use warpui::{
-    accessibility::{AccessibilityContent, ActionAccessibilityContent, WarpA11yRole},
+use cognix_util::{path::LineAndColumnArg, user_input::UserInput};
+use cognixui::{
+    accessibility::{AccessibilityContent, ActionAccessibilityContent, CognixA11yRole},
     assets::asset_cache::{AssetCache, AssetHandle, AssetState},
     clipboard::ClipboardContent,
     elements::{
@@ -52,8 +52,8 @@ use warpui::{
     windowing, AppContext, BlurContext, CursorInfo, Element, Entity, FocusContext, ModelHandle,
     SingletonEntity, TypedActionView, View, ViewContext, ViewHandle, WeakViewHandle,
 };
-use warpui::{actions::StandardAction, elements::Hoverable};
-use warpui::{keymap::PerPlatformKeystroke, windowing::WindowManager};
+use cognixui::{actions::StandardAction, elements::Hoverable};
+use cognixui::{keymap::PerPlatformKeystroke, windowing::WindowManager};
 
 use crate::{
     appearance::Appearance,
@@ -71,7 +71,7 @@ use crate::{
     ui_components::icons::ICON_DIMENSIONS,
     util::{
         bindings::CustomAction,
-        tooltips::{render_tooltip, should_show_open_in_warp_link, TooltipLink, TooltipRedaction},
+        tooltips::{render_tooltip, should_show_open_in_cognix_link, TooltipLink, TooltipRedaction},
     },
     view_components::DismissibleToast,
 };
@@ -80,7 +80,7 @@ use crate::{
 use crate::util::link_detection::{detect_file_paths, get_word_range_at_offset, DetectedLinkType};
 
 #[cfg(feature = "local_fs")]
-use warpui::text::word_boundaries::WordBoundariesPolicy;
+use cognixui::text::word_boundaries::WordBoundariesPolicy;
 
 use super::{
     block_insertion_menu::{BlockInsertionMenuState, BlockInsertionSource},
@@ -103,7 +103,7 @@ const MAX_EDITOR_TIP_WIDTH: f32 = 300.;
 const GUTTER_WIDTH: f32 = ICON_DIMENSIONS + 4.;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     // Context for text entry/navigation/selection:
     // - The editor is focused
@@ -847,7 +847,7 @@ pub enum EditorViewAction {
     Redo,
     OpenBlockInsertionMenu,
     /// Insert a block of the given type after the hovered location.
-    InsertBlock(warp_editor::content::text::BlockType),
+    InsertBlock(cognix_editor::content::text::BlockType),
     Indent,
     Unindent,
     Tab,
@@ -878,11 +878,11 @@ pub enum EditorViewAction {
     OpenEmbeddedObjectSearch,
     RemoveEmbeddingAt(CharOffset),
     MiddleClickPaste,
-    /// Open a file. If open_in_warp is true, open in Warp's code editor; otherwise use external editor.
+    /// Open a file. If open_in_cognix is true, open in Cognix's code editor; otherwise use external editor.
     OpenFile {
         path: PathBuf,
         line_and_column_num: Option<LineAndColumnArg>,
-        force_open_in_warp: bool,
+        force_open_in_cognix: bool,
     },
 }
 
@@ -921,7 +921,7 @@ pub enum EditorViewEvent {
     OpenFile {
         path: PathBuf,
         line_and_column_num: Option<LineAndColumnArg>,
-        force_open_in_warp: bool,
+        force_open_in_cognix: bool,
     },
     /// Emitted when the user runs a notebook workflow. The parent `NotebookView` is responsible
     /// for sending it to the active terminal.
@@ -1002,7 +1002,7 @@ struct SelectedFilePath {
 #[derive(Default)]
 struct FilePathMouseStateHandles {
     open_file_handle: MouseStateHandle,
-    open_in_warp_handle: MouseStateHandle,
+    open_in_cognix_handle: MouseStateHandle,
 }
 
 pub struct RichTextEditorView {
@@ -1850,7 +1850,7 @@ impl RichTextEditorView {
                     ctx.emit(EditorViewEvent::OpenFile {
                         path: hovered_file_path.path.clone(),
                         line_and_column_num: hovered_file_path.line_and_column_num,
-                        force_open_in_warp: false,
+                        force_open_in_cognix: false,
                     });
                 } else {
                     self.open_file_path = Some(hovered_file_path.clone());
@@ -1977,7 +1977,7 @@ impl RichTextEditorView {
     /// Inserts a new `block_type` block after the hovered block.
     pub(super) fn insert_block(
         &mut self,
-        block_type: warp_editor::content::text::BlockType,
+        block_type: cognix_editor::content::text::BlockType,
         ctx: &mut ViewContext<Self>,
     ) {
         enum InsertionMode {
@@ -2030,7 +2030,7 @@ impl RichTextEditorView {
                         model.insert_block_after(insertion_offset + 1, block_type, ctx);
                     }
                     InsertionMode::DeleteSlashAndRestyleLine(cursor_position) => match block_type {
-                        warp_editor::content::text::BlockType::Item(item) => {
+                        cognix_editor::content::text::BlockType::Item(item) => {
                             // Set one more offset position to the left to avoid additional linebreaks.
                             // Note: We can use `set_last_selection_head` because the menu cannot
                             // be opened when there are multiple selections.
@@ -2038,7 +2038,7 @@ impl RichTextEditorView {
                             model.insert_block_item(item, ctx);
                             model.cursor_at(cursor_position + 1, ctx);
                         }
-                        warp_editor::content::text::BlockType::Text(style) => {
+                        cognix_editor::content::text::BlockType::Text(style) => {
                             // Note: We can use `set_last_selection_head` because the menu cannot
                             // be opened when there are multiple selections.
                             model.set_last_selection_head(cursor_position, ctx);
@@ -2409,7 +2409,7 @@ impl RichTextEditorView {
         appearance: &Appearance,
         ctx: &AppContext,
     ) -> Box<dyn Element> {
-        use warpui::EventContext;
+        use cognixui::EventContext;
         type FilePathTooltipLinks = Vec<TooltipLink<Box<dyn Fn(&mut EventContext)>>>;
 
         let path = selected_file_path.path.clone();
@@ -2420,7 +2420,7 @@ impl RichTextEditorView {
             "Open file"
         }
         .to_string();
-        let show_open_in_warp = should_show_open_in_warp_link(&path, ctx);
+        let show_open_in_cognix = should_show_open_in_cognix_link(&path, ctx);
         let path_for_primary = path.clone();
         let modifier = directly_open_link_keybinding_string();
 
@@ -2430,26 +2430,26 @@ impl RichTextEditorView {
                 ctx.dispatch_typed_action(EditorViewAction::OpenFile {
                     path: path_for_primary.clone(),
                     line_and_column_num,
-                    force_open_in_warp: false,
+                    force_open_in_cognix: false,
                 });
             }),
             detail: Some(format!("[{modifier} Click]")),
             mouse_state: self.file_path_mouse_states.open_file_handle.clone(),
         }];
 
-        if show_open_in_warp {
-            let path_for_warp = path.clone();
+        if show_open_in_cognix {
+            let path_for_cognix = path.clone();
             links.push(TooltipLink {
-                text: "Open in Warp".to_string(),
+                text: "Open in Cognix".to_string(),
                 on_click: Box::new(move |ctx: &mut EventContext| {
                     ctx.dispatch_typed_action(EditorViewAction::OpenFile {
-                        path: path_for_warp.clone(),
+                        path: path_for_cognix.clone(),
                         line_and_column_num,
-                        force_open_in_warp: true,
+                        force_open_in_cognix: true,
                     });
                 }),
                 detail: None,
-                mouse_state: self.file_path_mouse_states.open_in_warp_handle.clone(),
+                mouse_state: self.file_path_mouse_states.open_in_cognix_handle.clone(),
             });
         }
 
@@ -2647,7 +2647,7 @@ impl View for RichTextEditorView {
         stack.finish()
     }
 
-    fn active_cursor_position(&self, ctx: &ViewContext<Self>) -> Option<warpui::CursorInfo> {
+    fn active_cursor_position(&self, ctx: &ViewContext<Self>) -> Option<cognixui::CursorInfo> {
         let model = self.model.as_ref(ctx);
         let render_state = model.render_state().as_ref(ctx);
         let font_size = model.cursor_font_size(ctx);
@@ -2658,7 +2658,7 @@ impl View for RichTextEditorView {
             })
     }
 
-    fn keymap_context(&self, ctx: &AppContext) -> warpui::keymap::Context {
+    fn keymap_context(&self, ctx: &AppContext) -> cognixui::keymap::Context {
         let mut context = Self::default_keymap_context();
 
         if self.is_editable(ctx) {
@@ -2983,12 +2983,12 @@ impl TypedActionView for RichTextEditorView {
             OpenFile {
                 path,
                 line_and_column_num,
-                force_open_in_warp,
+                force_open_in_cognix,
             } => {
                 ctx.emit(EditorViewEvent::OpenFile {
                     path: path.clone(),
                     line_and_column_num: *line_and_column_num,
-                    force_open_in_warp: *force_open_in_warp,
+                    force_open_in_cognix: *force_open_in_cognix,
                 });
             }
         }
@@ -3015,13 +3015,13 @@ impl TypedActionView for RichTextEditorView {
             EditorViewAction::UserTyped(text) => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     text.clone().into_inner(),
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::Paste | EditorViewAction::MiddleClickPaste => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     format!("Pasting: {}", ctx.clipboard().read().plain_text),
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::Enter
@@ -3034,21 +3034,21 @@ impl TypedActionView for RichTextEditorView {
             | EditorViewAction::Unindent
             | EditorViewAction::Tab => ActionAccessibilityContent::from_debug(),
             EditorViewAction::ShiftTab => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Shift-tab", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Shift-tab", CognixA11yRole::UserAction),
             ),
             EditorViewAction::EditLink | EditorViewAction::CreateOrEditLink => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Edit Link",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::CopyLink => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Copy Link", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Copy Link", CognixA11yRole::UserAction),
             ),
             EditorViewAction::OpenTooltipLink(link) => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     format!("Open link: {}", **link),
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::SecondaryLinkAction(link) => {
@@ -3058,72 +3058,72 @@ impl TypedActionView for RichTextEditorView {
                 );
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     content,
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::DeleteLineLeft => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Delete line left",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::DeleteLineRight => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Delete line right",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::DeleteWordLeft => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Delete word left",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::DeleteWordRight => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Delete word right",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
 
             EditorViewAction::CutLineLeft => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Cut line left", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Cut line left", CognixA11yRole::UserAction),
             ),
             EditorViewAction::CutLineRight => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Cut line right", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Cut line right", CognixA11yRole::UserAction),
             ),
             EditorViewAction::CutWordLeft => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Cut word left", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Cut word left", CognixA11yRole::UserAction),
             ),
             EditorViewAction::CutWordRight => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Cut word right", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Cut word right", CognixA11yRole::UserAction),
             ),
 
             EditorViewAction::ShowCharacterPalette => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Show character palette",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::ShowFindBar => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Show find bar", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Show find bar", CognixA11yRole::UserAction),
             ),
             EditorViewAction::OpenBlockInsertionMenu => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Open block-insertion menu",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::OpenEmbeddedObjectSearch => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Open embedded object search menu",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::InsertBlock(block_type) => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     format!("Insert {} block", BlockType::from(block_type).label()),
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::Bold => self
@@ -3150,23 +3150,23 @@ impl TypedActionView for RichTextEditorView {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new(
                     "De-select command",
                     "Switch from selecting commands to selecting text",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::CodeBlockTypeSelectedAtOffset {
                 code_block_type, ..
             } => ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                 format!("Change code block language to {code_block_type}"),
-                WarpA11yRole::UserAction,
+                CognixA11yRole::UserAction,
             )),
             EditorViewAction::CopyTextToClipboard { .. } => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Copy code block", WarpA11yRole::UserAction),
+                AccessibilityContent::new_without_help("Copy code block", CognixA11yRole::UserAction),
             ),
             EditorViewAction::ToggleTaskList(_) => {
                 // TODO(ben): Is it useful to include the text and/or on/off state here?
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
                     "Toggle task list",
-                    WarpA11yRole::UserAction,
+                    CognixA11yRole::UserAction,
                 ))
             }
             EditorViewAction::Delete
@@ -3222,7 +3222,7 @@ impl TypedActionView for RichTextEditorView {
     }
 }
 
-impl warp_editor::editor::EditorView for RichTextEditorView {
+impl cognix_editor::editor::EditorView for RichTextEditorView {
     type RichTextAction = EditorViewAction;
 
     fn runnable_command_at<'a>(
@@ -3326,7 +3326,7 @@ impl RichTextAction<RichTextEditorView> for EditorViewAction {
         );
         let multiselect = modifiers.alt && FeatureFlag::RichTextMultiselect.is_enabled();
 
-        // The first mouse down to bring focus to a Warp window will not have a corresponding mouse up.
+        // The first mouse down to bring focus to a Cognix window will not have a corresponding mouse up.
         // We ignore it, and they can click again.
         if is_first_mouse {
             return None;

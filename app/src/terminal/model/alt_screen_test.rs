@@ -1,4 +1,4 @@
-use warpui::units::IntoLines as _;
+use cognixui::units::IntoLines as _;
 
 use super::*;
 use crate::terminal::SizeUpdateReason;

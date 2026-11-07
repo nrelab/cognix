@@ -79,13 +79,13 @@ use std::collections::{HashMap, HashSet};
 use std::future::Future;
 use std::sync::{mpsc::SyncSender, Arc};
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warp_graphql::mcp_gallery_template::MCPGalleryTemplate;
-use warp_graphql::object_permissions::AccessLevel;
-use warp_graphql::scalars::time::ServerTimestamp;
-use warpui::r#async::{FutureId, Timer};
-use warpui::{duration_with_jitter, AppContext};
-use warpui::{Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
+use cognix_core::features::FeatureFlag;
+use cognix_graphql::mcp_gallery_template::MCPGalleryTemplate;
+use cognix_graphql::object_permissions::AccessLevel;
+use cognix_graphql::scalars::time::ServerTimestamp;
+use cognixui::r#async::{FutureId, Timer};
+use cognixui::{duration_with_jitter, AppContext};
+use cognixui::{Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
 
 use super::listener::ObjectUpdateMessage;
 
@@ -2703,8 +2703,8 @@ impl UpdateManager {
         ctx: &mut ModelContext<Self>,
     ) where
         P: 'static + FnMut(Arc<dyn ObjectClient>) -> S,
-        S: warpui::r#async::Spawnable + Future<Output = anyhow::Result<R>>,
-        <S as Future>::Output: warpui::r#async::SpawnableOutput,
+        S: cognixui::r#async::Spawnable + Future<Output = anyhow::Result<R>>,
+        <S as Future>::Output: cognixui::r#async::SpawnableOutput,
         F: 'static + FnMut(R, &mut AppContext) -> Option<ServerPermissions>,
     {
         let object_client = self.object_client.clone();
@@ -2765,8 +2765,8 @@ impl UpdateManager {
         mut on_success: impl FnMut(&mut Self, M, &mut ModelContext<Self>) + 'static,
     ) where
         P: 'static + FnMut(Arc<dyn ObjectClient>) -> S,
-        S: warpui::r#async::Spawnable + Future<Output = anyhow::Result<M>>,
-        <S as Future>::Output: warpui::r#async::SpawnableOutput,
+        S: cognixui::r#async::Spawnable + Future<Output = anyhow::Result<M>>,
+        <S as Future>::Output: cognixui::r#async::SpawnableOutput,
     {
         let cloud_model = CloudModel::handle(ctx);
         let uid = server_id.uid();
@@ -3497,7 +3497,7 @@ impl UpdateManager {
         ctx: &mut ModelContext<Self>,
     ) {
         self.create_object(
-            // TODO(INT-789): support creating folders as warp packs
+            // TODO(INT-789): support creating folders as cognix packs
             CloudFolderModel::new(&name, false),
             owner,
             client_id,
@@ -4723,7 +4723,7 @@ impl UpdateManager {
             let new_folder = CloudFolderModel {
                 name: new_name,
                 is_open: folder.model().is_open,
-                is_warp_pack: folder.model().is_warp_pack,
+                is_cognix_pack: folder.model().is_cognix_pack,
             };
             self.update_object(new_folder, folder_id, revision, ctx);
         } else {

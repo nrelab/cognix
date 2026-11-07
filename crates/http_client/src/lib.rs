@@ -15,7 +15,7 @@ use reqwest::IntoUrl;
 use reqwest_eventsource::RequestBuilderExt;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
-use warp_core::{
+use cognix_core::{
     channel::{Channel, ChannelState},
     execution_mode,
     operating_system_info::OperatingSystemInfo,
@@ -23,31 +23,31 @@ use warp_core::{
 };
 
 pub mod headers {
-    /// Custom Warp header indicating the version of the Warp app.
-    pub const CLIENT_RELEASE_VERSION_HEADER_KEY: &str = "X-Warp-Client-Version";
+    /// Custom Cognix header indicating the version of the Cognix app.
+    pub const CLIENT_RELEASE_VERSION_HEADER_KEY: &str = "X-Cognix-Client-Version";
 
-    /// Custom Warp header indicating the OS category the request was sent from.
-    pub(crate) const WARP_OS_CATEGORY: &str = "X-Warp-OS-Category";
-    /// Custom Warp header indicating the OS name the request was sent from. On Linux this is the
+    /// Custom Cognix header indicating the OS category the request was sent from.
+    pub(crate) const COGNIX_OS_CATEGORY: &str = "X-Cognix-OS-Category";
+    /// Custom Cognix header indicating the OS name the request was sent from. On Linux this is the
     /// name of the distribution. On all other platforms it should be equivalent to
-    /// `WARP_OS_CATEGORY`.
-    pub(crate) const WARP_OS_NAME: &str = "X-Warp-OS-Name";
-    /// Custom Warp header indicating the version of the operating system. On Linux this is the
+    /// `COGNIX_OS_CATEGORY`.
+    pub(crate) const COGNIX_OS_NAME: &str = "X-Cognix-OS-Name";
+    /// Custom Cognix header indicating the version of the operating system. On Linux this is the
     /// version of the distribution, not the Linux kernel version.
-    pub(crate) const WARP_OS_VERSION: &str = "X-Warp-OS-Version";
+    pub(crate) const COGNIX_OS_VERSION: &str = "X-Cognix-OS-Version";
 
-    /// Custom Warp header indicating the linux kernel version. This is only sent from Linux.
-    pub(crate) const WARP_OS_LINUX_KERNEL_VERSION: &str = "X-Warp-OS-Linux-Kernel-Version";
+    /// Custom Cognix header indicating the linux kernel version. This is only sent from Linux.
+    pub(crate) const COGNIX_OS_LINUX_KERNEL_VERSION: &str = "X-Cognix-OS-Linux-Kernel-Version";
 
-    /// Custom Warp header indicating the client role. We don't use the User-Agent header
+    /// Custom Cognix header indicating the client role. We don't use the User-Agent header
     /// because it can't be set from WASM.
-    pub(crate) const WARP_CLIENT_ID: &str = "X-Warp-Client-ID";
+    pub(crate) const COGNIX_CLIENT_ID: &str = "X-Cognix-Client-ID";
 }
 
 /// The environment variable containing extra HTTP headers to attach to requests.
 /// Only read when the channel is `Channel::Integration`. The value is a newline-separated
 /// list of `Name:Value` pairs, where each pair is split on the first colon.
-const EXTRA_HTTP_HEADERS_ENV_VAR: &str = "WARP_EXTRA_HTTP_HEADERS";
+const EXTRA_HTTP_HEADERS_ENV_VAR: &str = "COGNIX_EXTRA_HTTP_HEADERS";
 
 /// A wrapper around a `reqwest::Client` to execute requests. Returns a custom `RequestBuilder` type
 /// that ensures any call to the underlying `reqwest::Client` are properly adapted so that they can
@@ -173,7 +173,7 @@ impl Client {
     fn builder(
         &self,
         wrapped: reqwest::RequestBuilder,
-        include_warp_headers: bool,
+        include_cognix_headers: bool,
     ) -> RequestBuilder<'_> {
         let mut builder = RequestBuilder {
             wrapped,
@@ -182,8 +182,8 @@ impl Client {
             prevent_sleep_reason: None,
         };
 
-        if include_warp_headers {
-            builder = Self::add_warp_http_headers(builder);
+        if include_cognix_headers {
+            builder = Self::add_cognix_http_headers(builder);
         }
 
         builder
@@ -192,36 +192,36 @@ impl Client {
     pub fn get<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.get(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_cognix_http_headers(url),
         )
     }
 
     pub fn post<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.post(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_cognix_http_headers(url),
         )
     }
 
     pub fn put<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.put(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_cognix_http_headers(url),
         )
     }
 
     pub fn delete<U: IntoUrl + Clone>(&self, url: U) -> RequestBuilder<'_> {
         self.builder(
             self.wrapped.delete(url.clone()),
-            Self::include_warp_http_headers(url),
+            Self::include_cognix_http_headers(url),
         )
     }
 
-    /// Helper method to determine if the request should include warp-specific headers. The only case
+    /// Helper method to determine if the request should include cognix-specific headers. The only case
     /// where we should include custom headers is if the request is same-origin and is targetted to our server.
-    /// For example, app.warp.dev --> app.warp.dev.
+    /// For example, app.cognix.dev --> app.cognix.dev.
     #[cfg(target_family = "wasm")]
-    fn include_warp_http_headers<U: IntoUrl + Clone>(url: U) -> bool {
+    fn include_cognix_http_headers<U: IntoUrl + Clone>(url: U) -> bool {
         url.into_url().is_ok_and(|url| {
             url.host_str().is_some_and(|dest_host| {
                 let window_hostname = gloo::utils::window()
@@ -229,8 +229,8 @@ impl Client {
                     .hostname()
                     .expect("Can't get window hostname");
 
-                // If the request is going to our server, the destination host should be "app.warp.dev" or
-                // "staging.warp.dev". The window hostname should also return the same.
+                // If the request is going to our server, the destination host should be "app.cognix.dev" or
+                // "staging.cognix.dev". The window hostname should also return the same.
                 // Note that reqwest's host_str() method is described here: https://docs.rs/reqwest/latest/reqwest/struct.Url.html#method.domain and
                 // gloo's hostname() method refers to this mozilla definition: https://developer.mozilla.org/en-US/docs/Web/API/Location/hostname.
                 window_hostname == dest_host
@@ -239,14 +239,14 @@ impl Client {
     }
 
     #[cfg(not(target_family = "wasm"))]
-    fn include_warp_http_headers<U: IntoUrl + Clone>(_url: U) -> bool {
+    fn include_cognix_http_headers<U: IntoUrl + Clone>(_url: U) -> bool {
         true
     }
 
-    fn add_warp_http_headers(mut builder: RequestBuilder) -> RequestBuilder {
+    fn add_cognix_http_headers(mut builder: RequestBuilder) -> RequestBuilder {
         // Include the client ID header.
         if let Some(client_id) = execution_mode::current_client_id() {
-            builder = builder.header(headers::WARP_CLIENT_ID, client_id);
+            builder = builder.header(headers::COGNIX_CLIENT_ID, client_id);
         }
 
         // If there's an app version, include it as an HTTP request header.
@@ -288,12 +288,12 @@ impl Client {
             // Operating system category.
             let category = os_system_info.category().to_string();
             if let Ok(category) = HeaderValue::from_str(&category) {
-                builder = builder.header(headers::WARP_OS_CATEGORY, category);
+                builder = builder.header(headers::COGNIX_OS_CATEGORY, category);
             }
 
             // Operating system name.
             builder = builder.header(
-                headers::WARP_OS_NAME,
+                headers::COGNIX_OS_NAME,
                 HeaderValue::from_static(os_system_info.name()),
             );
 
@@ -302,7 +302,7 @@ impl Client {
                 .version()
                 .and_then(|version| HeaderValue::from_str(version).ok())
             {
-                builder = builder.header(headers::WARP_OS_VERSION, version);
+                builder = builder.header(headers::COGNIX_OS_VERSION, version);
             }
 
             // Linux kernel version.
@@ -311,7 +311,7 @@ impl Client {
                 .and_then(|kernel_version| HeaderValue::from_str(kernel_version).ok())
             {
                 builder =
-                    builder.header(headers::WARP_OS_LINUX_KERNEL_VERSION, linux_kernel_version);
+                    builder.header(headers::COGNIX_OS_LINUX_KERNEL_VERSION, linux_kernel_version);
             }
         }
 
@@ -561,7 +561,7 @@ impl<'a> RequestBuilder<'a> {
 }
 
 /// An error returned from `Response::error_for_status` that includes response headers.
-/// This allows callers to inspect headers (like X-Warp-Error-Code) when handling errors.
+/// This allows callers to inspect headers (like X-Cognix-Error-Code) when handling errors.
 #[derive(Debug)]
 pub struct ResponseError {
     pub source: reqwest::Error,
@@ -656,14 +656,14 @@ impl<'c> oauth2::AsyncHttpClient<'c> for Client {
 
     fn call(&'c self, request: oauth2::HttpRequest) -> Self::Future {
         Box::pin(async move {
-            let include_warp_headers = Self::include_warp_http_headers(request.uri().to_string());
+            let include_cognix_headers = Self::include_cognix_http_headers(request.uri().to_string());
             let builder = reqwest::RequestBuilder::from_parts(
                 self.wrapped.clone(),
                 request.try_into().map_err(Box::new)?,
             );
 
             let response = self
-                .builder(builder, include_warp_headers)
+                .builder(builder, include_cognix_headers)
                 .send()
                 .await
                 .map_err(Box::new)?;

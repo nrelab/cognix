@@ -5,7 +5,7 @@ use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::hash::{Hash, Hasher};
 use uuid::Uuid;
-use warp_managed_secrets::ManagedSecretValue;
+use cognix_managed_secrets::ManagedSecretValue;
 
 use crate::ai::mcp::{TemplatableMCPServer, TemplateVariable};
 use siphasher::sip::SipHasher;
@@ -98,7 +98,7 @@ impl TemplatableMCPServerInstallation {
         &self.variable_values
     }
 
-    /// Apply Warp-managed secrets to the installation's variable values.
+    /// Apply Cognix-managed secrets to the installation's variable values.
     ///
     /// Precedence for each template variable:
     /// 1. Explicit reference: if the current value contains `{{secret_name}}`

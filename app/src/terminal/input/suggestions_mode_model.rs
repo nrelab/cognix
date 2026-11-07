@@ -1,4 +1,4 @@
-use warpui::{Entity, ModelContext, ModelHandle};
+use cognixui::{Entity, ModelContext, ModelHandle};
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::terminal::input::buffer_model::InputBufferModel;

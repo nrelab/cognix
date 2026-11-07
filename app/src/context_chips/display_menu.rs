@@ -21,17 +21,17 @@ use crate::{
     },
 };
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::{appearance::Appearance, builder::MIN_FONT_SIZE, theme::Fill};
-use warp_editor::editor::NavigationKey;
-use warpui::units::Pixels;
-use warpui::{
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::{appearance::Appearance, builder::MIN_FONT_SIZE, theme::Fill};
+use cognix_editor::editor::NavigationKey;
+use cognixui::units::Pixels;
+use cognixui::{
     color::ColorU,
     elements::Highlight,
     fonts::{Properties, Weight},
     ui_components::components::{Coords, UiComponentStyles},
 };
-use warpui::{
+use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, ClippedScrollStateHandle, ClippedScrollable,
         ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss, DispatchEventResult,
@@ -47,8 +47,8 @@ use warpui::{
     ViewContext, ViewHandle, WindowId,
 };
 
-use warpui::clipboard::ClipboardContent;
-use warpui::r#async::Timer;
+use cognixui::clipboard::ClipboardContent;
+use cognixui::r#async::Timer;
 
 /// Trait for items that can be displayed in a generic menu
 pub trait GenericMenuItem: Debug + 'static {
@@ -130,7 +130,7 @@ const ENV_SIDE_CAR_OUTER_RADIUS: f32 = 6.;
 const ENV_SIDE_CAR_INNER_RADIUS: f32 = 4.;
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([
         FixedBinding::new(
@@ -702,7 +702,7 @@ impl DisplayChipMenu {
         let image_key = format!("env-sidecar:{}:image", data.id);
 
         let icon = |icon: Icon| {
-            ConstrainedBox::new(icon.to_warpui_icon(Fill::Solid(label_text_color)).finish())
+            ConstrainedBox::new(icon.to_cognixui_icon(Fill::Solid(label_text_color)).finish())
                 .with_width(ENV_SIDE_CAR_ICON_SIZE)
                 .with_height(ENV_SIDE_CAR_ICON_SIZE)
                 .finish()
@@ -825,7 +825,7 @@ impl DisplayChipMenu {
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
             // Leave the scrollbar gutter background transparent.
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .with_padding_start(0.)
         .with_padding_end(0.)
@@ -919,7 +919,7 @@ impl DisplayChipMenu {
                     updated_text.add_child(
                         Container::new(
                             ConstrainedBox::new(
-                                icon.to_warpui_icon(Fill::Solid(text_color)).finish(),
+                                icon.to_cognixui_icon(Fill::Solid(text_color)).finish(),
                             )
                             .with_height(icon_size)
                             .with_width(icon_size)
@@ -1090,7 +1090,7 @@ impl DisplayChipMenu {
                                 let glyph_size = ENV_MENU_ICON_SIZE;
 
                                 let icon_glyph = ConstrainedBox::new(
-                                    icon.to_warpui_icon(Fill::Solid(main_text)).finish(),
+                                    icon.to_cognixui_icon(Fill::Solid(main_text)).finish(),
                                 )
                                 .with_width(glyph_size)
                                 .with_height(glyph_size)
@@ -1117,7 +1117,7 @@ impl DisplayChipMenu {
                             left_side.add_child(
                                 Container::new(
                                     ConstrainedBox::new(
-                                        icon.to_warpui_icon(Fill::Solid(main_text)).finish(),
+                                        icon.to_cognixui_icon(Fill::Solid(main_text)).finish(),
                                     )
                                     .with_height(icon_size)
                                     .with_width(icon_size)
@@ -1234,7 +1234,7 @@ impl DisplayChipMenu {
             scrollbar_width,
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .with_padding_end(0.)
         .with_padding_start(0.);

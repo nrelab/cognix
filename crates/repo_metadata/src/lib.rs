@@ -1,4 +1,4 @@
-//! Repository metadata utilities for Warp.
+//! Repository metadata utilities for Cognix.
 //!
 //! This crate provides utilities for managing repository metadata, including file trees,
 //! gitignore processing, and filesystem watching capabilities.s
@@ -8,10 +8,10 @@ use std::{
 };
 
 use thiserror::Error;
-use warp_util::standardized_path::StandardizedPath;
+use cognix_util::standardized_path::StandardizedPath;
 
 #[cfg(not(target_family = "wasm"))]
-use warpui::SingletonEntity;
+use cognixui::SingletonEntity;
 
 /// Errors that can occur when working with repository metadata.
 #[derive(Error, Debug)]
@@ -54,7 +54,7 @@ pub use repository::Repository;
 pub use watcher::{DirectoryWatcher, RepositoryUpdate, TargetFile};
 
 #[cfg(not(target_family = "wasm"))]
-pub fn is_in_repo(path: &str, app: &warpui::AppContext) -> bool {
+pub fn is_in_repo(path: &str, app: &cognixui::AppContext) -> bool {
     use crate::repositories::DetectedRepositories;
 
     DetectedRepositories::as_ref(app)
@@ -63,7 +63,7 @@ pub fn is_in_repo(path: &str, app: &warpui::AppContext) -> bool {
 }
 
 #[cfg(target_family = "wasm")]
-pub fn is_in_repo(_path: &str, _app: &warpui::AppContext) -> bool {
+pub fn is_in_repo(_path: &str, _app: &cognixui::AppContext) -> bool {
     false
 }
 pub use file_tree_store::FileTreeEntry;

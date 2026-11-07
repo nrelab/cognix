@@ -1,12 +1,12 @@
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '', Scope = 'Function', Target = 'Warp-*', Justification = 'Warp-* functions are ours')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs', '', Scope = 'Function', Target = 'Cognix-*', Justification = 'Cognix-* functions are ours')]
 param()
 
 # Wrap things in a module to avoid cluttering the global scope. We assign it to '$null' to suppress
 # the console output from creating the module.
 # NOTE: If you do need a function to be global and also have access to variables in this scope, add
 # the function name to the 'Export-ModuleMember' call at the end.
-$null = New-Module -Name Warp-Module -ScriptBlock {
-    # Byte sequence used to signal the start of an OSC for Warp JSON messages.
+$null = New-Module -Name Cognix-Module -ScriptBlock {
+    # Byte sequence used to signal the start of an OSC for Cognix JSON messages.
     $oscStart = "$([char]0x1b)]9278;"
 
     # Appended to $oscStart to signal that the following message is JSON-encoded.
@@ -14,24 +14,24 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     $oscParamSeparator = ';'
 
-    # Byte used to signal the end of an OSC for Warp JSON messages.
+    # Byte used to signal the end of an OSC for Cognix JSON messages.
     $oscEnd = "$([char]0x07)"
 
     # Writes a hex-encoded JSON message to the PTY.
-    function Warp-Send-JsonMessage([System.Collections.Hashtable]$table) {
+    function Cognix-Send-JsonMessage([System.Collections.Hashtable]$table) {
         $json = ConvertTo-Json -InputObject $table -Compress
         # Sends a message to the controlling terminal as an OSC control sequence.
         # TODO(CORE-2718): Determine if we need to hex encode the payload.
         # Note that because the JSON string may contain characters that we don't control (including
         # unicode), we encode it as hexadecimal string to avoid prematurely calling unhook if
         # one of the bytes in JSON is 9c (ST) or other (CAN, SUB, ESC).
-        $encodedMessage = Warp-Encode-HexString $json
+        $encodedMessage = Cognix-Encode-HexString $json
         Write-Host -NoNewline "$oscStart$oscJsonMarker$oscParamSeparator$encodedMessage$oscEnd"
     }
 
     # This script block contains commands and constants that are needed in background threads.
     # If you want to be able to use it in a background thread, stick it in this block
-    $warpCommon = {
+    $cognixCommon = {
         # OSC used to mark the start of in-band command output.
         #
         # Printable characters received this OSC and oscEndGeneratorOutput are parsed and handled as
@@ -46,13 +46,13 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
         $oscResetGrid = "$([char]0x1b)]9279$oscEnd"
 
-        function Warp-Send-ResetGridOSC() {
+        function Cognix-Send-ResetGridOSC() {
             Write-Host -NoNewline $oscResetGrid
         }
 
         # Safely attempt to get Node.js version if available. Avoid literal 'node' invocation
         # to satisfy PSUseCompatibleCommands across target platforms.
-        function Warp-TryGet-NodeVersion {
+        function Cognix-TryGet-NodeVersion {
             try {
                 $cmd = Get-Command -CommandType Application node 2>$null
                 if ($null -eq $cmd) { return '' }
@@ -68,7 +68,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         # Encode a string as hex-encoded UTF-8.
-        function Warp-Encode-HexString([string]$str) {
+        function Cognix-Encode-HexString([string]$str) {
             [BitConverter]::ToString([System.Text.Encoding]::UTF8.GetBytes($str)).Replace('-', '')
         }
 
@@ -76,18 +76,18 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # sequences for generator output.
         #
         # The payload of the OSC is "<content_length>;<hex-encoded content>".
-        function Warp-Send-GeneratorOutputOsc {
+        function Cognix-Send-GeneratorOutputOsc {
             param([string]$message)
 
-            $hexEncodedMessage = Warp-Encode-HexString $message
+            $hexEncodedMessage = Cognix-Encode-HexString $message
             $byteCount = [System.Text.Encoding]::ASCII.GetByteCount($hexEncodedMessage)
 
             Write-Host -NoNewline "$oscStartGeneratorOutput$byteCount;$hexEncodedMessage$oscEndGeneratorOutput"
-            Warp-Send-ResetGridOSC
+            Cognix-Send-ResetGridOSC
         }
 
         # Do not run this in the main thread. It mucks around with some env vars
-        function Warp-Run-InBandGenerator {
+        function Cognix-Run-InBandGenerator {
             [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'We actually need it')]
             param([string]$commandId, [string]$command)
 
@@ -111,11 +111,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
                 # If the generator command returns multi-line output,
                 # we make sure to join the lines together with a newline, so
-                # they are properly parsed by warp
+                # they are properly parsed by cognix
                 $stringifiedOutput = $rawOutput -join "$([char]0x0a)"
 
                 # This is a best-effort attempt to get an error code.
-                # We cannot duplicate our error code logic from Warp-Precmd
+                # We cannot duplicate our error code logic from Cognix-Precmd
                 # b/c Invoke-Expression will swallow the value of $? and always
                 # return true. So we do our best to return a legit error code
                 Write-Output "$commandId;$stringifiedOutput;$exitCode"
@@ -127,22 +127,22 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    # Load the Warp Common functions in the current session
-    . $warpCommon
+    # Load the Cognix Common functions in the current session
+    . $cognixCommon
 
     function Get-EpochTime {
         [decimal]([DateTime]::UtcNow - [DateTime]::new(1970, 1, 1, 0, 0, 0, 0)).Ticks / 1e7
     }
 
-    function Warp-Bootstrapped {
-        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'WARP_BOOTSTRAPPED', Justification = 'False positive as we are assigning to global')]
+    function Cognix-Bootstrapped {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'COGNIX_BOOTSTRAPPED', Justification = 'False positive as we are assigning to global')]
         param([decimal]$rcStartTime, [decimal]$rcEndTime)
 
         $envVarNames = (Get-ChildItem env: | Select-Object -ExpandProperty Name | ForEach-Object { 'env:' + $_ }) + `
         (Get-Variable | Select-Object -ExpandProperty Name) -join ' '
         $aliasesRaw = Get-Command -CommandType Alias | Select-Object -ExpandProperty DisplayName
         $aliases = $aliasesRaw -join [Environment]::NewLine
-        $functionNamesRaw = Get-Command -CommandType Function | Where-Object { -not $_.Name.StartsWith('Warp') } | Select-Object -ExpandProperty Name
+        $functionNamesRaw = Get-Command -CommandType Function | Where-Object { -not $_.Name.StartsWith('Cognix') } | Select-Object -ExpandProperty Name
         $functionNames = $functionNamesRaw -join [Environment]::NewLine
         $builtinsRaw = Get-Command -CommandType Cmdlet | Select-Object -ExpandProperty Name
         $builtins = $builtinsRaw -join [Environment]::NewLine
@@ -221,11 +221,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 shell_path = (Get-Process -Id $PID).Path
             }
         }
-        Warp-Send-JsonMessage $bootstrappedMsg
-        $global:WARP_BOOTSTRAPPED = 1
+        Cognix-Send-JsonMessage $bootstrappedMsg
+        $global:COGNIX_BOOTSTRAPPED = 1
     }
 
-    function Warp-Preexec([string]$command) {
+    function Cognix-Preexec([string]$command) {
         $HOST.UI.RawUI.WindowTitle = $command
         $preexecMsg = @{
             hook = 'Preexec'
@@ -233,34 +233,34 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 command = $command
             }
         }
-        Warp-Send-JsonMessage $preexecMsg
-        Warp-Send-ResetGridOSC
+        Cognix-Send-JsonMessage $preexecMsg
+        Cognix-Send-ResetGridOSC
 
         # If this preexec is called for user command, kill ongoing generator command jobs and clean
         # up the bookkeeping temp files used to bookkeep.
-        if (-not "$command" -match '^Warp-Run-GeneratorCommand') {
-            Warp-Stop-ActiveThread
+        if (-not "$command" -match '^Cognix-Run-GeneratorCommand') {
+            Cognix-Stop-ActiveThread
         }
 
-        # Clean up any completed warp jobs so they do not show up on the user's 'get-job'
+        # Clean up any completed cognix jobs so they do not show up on the user's 'get-job'
         # comands
-        Warp-Clean-CompletedThread
+        Cognix-Clean-CompletedThread
 
-        # Remove any instance of the 'Warp-Run-GeneratorCommand' call from the user's history
-        Clear-History -CommandLine 'Warp-Run-GeneratorCommand*'
+        # Remove any instance of the 'Cognix-Run-GeneratorCommand' call from the user's history
+        Clear-History -CommandLine 'Cognix-Run-GeneratorCommand*'
     }
 
-    function Warp-Finish-Update([string]$updateId) {
+    function Cognix-Finish-Update([string]$updateId) {
         $updateMsg = @{
             hook = 'FinishUpdate'
             value = @{
                 update_id = $updateId
             }
         }
-        Warp-Send-JsonMessage $updateMsg
+        Cognix-Send-JsonMessage $updateMsg
     }
 
-    function Warp-Handle-DistUpgrade {
+    function Cognix-Handle-DistUpgrade {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingInvokeExpression', '', Justification = 'We actually need it')]
         param([string]$sourceFileName)
 
@@ -292,7 +292,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     #    an escape sequence '^[i'. Since it made it more convenient to have a wrapper
     #    function anyway, I have not investigated this, but in case someone is working
     #    on this in the future, beware attempting to inline this function.
-    function Warp-Git {
+    function Cognix-Git {
         $GIT_OPTIONAL_LOCKS = $env:GIT_OPTIONAL_LOCKS
         $env:GIT_OPTIONAL_LOCKS = 0
         try {
@@ -308,7 +308,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     #
     # Make sure when you call this you call it with -ErrorAction SilentlyContinue
     # or it will print out error information when it is invoked.
-    function Warp-Restore-ErrorStatus {
+    function Cognix-Restore-ErrorStatus {
         [CmdletBinding()]
         param([boolean]$status, [int]$code)
 
@@ -316,7 +316,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         if ($status -eq $false) {
             $PSCmdlet.WriteError([System.Management.Automation.ErrorRecord]::new(
                     [Exception]::new("$([char]0x00)"),
-                    'warp-reset-error',
+                    'cognix-reset-error',
                     [System.Management.Automation.ErrorCategory]::NotSpecified,
                     $null
                 ))
@@ -325,11 +325,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     # Tracks whether or not powershell is unable to find a command.
     # See the $ExecutionContext.InvokeCommand.CommandNotFoundAction where it is set to $true,
-    # and both $ExecutionContext.InvokeCommand.PostCommandLookupAction and Warp-Precmd where
+    # and both $ExecutionContext.InvokeCommand.PostCommandLookupAction and Cognix-Precmd where
     # it is set to $false.
     $script:commandNotFound = $false
 
-    function Warp-Configure-PSReadLine {
+    function Cognix-Configure-PSReadLine {
         # Set-PSReadLineKeyHandler is the PowerShell equivalent of zsh's bindkey.
         Set-PSReadLineKeyHandler -Chord 'Alt+2' -Function BackwardDeleteLine
 
@@ -347,7 +347,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     buffer = $inputBuffer
                 }
             }
-            Warp-Send-JsonMessage $inputBufferMsg
+            Cognix-Send-JsonMessage $inputBufferMsg
             [Microsoft.PowerShell.PSConsoleReadLine]::BackwardDeleteLine()
             # This is triggered after precmd, so output here goes to the "early output" handler,
             # i.e. the background block. This clears the line the cursor is on. We clear it out b/c
@@ -361,35 +361,35 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         # Sets the prompt mode to custom prompt (PS1)
-        # Is the equivalent of warp_change_prompt_modes_to_ps1 in other shells
+        # Is the equivalent of cognix_change_prompt_modes_to_ps1 in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+p' -ScriptBlock {
-            $env:WARP_HONOR_PS1 = '1'
-            Warp-Redraw-Prompt
+            $env:COGNIX_HONOR_PS1 = '1'
+            Cognix-Redraw-Prompt
         }
 
-        # Sets the prompt mode to warp prompt
-        # Is the equivalent of warp_change_prompt_modes_to_warp_prompt in other shells
+        # Sets the prompt mode to cognix prompt
+        # Is the equivalent of cognix_change_prompt_modes_to_cognix_prompt in other shells
         Set-PSReadLineKeyHandler -Chord 'Alt+w' -ScriptBlock {
-            $env:WARP_HONOR_PS1 = '0'
-            Warp-Redraw-Prompt
+            $env:COGNIX_HONOR_PS1 = '0'
+            Cognix-Redraw-Prompt
         }
 
         Set-PSReadLineOption -AddToHistoryHandler {
             param([string]$line)
 
-            if ($line -match '^Warp-Run-GeneratorCommand') {
+            if ($line -match '^Cognix-Run-GeneratorCommand') {
                 return $false
             }
             return $true
         }
 
-        Warp-Disable-PSPrediction
+        Cognix-Disable-PSPrediction
     }
 
     # Force use of the Inline PredictionViewStyle. The ListView style can occassionally cause some
-    # flickering when using Warp and it doesn't matter what the value of this setting is because
-    # Warp has its own input editor.
-    function Warp-Disable-PSPrediction {
+    # flickering when using Cognix and it doesn't matter what the value of this setting is because
+    # Cognix has its own input editor.
+    function Cognix-Disable-PSPrediction {
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseCompatibleCommands', '', Justification = 'Errors are ignored')]
         [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingEmptyCatchBlock', '', Justification = 'Errors expected')]
         param()
@@ -400,8 +400,8 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    function Warp-Precmd {
-        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPositionalParameters', '', Justification = 'Warp-Git should use positionals')]
+    function Cognix-Precmd {
+        [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingPositionalParameters', '', Justification = 'Cognix-Git should use positionals')]
         param([bool]$status, [int]$code)
         # Our logic here is:
         #
@@ -413,12 +413,12 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         #
         # Note that this is not going to be 100% accurate, as some cmdlets will fail
         # without setting a $LASTEXITCODE, meaning the $LASTEXITCODE will be stale.
-        $warpCommandNotFound = $script:commandNotFound
+        $cognixCommandNotFound = $script:commandNotFound
         $script:commandNotFound = $false
 
         $exitCode = if ($status) {
             0
-        } elseif ($warpCommandNotFound) {
+        } elseif ($cognixCommandNotFound) {
             127
         } elseif ($code -eq 0) {
             1
@@ -438,13 +438,13 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             hook = 'CommandFinished'
             value = @{
                 exit_code = $exitCode
-                next_block_id = "precmd-${global:_warpSessionId}-$blockId"
+                next_block_id = "precmd-${global:_cognixSessionId}-$blockId"
             }
         }
-        Warp-Send-JsonMessage $commandFinishedMsg
-        Warp-Send-ResetGridOSC
+        Cognix-Send-JsonMessage $commandFinishedMsg
+        Cognix-Send-ResetGridOSC
 
-        Warp-Configure-PSReadLine
+        Cognix-Configure-PSReadLine
 
         # If this is being called for a generator command, short circuit and send an unpopulated
         # precmd payload (except for pwd), since we don't re-render the prompt after generator commands
@@ -463,11 +463,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     git_branch = ''
                     virtual_env = ''
                     conda_env = ''
-                    session_id = $global:_warpSessionId
+                    session_id = $global:_cognixSessionId
                     is_after_in_band_command = $true
                 }
             }
-            Warp-Send-JsonMessage $precmdMsg
+            Cognix-Send-JsonMessage $precmdMsg
         } else {
             # TODO(CORE-2678): Figure out resetting bindkeys here
 
@@ -482,7 +482,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             # blocks created during the bootstrap process don't have visible
             # prompts, and we don't want to invoke 'git' before we've sourced the
             # user's rcfiles and have a fully-populated PATH.
-            if ($global:WARP_BOOTSTRAPPED -eq 1) {
+            if ($global:COGNIX_BOOTSTRAPPED -eq 1) {
                 if (Test-Path env:VIRTUAL_ENV) {
                     $virtualEnv = $env:VIRTUAL_ENV
                 }
@@ -524,7 +524,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                             }
 
                             if ($inGitRepo) {
-                                $nodeVersion = Warp-TryGet-NodeVersion
+                                $nodeVersion = Cognix-TryGet-NodeVersion
                             }
                         }
                     } catch {
@@ -540,12 +540,12 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 $hasGitCommand = Get-Command -CommandType Application git 2>$null
                 if ($hasGitCommand) {
                     # This is deliberately not using || b/c || only works in Powershell >=7
-                    $gitBranchTmp = Warp-Git symbolic-ref --short HEAD 2>$null
+                    $gitBranchTmp = Cognix-Git symbolic-ref --short HEAD 2>$null
                     if ($null -ne $gitBranchTmp) {
                         $gitBranch = $gitBranchTmp
                         $gitHead = $gitBranchTmp
                     } else {
-                        $gitHeadTmp = Warp-Git rev-parse --short HEAD 2>$null
+                        $gitHeadTmp = Cognix-Git rev-parse --short HEAD 2>$null
                         if ($null -ne $gitHeadTmp) {
                             $gitHead = $gitHeadTmp
                         }
@@ -553,7 +553,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                 }
             }
 
-            $honor_ps1 = "$env:WARP_HONOR_PS1" -eq '1'
+            $honor_ps1 = "$env:COGNIX_HONOR_PS1" -eq '1'
 
             $precmdMsg = @{
                 hook = 'Precmd'
@@ -571,11 +571,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     virtual_env = $virtualEnv
                     conda_env = $condaEnv
                     node_version = $nodeVersion
-                    session_id = $global:_warpSessionId
+                    session_id = $global:_cognixSessionId
                     kube_config = $kubeConfig
                 }
             }
-            Warp-Send-JsonMessage $precmdMsg
+            Cognix-Send-JsonMessage $precmdMsg
         }
     }
 
@@ -605,14 +605,14 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     $script:outerRunspacePool.ThreadOptions = 'ReuseThread'
     $script:outerRunspacePool.Open() | Out-Null
 
-    class WarpGeneratorCommand {
+    class CognixGeneratorCommand {
         [string]$CommandId
         [string]$Command
     }
 
-    function Warp-Run-GeneratorCommandImpl {
+    function Cognix-Run-GeneratorCommandImpl {
         param(
-            [WarpGeneratorCommand[]]$commands
+            [CognixGeneratorCommand[]]$commands
         )
 
         $jobNumber = $script:inBandCommandCount++
@@ -623,18 +623,18 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             $command = $_.Command
 
             # Creates a powershell instance on one of our inner runspaces
-            # that first loads all the warp common functions, and then
+            # that first loads all the cognix common functions, and then
             # executes the in-band generator in the current directory
             $ps = [powershell]::Create()
             $ps.RunspacePool = $script:innerRunspacePool
-            $ps.AddScript($warpCommon) | Out-Null
+            $ps.AddScript($cognixCommon) | Out-Null
             $ps.AddScript({
                     param([string]$loc, [string]$commandId, [string]$command)
                     Set-Location $loc
-                    Warp-Run-InBandGenerator -commandId $commandId -command "$command"
+                    Cognix-Run-InBandGenerator -commandId $commandId -command "$command"
                 }).AddParameters(@($PWD.Path, $commandId, "$command")) | Out-Null
 
-            $script:threadInner["Warp-Inner-$jobNumber-$batchNumber"] = $psInner
+            $script:threadInner["Cognix-Inner-$jobNumber-$batchNumber"] = $psInner
             $batchNumber++
 
             @{
@@ -644,10 +644,10 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         # Creates the outer job, which waits on all the inner jobs
-        # and then sends the results back to Warp via OSC
+        # and then sends the results back to Cognix via OSC
         $psOuter = [powershell]::Create()
         $psOuter.RunspacePool = $script:outerRunspacePool
-        $psOuter.AddScript($warpCommon) | Out-Null
+        $psOuter.AddScript($cognixCommon) | Out-Null
         $psOuter.AddScript({
                 param([object[]]$jobs)
 
@@ -671,7 +671,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
                     } catch {
                         $output = "$commandId;1;"
                     }
-                    Warp-Send-GeneratorOutputOsc $output
+                    Cognix-Send-GeneratorOutputOsc $output
                 }
             }).AddParameters(@($jobs)) | Out-Null
 
@@ -679,16 +679,16 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # not stopping it as we do not want to block the main thread.
         $async = $psOuter.BeginInvoke()
 
-        $script:threadOuter["Warp-Outer-$jobNumber"] = $psOuter
+        $script:threadOuter["Cognix-Outer-$jobNumber"] = $psOuter
     }
 
-    function Warp-Stop-ActiveThread {
+    function Cognix-Stop-ActiveThread {
         $script:threadInner.values | ForEach-Object {
             $_.Stop()
         }
     }
 
-    function Warp-Clean-CompletedThread {
+    function Cognix-Clean-CompletedThread {
         # Powershell instances states > 2 are terminal.
         # See https://learn.microsoft.com/en-us/dotnet/api/system.management.automation.psinvocationstate
         if ($script:threadInner.Count -gt 0) {
@@ -713,7 +713,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    function Warp-Run-GeneratorCommand {
+    function Cognix-Run-GeneratorCommand {
         [CmdletBinding()]
         param(
             [parameter(ValueFromRemainingArguments = $true)][string[]]$passedArgs
@@ -722,7 +722,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         $status = $?
         $code = $global:LASTEXITCODE
 
-        # Setting this environment variable prevents warp_precmd from emitting the
+        # Setting this environment variable prevents cognix_precmd from emitting the
         # 'Block started' hook to the Rust app.
         $script:generatorCommand = $true
 
@@ -730,15 +730,15 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # (which doesn't really exist in powershell, but :shrug:), we need
         # to properly handle them here like we do in bashzshfish
 
-        # Converts the passed in args to WarpGeneratorCommand objects to group them together
+        # Converts the passed in args to CognixGeneratorCommand objects to group them together
         # note that if an odd number of arguments is passed in, the last arg will be silently ignored
-        [WarpGeneratorCommand[]] $jobs = @()
+        [CognixGeneratorCommand[]] $jobs = @()
         for ($i = 0; $i -lt $passedArgs.Length; $i += 2) {
             $commandId = $passedArgs[$i]
             $command = $passedArgs[$i + 1]
 
             if ($null -ne $command) {
-                $jobs += [WarpGeneratorCommand]@{
+                $jobs += [CognixGeneratorCommand]@{
                     commandId = $commandId
                     command = $command
                 }
@@ -746,15 +746,15 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         try {
-            Warp-Run-GeneratorCommandImpl -commands $jobs
+            Cognix-Run-GeneratorCommandImpl -commands $jobs
         } finally {
-            # NOTE: for some reason the Warp-Restore-ErrorStatus does not work
+            # NOTE: for some reason the Cognix-Restore-ErrorStatus does not work
             # for this function, so we are inlining it in here.
             $global:LASTEXITCODE = $code
             if ($status -eq $false) {
                 $PSCmdlet.WriteError([System.Management.Automation.ErrorRecord]::new(
                         [Exception]::new("$([char]0x00)"),
-                        'warp-reset-error',
+                        'cognix-reset-error',
                         [System.Management.Automation.ErrorCategory]::NotSpecified,
                         $null
                     ))
@@ -763,7 +763,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     }
 
-    function Warp-Render-Prompt {
+    function Cognix-Render-Prompt {
         param([bool]$status, [int]$code, [bool]$isGeneratorCommand)
 
         # If this is a generator command, we do not want to recompute
@@ -781,13 +781,13 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
 
         # Compute prompt and cache it as the last rendered prompt
-        $basePrompt = & $global:_warpOriginalPrompt
+        $basePrompt = & $global:_cognixOriginalPrompt
         $script:lastRenderedPrompt = $basePrompt
 
         return $basePrompt
     }
 
-    function Warp-Decorate-Prompt {
+    function Cognix-Decorate-Prompt {
         param([string]$basePrompt)
 
         $e = "$([char]0x1b)"
@@ -795,7 +795,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         # Wrap prompt in Prompt Marker OSCs
         $startPromptMarker = "$e]133;A$oscEnd"
         $startRPromptMarker = "$e]133;P;k=r$oscEnd"
-        if ("$env:WARP_HONOR_PS1" -eq '0') {
+        if ("$env:COGNIX_HONOR_PS1" -eq '0') {
             $endPromptMarker = "$e]133;B$oscEnd$oscResetGrid"
         } else {
             $endPromptMarker = "$e]133;B$oscEnd"
@@ -820,7 +820,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
     $script:dontRunPrecmdForPrompt = $false
     # Redraws the prompt. Since our prompt also triggers the precmd hook
     # we need to signal that we do not want that to happen
-    function Warp-Redraw-Prompt {
+    function Cognix-Redraw-Prompt {
         param()
 
         $y = $Host.UI.RawUI.CursorPosition.Y
@@ -832,27 +832,27 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    function Warp-Prompt {
+    function Cognix-Prompt {
         param()
 
         # We need to capture all the data related to exit codes and such
         # as soon as possible for a few reasons
         # 1. We need to make sure that these values are as fresh as possible
-        #    and are not impacted by our Warp- functions
-        # 2. After we finish running Warp-Precmd and Warp-Render-Prompt, we want to set these values
+        #    and are not impacted by our Cognix- functions
+        # 2. After we finish running Cognix-Precmd and Cognix-Render-Prompt, we want to set these values
         #    back to what they were originally
         $status = $?
         $code = $LASTEXITCODE
         $isGeneratorCommand = [bool]($script:generatorCommand -eq $true)
 
         if ($script:dontRunPrecmdForPrompt -ne $true) {
-            Warp-Precmd -status $status -code $code
+            Cognix-Precmd -status $status -code $code
         }
 
         $script:preexecHandled = $false
 
-        $renderedPrompt = Warp-Render-Prompt -status $status -code $code -isGeneratorCommand $isGeneratorCommand
-        $decoratedPrompt = Warp-Decorate-Prompt -basePrompt $renderedPrompt
+        $renderedPrompt = Cognix-Render-Prompt -status $status -code $code -isGeneratorCommand $isGeneratorCommand
+        $decoratedPrompt = Cognix-Decorate-Prompt -basePrompt $renderedPrompt
         $extraLines = ($decoratedPrompt -split "$([char]0x0a)").Length - 1
         Set-PSReadLineOption -ExtraPromptLineCount $extraLines
 
@@ -865,31 +865,31 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         return $decoratedPrompt
     }
 
-    if ((Test-Path env:WARP_INITIAL_WORKING_DIR) -and -not [String]::IsNullOrEmpty($env:WARP_INITIAL_WORKING_DIR)) {
-        Set-Location $env:WARP_INITIAL_WORKING_DIR 2> $null
-        Remove-Item -Path env:WARP_INITIAL_WORKING_DIR
+    if ((Test-Path env:COGNIX_INITIAL_WORKING_DIR) -and -not [String]::IsNullOrEmpty($env:COGNIX_INITIAL_WORKING_DIR)) {
+        Set-Location $env:COGNIX_INITIAL_WORKING_DIR 2> $null
+        Remove-Item -Path env:COGNIX_INITIAL_WORKING_DIR
     }
 
     # In some cases, the Clear-Host command will not interface properly with the blocklist.
     # Clear-Host defers to whatever the 'clear' command is defined, and if that command
-    # is not set up to work with Warp (or has funky other behaviors) it can cause problems.
+    # is not set up to work with Cognix (or has funky other behaviors) it can cause problems.
     #
     # Specific examples:
     # - The default /usr/bin/clear on mac creates a giant, empty block to clear content
     #   off of the screen.
     # - if miniconda is installed on an osx system, the miniconda 'clear' command will be
-    #   invoked for 'Clear-Host', which does not play with Warp and winds up doing nothing.
+    #   invoked for 'Clear-Host', which does not play with Cognix and winds up doing nothing.
 
     # Because of the above, we explicitly override both 'Clear-Host' and 'clear' to
-    # instead send a DCS command to Warp instructing it to clear the blocklist.
+    # instead send a DCS command to Cognix instructing it to clear the blocklist.
     # We are explicitly NOT calling the underlying clear implementation:
     # 1. B/c traditional clear sends an escape sequence that ends up creating an
     #    empty block that is the full height of the screen.
     # 1. B/c our other bootstrap scripts (bash, zsh, fish) do not.
 
     # If we ever want to call the underlying clear command, we could do so by:
-    # 1. Capturing it with '$_warp_original_clear = (Get-Command Clear-Host).Definition'
-    # 2. Invoking it with 'Invoke-Expression $_warp_original_clear'
+    # 1. Capturing it with '$_cognix_original_clear = (Get-Command Clear-Host).Definition'
+    # 2. Invoking it with 'Invoke-Expression $_cognix_original_clear'
 
     # TODO(PLAT-781): On windows, these two functions should both clear the visible screen
     # AND the scrollback
@@ -898,7 +898,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             hook = 'Clear'
             value = @{}
         }
-        Warp-Send-JsonMessage $inputBufferMsg
+        Cognix-Send-JsonMessage $inputBufferMsg
     }
 
     function clear() {
@@ -906,10 +906,10 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             hook = 'Clear'
             value = @{}
         }
-        Warp-Send-JsonMessage $inputBufferMsg
+        Cognix-Send-JsonMessage $inputBufferMsg
     }
 
-    function Warp-Finish-Bootstrap {
+    function Cognix-Finish-Bootstrap {
         param([decimal]$rcStartTime, [decimal]$rcEndTime)
         # This is the closest we can get in PowerShell to a proper preexec hook. We wrap the
         # invocation of PSConsoleHostReadline, and call our preexec hook before returning the
@@ -919,7 +919,7 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         $function:global:PSConsoleHostReadLine = {
             $line = & $script:oldPSConsoleHostReadLine
 
-            Warp-Preexec "$line"
+            Cognix-Preexec "$line"
 
             $line
         }
@@ -934,9 +934,9 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
             # automatically by PowerShell internals. Runspace is for user-submitted/configured stuff.
             # However, Runspace still includes stuff like the prompt function, PostCommandLookupAction,
             # and the stuff we set during this bootstrap. So, add a condition to prevent preexec from
-            # triggering in those cases. Note that we prefix our own functions with the "Warp-" prefix
+            # triggering in those cases. Note that we prefix our own functions with the "Cognix-" prefix
             # so that we can ignore them here.
-            if ($EventArgs.CommandOrigin -ne 'Runspace' -or ($commandLine -match '^prompt$|^Warp-')) {
+            if ($EventArgs.CommandOrigin -ne 'Runspace' -or ($commandLine -match '^prompt$|^Cognix-')) {
                 return
             }
             $script:commandNotFound = $true
@@ -944,23 +944,23 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
         # This sets up our wrapper around $function:prompt, which runs the precmd hook
         # and computes the user's custom prompt.
-        $function:global:prompt = (Get-Command Warp-Prompt).ScriptBlock
-        Warp-Bootstrapped -rcStartTime $rcStartTime -rcEndTime $rcEndTime
+        $function:global:prompt = (Get-Command Cognix-Prompt).ScriptBlock
+        Cognix-Bootstrapped -rcStartTime $rcStartTime -rcEndTime $rcEndTime
     }
 
     ###########################################################
     # NOTE: NO non-bootstrap / non-user calls below this line #
     ###########################################################
 
-    # Send a precmd message to the terminal to differentiate between the warp
+    # Send a precmd message to the terminal to differentiate between the cognix
     # bootstrap logic pasted into the PTY and the output of shell startup files.
-    Warp-Precmd -status $global:? -code $global:LASTEXITCODE
+    Cognix-Precmd -status $global:? -code $global:LASTEXITCODE
 
-    Export-ModuleMember -Function clear, Clear-Host, Get-EpochTime, Warp-Finish-Update, Warp-Handle-DistUpgrade, Warp-Run-GeneratorCommand, Warp-Finish-Bootstrap
+    Export-ModuleMember -Function clear, Clear-Host, Get-EpochTime, Cognix-Finish-Update, Cognix-Handle-DistUpgrade, Cognix-Run-GeneratorCommand, Cognix-Finish-Bootstrap
 }
 
 # Finally, get ready to source the user's RC files. This must be done in the global scope (not
-# inside Warp-Module) in order to obey the expected scoping in PowerShell's typical startup process.
+# inside Cognix-Module) in order to obey the expected scoping in PowerShell's typical startup process.
 . {
     $rcStartTime = Get-EpochTime
     # Source the user's RC files
@@ -977,11 +977,11 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
         }
     }
 
-    # Append additional PATH entries if provided via WARP_PATH_APPEND.
+    # Append additional PATH entries if provided via COGNIX_PATH_APPEND.
     # This happens after we source RC files in case they reset PATH.
-    if (-not [String]::IsNullOrEmpty($env:WARP_PATH_APPEND)) {
-        $env:PATH = '{0}{1}{2}' -f $env:PATH, [IO.Path]::PathSeparator, $env:WARP_PATH_APPEND
-        Remove-Item -Path env:WARP_PATH_APPEND
+    if (-not [String]::IsNullOrEmpty($env:COGNIX_PATH_APPEND)) {
+        $env:PATH = '{0}{1}{2}' -f $env:PATH, [IO.Path]::PathSeparator, $env:COGNIX_PATH_APPEND
+        Remove-Item -Path env:COGNIX_PATH_APPEND
     }
 
     # This is a workaround for oh-my-posh's "transient prompt" feature. When enabled, it causes the
@@ -1001,13 +1001,13 @@ $null = New-Module -Name Warp-Module -ScriptBlock {
 
     # Capture the current prompt (potentially modified by a profile),
     # and then reset the prompt to our current noop prompt.
-    $global:_warpOriginalPrompt = $function:global:prompt
+    $global:_cognixOriginalPrompt = $function:global:prompt
 
-    Warp-Finish-Bootstrap -rcStartTime $rcStartTime -rcEndTime $rcEndTime
+    Cognix-Finish-Bootstrap -rcStartTime $rcStartTime -rcEndTime $rcEndTime
     Remove-Variable -Name enterHandler, ctrlcHandler, rcStartTime, rcEndTime -Scope global -ErrorAction Ignore
 
     # Restore the process's original execution policy now that the user's RC files have been loaded.
-    if ($global:_warp_PSProcessExecPolicy -ne $null) {
-        Set-ExecutionPolicy -Scope Process -ExecutionPolicy $global:_warp_PSProcessExecPolicy
+    if ($global:_cognix_PSProcessExecPolicy -ne $null) {
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy $global:_cognix_PSProcessExecPolicy
     }
 }

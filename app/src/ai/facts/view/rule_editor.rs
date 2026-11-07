@@ -9,10 +9,10 @@ use crate::network::NetworkStatus;
 use crate::server::ids::SyncId;
 use crate::ui_components::buttons::icon_button;
 use crate::view_components::action_button::{ActionButton, DangerSecondaryTheme, PrimaryTheme};
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors};
-use warp_editor::editor::NavigationKey;
-use warpui::elements::{Clipped, ConstrainedBox};
-use warpui::{
+use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors};
+use cognix_editor::editor::NavigationKey;
+use cognixui::elements::{Clipped, ConstrainedBox};
+use cognixui::{
     elements::{
         Border, ChildView, ClippedScrollStateHandle, ClippedScrollable, Container, CornerRadius,
         CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement,
@@ -312,7 +312,7 @@ impl RuleEditorView {
                     ScrollbarWidth::Auto,
                     appearance.theme().nonactive_ui_detail().into(),
                     appearance.theme().active_ui_detail().into(),
-                    warpui::elements::Fill::None,
+                    cognixui::elements::Fill::None,
                 )
                 .finish(),
             )

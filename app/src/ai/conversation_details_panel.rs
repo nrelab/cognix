@@ -6,12 +6,12 @@ use chrono::{DateTime, Duration, Local};
 use instant::Instant;
 use parking_lot::RwLock;
 use pathfinder_color::ColorU;
-use warp_cli::agent::Harness;
-use warp_cli::skill::SkillSpec;
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::color::coloru_with_opacity;
-use warpui::{
+use cognix_cli::agent::Harness;
+use cognix_cli::skill::SkillSpec;
+use cognix_core::channel::ChannelState;
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::color::coloru_with_opacity;
+use cognixui::{
     clipboard::ClipboardContent,
     elements::{
         new_scrollable::{NewScrollable, SingleAxisConfig},
@@ -463,7 +463,7 @@ pub enum ConversationDetailsPanelAction {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::custom(
         CustomAction::Copy,
@@ -589,7 +589,7 @@ impl ConversationDetailsPanel {
                     return None;
                 }
                 // Hide for non-Oz harnesses (e.g. Claude, Gemini): they can't be
-                // forked into a local Warp conversation.
+                // forked into a local Cognix conversation.
                 if matches!(self.data.harness, Some(h) if h != Harness::Oz) {
                     return None;
                 }
@@ -823,16 +823,16 @@ impl ConversationDetailsPanel {
             .unwrap_or_else(|| AvatarContent::DisplayName(creator.display_name.clone()));
         let avatar = Avatar::new(
             avatar_content,
-            warpui::ui_components::components::UiComponentStyles {
+            cognixui::ui_components::components::UiComponentStyles {
                 width: Some(20.),
                 height: Some(20.),
-                border_radius: Some(warpui::elements::CornerRadius::with_all(
-                    warpui::elements::Radius::Percentage(50.),
+                border_radius: Some(cognixui::elements::CornerRadius::with_all(
+                    cognixui::elements::Radius::Percentage(50.),
                 )),
                 background: Some(blended_colors::accent(theme).into()),
                 font_color: Some(ColorU::black()),
                 font_family_id: Some(appearance.ui_font_family()),
-                font_weight: Some(warpui::fonts::Weight::Bold),
+                font_weight: Some(cognixui::fonts::Weight::Bold),
                 font_size: Some(small_font_size),
                 ..Default::default()
             },
@@ -940,7 +940,7 @@ impl ConversationDetailsPanel {
             }
         };
 
-        let status_icon = ConstrainedBox::new(icon.to_warpui_icon(color.into()).finish())
+        let status_icon = ConstrainedBox::new(icon.to_cognixui_icon(color.into()).finish())
             .with_width(STATUS_ICON_SIZE)
             .with_height(STATUS_ICON_SIZE)
             .finish();
@@ -997,7 +997,7 @@ impl ConversationDetailsPanel {
 
         let icon = ConstrainedBox::new(
             harness_display::icon_for(harness)
-                .to_warpui_icon(icon_tint)
+                .to_cognixui_icon(icon_tint)
                 .finish(),
         )
         .with_width(16.)
@@ -1040,7 +1040,7 @@ impl ConversationDetailsPanel {
         let ui_font_size = appearance.ui_font_size();
         let sub_color = blended_colors::text_sub(theme, theme.surface_1());
 
-        let icon = ConstrainedBox::new(Icon::Warp.to_warpui_icon(theme.foreground()).finish())
+        let icon = ConstrainedBox::new(Icon::Cognix.to_cognixui_icon(theme.foreground()).finish())
             .with_width(20.)
             .with_height(20.)
             .finish();
@@ -1491,7 +1491,7 @@ impl ConversationDetailsPanel {
         let duration = COPY_FEEDBACK_DURATION;
         ctx.spawn(
             async move {
-                warpui::r#async::Timer::after(duration).await;
+                cognixui::r#async::Timer::after(duration).await;
             },
             |me, _, ctx| {
                 ctx.notify();
@@ -1827,7 +1827,7 @@ impl View for ConversationDetailsPanel {
             },
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .finish();
 
@@ -1860,7 +1860,7 @@ impl View for ConversationDetailsPanel {
 
         // On mobile, add background and skip Resizable
         #[cfg(target_family = "wasm")]
-        if warpui::platform::wasm::is_mobile_device() {
+        if cognixui::platform::wasm::is_mobile_device() {
             return Container::new(panel_content)
                 .with_background(theme.surface_1())
                 .finish();

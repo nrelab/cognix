@@ -12,11 +12,11 @@ use chrono::{DateTime, Utc};
 use instant::Instant;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
-use warp_core::user_preferences::GetUserPreferences as _;
-use warp_graphql::scalars::time::ServerTimestamp;
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use cognix_core::user_preferences::GetUserPreferences as _;
+use cognix_graphql::scalars::time::ServerTimestamp;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
-pub use warp_graphql::billing::BonusGrantType;
+pub use cognix_graphql::billing::BonusGrantType;
 
 /// Threshold of ambient-only credits at which we surface upgrade/CTA UI.
 pub const AMBIENT_AGENT_TRIAL_CREDIT_THRESHOLD: i32 = 20;
@@ -398,7 +398,7 @@ impl AIRequestUsageModel {
             .is_some_and(|w| w.billing_metadata.is_enterprise_auto_reload_enabled());
 
         // If you have provided your own API key,
-        // it doesn't matter if you are out of warp-provided requests.
+        // it doesn't matter if you are out of cognix-provided requests.
         let has_byo_api_key = UserWorkspaces::as_ref(ctx).is_byo_api_key_enabled()
             && ApiKeyManager::as_ref(ctx).keys().has_any_key();
 

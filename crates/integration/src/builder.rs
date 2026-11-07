@@ -4,11 +4,11 @@ use std::future::Future;
 use std::path::PathBuf;
 use std::pin::Pin;
 use std::time::Duration;
-use warpui::integration::{self, PersistedDataMap, TestStep};
-use warpui::integration::{TestDriver, TestSetupUtils};
-use warpui::{App, WindowId};
-use warpui_extras::user_preferences::file_backed::FileBackedUserPreferences;
-use warpui_extras::user_preferences::UserPreferences;
+use cognixui::integration::{self, PersistedDataMap, TestStep};
+use cognixui::integration::{TestDriver, TestSetupUtils};
+use cognixui::{App, WindowId};
+use cognixui_extras::user_preferences::file_backed::FileBackedUserPreferences;
+use cognixui_extras::user_preferences::UserPreferences;
 
 // We have logic in our build script to pass the path of the cargo target
 // tmp directory to our app. This needs to be done as a build script because
@@ -43,7 +43,7 @@ impl Builder {
         let tmp_fs = PathBuf::from(cargo_target_tmpdir::get());
         let mut builder = integration::Builder::new(tmp_fs).with_timeout(TEST_TIMEOUT);
 
-        if std::env::var("WARPUI_USE_REAL_DISPLAY_IN_INTEGRATION_TESTS").is_ok() {
+        if std::env::var("COGNIXUI_USE_REAL_DISPLAY_IN_INTEGRATION_TESTS").is_ok() {
             builder = builder.with_real_display();
         }
 
@@ -179,7 +179,7 @@ impl Builder {
 
             // Set the DISABLE_SAVE_ENV_VAR to make sure we don't write any keybinding changes to the
             // filesystem
-            utils.set_env(warp::keyboard::DISABLE_SAVE_ENV_VAR, Some("true"));
+            utils.set_env(cognix::keyboard::DISABLE_SAVE_ENV_VAR, Some("true"));
 
             // On Ubuntu (and possibly other Linux distros), a message is
             // printed out during shell initialization telling the user how to
@@ -199,7 +199,7 @@ impl Builder {
         // As part of initializing the test driver, $HOME gets set to a unique
         // temporary directory.  We can now construct a file containing any
         // initial user preferences that are needed for the test.
-        let file_path = warp::settings::user_preferences_file_path();
+        let file_path = cognix::settings::user_preferences_file_path();
         // Use println because logging may not have been initialized yet.
         println!("Initializing preferences file at {file_path:?}");
         let prefs = match FileBackedUserPreferences::new(file_path.clone()) {

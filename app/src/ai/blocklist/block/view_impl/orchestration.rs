@@ -1,15 +1,15 @@
 //! Rendering functions for orchestration-related output items (messaging & agent management).
 
 use pathfinder_color::ColorU;
-use warpui::elements::{
+use cognixui::elements::{
     ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex, Hoverable,
     MouseStateHandle, ParentElement, Radius, Text,
 };
-use warpui::platform::Cursor;
-use warpui::{AppContext, Element, SingletonEntity};
+use cognixui::platform::Cursor;
+use cognixui::{AppContext, Element, SingletonEntity};
 
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use warpui::elements::FormattedTextElement;
+use cognixui::elements::FormattedTextElement;
 
 use crate::ai::agent::conversation::{AIConversation, AIConversationId, ConversationStatus};
 use crate::ai::agent::{
@@ -655,7 +655,7 @@ fn render_collapse_chevron(
 
     Some(
         Hoverable::new(toggle_mouse_state, move |_| {
-            ConstrainedBox::new(chevron_icon.to_warpui_icon(text_color).finish())
+            ConstrainedBox::new(chevron_icon.to_cognixui_icon(text_color).finish())
                 .with_width(icon_sz)
                 .with_height(icon_sz)
                 .finish()

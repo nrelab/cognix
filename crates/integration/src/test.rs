@@ -75,7 +75,7 @@ use pathfinder_geometry::{rect::RectF, vector::Vector2F};
 use rust_embed::RustEmbed;
 use settings::Setting as _;
 use shell::ShellType;
-use warpui::{
+use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionOutcome, StepData, TestStep},
     keymap::{Keystroke, Trigger},
@@ -84,11 +84,11 @@ use warpui::{
     AssetProvider, Event, SingletonEntity, UpdateView, ViewHandle,
 };
 
-use warp::{terminal::find::TerminalFindModel, util::bindings::CustomAction, AgentModeEntrypoint};
+use cognix::{terminal::find::TerminalFindModel, util::bindings::CustomAction, AgentModeEntrypoint};
 
 use sysinfo::{Pid, ProcessesToUpdate, System};
 use version_compare::Cmp;
-use warpui::units::Lines;
+use cognixui::units::Lines;
 
 use crate::util::{skip_if_powershell_core_2303, ShellRcType};
 
@@ -96,19 +96,19 @@ use crate::builder::cargo_target_tmpdir;
 use crate::user_defaults;
 use crate::Builder;
 use sum_tree::SeekBias;
-use warp::integration_testing::terminal::assert_focused_editor_in_tab;
-use warp::integration_testing::{
+use cognix::integration_testing::terminal::assert_focused_editor_in_tab;
+use cognix::integration_testing::{
     settings::assert_theme_chooser_contains,
     tab::{assert_pane_title, assert_tab_title},
 };
-use warp::settings::CtrlTabBehavior;
-use warp::terminal::keys_settings::KeysSettings;
-use warp::terminal::{
+use cognix::settings::CtrlTabBehavior;
+use cognix::terminal::keys_settings::KeysSettings;
+use cognix::terminal::{
     model::{blocks::BlockHeightSummary, terminal_model::BlockIndex},
     view::TerminalViewState,
 };
-use warp::workflows::categories::CategoriesView;
-use warp::{
+use cognix::workflows::categories::CategoriesView;
+use cognix::{
     appearance::Appearance,
     cmd_or_ctrl_shift,
     integration_testing::{
@@ -168,8 +168,8 @@ use warp::{
     },
 };
 
-use warp::terminal::view::ALIAS_EXPANSION_BANNER_SEEN_KEY;
-use warp::{
+use cognix::terminal::view::ALIAS_EXPANSION_BANNER_SEEN_KEY;
+use cognix::{
     features::FeatureFlag,
     integration_testing::{
         find::{Find, FindWithinBlockState},
@@ -180,13 +180,13 @@ use warp::{
         window::add_and_save_window,
     },
 };
-use warp::{
-    integration_testing::warp_drive::{
-        assert_is_left_panel_open, assert_warp_drive_is_closed, assert_warp_drive_is_open,
+use cognix::{
+    integration_testing::cognix_drive::{
+        assert_is_left_panel_open, assert_cognix_drive_is_closed, assert_cognix_drive_is_open,
     },
     settings::CompletionsOpenWhileTyping,
 };
-use warp::{
+use cognix::{
     integration_testing::{
         self,
         input::{input_contains_string, input_is_empty},
@@ -196,11 +196,11 @@ use warp::{
     },
     settings::MonospaceFontSize,
 };
-use warp::{
+use cognix::{
     integration_testing::{assertions::join_a_workspace, view_getters::single_terminal_view},
     terminal::view::TerminalAction,
 };
-use warp::{
+use cognix::{
     integration_testing::{
         command_palette::{
             close_command_palette, open_command_palette, open_command_palette_and_run_action,
@@ -210,11 +210,11 @@ use warp::{
     },
     pane_group::AGENT_MODE_PANE_DEFAULT_MINIMUM_WIDTH,
 };
-use warp::{
+use cognix::{
     integration_testing::{terminal::util::ExactLine, workspace::assert_tab_count},
     terminal::available_shells::AvailableShells,
 };
-use warp::{
+use cognix::{
     integration_testing::{
         terminal::{
             assert_active_block_output, assert_alt_grid_active, assert_alt_screen_output,
@@ -225,8 +225,8 @@ use warp::{
     },
     workspace::WorkspaceAction,
 };
-use warp::{settings_view::SettingsAction, terminal::block_list_viewport::ScrollLines};
-use warp::{
+use cognix::{settings_view::SettingsAction, terminal::block_list_viewport::ScrollLines};
+use cognix::{
     settings_view::{keybindings::KeybindingsView, SettingsSection, SettingsView},
     terminal::{
         input::{Input, InputSuggestionsMode},
@@ -239,9 +239,9 @@ use warp::{
     },
     workspace::{Workspace, NEW_SESSION_MENU_BUTTON_POSITION_ID, NEW_TAB_BUTTON_POSITION_ID},
 };
-use warpui::event::KeyState;
-use warpui::keymap::PerPlatformKeystroke;
-use warpui::platform::keyboard::KeyCode;
+use cognixui::event::KeyState;
+use cognixui::keymap::PerPlatformKeystroke;
+use cognixui::platform::keyboard::KeyCode;
 
 const ADD_NEXT_OCCURRENCE_KEYBINDING: &str = "ctrl-g";
 
@@ -265,12 +265,12 @@ fn new_builder() -> Builder {
     Builder::new()
 }
 
-/// Adds a workflow file, containing two workflows, to the mocked out warp
+/// Adds a workflow file, containing two workflows, to the mocked out cognix
 /// config directory and verifies that the workflows appear in the workflow menu.
-pub fn test_add_workflows_to_warp_config() -> Builder {
+pub fn test_add_workflows_to_cognix_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
-            utils.set_env("WARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
+            utils.set_env("COGNIX_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
 
             std::fs::create_dir_all(integration_testing::workflow::workflows_dir())
                 .expect("Should be able to create workflows dir");
@@ -284,7 +284,7 @@ pub fn test_add_workflows_to_warp_config() -> Builder {
 
                     workflows.read(app, |workflows, _| {
                         // Note that this can be a synchronous assertion because unlike the next test step,
-                        // we don't have concurrency with a WarpConfig watcher thread
+                        // we don't have concurrency with a CognixConfig watcher thread
                         assert_eq!(
                             workflows.local_workflows().count(),
                             0,
@@ -321,10 +321,10 @@ pub fn test_add_workflows_to_warp_config() -> Builder {
         )
 }
 
-pub fn test_launch_warp_with_theme_in_warp_config() -> Builder {
+pub fn test_launch_cognix_with_theme_in_cognix_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
-            utils.set_env("WARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
+            utils.set_env("COGNIX_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
 
             integration_testing::create_file_from_assets(
                 TEST_ONLY_ASSETS,
@@ -335,12 +335,12 @@ pub fn test_launch_warp_with_theme_in_warp_config() -> Builder {
         .with_step(assert_theme_chooser_contains("Test Theme", 1))
 }
 
-/// Adds a theme to the mocked out warp config directory and verifies that
+/// Adds a theme to the mocked out cognix config directory and verifies that
 /// the theme appears in the theme picker.
-pub fn test_add_theme_to_warp_config() -> Builder {
+pub fn test_add_theme_to_cognix_config() -> Builder {
     new_builder()
         .with_setup(move |utils| {
-            utils.set_env("WARP_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
+            utils.set_env("COGNIX_CONFIG_WATCHER_DELAY_MS", Some((10).to_string()));
 
             std::fs::create_dir_all(integration_testing::themes::themes_dir())
                 .expect("Should be able to create themes dir");
@@ -624,7 +624,7 @@ pub fn test_suggestions_menu_positioning() -> Builder {
                 ),
         )
         .with_step(
-            new_step_with_default_assertions("Open Warp Drive")
+            new_step_with_default_assertions("Open Cognix Drive")
                 .with_click_on_saved_position("workspace:toggle_left_panel")
                 .add_assertion(assert_is_left_panel_open()),
         )
@@ -2053,7 +2053,7 @@ pub fn test_add_and_close_session() -> Builder {
                                     .expect("pane at index 0 is a terminal pane")
                                     .as_ref(ctx)
                                     .as_any()
-                                    .downcast_ref::<warp::terminal::local_tty::TerminalManager>()
+                                    .downcast_ref::<cognix::terminal::local_tty::TerminalManager>()
                                     .expect("terminal pane at index 0 contains a local session")
                                     .pid()
                                     .expect("shell should be spawned")
@@ -2483,7 +2483,7 @@ precmd_functions+=(_p9k_precmd)
         )
         .with_step(wait_until_bootstrapped_single_pane_for_tab(1))
         .with_step(check_banner_open(1, true))
-        // If the user then switches back to the Warp prompt, we should close the banner.
+        // If the user then switches back to the Cognix prompt, we should close the banner.
         .with_step(
             new_step_with_default_assertions("Disable honor_ps1").with_action(|app, _, _| {
                 SessionSettings::handle(app).update(app, |session_settings, ctx| {
@@ -3381,7 +3381,7 @@ pub fn test_custom_ps1_expansion_bash() -> Builder {
         )
 }
 
-/// Default auto title. We test that Warp's auto title is used and verify that that
+/// Default auto title. We test that Cognix's auto title is used and verify that that
 /// DISABLE_AUTO_TITLE is set correctly.
 pub fn test_auto_title() -> Builder {
     new_builder()
@@ -3403,8 +3403,8 @@ pub fn test_auto_title() -> Builder {
         ))
 }
 
-/// Validate that disabling Warp's auto title feature will not mess with oh-my-zsh settings.
-pub fn test_warp_auto_title_disabled() -> Builder {
+/// Validate that disabling Cognix's auto title feature will not mess with oh-my-zsh settings.
+pub fn test_cognix_auto_title_disabled() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             // Only run this one on bash and zsh
@@ -3419,20 +3419,20 @@ pub fn test_warp_auto_title_disabled() -> Builder {
             write_rc_files_for_test(
                 &dir,
                 r#"
-WARP_DISABLE_AUTO_TITLE="1"
+COGNIX_DISABLE_AUTO_TITLE="1"
 "#,
                 [ShellRcType::Bash],
             );
             write_rc_files_for_test(
                 &dir,
                 r#"
-WARP_DISABLE_AUTO_TITLE="true"
+COGNIX_DISABLE_AUTO_TITLE="true"
 "#,
                 [ShellRcType::Zsh],
             );
         })
         .with_step(wait_until_bootstrapped_single_pane_for_tab(0))
-        // If Warp title is disabled, we don't set the DISABLE_AUTO_TITLE env variable
+        // If Cognix title is disabled, we don't set the DISABLE_AUTO_TITLE env variable
         .with_step(execute_command_for_single_terminal_in_tab(
             0,
             "echo $DISABLE_AUTO_TITLE".to_string(),
@@ -3444,9 +3444,9 @@ WARP_DISABLE_AUTO_TITLE="true"
         ))
 }
 
-/// Checks that the tab title set by the user takes precedence over the Warp's default title and
+/// Checks that the tab title set by the user takes precedence over the Cognix's default title and
 /// doesn't require any additional setting from the user's POV. This is bash-specific test.
-pub fn test_warp_honors_user_title_bash() -> Builder {
+pub fn test_cognix_honors_user_title_bash() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             // Only run this one on bash
@@ -3476,9 +3476,9 @@ PROMPT_COMMAND='echo -en "\033]0;TEST_TAB_TITLE\a"'
         ))
 }
 
-/// Checks that the tab title set by the user takes precedence over the Warp's default title and
+/// Checks that the tab title set by the user takes precedence over the Cognix's default title and
 /// doesn't require any additional setting from the user's POV. This is zsh-specific test.
-pub fn test_warp_honors_user_title_zsh() -> Builder {
+pub fn test_cognix_honors_user_title_zsh() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             // Only run this one on bash
@@ -4013,7 +4013,7 @@ pub fn test_ctrl_r_multi_cursor() -> Builder {
 }
 
 /// This test ensures that the HISTCONTROL env var is not clobbered by our bootstrap process for bash.
-/// See https://linear.app/warpdotdev/issue/WAR-2592 for more details
+/// See https://linear.app/nrelab/issue/WAR-2592 for more details
 pub fn test_histcontrol_env_var() -> Builder {
     let histcontrol_val = "ignorespace";
     new_builder()
@@ -5490,7 +5490,7 @@ pub fn test_preferred_shell() -> Builder {
 pub fn test_git_prompt() -> Builder {
     let (starter, _) = current_shell_starter_and_version();
     // Note that we can't use the OUT_DIR for the temp directory
-    // here because that would put us in the warp repo. We need to
+    // here because that would put us in the cognix repo. We need to
     // be in a place in the filesystem that's not already a git repo.
     new_builder()
         // TODO(CORE-2734): Unknown failure for Powershell
@@ -5564,7 +5564,7 @@ pub fn test_terminal_announces_capabilities_to_shell() -> Builder {
     };
 
     // Note that we can't use the OUT_DIR for the temp directory
-    // here because that would put us in the warp repo. We need to
+    // here because that would put us in the cognix repo. We need to
     // be in a place in the filesystem that's not already a git repo.
     new_builder()
         .with_step(wait_until_bootstrapped_single_pane_for_tab(0))
@@ -5578,7 +5578,7 @@ pub fn test_terminal_announces_capabilities_to_shell() -> Builder {
             0,
             format!("echo ${var_prefix}TERM_PROGRAM"),
             ExpectedExitStatus::Success,
-            "WarpTerminal",
+            "CognixTerminal",
         ))
         .with_step(execute_command_for_single_terminal_in_tab(
             0,
@@ -5700,7 +5700,7 @@ pub fn test_custom_open_completions_menu_binding() -> Builder {
 }
 
 /// This is a regression test for:
-/// https://linear.app/warpdotdev/issue/WAR-6095/panic-internal-error-entered-unreachable-code-handled-at-model-layer
+/// https://linear.app/nrelab/issue/WAR-6095/panic-internal-error-entered-unreachable-code-handled-at-model-layer
 pub fn test_color_overrides_in_prompt_dont_crash() -> Builder {
     new_builder()
         .set_should_run_test(|| {
@@ -6663,7 +6663,7 @@ pub fn test_agent_mode_pane_minimum_size() -> Builder {
 }
 
 // cheating a little bit in this test; it's hard to tell if the create folder dialog is open from
-// the workspace view, but we DO force warp drive open to show the dialog, so we can look for that
+// the workspace view, but we DO force cognix drive open to show the dialog, so we can look for that
 pub fn test_create_folder_from_command_palette() -> Builder {
     new_builder()
         .with_step(wait_until_bootstrapped_single_pane_for_tab(0))
@@ -6671,20 +6671,20 @@ pub fn test_create_folder_from_command_palette() -> Builder {
         .with_step(go_offline())
         .with_steps(
             open_command_palette_and_run_action("Create a New Team Folder")
-                .add_assertion(assert_warp_drive_is_closed()),
+                .add_assertion(assert_cognix_drive_is_closed()),
         )
         .with_steps(
             open_command_palette_and_run_action("Create a New Personal Folder")
-                .add_assertion(assert_warp_drive_is_closed()),
+                .add_assertion(assert_cognix_drive_is_closed()),
         )
         .with_step(go_online())
         .with_steps(
             open_command_palette_and_run_action("Create a New Team Folder")
-                .add_assertion(assert_warp_drive_is_open()),
+                .add_assertion(assert_cognix_drive_is_open()),
         )
         .with_steps(
             open_command_palette_and_run_action("Create a New Personal Folder")
-                .add_assertion(assert_warp_drive_is_open()),
+                .add_assertion(assert_cognix_drive_is_open()),
         )
 }
 
@@ -6732,7 +6732,7 @@ pub fn test_context_chips_prompt_at_bootstrap() -> Builder {
             (String::from("SavedPrompt"), String::from("Default")),
         ]))
         .with_step(
-            new_step_with_default_assertions("Check Warp prompt")
+            new_step_with_default_assertions("Check Cognix prompt")
                 .add_assertion(assert_working_dir_is_present(0)),
         )
 }

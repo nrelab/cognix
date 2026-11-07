@@ -1,4 +1,4 @@
-use warpui::{AppContext, ModelHandle, ViewContext, ViewHandle};
+use cognixui::{AppContext, ModelHandle, ViewContext, ViewHandle};
 
 use crate::{
     app_state::{EnvironmentManagementPaneSnapshot, LeafContents},

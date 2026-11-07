@@ -15,7 +15,7 @@ use std::future::Future;
 use std::path::PathBuf;
 
 use async_channel::Receiver;
-use warpui::r#async::executor;
+use cognixui::r#async::executor;
 
 use crate::client::{ClientEvent, RemoteServerClient};
 use crate::setup::RemotePlatform;

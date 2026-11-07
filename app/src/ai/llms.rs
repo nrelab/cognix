@@ -4,9 +4,9 @@ use std::{
     collections::{HashMap, HashSet},
     sync::{Arc, OnceLock},
 };
-use warp_core::ui::icons::Icon;
-use warp_core::user_preferences::GetUserPreferences;
-use warpui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use cognix_core::ui::icons::Icon;
+use cognix_core::user_preferences::GetUserPreferences;
+use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 
 use crate::{
     auth::{
@@ -288,7 +288,7 @@ impl LLMInfo {
 /// The set of LLMs available for a feature.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct AvailableLLMs {
-    /// The Warp "default" LLM.
+    /// The Cognix "default" LLM.
     default_id: LLMId,
     choices: Vec<LLMInfo>,
 
@@ -802,7 +802,7 @@ impl LLMPreferences {
 
     pub fn new_choices_since_last_update(&self) -> Option<Vec<LLMInfo>> {
         self.last_update.as_ref().map(|update| {
-            // We don't want to display new choices if they are warp branded.
+            // We don't want to display new choices if they are cognix branded.
             let filter_choices: Vec<LLMInfo> = update
                 .new_choices
                 .clone()

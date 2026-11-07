@@ -1,8 +1,8 @@
 use std::time::Duration;
 
-use warp::integration_testing::terminal::util::current_shell_starter_and_version;
-use warp::terminal::shell::ShellType;
-use warp::{
+use cognix::integration_testing::terminal::util::current_shell_starter_and_version;
+use cognix::terminal::shell::ShellType;
+use cognix::{
     features::FeatureFlag,
     integration_testing::{
         clipboard::write_to_clipboard,
@@ -18,7 +18,7 @@ use warp::{
         view_getters::{single_input_view_for_tab, single_terminal_view_for_tab},
     },
 };
-use warpui::{async_assert_eq, integration::TestStep, Event};
+use cognixui::{async_assert_eq, integration::TestStep, Event};
 
 use crate::Builder;
 
@@ -188,7 +188,7 @@ pub fn test_middle_click_paste() -> Builder {
 /// Checks that the git branch prompt chip value is correctly populated.
 pub fn test_git_prompt_chips() -> Builder {
     // Note that we can't use the OUT_DIR for the temp directory
-    // here because that would put us in the warp repo. We need to
+    // here because that would put us in the cognix repo. We need to
     // be in a place in the filesystem that's not already a git repo.
     new_builder()
         .set_should_run_test(|| {

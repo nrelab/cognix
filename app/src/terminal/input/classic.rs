@@ -18,12 +18,12 @@ use crate::{
         },
         settings::{SpacingMode, TerminalSettings},
         view::TerminalAction,
-        warpify::render::{render_subshell_flag, render_subshell_flag_pole},
+        cognixify::render::{render_subshell_flag, render_subshell_flag_pole},
     },
 };
 use pathfinder_geometry::vector::vec2f;
 use settings::Setting;
-use warpui::{
+use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, Clipped, Container, DropTarget, Element, Empty, Flex,
         Hoverable, OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds,

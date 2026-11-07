@@ -12,7 +12,7 @@ use strum_macros::EnumIter;
 use version_compare::Version;
 
 use crate::builder::cargo_target_tmpdir;
-use warp::{
+use cognix::{
     integration_testing::{
         terminal::util::{
             current_shell_starter_and_version, default_histfile_directory, ExpectedOutput,
@@ -21,9 +21,9 @@ use warp::{
     },
     terminal::shell::ShellType,
 };
-use warpui::{App, WindowId};
+use cognixui::{App, WindowId};
 
-use warp::terminal::shell;
+use cognix::terminal::shell;
 
 pub fn get_input_buffer(
     app: &App,
@@ -139,7 +139,7 @@ pub fn write_rc_files_for_test<P, C>(
     }
 }
 
-/// Writes the same `rc_contents` for all possible shell types supported by Warp.
+/// Writes the same `rc_contents` for all possible shell types supported by Cognix.
 pub fn write_all_rc_files_for_test<P, C>(dir: P, rc_contents: C)
 where
     P: AsRef<Path>,

@@ -4,8 +4,8 @@ use crate::ai::agent_sdk::output::{self, TableFormat};
 use crate::ai::llms::LLMPreferences;
 use comfy_table::Cell;
 use serde::Serialize;
-use warp_cli::{model::ModelCommand, GlobalOptions};
-use warpui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
+use cognix_cli::{model::ModelCommand, GlobalOptions};
+use cognixui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
 
 /// Handle model-related CLI commands.
 pub fn run(
@@ -59,7 +59,7 @@ impl ModelCommandRunner {
     }
 }
 
-impl warpui::Entity for ModelCommandRunner {
+impl cognixui::Entity for ModelCommandRunner {
     type Event = ();
 }
 

@@ -3,7 +3,7 @@
 
 use std::path::PathBuf;
 
-use warpui::{Entity, ModelContext};
+use cognixui::{Entity, ModelContext};
 
 /// Events emitted by the ActiveFileModel.
 #[derive(Debug, Clone)]

@@ -1,5 +1,5 @@
 use ordered_float::OrderedFloat;
-use warpui::{
+use cognixui::{
     elements::{ConstrainedBox, Container, Highlight, Text},
     fonts::{Properties, Weight},
     AppContext, Element, SingletonEntity,
@@ -38,7 +38,7 @@ impl SearchItem for ExternalSecretSearchItem {
             ConstrainedBox::new(
                 self.external_secret
                     .icon()
-                    .to_warpui_icon(appearance.theme().active_ui_text_color())
+                    .to_cognixui_icon(appearance.theme().active_ui_text_color())
                     .finish(),
             )
             .with_width(ICON_SIZE)

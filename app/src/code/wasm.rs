@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 
-use warp_util::path::LineAndColumnArg;
-use warpui::{
+use cognix_util::path::LineAndColumnArg;
+use cognixui::{
     elements::{DraggableState, Empty, MouseStateHandle},
     AppContext, Element, Entity, ModelHandle, TypedActionView, View, ViewContext, ViewHandle,
 };

@@ -1,13 +1,13 @@
 use command::blocking::Command;
 use std::env;
 use std::process::Stdio;
-use warpui::integration::RERUN_EXIT_CODE;
+use cognixui::integration::RERUN_EXIT_CODE;
 
 const MAX_TEST_RUNS: usize = 10;
 
 /// Runs a single integration test.
 ///
-/// This runs the `integration` binary from the `warp` crate, passing it the
+/// This runs the `integration` binary from the `cognix` crate, passing it the
 /// name of the test to execute as the one positional argument.
 pub fn run_integration_test(name: &str) -> Result<(), String> {
     let mut keep_going = true;
@@ -23,9 +23,9 @@ pub fn run_integration_test(name: &str) -> Result<(), String> {
             k == "PATH"
                 // Propagate any Rust-related variables.
                 || k.starts_with("RUST_")
-                // Propagate any Warp-specific variables.
-                || k.starts_with("WARP_")
-                || k.starts_with("WARPUI_")
+                // Propagate any Cognix-specific variables.
+                || k.starts_with("COGNIX_")
+                || k.starts_with("COGNIXUI_")
                 // Propagate any wgpu-specific variables.
                 || k.starts_with("WGPU_")
                 // Make sure the test knows what X or Wayland server to use.
@@ -43,7 +43,7 @@ pub fn run_integration_test(name: &str) -> Result<(), String> {
             .arg(name)
             .env_clear()
             .envs(inherited_envs)
-            .env("WARP_INTEGRATION", "1")
+            .env("COGNIX_INTEGRATION", "1")
             .stdout(Stdio::inherit())
             .stderr(Stdio::inherit())
             .status()

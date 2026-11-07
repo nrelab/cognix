@@ -9,7 +9,7 @@ type EventParser = fn(&str) -> Option<CLIAgentEvent>;
 
 /// Sentinel title that identifies structured CLI agent events sent via OSC 777.
 /// The `"agent"` field in the JSON body distinguishes which agent sent it.
-pub const CLI_AGENT_NOTIFICATION_SENTINEL: &str = "warp://cli-agent";
+pub const CLI_AGENT_NOTIFICATION_SENTINEL: &str = "cognix://cli-agent";
 
 /// The event type encoded in the `"event"` field of the JSON body.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -57,8 +57,8 @@ pub struct CLIAgentEvent {
 #[cfg_attr(not(feature = "local_tty"), allow(dead_code))]
 const VERSIONED_PARSERS: &[EventParser] = &[v1::parse];
 
-/// The current CLI agent protocol version this build of Warp supports.
-/// Exported as the `WARP_CLI_AGENT_PROTOCOL_VERSION` env var on the PTY
+/// The current CLI agent protocol version this build of Cognix supports.
+/// Exported as the `COGNIX_CLI_AGENT_PROTOCOL_VERSION` env var on the PTY
 /// so plugins can negotiate a compatible payload format.
 #[cfg_attr(not(feature = "local_tty"), allow(dead_code))]
 pub const fn current_protocol_version() -> u32 {
@@ -82,7 +82,7 @@ pub fn parse_event(title: Option<&str>, body: &str) -> Option<CLIAgentEvent> {
         None => {
             log::error!(
                 "Received CLI agent event with unsupported schema version \
-                 {version}. The CLI agent plugin or Warp may need to be updated."
+                 {version}. The CLI agent plugin or Cognix may need to be updated."
             );
             None
         }

@@ -1,5 +1,5 @@
-use warp_core::ui::appearance::Appearance;
-use warpui::{platform::WindowStyle, App};
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{platform::WindowStyle, App};
 
 use crate::{
     ai::blocklist::BlocklistAIHistoryModel,
@@ -51,7 +51,7 @@ fn initialize_app(app: &mut App) {
 }
 
 #[test]
-fn test_warp_drive_sections_with_no_team() {
+fn test_cognix_drive_sections_with_no_team() {
     App::test(Assets, |mut app| async move {
         initialize_app(&mut app);
 

@@ -1,4 +1,4 @@
-use warpui::{AppContext, EntityId, ModelHandle, SingletonEntity};
+use cognixui::{AppContext, EntityId, ModelHandle, SingletonEntity};
 
 use crate::{
     ai::{

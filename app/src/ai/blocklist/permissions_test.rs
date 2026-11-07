@@ -2,10 +2,10 @@ use std::path::PathBuf;
 
 use uuid::Uuid;
 
-use warp_util::path::EscapeChar;
-use warpui::{App, EntityId, ModelHandle};
+use cognix_util::path::EscapeChar;
+use cognixui::{App, EntityId, ModelHandle};
 
-use warp_core::execution_mode::ExecutionMode;
+use cognix_core::execution_mode::ExecutionMode;
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
@@ -482,7 +482,7 @@ fn test_can_write_files_mcp_config_always_denied() {
 
         let mcp_config_paths = vec![
             PathBuf::from("/project/.mcp.json"),
-            PathBuf::from("/project/.warp/.mcp.json"),
+            PathBuf::from("/project/.cognix/.mcp.json"),
             PathBuf::from("/project/.codex/config.toml"),
         ];
 

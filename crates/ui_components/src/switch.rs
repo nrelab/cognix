@@ -1,7 +1,7 @@
 use std::sync::LazyLock;
 
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{
     elements::{MouseStateHandle, Rect},
     prelude::{stack::*, *},
 };

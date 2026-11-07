@@ -1,7 +1,7 @@
 use futures_util::stream::AbortHandle;
 use pathfinder_geometry::vector::vec2f;
 use std::path::PathBuf;
-use warpui::{
+use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex,
         MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, Radius,
@@ -42,7 +42,7 @@ pub(super) const INDENT_MARGIN: f32 = 22.;
 pub(super) const BASE_INDENT: f32 = 30.;
 
 const FILE_TYPE_DOCS_URL: &str =
-    "https://docs.warp.dev/knowledge-and-collaboration/warp-drive#import-and-export";
+    "https://docs.cognix.dev/knowledge-and-collaboration/cognix-drive#import-and-export";
 const SUPPORTED_FILE_TYPE_TEXT: &str = "md, yaml, yml";
 
 #[cfg(test)]
@@ -90,7 +90,7 @@ pub enum ImportModalBodyEvent {
 pub struct ImportModalBody {
     state: ImportState,
     in_progress_handle: Option<AbortHandle>,
-    // Queue to handle requests to upload objects to warp drive.
+    // Queue to handle requests to upload objects to cognix drive.
     // All updates should go through the queue rather than calling
     // UpdateManager directly.
     import_queue: ModelHandle<ImportQueue>,
@@ -394,7 +394,7 @@ impl ImportModalBody {
                 TextAndIcon::new(
                     TextAndIconAlignment::TextFirst,
                     "Choose files...".to_string(),
-                    Icon::Import.to_warpui_icon(
+                    Icon::Import.to_cognixui_icon(
                         appearance
                             .theme()
                             .main_text_color(appearance.theme().accent_button_color()),

@@ -1,6 +1,6 @@
 use crate::settings::{AISettings, AISettingsChangedEvent};
 use settings::Setting;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 
 /// Tracks whether the BYO LLM auth banner (e.g., AWS Bedrock login) has been dismissed.
 ///

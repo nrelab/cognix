@@ -1,5 +1,5 @@
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use cognix_editor::editor::NavigationKey;
+use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, Flex, ParentElement, SavePosition, Shrinkable, Stack,
     },

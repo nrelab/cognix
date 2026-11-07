@@ -6,15 +6,15 @@ use std::collections::HashMap;
 use std::ops::Range;
 use string_offset::CharOffset;
 #[cfg(not(target_family = "wasm"))]
-use warp_core::channel::ChannelState;
-use warp_core::send_telemetry_from_ctx;
+use cognix_core::channel::ChannelState;
+use cognix_core::send_telemetry_from_ctx;
 #[cfg(not(target_family = "wasm"))]
-use warp_editor::content::find::SearchConfig;
+use cognix_editor::content::find::SearchConfig;
 #[cfg(not(target_family = "wasm"))]
-use warp_editor::search::Searcher;
-use warp_editor::search::{RestorableSearchResults, SelectedResult};
-use warpui::WeakViewHandle;
-use warpui::{
+use cognix_editor::search::Searcher;
+use cognix_editor::search::{RestorableSearchResults, SelectedResult};
+use cognixui::WeakViewHandle;
+use cognixui::{
     r#async::SpawnedFutureHandle, AppContext, Entity, EntityId, ModelContext, ViewHandle,
 };
 
@@ -222,7 +222,7 @@ impl CodeReviewFindModel {
         &self,
         editor_id: EntityId,
         ctx: &AppContext,
-    ) -> Option<warpui::ModelHandle<Searcher>> {
+    ) -> Option<cognixui::ModelHandle<Searcher>> {
         let view = self.weak_view_handle.upgrade(ctx);
         if view.is_none() {
             if ChannelState::enable_debug_features() {

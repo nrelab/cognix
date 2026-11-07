@@ -15,11 +15,11 @@ use std::collections::VecDeque;
 use std::fmt::Write;
 use std::iter;
 use std::{io, ops::Range};
-use warpui::text::point::Point;
-use warpui::{AppContext, ModelContext, ModelHandle};
+use cognixui::text::point::Point;
+use cognixui::{AppContext, ModelContext, ModelHandle};
 
 use string_offset::CharOffset;
-use warpui::elements::{ListIndentLevel, ListNumbering};
+use cognixui::elements::{ListIndentLevel, ListNumbering};
 
 use crate::content::anchor::AnchorSide;
 use crate::content::selection_model::BufferSelectionModel;
@@ -41,7 +41,7 @@ use super::{
 /// A Markdown format to serialize a [`Buffer`] into.
 #[derive(Clone, Copy)]
 pub enum MarkdownStyle<'a> {
-    /// The internal Markdown format used in Warp Drive. References are normalized, so the Markdown
+    /// The internal Markdown format used in Cognix Drive. References are normalized, so the Markdown
     /// only refers to other objects by their IDs, with no other data.
     Internal,
     /// A Markdown format suitable for external use. If an [`AppContext`] is set, it may be used to

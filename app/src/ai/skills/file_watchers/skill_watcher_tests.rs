@@ -10,8 +10,8 @@ use repo_metadata::{
     TargetFile,
 };
 use tempfile::TempDir;
-use warp_util::standardized_path::StandardizedPath;
-use warpui::App;
+use cognix_util::standardized_path::StandardizedPath;
+use cognixui::App;
 
 use super::SkillWatcher;
 

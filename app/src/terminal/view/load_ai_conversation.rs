@@ -2,8 +2,8 @@ use std::path::Path;
 use std::rc::Rc;
 use std::sync::Arc;
 use vec1::Vec1;
-use warp_core::features::FeatureFlag;
-use warpui::{EntityId, ViewContext};
+use cognix_core::features::FeatureFlag;
+use cognixui::{EntityId, ViewContext};
 
 use super::blocklist_filter::exchanges_for_blocklist;
 use crate::ai::blocklist::agent_view::{
@@ -62,10 +62,10 @@ use crate::{
         },
     },
 };
-use warp_core::channel::ChannelState;
-use warp_multi_agent_api as api;
-use warpui::units::IntoPixels;
-use warpui::{ModelHandle, SingletonEntity};
+use cognix_core::channel::ChannelState;
+use cognix_multi_agent_api as api;
+use cognixui::units::IntoPixels;
+use cognixui::{ModelHandle, SingletonEntity};
 
 /// Describes restore-context setup state for directory reconciliation and hinting.
 #[derive(Clone, Debug, PartialEq, Eq)]

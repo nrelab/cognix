@@ -6,7 +6,7 @@ use api::client_action as api_client_action;
 use api::response_event as api_response_event;
 use api::response_event::stream_finished as stream_finished_event;
 use std::collections::HashMap;
-use warp_multi_agent_api::{self as api, ResponseEvent};
+use cognix_multi_agent_api::{self as api, ResponseEvent};
 
 // Reconstructs all response events from conversations for use in session sharing.
 // These messages are used to replay conversations as if they were happening live.
@@ -170,7 +170,7 @@ fn create_finished_event_from_conversation(conversation: &AIConversation) -> Res
             warp_token_usage: conversation
                 .token_usage()
                 .iter()
-                .filter_map(|u| u.to_proto_warp_usage())
+                .filter_map(|u| u.to_proto_cognix_usage())
                 .collect(),
             byok_token_usage: conversation
                 .token_usage()

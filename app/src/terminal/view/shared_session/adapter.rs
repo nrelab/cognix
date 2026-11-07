@@ -21,9 +21,9 @@ use session_sharing_protocol::common::{ParticipantId, ParticipantList, Role, Ses
 use session_sharing_protocol::sharer::SessionSourceType;
 use std::collections::{HashMap, HashSet};
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warpui::{elements::MouseStateHandle, ModelHandle, ViewContext, ViewHandle};
-use warpui::{AppContext, Element};
+use cognix_core::features::FeatureFlag;
+use cognixui::{elements::MouseStateHandle, ModelHandle, ViewContext, ViewHandle};
+use cognixui::{AppContext, Element};
 
 /// The kind of shared session this is.
 pub enum Kind {

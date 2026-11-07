@@ -1,5 +1,5 @@
-use warp_core::{features::FeatureFlag, send_telemetry_from_ctx, ui::appearance::Appearance};
-use warpui::{keymap::Keystroke, EntityId, SingletonEntity, ViewContext};
+use cognix_core::{features::FeatureFlag, send_telemetry_from_ctx, ui::appearance::Appearance};
+use cognixui::{keymap::Keystroke, EntityId, SingletonEntity, ViewContext};
 
 use crate::{
     ai::{

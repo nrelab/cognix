@@ -1,9 +1,9 @@
 use super::auth_manager::AuthManager;
 use crate::{appearance::Appearance, auth::login_error_modal::LoginErrorModal};
-use warpui::elements::{Align, MouseStateHandle, Shrinkable};
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use cognixui::elements::{Align, MouseStateHandle, Shrinkable};
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use cognixui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
 
 #[derive(Debug)]
 pub enum NeedsSsoLinkViewAction {
@@ -76,7 +76,7 @@ impl View for NeedsSsoLinkView {
 
         LoginErrorModal::new(app)
             .with_header("Your organization has enabled SSO for your account")
-            .with_detail("Click the button below to link your Warp account to your SSO provider.")
+            .with_detail("Click the button below to link your Cognix account to your SSO provider.")
             .with_action(link_sso_button)
             .build()
             .finish()

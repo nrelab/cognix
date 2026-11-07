@@ -1,5 +1,5 @@
 use crate::ai::agent::SuggestedLoggingId;
-use crate::drive::items::{ai_fact::WarpDriveAIFact, WarpDriveItem};
+use crate::drive::items::{ai_fact::CognixDriveAIFact, CognixDriveItem};
 use crate::server::{ids::SyncId, sync_queue::QueueItem};
 use crate::{
     cloud_object::{
@@ -13,7 +13,7 @@ use crate::{
     drive::CloudObjectTypeAndId,
 };
 use serde::{Deserialize, Serialize};
-use warp_core::ui::appearance::Appearance;
+use cognix_core::ui::appearance::Appearance;
 
 pub mod manager;
 pub mod view;
@@ -101,17 +101,17 @@ impl StringModel for AIFact {
         None
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         false
     }
 
-    fn to_warp_drive_item(
+    fn to_cognix_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         ai_fact: &CloudAIFact,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveAIFact::new(
+    ) -> Option<Box<dyn CognixDriveItem>> {
+        Some(Box::new(CognixDriveAIFact::new(
             CloudObjectTypeAndId::GenericStringObject {
                 object_type: GenericStringObjectFormat::Json(JsonObjectType::AIFact),
                 id,

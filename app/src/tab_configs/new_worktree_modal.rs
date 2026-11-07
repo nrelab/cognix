@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use warpui::{
+use cognixui::{
     elements::{
         Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Element,
         Fill as ElementFill, Flex, MainAxisAlignment, MainAxisSize, MouseStateHandle, Padding,
@@ -19,7 +19,7 @@ use warpui::{
 
 /// Registers keybindings for the new-worktree modal (ESC to close).
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
     app.register_fixed_bindings(vec![FixedBinding::new(
         "escape",
         NewWorktreeModalAction::Escape,
@@ -27,7 +27,7 @@ pub fn init(app: &mut AppContext) {
     )]);
 }
 
-use warp_core::ui::theme::color::internal_colors;
+use cognix_core::ui::theme::color::internal_colors;
 
 use crate::{
     ai::persisted_workspace::PersistedWorkspace,
@@ -364,8 +364,8 @@ impl View for NewWorktreeModal {
 
             // X close icon
             let close_icon = ConstrainedBox::new(
-                warp_core::ui::Icon::X
-                    .to_warpui_icon(theme.sub_text_color(theme.background()))
+                cognix_core::ui::Icon::X
+                    .to_cognixui_icon(theme.sub_text_color(theme.background()))
                     .finish(),
             )
             .with_width(CLOSE_ICON_SIZE)
@@ -379,7 +379,7 @@ impl View for NewWorktreeModal {
                 .with_child(esc_badge)
                 .finish();
 
-            let close_hoverable = warpui::elements::Hoverable::new(
+            let close_hoverable = cognixui::elements::Hoverable::new(
                 self.close_button_mouse_state.clone(),
                 move |_state| close_button,
             )

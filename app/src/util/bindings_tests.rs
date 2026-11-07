@@ -1,5 +1,5 @@
-use warpui::platform::OperatingSystem;
-use warpui::{
+use cognixui::platform::OperatingSystem;
+use cognixui::{
     keymap::{EditableBinding, Keystroke, Trigger},
     App,
 };

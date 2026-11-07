@@ -13,11 +13,11 @@ use instant::Instant;
 use std::sync::Arc;
 
 use crate::remote_server::manager::RemoteServerManager;
-use warpui::SingletonEntity;
-use warpui::{Entity, ModelContext, ModelHandle};
+use cognixui::SingletonEntity;
+use cognixui::{Entity, ModelContext, ModelHandle};
 
 use super::event::SshLoginStatus;
-use super::model::ansi::{FinishUpdateValue, WarpificationUnavailableReason};
+use super::model::ansi::{FinishUpdateValue, CognixificationUnavailableReason};
 use super::model::block::BlockId;
 use super::model::completions::ShellCompletion;
 use super::model::terminal_model::{ExitReason, TmuxControlModeContext, TmuxInstallationState};
@@ -196,7 +196,7 @@ impl ModelEventDispatcher {
                 context,
             }) => {
                 {
-                    if let Some(TmuxControlModeContext::WarpInitiatedForSsh(control_mode)) = context
+                    if let Some(TmuxControlModeContext::CognixInitiatedForSsh(control_mode)) = context
                     {
                         let duration_ms = Instant::now()
                             .duration_since(control_mode.start_time)
@@ -204,7 +204,7 @@ impl ModelEventDispatcher {
                             // Clip large durations to u64::MAX
                             .min(u64::MAX as u128) as u64;
                         send_telemetry_from_ctx!(
-                            TelemetryEvent::SshTmuxWarpificationSuccess {
+                            TelemetryEvent::SshTmuxCognixificationSuccess {
                                 duration_ms,
                                 tmux_installation: control_mode.tmux_installation,
                             },
@@ -256,8 +256,8 @@ impl ModelEventDispatcher {
             Event::DetectedEndOfSshLogin(check_type) => {
                 ModelEvent::DetectedEndOfSshLogin(check_type)
             }
-            Event::RemoteWarpificationIsUnavailable(reason) => {
-                ModelEvent::RemoteWarpificationIsUnavailable(reason)
+            Event::RemoteCognixificationIsUnavailable(reason) => {
+                ModelEvent::RemoteCognixificationIsUnavailable(reason)
             }
             Event::SshTmuxInstaller(tmux_installation) => {
                 ModelEvent::SshTmuxInstaller(tmux_installation)
@@ -426,9 +426,9 @@ pub enum ModelEvent {
     },
     /// Sent when a line of output from an interactive ssh session indicates login is complete.
     /// A line such as "Last login: Wed Oct 30" for example indicates login is complete. This is
-    /// useful for detecting when an ssh session becomes ready for warpification.
+    /// useful for detecting when an ssh session becomes ready for cognixification.
     DetectedEndOfSshLogin(SshLoginStatus),
-    RemoteWarpificationIsUnavailable(WarpificationUnavailableReason),
+    RemoteCognixificationIsUnavailable(CognixificationUnavailableReason),
     SshTmuxInstaller(TmuxInstallationState),
     TmuxInstallFailed {
         line: String,
@@ -440,8 +440,8 @@ pub enum ModelEvent {
     InitSsh(InitSshEvent),
     /// Emitted when the active block's prompt has been updated.
     PromptUpdated,
-    /// Emitted when the honor_ps1 state of the shell is out-of-sync with Warp's settings.
-    /// This can happen in cases such as when the user changes between PS1 and Warp prompt inside
+    /// Emitted when the honor_ps1 state of the shell is out-of-sync with Cognix's settings.
+    /// This can happen in cases such as when the user changes between PS1 and Cognix prompt inside
     /// of an SSH session (the bindkeys are sent to the SSH session but not the local session, so
     /// they are out-of-sync when the user exits SSH).
     HonorPS1OutOfSync,

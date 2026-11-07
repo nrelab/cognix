@@ -4,7 +4,7 @@
 # Format follows CODEOWNERS: <pattern> @owner1 @owner2 ...
 #
 # Used by the triage-new-issues workflow to assign SMEs.
-# Source of truth: warpdotdev/feedback-triage-bot ownership-areas.md
+# Source of truth: nrelab/feedback-triage-bot ownership-areas.md
 
 # Default fallback: FA leads are tagged when no more specific path matches
 / @vorporeal @alokedesai @zachbai @bnavetta @szgupta @jefflloyd
@@ -13,7 +13,7 @@
 # Team: App
 ###########################################################################
 
-# Conversation and session restoration / cloud-synced conversations / planning / Warp Drive
+# Conversation and session restoration / cloud-synced conversations / planning / Cognix Drive
 /app/src/ai/agent_conversations_model.rs @seemeroland
 /app/src/ai/persisted_workspace.rs @seemeroland
 /app/src/ai/restored_conversations.rs @seemeroland
@@ -45,7 +45,7 @@
 /app/src/terminal/input/ @vkodithala
 /app/src/pane_group/ @vkodithala
 /app/src/tab.rs @vkodithala
-/crates/warp_ripgrep/ @vkodithala @moirahuang @szgupta
+/crates/cognix_ripgrep/ @vkodithala @moirahuang @szgupta
 
 # Command palette
 /app/src/command_palette.rs @acarl005
@@ -86,14 +86,14 @@
 /crates/input_classifier/ @harryalbert
 /crates/natural_language_detection/ @harryalbert
 
-# Blocklist UX / modality and cloud mode UI / shell compatibility / completions and bootstrap / warpifying
+# Blocklist UX / modality and cloud mode UI / shell compatibility / completions and bootstrap / cognixifying
 /app/src/ai/blocklist/ @zachbai
 /app/src/root_view.rs @zachbai
 /app/src/terminal/bootstrap.rs @zachbai
-/app/src/terminal/warpify/ @zachbai
-/app/src/settings_view/warpify_page.rs @zachbai
+/app/src/terminal/cognixify/ @zachbai
+/app/src/settings_view/cognixify_page.rs @zachbai
 /app/assets/bundled/bootstrap/ @zachbai
-/crates/warp_completer/ @zachbai @szgupta @alokedesai
+/crates/cognix_completer/ @zachbai @szgupta @alokedesai
 
 # Agent mode
 /app/src/ai/agent/ @zachbai
@@ -107,9 +107,9 @@
 /crates/voice_input/ @Advait-M
 
 # UI framework
-/crates/warpui/ @vorporeal
-/crates/warpui_core/ @vorporeal
-/crates/warpui_extras/ @vorporeal
+/crates/cognixui/ @vorporeal
+/crates/cognixui_core/ @vorporeal
+/crates/cognixui_extras/ @vorporeal
 /crates/ui_components/ @vorporeal
 
 # Conversation rewind / CLI agent UI / macOS/Linux platform issues / performance issues
@@ -135,7 +135,7 @@
 /crates/graphql/ @ianhodge
 /crates/http_client/ @ianhodge
 /crates/http_server/ @ianhodge
-/crates/warp_server_client/ @ianhodge
+/crates/cognix_server_client/ @ianhodge
 
 # Session sharing
 /app/src/terminal/shared_session/ @abhishekp106 @szgupta @bnavetta
@@ -166,17 +166,17 @@
 # Self-hosted agents
 /crates/remote_server/ @kevinyang372 @alokedesai
 
-# Scheduled agents / Warp CLI / cloud and ambient agents
+# Scheduled agents / Cognix CLI / cloud and ambient agents
 /app/src/ai/ambient_agents/ @bnavetta
 /app/src/terminal/view/ambient_agent/ @bnavetta
 /app/src/workspace/view/launch_modal/oz_launch.rs @bnavetta
-/crates/warp_cli/ @bnavetta @ianhodge
+/crates/cognix_cli/ @bnavetta @ianhodge
 
 # Agent SDK and platform crates
 /app/src/ai/agent_sdk/ @bnavetta @ianhodge
 /crates/isolation_platform/ @bnavetta @ianhodge
 /crates/managed_secrets/ @bnavetta @ianhodge
-/crates/warp_web_event_bus/ @bnavetta @ianhodge
+/crates/cognix_web_event_bus/ @bnavetta @ianhodge
 
-# Shell completions in the Warp CLI
-/crates/warp_cli/src/completions.rs @zachbai @szgupta @alokedesai
+# Shell completions in the Cognix CLI
+/crates/cognix_cli/src/completions.rs @zachbai @szgupta @alokedesai

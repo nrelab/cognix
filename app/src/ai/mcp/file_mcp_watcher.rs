@@ -11,16 +11,16 @@ use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 use std::pin::Pin;
 use std::sync::LazyLock;
-use warp_core::safe_warn;
-use warpui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use cognix_core::safe_warn;
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 use watcher::HomeDirectoryWatcherEvent;
 
 use crate::ai::mcp::{
     home_config_file_path, parsing::normalize_codex_toml_to_json, MCPProvider,
     ParsedTemplatableMCPServerResult,
 };
-use crate::warp_managed_paths_watcher::{
-    warp_managed_mcp_config_path, WarpManagedPathsWatcher, WarpManagedPathsWatcherEvent,
+use crate::cognix_managed_paths_watcher::{
+    cognix_managed_mcp_config_path, CognixManagedPathsWatcher, CognixManagedPathsWatcherEvent,
 };
 use crate::HomeDirectoryWatcher;
 use strum::IntoEnumIterator;
@@ -29,13 +29,13 @@ static ENV_VAR_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"\$\{([^}]+)\}").expect("Regex is valid"));
 
 /// Matches home config paths that are exactly one directory deep (e.g. `.codex/config.toml`,
-/// `.warp/.mcp.json`), capturing the parent directory component.
+/// `.cognix/.mcp.json`), capturing the parent directory component.
 static HOME_SUBDIR_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"^([^/]+)/[^/]+$").expect("Regex is valid"));
 
 /// Returns the subdirectory under the home directory that needs its own [`DirectoryWatcher`],
 /// inferred from the provider's home config path. Matches paths that are exactly one directory
-/// deep (e.g. `.codex/config.toml` → `.codex`, `.warp/.mcp.json` → `.warp`). Returns `None`
+/// deep (e.g. `.codex/config.toml` → `.codex`, `.cognix/.mcp.json` → `.cognix`). Returns `None`
 /// when the config file lives directly in the home dir (e.g. `.claude.json`) and is already
 /// covered by `HomeDirectoryWatcher`.
 fn home_subdir_to_watch(provider: MCPProvider) -> Option<PathBuf> {
@@ -173,23 +173,23 @@ impl FileMCPWatcher {
         ctx.subscribe_to_model(&HomeDirectoryWatcher::handle(ctx), |me, event, ctx| {
             me.handle_home_directory_watcher_event(event, ctx);
         });
-        ctx.subscribe_to_model(&WarpManagedPathsWatcher::handle(ctx), |me, event, ctx| {
-            me.handle_warp_managed_paths_event(event, ctx);
+        ctx.subscribe_to_model(&CognixManagedPathsWatcher::handle(ctx), |me, event, ctx| {
+            me.handle_cognix_managed_paths_event(event, ctx);
         });
 
         let mut home_provider_watchers = HashMap::new();
-        if let Some(mcp_config_path) = warp_managed_mcp_config_path() {
+        if let Some(mcp_config_path) = cognix_managed_mcp_config_path() {
             Self::spawn_config_parse(
                 mcp_config_path.config_path,
                 mcp_config_path.root_path,
-                MCPProvider::Warp,
+                MCPProvider::Cognix,
                 ctx,
             );
         }
 
         if let Some(home_dir) = dirs::home_dir() {
             for provider in MCPProvider::iter() {
-                if provider == MCPProvider::Warp {
+                if provider == MCPProvider::Cognix {
                     continue;
                 }
                 match home_subdir_to_watch(provider) {
@@ -286,7 +286,7 @@ impl FileMCPWatcher {
         }
 
         let Ok(std_path) =
-            warp_util::standardized_path::StandardizedPath::from_local_canonicalized(subdir_path)
+            cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(subdir_path)
         else {
             return;
         };
@@ -347,7 +347,7 @@ impl FileMCPWatcher {
         };
 
         for provider in MCPProvider::iter() {
-            if provider == MCPProvider::Warp {
+            if provider == MCPProvider::Cognix {
                 continue;
             }
             match home_subdir_to_watch(provider) {
@@ -416,13 +416,13 @@ impl FileMCPWatcher {
         }
     }
 
-    fn handle_warp_managed_paths_event(
+    fn handle_cognix_managed_paths_event(
         &mut self,
-        event: &WarpManagedPathsWatcherEvent,
+        event: &CognixManagedPathsWatcherEvent,
         ctx: &mut ModelContext<Self>,
     ) {
-        let WarpManagedPathsWatcherEvent::FilesChanged(update) = event;
-        let Some(mcp_config_path) = warp_managed_mcp_config_path() else {
+        let CognixManagedPathsWatcherEvent::FilesChanged(update) = event;
+        let Some(mcp_config_path) = cognix_managed_mcp_config_path() else {
             return;
         };
         let config_path = mcp_config_path.config_path;
@@ -440,7 +440,7 @@ impl FileMCPWatcher {
             || update.moved.keys().any(|target| target.path == config_path);
         self.handle_single_config_update(
             mcp_config_path.root_path,
-            MCPProvider::Warp,
+            MCPProvider::Cognix,
             config_path,
             was_deleted,
             was_added,
@@ -679,7 +679,7 @@ async fn parse_mcp_config_file(
                 return vec![];
             }
         },
-        MCPProvider::Claude | MCPProvider::Warp | MCPProvider::Agents => file_contents,
+        MCPProvider::Claude | MCPProvider::Cognix | MCPProvider::Agents => file_contents,
     };
 
     let resolved_contents = match substitute_env_vars(&json) {

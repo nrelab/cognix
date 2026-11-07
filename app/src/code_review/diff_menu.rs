@@ -3,9 +3,9 @@
 use std::cmp;
 
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
-use warp_core::ui::theme::Fill;
-use warp_editor::editor::NavigationKey;
-use warpui::{
+use cognix_core::ui::theme::Fill;
+use cognix_editor::editor::NavigationKey;
+use cognixui::{
     color::ColorU,
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss,
@@ -334,7 +334,7 @@ impl CodeReviewDiffMenu {
 
                         let check_slot: Box<dyn Element> = if target.is_selected {
                             ConstrainedBox::new(
-                                Icon::Check.to_warpui_icon(Fill::Solid(text_color)).finish(),
+                                Icon::Check.to_cognixui_icon(Fill::Solid(text_color)).finish(),
                             )
                             .with_width(CHECK_SLOT_SIZE)
                             .with_height(CHECK_SLOT_SIZE)
@@ -415,7 +415,7 @@ impl CodeReviewDiffMenu {
             ScrollbarWidth::None,
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .with_padding_end(0.)
         .with_padding_start(0.);

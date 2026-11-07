@@ -1,7 +1,7 @@
 use crate::{
     settings::{
         AISettings, AISettingsChangedEvent, InputSettings, InputSettingsChangedEvent,
-        WarpPromptSeparator,
+        CognixPromptSeparator,
     },
     terminal::session_settings::{SessionSettings, SessionSettingsChangedEvent},
 };
@@ -10,7 +10,7 @@ pub use super::ContextChipKind;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use settings::Setting as _;
-use warpui::{Entity, GetSingletonModelHandle, ModelContext, SingletonEntity, UpdateModel};
+use cognixui::{Entity, GetSingletonModelHandle, ModelContext, SingletonEntity, UpdateModel};
 
 #[cfg(test)]
 #[path = "prompt_tests.rs"]
@@ -97,9 +97,9 @@ pub struct PromptConfiguration {
 
     #[schemars(description = "Whether the prompt is displayed on the same line as the input.")]
     same_line_prompt_enabled: bool,
-    /// The separator to use as a trailing character at the end of Warp prompt, if any.
+    /// The separator to use as a trailing character at the end of Cognix prompt, if any.
     #[schemars(description = "Trailing separator character for the prompt.")]
-    separator: WarpPromptSeparator,
+    separator: CognixPromptSeparator,
 }
 
 #[derive(
@@ -139,9 +139,9 @@ impl PromptSelection {
         }
     }
 
-    pub fn separator(&self) -> WarpPromptSeparator {
+    pub fn separator(&self) -> CognixPromptSeparator {
         match self {
-            PromptSelection::Default => WarpPromptSeparator::None,
+            PromptSelection::Default => CognixPromptSeparator::None,
             PromptSelection::CustomChipSelection(config) => config.separator(),
         }
     }
@@ -178,7 +178,7 @@ impl Prompt {
         &mut self,
         chips: I,
         same_line_prompt_enabled: bool,
-        separator: WarpPromptSeparator,
+        separator: CognixPromptSeparator,
         ctx: &mut ModelContext<Self>,
     ) -> anyhow::Result<()>
     where
@@ -196,7 +196,7 @@ impl Prompt {
         })
     }
 
-    /// Reset to the default Warp prompt.
+    /// Reset to the default Cognix prompt.
     pub fn reset<C: UpdateModel + GetSingletonModelHandle>(
         &mut self,
         ctx: &mut C,
@@ -239,20 +239,20 @@ impl Prompt {
     pub fn mock_with(
         chips: impl IntoIterator<Item = ContextChipKind>,
         same_line_prompt_enabled: bool,
-        separator: WarpPromptSeparator,
+        separator: CognixPromptSeparator,
     ) -> Self {
         Self {
             config: PromptConfiguration::from_chips(chips, same_line_prompt_enabled, separator),
         }
     }
 
-    /// Wehther same line prompt is enabled for Warp prompt.
+    /// Wehther same line prompt is enabled for Cognix prompt.
     pub fn same_line_prompt_enabled(&self) -> bool {
         self.config.same_line_prompt_enabled
     }
 
-    /// The separator to be used for the Warp prompt.
-    pub fn separator(&self) -> WarpPromptSeparator {
+    /// The separator to be used for the Cognix prompt.
+    pub fn separator(&self) -> CognixPromptSeparator {
         self.config.separator
     }
 
@@ -317,7 +317,7 @@ impl Entity for Prompt {
 impl SingletonEntity for Prompt {}
 
 impl PromptConfiguration {
-    /// The default Warp prompt, synthesized from legacy prompt settings.
+    /// The default Cognix prompt, synthesized from legacy prompt settings.
     /// The order of chips is important and would affect a lot of users if rearranged.
     pub fn default_prompt() -> Self {
         Self::default_prompt_with_pr_chip_suppressed(false)
@@ -341,13 +341,13 @@ impl PromptConfiguration {
             chips.push(ContextChipKind::GithubPullRequest);
         }
 
-        Self::from_chips(chips, false, WarpPromptSeparator::None)
+        Self::from_chips(chips, false, CognixPromptSeparator::None)
     }
 
     pub fn from_chips(
         chips: impl IntoIterator<Item = ContextChipKind>,
         same_line_prompt_enabled: bool,
-        separator: WarpPromptSeparator,
+        separator: CognixPromptSeparator,
     ) -> Self {
         Self {
             chips: chips
@@ -401,7 +401,7 @@ impl PromptConfiguration {
         self.same_line_prompt_enabled
     }
 
-    pub fn separator(&self) -> WarpPromptSeparator {
+    pub fn separator(&self) -> CognixPromptSeparator {
         self.separator
     }
 

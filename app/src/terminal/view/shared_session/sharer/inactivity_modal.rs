@@ -2,16 +2,16 @@ use std::time::Duration;
 
 use crate::modal::Modal;
 use crate::ui_components::blended_colors;
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::elements::{
     ChildView, Container, CrossAxisAlignment, Flex, MouseStateHandle, ParentElement, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::r#async::Timer;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use warpui::{
+use cognixui::fonts::{Properties, Weight};
+use cognixui::platform::Cursor;
+use cognixui::r#async::Timer;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
 

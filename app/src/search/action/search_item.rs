@@ -1,5 +1,5 @@
 use crate::appearance::Appearance;
-use crate::drive::cloud_object_styling::warp_drive_icon_color;
+use crate::drive::cloud_object_styling::cognix_drive_icon_color;
 use crate::drive::DriveObjectType;
 use crate::features::FeatureFlag;
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
@@ -14,13 +14,13 @@ use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
 use pathfinder_color::ColorU;
 use std::sync::Arc;
-use warpui::elements::{
+use cognixui::elements::{
     Align, ConstrainedBox, Container, Flex, Highlight, ParentElement, Shrinkable, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::keymap::{DescriptionContext, Keystroke};
-use warpui::ui_components::components::UiComponent;
-use warpui::{AppContext, Element, SingletonEntity};
+use cognixui::fonts::{Properties, Weight};
+use cognixui::keymap::{DescriptionContext, Keystroke};
+use cognixui::ui_components::components::UiComponent;
+use cognixui::{AppContext, Element, SingletonEntity};
 
 /// A matched binding from a search query.
 #[derive(Debug)]
@@ -180,7 +180,7 @@ impl SearchItemIcon for BindingGroup {
     fn icon(&self) -> Icon {
         match self {
             Self::Settings => Icon::Gear,
-            Self::WarpAi => {
+            Self::CognixAi => {
                 if !FeatureFlag::AgentMode.is_enabled() {
                     Icon::AiAssistant
                 } else {
@@ -210,19 +210,19 @@ impl SearchItemIcon for BindingGroup {
             | Self::Folders
             | Self::Terminal
             | Self::Notifications => appearance.theme().foreground().into_solid(),
-            Self::WarpAi if !FeatureFlag::AgentMode.is_enabled() => {
-                ColorU::from_u32(colors::WARP_AI)
+            Self::CognixAi if !FeatureFlag::AgentMode.is_enabled() => {
+                ColorU::from_u32(colors::COGNIX_AI)
             }
-            Self::WarpAi => appearance.theme().foreground().into_solid(),
-            Self::Workflow => warp_drive_icon_color(appearance, DriveObjectType::Workflow),
-            Self::Notebooks => warp_drive_icon_color(
+            Self::CognixAi => appearance.theme().foreground().into_solid(),
+            Self::Workflow => cognix_drive_icon_color(appearance, DriveObjectType::Workflow),
+            Self::Notebooks => cognix_drive_icon_color(
                 appearance,
                 DriveObjectType::Notebook {
                     is_ai_document: false,
                 },
             ),
             Self::EnvVarCollection => {
-                warp_drive_icon_color(appearance, DriveObjectType::EnvVarCollection)
+                cognix_drive_icon_color(appearance, DriveObjectType::EnvVarCollection)
             }
         }
     }

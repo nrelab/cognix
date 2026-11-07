@@ -1,12 +1,12 @@
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
-use warp_workflows;
+use cognix_workflows;
 
 use crate::{
     cloud_object::model::generic_string_model::GenericStringObjectId, server::ids::SyncId,
 };
 
-/// Workflow model to be used inside of `warp-internal`
+/// Workflow model to be used inside of `cognix-internal`
 #[derive(Clone, Debug, Serialize, Deserialize, Eq, PartialEq, Hash)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
@@ -37,7 +37,7 @@ pub enum Workflow {
         author: Option<String>,
         author_url: Option<String>,
         #[serde(default)]
-        shells: Vec<warp_workflows::Shell>,
+        shells: Vec<cognix_workflows::Shell>,
         #[serde(default)]
         environment_variables: Option<SyncId>,
     },
@@ -113,7 +113,7 @@ impl Workflow {
         }
     }
 
-    pub fn shells(&self) -> Option<&Vec<warp_workflows::Shell>> {
+    pub fn shells(&self) -> Option<&Vec<cognix_workflows::Shell>> {
         match self {
             Self::Command { shells, .. } => Some(shells),
             _ => None,
@@ -263,10 +263,10 @@ impl Workflow {
     }
 }
 
-/// Create a warp-internal Workflow model from a public-facing workflow
-/// https://github.com/warpdotdev/workflows/blob/main/workflow-types/src/lib.rs
-impl From<warp_workflows::Workflow> for Workflow {
-    fn from(workflow: warp_workflows::Workflow) -> Self {
+/// Create a cognix-internal Workflow model from a public-facing workflow
+/// https://github.com/nrelab/workflows/blob/main/workflow-types/src/lib.rs
+impl From<cognix_workflows::Workflow> for Workflow {
+    fn from(workflow: cognix_workflows::Workflow) -> Self {
         Workflow::Command {
             name: workflow.name,
             command: workflow.command,
@@ -282,7 +282,7 @@ impl From<warp_workflows::Workflow> for Workflow {
     }
 }
 
-/// Argument model to be used in `warp-internal`
+/// Argument model to be used in `cognix-internal`
 #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash, Default)]
 pub struct Argument {
     pub name: String,
@@ -293,8 +293,8 @@ pub struct Argument {
     pub default_value: Option<String>,
 }
 
-impl From<warp_workflows::Argument> for Argument {
-    fn from(arg: warp_workflows::Argument) -> Self {
+impl From<cognix_workflows::Argument> for Argument {
+    fn from(arg: cognix_workflows::Argument) -> Self {
         Argument {
             name: arg.name,
             arg_type: ArgumentType::Text, // public workflows only have text arguments

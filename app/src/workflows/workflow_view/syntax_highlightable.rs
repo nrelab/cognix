@@ -4,12 +4,12 @@ use std::time::Duration;
 
 use async_channel::Sender;
 use string_offset::ByteOffset;
-use warp_completer::completer::SuggestionTypeName;
-use warp_completer::signatures::CommandRegistry;
-use warp_core::ui::theme::AnsiColorIdentifier;
-use warpui::r#async::SpawnedFutureHandle;
-use warpui::ViewHandle;
-use warpui::{Entity, ModelContext, SingletonEntity};
+use cognix_completer::completer::SuggestionTypeName;
+use cognix_completer::signatures::CommandRegistry;
+use cognix_core::ui::theme::AnsiColorIdentifier;
+use cognixui::r#async::SpawnedFutureHandle;
+use cognixui::ViewHandle;
+use cognixui::{Entity, ModelContext, SingletonEntity};
 
 use crate::appearance::Appearance;
 use crate::completer::SessionAgnosticContext;

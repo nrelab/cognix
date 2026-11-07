@@ -21,7 +21,7 @@ pub struct Dirs {
 impl Dirs {
     #[allow(dead_code)]
     pub fn git_repository_fixture(&self) -> PathBuf {
-        Warp::fixtures().join("git_repository")
+        Cognix::fixtures().join("git_repository")
     }
 }
 
@@ -38,18 +38,18 @@ impl VirtualFS {
     pub fn test(tag: &str, test_callback: impl FnOnce(Dirs, VirtualFS)) {
         let root = tempdir().expect("failed create root directory.");
 
-        let warpbox_dir = root.path().join(tag);
+        let cognixbox_dir = root.path().join(tag);
 
-        if PathBuf::from(&warpbox_dir).exists() {
-            std::fs::remove_dir_all(PathBuf::from(&warpbox_dir)).expect("can not remove directory");
+        if PathBuf::from(&cognixbox_dir).exists() {
+            std::fs::remove_dir_all(PathBuf::from(&cognixbox_dir)).expect("can not remove directory");
         }
 
-        std::fs::create_dir(PathBuf::from(&warpbox_dir)).expect("can not create directory");
+        std::fs::create_dir(PathBuf::from(&cognixbox_dir)).expect("can not create directory");
 
-        let tests = dunce::canonicalize(&warpbox_dir).unwrap_or_else(|e| {
+        let tests = dunce::canonicalize(&cognixbox_dir).unwrap_or_else(|e| {
             panic!(
                 "Couldn't canonicalize test path {}: {:?}",
-                warpbox_dir.display(),
+                cognixbox_dir.display(),
                 e
             )
         });
@@ -59,13 +59,13 @@ impl VirtualFS {
             tests,
         };
 
-        let warpbox = VirtualFS {
+        let cognixbox = VirtualFS {
             root,
-            cwd: warpbox_dir,
+            cwd: cognixbox_dir,
             tests: tag.to_string(),
         };
 
-        test_callback(directories, warpbox);
+        test_callback(directories, cognixbox);
     }
 
     pub fn back_to_root(&mut self) -> &mut Self {
@@ -156,9 +156,9 @@ impl VirtualFS {
     }
 }
 
-pub struct Warp;
+pub struct Cognix;
 
-impl Warp {
+impl Cognix {
     #[allow(dead_code)]
     pub fn executable() -> PathBuf {
         let mut path = {
@@ -174,7 +174,7 @@ impl Warp {
                 .unwrap_or_else(|| Self::root().join(format!("target/{}", &build)))
         };
 
-        path.push("warp");
+        path.push("cognix");
         path
     }
 

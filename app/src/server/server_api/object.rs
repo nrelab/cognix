@@ -49,8 +49,8 @@ use cynic::{MutationBuilder, QueryBuilder, SubscriptionBuilder};
 #[cfg(test)]
 use mockall::{automock, predicate::*};
 use std::collections::HashMap;
-use warp_core::report_error;
-use warp_graphql::{
+use cognix_core::report_error;
+use cognix_graphql::{
     error::UserFacingErrorInterface,
     generic_string_object::GenericStringObjectInput,
     mutations::{
@@ -151,7 +151,7 @@ use warp_graphql::{
         },
     },
     subscriptions::{
-        get_warp_drive_updates::GetWarpDriveUpdates, start_graphql_streaming_operation,
+        get_cognix_drive_updates::GetCognixDriveUpdates, start_graphql_streaming_operation,
     },
 };
 
@@ -237,8 +237,8 @@ pub trait ObjectClient: 'static + Send + Sync {
     async fn give_up_notebook_edit_access(&self, notebook_id: NotebookId)
         -> Result<ServerMetadata>;
 
-    /// Gets updates for all Warp Drive actions.
-    async fn get_warp_drive_updates(
+    /// Gets updates for all Cognix Drive actions.
+    async fn get_cognix_drive_updates(
         &self,
         message_sender: Sender<ObjectUpdateMessage>,
         stream_ready_sender: Sender<()>,
@@ -827,7 +827,7 @@ impl ObjectClient for ServerApi {
     /// Messages received over the socket are sent over the `message_sender`.
     /// Once the websocket is live, a one-shot message is sent over `stream_ready_sender`
     /// to indicate so. This is because this method only returns once the websocket is closed.
-    async fn get_warp_drive_updates(
+    async fn get_cognix_drive_updates(
         &self,
         message_sender: Sender<ObjectUpdateMessage>,
         stream_ready_sender: Sender<()>,
@@ -856,7 +856,7 @@ impl ObjectClient for ServerApi {
             );
         }
 
-        let subscription = GetWarpDriveUpdates::build(());
+        let subscription = GetCognixDriveUpdates::build(());
 
         start_graphql_streaming_operation(
             &ChannelState::ws_server_url(),
@@ -864,9 +864,9 @@ impl ObjectClient for ServerApi {
             subscription,
             |res| {
                 res.ok_or_else(|| {
-                    anyhow!("missing response data for message in get_warp_drive_updates")
+                    anyhow!("missing response data for message in get_cognix_drive_updates")
                 })
-                .and_then(|data| data.warp_drive_updates.try_into())
+                .and_then(|data| data.cognix_drive_updates.try_into())
             },
             message_sender,
             stream_ready_sender,
@@ -949,7 +949,7 @@ impl ObjectClient for ServerApi {
                                     Some(folder.name),
                                     folder.metadata.try_into().ok()?,
                                     folder.permissions.try_into().ok()?,
-                                    folder.is_warp_pack,
+                                    folder.is_cognix_pack,
                                 )
                                 .ok()
                             })
@@ -986,7 +986,7 @@ impl ObjectClient for ServerApi {
                         };
 
                         match gso.format {
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonEnvVarCollection => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonEnvVarCollection => {
                                 parse_server_gso::<EnvVarCollection, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
@@ -996,7 +996,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonPreference => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonPreference => {
                                 parse_server_gso::<Preference, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::Preference),
@@ -1006,7 +1006,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonWorkflowEnum => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonWorkflowEnum => {
                                 parse_server_gso::<WorkflowEnum, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::WorkflowEnum),
@@ -1016,7 +1016,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonAIFact => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonAIFact => {
                                 parse_server_gso::<AIFact, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::AIFact),
@@ -1026,7 +1026,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonMCPServer => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonMCPServer => {
                                 parse_server_gso::<MCPServer, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::MCPServer),
@@ -1036,7 +1036,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonAIExecutionProfile => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonAIExecutionProfile => {
                                 parse_server_gso::<AIExecutionProfile, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::AIExecutionProfile),
@@ -1046,7 +1046,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonTemplatableMCPServer => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonTemplatableMCPServer => {
                                 parse_server_gso::<TemplatableMCPServer, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::TemplatableMCPServer),
@@ -1056,7 +1056,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonCloudEnvironment => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonCloudEnvironment => {
                                 parse_server_gso::<AmbientAgentEnvironment, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::CloudEnvironment),
@@ -1066,7 +1066,7 @@ impl ObjectClient for ServerApi {
                                     gso.serialized_model,
                                 );
                             }
-                            warp_graphql::generic_string_object::GenericStringObjectFormat::JsonScheduledAmbientAgent => {
+                            cognix_graphql::generic_string_object::GenericStringObjectFormat::JsonScheduledAmbientAgent => {
                                 parse_server_gso::<ScheduledAmbientAgent, JsonSerializer>(
                                     &mut updated_generic_string_objects,
                                     GenericStringObjectFormat::Json(JsonObjectType::ScheduledAmbientAgent),
@@ -1296,7 +1296,7 @@ impl ObjectClient for ServerApi {
         let response = self.send_graphql_request(operation, None).await?;
 
         let result = match response.untrash_object {
-            warp_graphql::mutations::untrash_object::UntrashObjectResult::UntrashObjectOutput(
+            cognix_graphql::mutations::untrash_object::UntrashObjectResult::UntrashObjectOutput(
                 output,
             ) => {
                 if output.success {

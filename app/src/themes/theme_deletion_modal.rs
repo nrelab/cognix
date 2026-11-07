@@ -2,13 +2,13 @@ use crate::modal::Modal;
 use crate::themes::theme::ThemeKind;
 use crate::themes::theme_deletion_body::{ThemeDeletionBody, ThemeDeletionBodyEvent};
 use std::default::Default;
-use warpui::fonts::Weight;
-use warpui::keymap::FixedBinding;
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::{Coords, UiComponentStyles};
-use warpui::AppContext;
-use warpui::ViewHandle;
-use warpui::{Element, Entity, TypedActionView, View, ViewContext};
+use cognixui::fonts::Weight;
+use cognixui::keymap::FixedBinding;
+use cognixui::presenter::ChildView;
+use cognixui::ui_components::components::{Coords, UiComponentStyles};
+use cognixui::AppContext;
+use cognixui::ViewHandle;
+use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
 
 const THEME_DELETION_MODAL_HEADER: &str = "Are you sure you want to delete this theme?";
 
@@ -28,7 +28,7 @@ pub enum ThemeDeletionModalEvent {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",

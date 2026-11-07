@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use parking_lot::FairMutex;
 use pathfinder_color::ColorU;
-use warp_core::ui::theme::WarpTheme;
-use warpui::elements::{Container, Element};
-use warpui::keymap::Keystroke;
-use warpui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
+use cognix_core::ui::theme::CognixTheme;
+use cognixui::elements::{Container, Element};
+use cognixui::keymap::Keystroke;
+use cognixui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
 
 use super::buffer_model::InputBufferModel;
 use super::message_bar::{
@@ -274,7 +274,7 @@ mod internal {
 
             // When we insert rich content (including agent view blocks) we insert it immediately before
             // the active block (unless explicitly inserting below a long-running block). The active
-            // block is a special "warp input" block that often exists even when it isn't user-visible.
+            // block is a special "cognix input" block that often exists even when it isn't user-visible.
             //
             // So, for dedupe we check the first visible (non-zero height) item *immediately before the
             // active block*. This avoids false negatives caused by the active block itself.
@@ -460,7 +460,7 @@ impl MessageTransformer<TerminalMessageArgs<'_>> for AttachedTextSelectionMessag
     }
 }
 
-fn message_magenta(theme: &WarpTheme) -> ColorU {
+fn message_magenta(theme: &CognixTheme) -> ColorU {
     let mut color = theme.ansi_fg_magenta();
     color.a = (255. * 0.65) as u8;
     color

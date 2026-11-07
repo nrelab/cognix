@@ -5,7 +5,7 @@ use std::io;
 use std::path::{Component, Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use thiserror::Error;
-use warp_util::standardized_path::StandardizedPath;
+use cognix_util::standardized_path::StandardizedPath;
 
 /// Maximum file size allowed for treesitter parsing (3MB).
 const MAX_FILE_SIZE: usize = 3 * 1000 * 1000;
@@ -99,7 +99,7 @@ impl Entry {
         let curr_path: PathBuf = path.into();
         let is_dir = curr_path.is_dir();
 
-        // Only ignore symlinks to directories. Symlinks to files are preserved (e.g. WARP.md).
+        // Only ignore symlinks to directories. Symlinks to files are preserved (e.g. COGNIX.md).
         if curr_path.is_symlink() && is_dir {
             return Err(BuildTreeError::Symlink);
         }

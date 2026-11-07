@@ -1,4 +1,4 @@
-use warpui::{elements::MouseStateHandle, Element};
+use cognixui::{elements::MouseStateHandle, Element};
 
 use crate::{appearance::Appearance, terminal::view::TerminalAction};
 
@@ -62,8 +62,8 @@ pub fn render_aws_bedrock_login_banner(
     });
 
     // Use sub_text_color for description to differentiate from title
-    let description_text = warpui::elements::Text::new(
-        "Your Warp admin has enabled AWS Bedrock for your team.",
+    let description_text = cognixui::elements::Text::new(
+        "Your Cognix admin has enabled AWS Bedrock for your team.",
         appearance.ui_font_family(),
         appearance.monospace_font_size() - 2.,
     )

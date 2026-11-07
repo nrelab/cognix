@@ -1,8 +1,8 @@
 use crate::ai::agent::api::RequestParams;
 use crate::ai::blocklist::SessionContext;
 use crate::ai::llms::LLMId;
-use warp_core::features::FeatureFlag;
-use warp_multi_agent_api as api;
+use cognix_core::features::FeatureFlag;
+use cognix_multi_agent_api as api;
 
 use super::get_supported_tools;
 
@@ -23,12 +23,12 @@ fn request_params_with_ask_user_question_enabled(ask_user_question_enabled: bool
         cli_agent_model: model.clone(),
         computer_use_model: model,
         is_memory_enabled: false,
-        warp_drive_context_enabled: false,
+        cognix_drive_context_enabled: false,
         mcp_context: None,
         planning_enabled: true,
         should_redact_secrets: false,
         api_keys: None,
-        allow_use_of_warp_credits_with_byok: false,
+        allow_use_of_cognix_credits_with_byok: false,
         autonomy_level: api::AutonomyLevel::Supervised,
         isolation_level: api::IsolationLevel::None,
         web_search_enabled: false,

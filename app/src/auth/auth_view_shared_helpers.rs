@@ -1,13 +1,13 @@
 use pathfinder_color::ColorU;
-use warp_core::channel::ChannelState;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::{
+use cognix_core::channel::ChannelState;
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::{
     appearance::Appearance,
     builder::UiBuilder,
     color::{darken, lighten},
     theme::ColorScheme,
 };
-use warpui::{
+use cognixui::{
     assets::asset_cache::AssetSource,
     elements::{
         Border, CacheOption, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Fill,
@@ -26,7 +26,7 @@ use warpui::{
 use crate::settings::PrivacySettings;
 use crate::themes::theme::ThemeKind;
 
-const PRIVACY_URL: &str = "https://warp.dev/privacy";
+const PRIVACY_URL: &str = "https://cognix.dev/privacy";
 
 pub const AUTH_MODAL_GAP: f32 = 16.;
 const MODAL_CORNER_RADIUS: Radius = Radius::Pixels(8.);
@@ -61,7 +61,7 @@ where
         ..Default::default()
     };
 
-    let text = "You are currently offline. An internet connection is required to use Warp for the first time.";
+    let text = "You are currently offline. An internet connection is required to use Cognix for the first time.";
 
     let (button_color, button_variant) = action_button_color_and_variant(appearance);
     let button_styles = UiComponentStyles {
@@ -126,9 +126,9 @@ where
 
 pub fn render_square_logo(appearance: &Appearance) -> Box<dyn Element> {
     let image_path = if appearance.theme().inferred_color_scheme() == ColorScheme::LightOnDark {
-        "bundled/svg/warp-logo-light.svg"
+        "bundled/svg/cognix-logo-light.svg"
     } else {
-        "bundled/svg/warp-logo-dark.svg"
+        "bundled/svg/cognix-logo-dark.svg"
     };
 
     ConstrainedBox::new(
@@ -175,9 +175,9 @@ where
         ..Default::default()
     };
 
-    let paragraph_1 = "All of Warp’s non-cloud features work offline.";
-    let paragraph_2 = "However, we require users to be online when using Warp for the first time in order to enable Warp's AI and cloud features.";
-    let paragraph_3 = "We offer cloud features to all users, and so we need an internet connection to meter AI usage, prevent abuse, and associate cloud objects with users. If you opt to use Warp logged-out, a unique ID will be attached to an anonymous user account in order to support these features.";
+    let paragraph_1 = "All of Cognix’s non-cloud features work offline.";
+    let paragraph_2 = "However, we require users to be online when using Cognix for the first time in order to enable Cognix's AI and cloud features.";
+    let paragraph_3 = "We offer cloud features to all users, and so we need an internet connection to meter AI usage, prevent abuse, and associate cloud objects with users. If you opt to use Cognix logged-out, a unique ID will be attached to an anonymous user account in order to support these features.";
 
     Container::new(
         Flex::column()
@@ -191,7 +191,7 @@ where
                 Container::new(
                     appearance
                         .ui_builder()
-                        .span("Using Warp Offline")
+                        .span("Using Cognix Offline")
                         .with_style(header_styles)
                         .build()
                         .finish(),
@@ -456,7 +456,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
         .with_child(
             Shrinkable::new(
                 1.,
-                render_privacy_settings_section_header("Help improve Warp", appearance).finish(),
+                render_privacy_settings_section_header("Help improve Cognix", appearance).finish(),
             )
             .finish(),
         )
@@ -475,7 +475,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
 
     let telemetry_description = render_description(
         appearance,
-        "High-level feature usage data helps Warp's product team prioritize the roadmap.".into(),
+        "High-level feature usage data helps Cognix's product team prioritize the roadmap.".into(),
     );
 
     let telemetry_link = Flex::row()
@@ -520,7 +520,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
 
     let crash_reporting_description = render_description(
         appearance,
-        "Crash reporting helps Warp's engineering team understand stability and improve performance.".into(),
+        "Crash reporting helps Cognix's engineering team understand stability and improve performance.".into(),
     );
 
     let toggle_cloud = actions.toggle_cloud_conversation_storage.clone();
@@ -554,7 +554,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
     let cloud_conversation_storage_description = render_description(
         appearance,
         if PrivacySettings::as_ref(app).is_cloud_conversation_storage_enabled {
-            "Agent conversations can be shared with others and are retained when you log in on different devices. This data is only stored for product functionality, and Warp will not use it for analytics."
+            "Agent conversations can be shared with others and are retained when you log in on different devices. This data is only stored for product functionality, and Cognix will not use it for analytics."
         } else {
             "Agent conversations are only stored locally on your machine, are lost upon logout, and cannot be shared. Note: conversation data for ambient agents are still stored in the cloud."
         }
@@ -563,7 +563,7 @@ pub fn render_privacy_settings_toggles<A: Action + Clone + 'static>(
 
     let mut col = Flex::column().with_cross_axis_alignment(CrossAxisAlignment::Stretch);
 
-    // Builds without a telemetry/crash reporting config (e.g. OpenWarp) cannot
+    // Builds without a telemetry/crash reporting config (e.g. OpenCognix) cannot
     // ship the corresponding events, so the toggles would be no-ops. Hide each
     // one independently based on whether its backing config is present.
     if ChannelState::is_telemetry_available() && !FeatureFlag::GlobalAIAnalyticsBanner.is_enabled()

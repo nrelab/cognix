@@ -6,9 +6,9 @@ use fuzzy_match::match_indices_case_insensitive;
 use lazy_static::lazy_static;
 use pathfinder_color::ColorU;
 use siphasher::sip::SipHasher;
-use warp_core::features::FeatureFlag;
-use warpui::scene::DropShadow;
-use warpui::ui_components::button::ButtonVariant;
+use cognix_core::features::FeatureFlag;
+use cognixui::scene::DropShadow;
+use cognixui::ui_components::button::ButtonVariant;
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::agent_conversations_model::{
@@ -65,26 +65,26 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{send_telemetry_from_ctx, AgentModeEntrypoint};
 use pathfinder_geometry::vector::vec2f;
 use settings::Setting;
-use warp_cli::agent::Harness;
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
-use warpui::clipboard::ClipboardContent;
-use warpui::elements::new_scrollable::{
+use cognix_cli::agent::Harness;
+use cognix_core::ui::icons::Icon;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::theme::Fill;
+use cognixui::clipboard::ClipboardContent;
+use cognixui::elements::new_scrollable::{
     NewScrollableElement, ScrollableAppearance, SingleAxisConfig,
 };
-use warpui::elements::{
+use cognixui::elements::{
     Align, Border, ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CornerRadius,
     CrossAxisAlignment, Element, Empty, Expanded, Flex, Hoverable, List, ListState, MainAxisSize,
     MouseStateHandle, NewScrollable, OffsetPositioning, Padding, ParentAnchor, ParentElement,
     ParentOffsetBounds, Radius, Rect, ScrollStateHandle, ScrollbarWidth, Shrinkable,
     SizeConstraintCondition, SizeConstraintSwitch, Stack, Text, Wrap,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::platform::Cursor;
-use warpui::ui_components::components::UiComponent;
-use warpui::ui_components::components::UiComponentStyles;
-use warpui::{
+use cognixui::fonts::{Properties, Weight};
+use cognixui::platform::Cursor;
+use cognixui::ui_components::components::UiComponent;
+use cognixui::ui_components::components::UiComponentStyles;
+use cognixui::{
     keymap::FixedBinding, Action, AppContext, Entity, FocusContext, ModelHandle, SingletonEntity,
     TypedActionView, View, ViewContext, ViewHandle, WeakViewHandle,
 };
@@ -117,7 +117,7 @@ pub fn init(app: &mut AppContext) {
     app.register_fixed_bindings([FixedBinding::new(
         cmd_or_ctrl_shift("f"),
         AgentManagementViewAction::FocusSearch,
-        warpui::keymap::macros::id!(AgentManagementView::ui_name()),
+        cognixui::keymap::macros::id!(AgentManagementView::ui_name()),
     )]);
 }
 
@@ -1311,7 +1311,7 @@ impl AgentManagementView {
                 let copy_link_url = conversation.session_or_conversation_link(ctx);
 
                 // Prefer server-reported harness when available; otherwise treat as a pure
-                // local conversation (always Warp Agent).
+                // local conversation (always Cognix Agent).
                 let harness = navigation_data
                     .and_then(|nav| history_model.get_server_conversation_metadata(&nav.id))
                     .map(|m| Harness::from(m.harness))
@@ -1992,7 +1992,7 @@ impl AgentManagementView {
 
         let loading_icon = ConstrainedBox::new(
             Icon::Refresh
-                .to_warpui_icon(theme.sub_text_color(theme.surface_1()))
+                .to_cognixui_icon(theme.sub_text_color(theme.surface_1()))
                 .finish(),
         )
         .with_height(icon_size)
@@ -2036,7 +2036,7 @@ impl AgentManagementView {
 
         let loading_icon = ConstrainedBox::new(
             Icon::Loading
-                .to_warpui_icon(Fill::Solid(internal_colors::neutral_6(theme)))
+                .to_cognixui_icon(Fill::Solid(internal_colors::neutral_6(theme)))
                 .finish(),
         )
         .with_height(appearance.ui_font_size() + 2.)
@@ -2096,7 +2096,7 @@ impl AgentManagementView {
         let appearance = Appearance::as_ref(app);
         let icon = ConstrainedBox::new(
             Icon::FilterOff
-                .to_warpui_icon(appearance.theme().nonactive_ui_text_color())
+                .to_cognixui_icon(appearance.theme().nonactive_ui_text_color())
                 .finish(),
         )
         .with_width(24.)
@@ -2135,7 +2135,7 @@ impl AgentManagementView {
             axis_config,
             theme.nonactive_ui_detail().into(),
             theme.active_ui_detail().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .with_vertical_scrollbar(ScrollableAppearance::new(ScrollbarWidth::None, false))
         .with_always_handle_events_first(false)

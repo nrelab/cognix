@@ -1,4 +1,4 @@
-use warp::{
+use cognix::{
     integration_testing::{
         agent_mode::AgentViewState,
         step::new_step_with_default_assertions,
@@ -15,7 +15,7 @@ use warp::{
         shell::{Shell, ShellType},
     },
 };
-use warpui::{
+use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionCallback, AssertionOutcome, TestStep},
 };
@@ -74,7 +74,7 @@ macro_rules! check_command {
     };
 }
 
-/// Tests that the shell reports its input buffer to the Warp typeahead model after
+/// Tests that the shell reports its input buffer to the Cognix typeahead model after
 /// a long-running command completes.
 pub fn test_input_reporting_posix_shells() -> Builder {
     // When the shell can report its input buffer, we can handle typeahead with
@@ -212,7 +212,7 @@ pub fn test_input_reporting_powershell() -> Builder {
 pub fn test_background_output() -> Builder {
     use regex::Regex;
     use std::{fs::OpenOptions, io::Write, os::unix::prelude::OpenOptionsExt};
-    use warp::integration_testing::{
+    use cognix::integration_testing::{
         block::assert_background_output,
         terminal::{execute_command_for_single_terminal_in_tab, util::ExpectedExitStatus},
     };

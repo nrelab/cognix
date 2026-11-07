@@ -6,11 +6,11 @@ pub use data_source::*;
 pub use view::*;
 
 use ai::skills::SkillReference;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warp_core::ui::appearance::Appearance;
-use warpui::clipboard::ClipboardContent;
-use warpui::{SingletonEntity, ViewContext};
+use cognix_core::features::FeatureFlag;
+use cognix_core::send_telemetry_from_ctx;
+use cognix_core::ui::appearance::Appearance;
+use cognixui::clipboard::ClipboardContent;
+use cognixui::{SingletonEntity, ViewContext};
 
 use crate::ai::blocklist::agent_view::{
     AgentViewEntryOrigin, DismissalStrategy, EphemeralMessage, ENTER_OR_EXIT_CONFIRMATION_WINDOW,
@@ -253,7 +253,7 @@ impl Input {
 
                 self.show_workflows_info_box_on_workflow_selection(
                     WorkflowType::Cloud(Box::new(workflow)),
-                    WorkflowSource::WarpAI,
+                    WorkflowSource::CognixAI,
                     WorkflowSelectionSource::SlashMenu,
                     None,
                     ctx,
@@ -451,7 +451,7 @@ impl Input {
                 match argument {
                     Some(args) if !args.is_empty() => {
                         use shellexpand::tilde;
-                        use warp_util::path::CleanPathResult;
+                        use cognix_util::path::CleanPathResult;
 
                         let Some(session_id) = self.active_block_session_id() else {
                             return false;
@@ -499,7 +499,7 @@ impl Input {
                             Ok(metadata) if metadata.is_file() => {
                                 use crate::util::file::external_editor;
 
-                                ctx.dispatch_typed_action(&TerminalAction::OpenCodeInWarp {
+                                ctx.dispatch_typed_action(&TerminalAction::OpenCodeInCognix {
                                     path: file_path,
                                     layout: external_editor::settings::EditorLayout::SplitPane,
                                     line_col: parsed_path.line_and_column_num,

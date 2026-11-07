@@ -8,8 +8,8 @@ use lazy_static::lazy_static;
 use parking_lot::Mutex;
 use tempfile::tempdir;
 use url::Url;
-use warp_util::path::LineAndColumnArg;
-use warpui::{App, ModelHandle, WindowId};
+use cognix_util::path::LineAndColumnArg;
+use cognixui::{App, ModelHandle, WindowId};
 
 use crate::{
     notebooks::{file::is_markdown_file, link::LinkEvent},
@@ -141,8 +141,8 @@ fn test_resolve_bare_url() {
             url("http://google.com")
         );
         assert_eq!(
-            resolve(&app, &links, "warp.dev").await,
-            url("http://warp.dev")
+            resolve(&app, &links, "cognix.dev").await,
+            url("http://cognix.dev")
         );
         assert_eq!(
             resolve(&app, &links, "bbc.co.uk").await,
@@ -214,12 +214,12 @@ fn test_resolve_valid_url() {
         let links = init_link_model(&mut app, None);
 
         assert_eq!(
-            resolve(&app, &links, "https://warp.dev").await,
-            url("https://warp.dev")
+            resolve(&app, &links, "https://cognix.dev").await,
+            url("https://cognix.dev")
         );
         assert_eq!(
-            resolve(&app, &links, "mailto:test@warp.dev").await,
-            url("mailto:test@warp.dev")
+            resolve(&app, &links, "mailto:test@cognix.dev").await,
+            url("mailto:test@cognix.dev")
         );
     });
 }

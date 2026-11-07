@@ -49,7 +49,7 @@ use crate::{
     },
     test_util::settings::initialize_settings_for_tests,
     undo_close::UndoCloseStack,
-    warp_managed_paths_watcher::WarpManagedPathsWatcher,
+    cognix_managed_paths_watcher::CognixManagedPathsWatcher,
     workflows::local_workflows::LocalWorkflows,
     workspace::{
         sync_inputs::SyncedInputState, ActiveSession, OneTimeModalModel, WorkspaceRegistry,
@@ -74,8 +74,8 @@ use ai::{
 };
 use pathfinder_geometry::rect::RectF;
 use shared_session::permissions_manager::SessionPermissionsManager;
-use warpui::windowing::{state::ApplicationStage, WindowManager};
-use warpui::{
+use cognixui::windowing::{state::ApplicationStage, WindowManager};
+use cognixui::{
     platform::{WindowBounds, WindowStyle},
     App, ModelHandle,
 };
@@ -102,7 +102,7 @@ fn initialize_app(app: &mut App) {
     app.add_singleton_model(|_| DetectedRepositories::default());
     app.add_singleton_model(HomeDirectoryWatcher::new_for_test);
     app.add_singleton_model(DirectoryWatcher::new);
-    app.add_singleton_model(WarpManagedPathsWatcher::new_for_testing);
+    app.add_singleton_model(CognixManagedPathsWatcher::new_for_testing);
     app.add_singleton_model(FileMCPWatcher::new);
     app.add_singleton_model(|_| FileBasedMCPManager::default());
 
@@ -1176,7 +1176,7 @@ fn test_terminal_pane_headers() {
 
 /// Tests that focusing two different panes in quick succession does not cause
 /// an infinite loop of focus changes, as outlined in this PR's description:
-/// https://github.com/warpdotdev/warp-internal/pull/8990
+/// https://github.com/nrelab/cognix-internal/pull/8990
 #[cfg_attr(windows, ignore = "TODO(CORE-3626)")]
 #[test]
 fn test_pane_focus_does_not_have_an_infinite_event_loop() {

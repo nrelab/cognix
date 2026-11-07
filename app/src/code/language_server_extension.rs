@@ -2,15 +2,15 @@ use lsp::{HoverContents, LspServerLogLevel, MarkupKind};
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use num_traits::SaturatingSub;
 use string_offset::CharOffset;
-use warp_core::ui::{
+use cognix_core::ui::{
     appearance::Appearance,
-    theme::{color::internal_colors, WarpTheme},
+    theme::{color::internal_colors, CognixTheme},
 };
-use warp_editor::{
+use cognix_editor::{
     content::buffer::InitialBufferState,
     render::{element::VerticalExpansionBehavior, model::Decoration},
 };
-use warpui::{
+use cognixui::{
     elements::{
         Border, ChildView, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container,
         CornerRadius, CrossAxisAlignment, Flex, FormattedTextElement, HighlightedHyperlink,
@@ -27,7 +27,7 @@ use crate::editor::InteractionState;
 
 use super::editor::view::{CodeEditorRenderOptions, CodeEditorView};
 use super::lsp_telemetry::LspTelemetryEvent;
-use warp_core::send_telemetry_from_ctx;
+use cognix_core::send_telemetry_from_ctx;
 
 /// A processed diagnostic with its converted offset range.
 /// Stored on LocalCodeEditorView and used for both decoration and hover display.
@@ -549,7 +549,7 @@ impl LocalCodeEditorView {
             ScrollbarWidth::Auto,
             theme.disabled_ui_text_color().into(),
             theme.active_ui_text_color().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .finish();
 
@@ -575,7 +575,7 @@ impl LocalCodeEditorView {
     }
 
     /// Render a separator line between hover card sections.
-    fn render_separator(theme: &WarpTheme) -> Box<dyn Element> {
+    fn render_separator(theme: &CognixTheme) -> Box<dyn Element> {
         Container::new(
             ConstrainedBox::new(
                 Rect::new()

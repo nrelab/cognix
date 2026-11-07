@@ -1,8 +1,8 @@
 use pathfinder_geometry::vector::vec2f;
-use warp_core::{features::FeatureFlag, ui::appearance::Appearance};
+use cognix_core::{features::FeatureFlag, ui::appearance::Appearance};
 #[cfg(not(target_family = "wasm"))]
-use warpui::SingletonEntity;
-use warpui::{
+use cognixui::SingletonEntity;
+use cognixui::{
     elements::{
         ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, Empty, Fill, MainAxisAlignment,
         MainAxisSize, MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement,
@@ -172,7 +172,7 @@ impl EnvVarCollectionView {
         let text_and_icon = TextAndIcon::new(
             TextAndIconAlignment::IconFirst,
             display_name,
-            icon.to_warpui_icon(appearance.theme().active_ui_text_color()),
+            icon.to_cognixui_icon(appearance.theme().active_ui_text_color()),
             MainAxisSize::Max,
             MainAxisAlignment::Center,
             vec2f(16., 16.),

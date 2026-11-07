@@ -10,7 +10,7 @@
 //!
 //! The declarations file is an append-only UTF-8 JSONL file. The Rust pipeline only ever
 //! *reads* it; the sibling bash generator `snapshot-declarations.sh` (shipped in
-//! `warp-agent-docker`) is the primary writer, and operators may hand-edit entries.
+//! `cognix-agent-docker`) is the primary writer, and operators may hand-edit entries.
 //!
 //! Each non-empty line is a JSON object with:
 //! - `version`: `1`,
@@ -34,8 +34,8 @@ use anyhow::Result;
 use command::r#async::Command;
 use command::Stdio;
 use futures::future::join_all;
-use warp_core::report_error;
-use warpui::r#async::FutureExt as _;
+use cognix_core::report_error;
+use cognixui::r#async::FutureExt as _;
 
 use crate::ai::agent_sdk::retry::with_bounded_retry;
 use crate::ai::ambient_agents::AmbientAgentTaskId;

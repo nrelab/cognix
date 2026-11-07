@@ -56,8 +56,8 @@ use anyhow::Result;
 #[cfg(not(target_arch = "wasm32"))]
 use simple_logger::SimpleLogger;
 use std::sync::Arc;
-use warpui::r#async::executor::Background;
-use warpui::AppContext;
+use cognixui::r#async::executor::Background;
+use cognixui::AppContext;
 
 pub struct LspServiceInitializationResult {
     pub service: LspService,

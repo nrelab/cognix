@@ -18,7 +18,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt::Debug;
 use std::ops::Range;
 use string_offset::CharOffset;
-use warp_editor::{
+use cognix_editor::{
     content::version::BufferVersion,
     editor::{EmbeddedItemModel, RunnableCommandModel, TextDecoration},
     model::{CoreEditorModel, PlainTextEditorModel},
@@ -28,8 +28,8 @@ use warp_editor::{
     },
     selection::{TextDirection, TextUnit},
 };
-use warp_util::user_input::UserInput;
-use warpui::{
+use cognix_util::user_input::UserInput;
+use cognixui::{
     actions::StandardAction,
     elements::Axis,
     event::ModifiersState,
@@ -48,7 +48,7 @@ lazy_static! {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     let text_entry = id!("CodeEditorView") & !id!("IMEOpen");
     // We use this to disable some keybindings that would conflict with the Agent Mode embedded editor.
@@ -1109,7 +1109,7 @@ impl TypedActionView for CodeEditorView {
     }
 }
 
-impl warp_editor::editor::EditorView for CodeEditorView {
+impl cognix_editor::editor::EditorView for CodeEditorView {
     type RichTextAction = CodeEditorViewAction;
 
     fn runnable_command_at<'a>(
@@ -1186,7 +1186,7 @@ impl RichTextAction<CodeEditorView> for CodeEditorViewAction {
             modifiers.shift
         );
 
-        // The first mouse down to bring focus to a Warp window will not have a corresponding mouse up.
+        // The first mouse down to bring focus to a Cognix window will not have a corresponding mouse up.
         // We ignore it, and they can click again.
         if is_first_mouse {
             return None;

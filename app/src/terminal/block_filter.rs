@@ -1,12 +1,12 @@
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use regex_automata::hybrid::BuildError;
-use warp_editor::editor::NavigationKey;
-use warpui::elements::{Align, Dash};
-use warpui::ui_components::components::UiComponent;
-use warpui::FocusContext;
-use warpui::{
-    accessibility::{AccessibilityContent, WarpA11yRole},
+use cognix_editor::editor::NavigationKey;
+use cognixui::elements::{Align, Dash};
+use cognixui::ui_components::components::UiComponent;
+use cognixui::FocusContext;
+use cognixui::{
+    accessibility::{AccessibilityContent, CognixA11yRole},
     elements::{
         Border, ChildAnchor, Clipped, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Dismiss, DropShadow, Empty, Flex, Hoverable, MouseStateHandle, OffsetPositioning,
@@ -475,7 +475,7 @@ impl BlockFilterEditor {
             };
             let icon = Container::new(
                 ConstrainedBox::new(
-                    icon.to_warpui_icon(appearance.theme().active_ui_text_color())
+                    icon.to_cognixui_icon(appearance.theme().active_ui_text_color())
                         .finish(),
                 )
                 .with_height(size)
@@ -641,7 +641,7 @@ impl View for BlockFilterEditor {
             |state| {
                 let context_line_icon = ConstrainedBox::new(
                     Icon::DistributeSpacingVertical
-                        .to_warpui_icon(
+                        .to_cognixui_icon(
                             blended_colors::text_main(
                                 appearance.theme(),
                                 appearance.theme().background(),
@@ -755,7 +755,7 @@ impl View for BlockFilterEditor {
         Some(AccessibilityContent::new(
             "Type searched phrase.",
             "Press escape to quit",
-            WarpA11yRole::TextareaRole,
+            CognixA11yRole::TextareaRole,
         ))
     }
 }

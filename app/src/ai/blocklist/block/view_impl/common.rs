@@ -16,18 +16,18 @@ use markdown_parser::{FormattedText, FormattedTextInline, TableAlignment};
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
 use std::sync::Arc;
-use warp_core::{
+use cognix_core::{
     features::FeatureFlag,
     ui::{appearance::Appearance, color::blend::Blend, theme::color::internal_colors},
 };
-use warpui::{
+use cognixui::{
     assets::asset_cache::{AssetCache, AssetSource, AssetState},
     elements::{
         new_scrollable::{ScrollableAppearance, SingleAxisConfig},
         Align, Axis, Border, ChildAnchor, ChildView, ClippedScrollStateHandle, ConstrainedBox,
         Container, CornerRadius, CrossAxisAlignment, DispatchEventResult, Empty, EventHandler,
         Expanded, Fill, Flex, FormattedTextElement, HeadingFontSizeMultipliers, Hoverable,
-        Image as WarpImage, MainAxisAlignment, MainAxisSize, MouseStateHandle, NewScrollable,
+        Image as CognixImage, MainAxisAlignment, MainAxisSize, MouseStateHandle, NewScrollable,
         OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Radius, SavePosition,
         ScrollTarget, ScrollToPositionMode, ScrollbarWidth, Shrinkable, Stack, Table,
         TableColumnWidth, TableConfig, TableHeader, TableVerticalSizing, Text, Wrap,
@@ -55,7 +55,7 @@ use crate::{
             block::status_bar::BlocklistAIStatusBarAction, history_model::BlocklistAIHistoryModel,
             BlocklistAIActionModel, ShellCommandExecutor,
         },
-        loading::shimmering_warp_loading_text,
+        loading::shimmering_cognix_loading_text,
     },
     terminal::{self, TerminalModel},
     util::link_detection::{add_link_detection_mouse_interactions, DetectedLinksState},
@@ -76,7 +76,7 @@ use crate::{
                 TableSectionHandles,
             },
             code_block::{
-                render_code_block_plain, render_code_block_with_warp_text, CodeBlockOptions,
+                render_code_block_plain, render_code_block_with_cognix_text, CodeBlockOptions,
                 CodeSnippetButtonHandles,
             },
             inline_action::{
@@ -113,13 +113,13 @@ use crate::{
     search::slash_command_menu::static_commands::commands,
     settings::{FontSettings, InputSettings},
 };
-use warp_core::channel::ChannelState;
-use warp_editor::content::{
+use cognix_core::channel::ChannelState;
+use cognix_editor::content::{
     edit::resolve_asset_source_relative_to_directory, mermaid_diagram::mermaid_asset_source,
 };
-use warp_util::path::to_relative_path;
-use warpui::elements::shimmering_text::ShimmeringTextStateHandle;
-use warpui::elements::{Highlight, HighlightedRange};
+use cognix_util::path::to_relative_path;
+use cognixui::elements::shimmering_text::ShimmeringTextStateHandle;
+use cognixui::elements::{Highlight, HighlightedRange};
 
 pub const STATUS_ICON_SIZE_DELTA: f32 = 4.;
 pub const STATUS_FOOTER_VERTICAL_PADDING: f32 = 4.;
@@ -127,9 +127,9 @@ pub const WAITING_FOR_USER_INPUT_MESSAGE: &str = "Agent waiting for instructions
 const IMAGE_SOURCE_LINK_LINE_INDEX: usize = 1;
 
 const ERROR_APOLOGY_TEXT: &str = "I'm sorry, I couldn't complete that request.";
-const INTERNAL_WARP_ERROR: &str = "Internal Warp error.";
+const INTERNAL_COGNIX_ERROR: &str = "Internal Cognix error.";
 
-pub const LOAD_OUTPUT_MESSAGE: &str = "Warping...";
+pub const LOAD_OUTPUT_MESSAGE: &str = "Cognixing...";
 pub const LOAD_OUTPUT_MESSAGE_FOR_ADJUSTING: &str = "Adjusting tasks...";
 pub const LOAD_OUTPUT_MESSAGE_FOR_PASSIVE_CODE_GEN: &str = "Generating fix...";
 pub const LOAD_OUTPUT_MESSAGE_FOR_CREATING_DIFF: &str = "Creating diff...";
@@ -174,7 +174,7 @@ const VISUAL_CARD_HEADER_VERTICAL_PADDING: f32 = 8.;
 const VISUAL_CARD_HEADER_HORIZONTAL_PADDING: f32 = 16.;
 const MERMAID_CANVAS_PADDING: f32 = 32.;
 
-pub struct WarpingProps<'a, V> {
+pub struct CognixingProps<'a, V> {
     pub model: &'a dyn AIBlockModel<View = V>,
     pub shimmering_text_handle: &'a ShimmeringTextStateHandle,
     pub summarization_start_time: Option<instant::Instant>,
@@ -184,12 +184,12 @@ pub struct WarpingProps<'a, V> {
     pub queue_next_prompt_button: Option<ButtonProps<'a>>,
     pub stop_button: Option<ButtonProps<'a>>,
     /// Inline `Check now` affordance displayed alongside `Last seen by agent ...`
-    /// in the warping indicator. When set, the agent's pending poll future is
+    /// in the cognixing indicator. When set, the agent's pending poll future is
     /// short-circuited on click and a fresh snapshot is returned immediately.
     pub force_refresh_button: Option<ForceRefreshButtonProps<'a>>,
     pub action_model: &'a BlocklistAIActionModel,
     pub terminal_model: &'a TerminalModel,
-    pub default_warping_text: String,
+    pub default_cognixing_text: String,
     pub secondary_element: Option<Box<dyn Element>>,
     /// When an LRC subagent has sent at least one snapshot, the timestamp of the most recent snapshot.
     pub last_snapshot_at: Option<instant::Instant>,
@@ -207,8 +207,8 @@ pub struct ForceRefreshButtonProps<'a> {
     pub block_id: crate::terminal::model::block::BlockId,
 }
 
-pub fn render_warping_indicator<V: View>(
-    props: WarpingProps<'_, V>,
+pub fn render_cognixing_indicator<V: View>(
+    props: CognixingProps<'_, V>,
     app: &AppContext,
 ) -> Box<dyn Element> {
     let output_status = props.model.status(app);
@@ -423,7 +423,7 @@ pub fn render_warping_indicator<V: View>(
                         }
                     }
                 } else {
-                    props.default_warping_text.clone()
+                    props.default_cognixing_text.clone()
                 }
             }
         }
@@ -476,7 +476,7 @@ pub fn render_warping_indicator<V: View>(
             .with_spacing(4.);
     }
 
-    let warping_indicator_text = if !should_render_waiting_icon {
+    let cognixing_indicator_text = if !should_render_waiting_icon {
         MaybeShimmeringText::Shimmering {
             text: message.into(),
             shimmering_text_handle: props.shimmering_text_handle.clone(),
@@ -496,10 +496,10 @@ pub fn render_warping_indicator<V: View>(
         _ => None,
     };
 
-    render_warping_indicator_base(
-        WarpingIndicatorProps {
+    render_cognixing_indicator_base(
+        CognixingIndicatorProps {
             icon: should_render_waiting_icon.then(|| icons::gray_clock_icon(appearance).finish()),
-            warping_indicator_text,
+            cognixing_indicator_text,
             non_shimmering_text,
             non_shimmering_suffix,
             buttons: if has_buttons {
@@ -522,9 +522,9 @@ pub enum MaybeShimmeringText {
     },
 }
 
-pub struct WarpingIndicatorProps {
+pub struct CognixingIndicatorProps {
     pub icon: Option<Box<dyn Element>>,
-    pub warping_indicator_text: MaybeShimmeringText,
+    pub cognixing_indicator_text: MaybeShimmeringText,
     pub non_shimmering_text: Option<String>,
     /// Optional element rendered inline to the right of `non_shimmering_text`. Used
     /// today for the `Check now` affordance next to `Last seen by agent ...`.
@@ -534,36 +534,36 @@ pub struct WarpingIndicatorProps {
     pub secondary_element: Option<Box<dyn Element>>,
 }
 
-/// Helper function to render text in the "warping..." footer.
+/// Helper function to render text in the "cognixing..." footer.
 /// Additional text that does not use the shimmering text animation can be passed in via
 /// `non_shimmering_text` which is useful if you want some part of the text to constantly update
 /// without the animation resetting.
-pub fn render_warping_indicator_base(
-    props: WarpingIndicatorProps,
+pub fn render_cognixing_indicator_base(
+    props: CognixingIndicatorProps,
     app: &AppContext,
 ) -> Box<dyn Element> {
-    let WarpingIndicatorProps {
+    let CognixingIndicatorProps {
         icon,
-        warping_indicator_text,
+        cognixing_indicator_text,
         non_shimmering_text,
         non_shimmering_suffix,
         buttons,
         is_passive_code_diff,
         secondary_element,
     } = props;
-    // Unicode code point for the Warp glyph that is embedded in the version of Roboto we bundle
+    // Unicode code point for the Cognix glyph that is embedded in the version of Roboto we bundle
     // into the app. This code point MUST be rendered using Roboto (the default ui font) or else the
     // glyph may not be rendered.
-    const WARP_GLYPH: &str = "\u{E500}";
+    const COGNIX_GLYPH: &str = "\u{E500}";
 
     let appearance = Appearance::as_ref(app);
 
-    let should_indent_tip_for_warp_glyph = matches!(
-        warping_indicator_text,
+    let should_indent_tip_for_cognix_glyph = matches!(
+        cognixing_indicator_text,
         MaybeShimmeringText::Shimmering { .. }
     );
 
-    let text = render_output_status_text(warping_indicator_text, appearance, app);
+    let text = render_output_status_text(cognixing_indicator_text, appearance, app);
 
     let mut row = Flex::row()
         .with_cross_axis_alignment(CrossAxisAlignment::Start)
@@ -599,13 +599,13 @@ pub fn render_warping_indicator_base(
 
     let mut text_col = Flex::column();
     if let Some(sub_element) = secondary_element {
-        // Our warping indicator text prepends the Warp glyph (and a space) to the label.
+        // Our cognixing indicator text prepends the Cognix glyph (and a space) to the label.
         // If we render the tip directly underneath, it will align to the glyph instead of
-        // the start of the actual warping text.
-        let sub_element = if should_indent_tip_for_warp_glyph {
+        // the start of the actual cognixing text.
+        let sub_element = if should_indent_tip_for_cognix_glyph {
             let font_size = appearance.monospace_font_size() - 3.;
             let glyph_indent = Text::new_inline(
-                format!("{WARP_GLYPH} "),
+                format!("{COGNIX_GLYPH} "),
                 appearance.ui_font_family(),
                 font_size,
             )
@@ -703,7 +703,7 @@ pub fn render_output_status_text(
         MaybeShimmeringText::Shimmering {
             text,
             shimmering_text_handle,
-        } => shimmering_warp_loading_text(
+        } => shimmering_cognix_loading_text(
             text.to_string(),
             appearance.monospace_font_size() - 2.,
             shimmering_text_handle,
@@ -776,7 +776,7 @@ fn render_hide_responses_button(
         "Hide agent responses"
     };
 
-    render_warping_indicator_button(
+    render_cognixing_indicator_button(
         props.button_handle.clone(),
         appearance,
         text,
@@ -807,7 +807,7 @@ pub fn render_switch_control_to_user_button(
     )
     .finish();
 
-    render_warping_indicator_button(
+    render_cognixing_indicator_button(
         props.button_handle.clone(),
         appearance,
         text,
@@ -830,7 +830,7 @@ fn render_stop_button(props: ButtonProps, appearance: &Appearance) -> Box<dyn El
     )
     .finish();
 
-    render_warping_indicator_button(
+    render_cognixing_indicator_button(
         props.button_handle.clone(),
         appearance,
         stop_icon,
@@ -854,7 +854,7 @@ fn render_queue_next_prompt_button(
     };
     let icon_size = get_icon_size(appearance);
     let icon = Container::new(
-        ConstrainedBox::new(Icon::ClockPlus.to_warpui_icon(icon_color).finish())
+        ConstrainedBox::new(Icon::ClockPlus.to_cognixui_icon(icon_color).finish())
             .with_height(icon_size)
             .with_width(icon_size)
             .finish(),
@@ -867,7 +867,7 @@ fn render_queue_next_prompt_button(
         "Auto-queue next prompt while agent is responding"
     };
 
-    render_warping_indicator_button(
+    render_cognixing_indicator_button(
         props.button_handle.clone(),
         appearance,
         icon,
@@ -889,7 +889,7 @@ fn render_auto_approve_button(props: ButtonProps, appearance: &Appearance) -> Bo
     let icon_size = get_icon_size(appearance);
     let icon = Container::new(
         ConstrainedBox::new(
-            icon.to_warpui_icon(appearance.theme().active_ui_text_color())
+            icon.to_cognixui_icon(appearance.theme().active_ui_text_color())
                 .finish(),
         )
         .with_height(icon_size)
@@ -904,7 +904,7 @@ fn render_auto_approve_button(props: ButtonProps, appearance: &Appearance) -> Bo
         "Auto-approve all agent actions for this task"
     };
 
-    render_warping_indicator_button(
+    render_cognixing_indicator_button(
         props.button_handle.clone(),
         appearance,
         icon,
@@ -926,7 +926,7 @@ fn get_icon_size(appearance: &Appearance) -> f32 {
 }
 
 /// Renders the inline `Check now` affordance displayed alongside
-/// `Last seen by agent ...` in the warping indicator. On click, short-circuits the
+/// `Last seen by agent ...` in the cognixing indicator. On click, short-circuits the
 /// agent's pending poll timer for the given block and delivers a fresh snapshot.
 fn render_force_refresh_inline(
     props: ForceRefreshButtonProps<'_>,
@@ -989,7 +989,7 @@ fn render_force_refresh_inline(
     .finish()
 }
 
-fn render_warping_indicator_button<F>(
+fn render_cognixing_indicator_button<F>(
     mouse_state: MouseStateHandle,
     appearance: &Appearance,
     content: Box<dyn Element>,
@@ -1009,7 +1009,7 @@ where
         .with_child(content)
         .with_spacing(4.0);
 
-    if !warpui::platform::is_mobile_device() {
+    if !cognixui::platform::is_mobile_device() {
         let keybinding_string = keybinding.map(|k| k.displayed()).unwrap_or_default();
         let keybinding_label = Text::new_inline(
             keybinding_string,
@@ -1733,7 +1733,7 @@ struct VisualMarkdownBlockOptions<A: 'static> {
     alignment: VisualMarkdownAlignment,
     lightbox_trigger: Option<VisualMarkdownLightboxTrigger>,
     /// When `Some(non_empty)`, the rendered image is wrapped in the standard
-    /// Warp tooltip primitive so hovering surfaces the CommonMark image title.
+    /// Cognix tooltip primitive so hovering surfaces the CommonMark image title.
     /// Mermaid diagrams pass `None` here because CommonMark titles do not
     /// apply to them.
     tooltip: Option<String>,
@@ -2148,7 +2148,7 @@ fn render_visual_markdown_block<A: Action>(
     .with_color(blended_colors::text_sub(theme, theme.surface_2()))
     .finish();
 
-    let image = WarpImage::new(asset_source, CacheOption::BySize)
+    let image = CognixImage::new(asset_source, CacheOption::BySize)
         .contain()
         .before_load(placeholder)
         .with_corner_radius(CornerRadius::with_all(Radius::Pixels(8.)));
@@ -2166,7 +2166,7 @@ fn render_visual_markdown_block<A: Action>(
         VisualMarkdownAlignment::Center => Align::new(content).finish(),
     };
 
-    // Wrap the rendered image in the standard Warp tooltip when the source
+    // Wrap the rendered image in the standard Cognix tooltip when the source
     // carried a CommonMark `title`. Branching on `Some(non_empty)` here means
     // untitled images remain un-wrapped, matching `specs/GH849/product.md`
     // invariant 6 (no tooltip for empty or absent titles). The tooltip's
@@ -2183,8 +2183,8 @@ fn render_visual_markdown_block<A: Action>(
             tooltip,
             mouse_state,
             content,
-            warpui::elements::ParentAnchor::TopMiddle,
-            warpui::elements::ChildAnchor::BottomMiddle,
+            cognixui::elements::ParentAnchor::TopMiddle,
+            cognixui::elements::ChildAnchor::BottomMiddle,
             // Small negative Y offset keeps a hairline gap between the
             // tooltip's bottom edge and the image's top edge without
             // floating noticeably above the image.
@@ -2232,7 +2232,7 @@ fn render_visual_card(
     let theme = appearance.theme();
     let header_background = theme.surface_2();
     let header_text_color = blended_colors::text_main(theme, header_background);
-    let header_icon = ConstrainedBox::new(icon.to_warpui_icon(header_text_color.into()).finish())
+    let header_icon = ConstrainedBox::new(icon.to_cognixui_icon(header_text_color.into()).finish())
         .with_width(16.)
         .with_height(16.)
         .finish();
@@ -2444,7 +2444,7 @@ fn render_table_section(
             row_dividers: table_appearance.row_dividers,
             cell_padding,
             header_background: table_appearance.header_background,
-            row_background: warpui::elements::RowBackground {
+            row_background: cognixui::elements::RowBackground {
                 primary: table_appearance.cell_background,
                 alternating: table_appearance.alternate_row_background,
             },
@@ -2548,7 +2548,7 @@ fn render_table_cell(props: TableCellProps, app: &AppContext) -> Box<dyn Element
 struct TableCellProps {
     cell: FormattedTextInline,
     alignment: TableAlignment,
-    font_family: warpui::fonts::FamilyId,
+    font_family: cognixui::fonts::FamilyId,
     font_size: f32,
     font_weight: Weight,
     text_color: ColorU,
@@ -2733,7 +2733,7 @@ pub fn render_code_output_section<A: Action>(
     let allow_execution = props.language.is_none_or(|lang| lang.is_shell());
 
     match props.editor_view {
-        Some(view) => render_code_block_with_warp_text(
+        Some(view) => render_code_block_with_cognix_text(
             CodeBlockOptions {
                 on_open: match (props.open_code_block_action_factory, open_source.clone()) {
                     #[allow(unused)]
@@ -2907,7 +2907,7 @@ pub(crate) fn resolve_absolute_file_path(
     shell_launch_data: Option<&ShellLaunchData>,
     home_dir: PathBuf,
 ) -> Option<PathBuf> {
-    use warp_util::path::CleanPathResult;
+    use cognix_util::path::CleanPathResult;
 
     use crate::util::file::{absolute_path_if_valid, ShellPathType};
 
@@ -2958,10 +2958,10 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
             )
         }
         RenderableAIError::ServerOverloaded => {
-            "Warp is currently overloaded. Please try again later.".to_string()
+            "Cognix is currently overloaded. Please try again later.".to_string()
         }
-        RenderableAIError::InternalWarpError => {
-            format!("{ERROR_APOLOGY_TEXT}\n\n{INTERNAL_WARP_ERROR}")
+        RenderableAIError::InternalCognixError => {
+            format!("{ERROR_APOLOGY_TEXT}\n\n{INTERNAL_COGNIX_ERROR}")
         }
         RenderableAIError::Other {
             error_message,
@@ -3015,7 +3015,7 @@ pub fn render_failed_output(props: FailedOutputProps, app: &AppContext) -> Box<d
         .with_child(
             Container::new(
                 ConstrainedBox::new(
-                    warpui::elements::Icon::new(
+                    cognixui::elements::Icon::new(
                         Icon::AlertTriangle.into(),
                         error_color(appearance.theme()),
                     )
@@ -3066,7 +3066,7 @@ fn render_invalid_api_key_error(
 
     let alert_icon = ConstrainedBox::new(
         Icon::AlertTriangle
-            .to_warpui_icon(error_color(appearance.theme()).into())
+            .to_cognixui_icon(error_color(appearance.theme()).into())
             .finish(),
     )
     .with_width(icon_size(app))
@@ -3100,7 +3100,7 @@ fn render_invalid_api_key_error(
     let settings_button = appearance
         .ui_builder()
         .button(
-            warpui::ui_components::button::ButtonVariant::Outlined,
+            cognixui::ui_components::button::ButtonVariant::Outlined,
             state_handle.clone(),
         )
         .with_style(UiComponentStyles {
@@ -3121,7 +3121,7 @@ fn render_invalid_api_key_error(
         .on_click(move |ctx, _, _| {
             ctx.dispatch_typed_action(WorkspaceAction::ShowSettingsPageWithSearch {
                 search_query: "api keys".to_string(),
-                section: Some(SettingsSection::WarpAgent),
+                section: Some(SettingsSection::CognixAgent),
             });
         })
         .finish();
@@ -3245,7 +3245,7 @@ pub(crate) fn render_debug_footer<V: View>(
             appearance
                 .ui_builder()
                 .button(
-                    warpui::ui_components::button::ButtonVariant::Text,
+                    cognixui::ui_components::button::ButtonVariant::Text,
                     props.submit_issue_button_handle,
                 )
                 .with_centered_text_label("Send Feedback".to_string())
@@ -3311,8 +3311,8 @@ pub(crate) fn render_debug_footer<V: View>(
         "Copy debug ID".to_string(),
         props.debug_copy_button_handle,
         copy_button,
-        warpui::elements::ParentAnchor::TopRight,
-        warpui::elements::ChildAnchor::BottomRight,
+        cognixui::elements::ParentAnchor::TopRight,
+        cognixui::elements::ChildAnchor::BottomRight,
         vec2f(0., -8.),
     );
 

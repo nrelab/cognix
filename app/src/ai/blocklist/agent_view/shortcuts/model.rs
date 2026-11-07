@@ -1,6 +1,6 @@
-use warpui::{Entity, ModelContext, ModelHandle};
+use cognixui::{Entity, ModelContext, ModelHandle};
 
-use warp_core::send_telemetry_from_ctx;
+use cognix_core::send_telemetry_from_ctx;
 
 use crate::{
     ai::blocklist::agent_view::{AgentViewController, AgentViewControllerEvent},

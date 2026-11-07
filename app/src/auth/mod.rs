@@ -33,10 +33,10 @@ pub use auth_state::AuthStateProvider;
 use itertools::Itertools;
 pub use login_failure_notification::LoginFailureReason;
 pub use user_uid::UserUid;
-use warpui::modals::{AlertDialogWithCallbacks, ModalButton};
+use cognixui::modals::{AlertDialogWithCallbacks, ModalButton};
 
-use warp_core::user_preferences::GetUserPreferences as _;
-use warpui::{AppContext, SingletonEntity};
+use cognix_core::user_preferences::GetUserPreferences as _;
+use cognixui::{AppContext, SingletonEntity};
 
 use crate::cloud_object::model::persistence::CloudModel;
 use crate::focus_running_window_and_show_native_modal;
@@ -158,7 +158,7 @@ pub fn maybe_log_out(app: &mut AppContext) {
                 "object"
             };
             info_text_vec.push(format!(
-                "You have {num_unsaved_objects} unsynced Warp Drive {plural}. \
+                "You have {num_unsaved_objects} unsynced Cognix Drive {plural}. \
             Logging out will cause you to lose the {plural}."
             ));
         }
@@ -196,7 +196,7 @@ pub fn maybe_log_out(app: &mut AppContext) {
         );
 
         // On mac, we show the native platform modal. On platforms that don't support a native modal,
-        // we show the custom warp modal.
+        // we show the custom cognix modal.
         if cfg!(all(not(target_family = "wasm"), target_os = "macos")) {
             app.show_native_platform_modal(alert_data);
         } else {
@@ -277,7 +277,7 @@ pub fn log_out(app: &mut AppContext) {
     }
 
     #[cfg(target_family = "wasm")]
-    crate::platform::wasm::emit_event(crate::platform::wasm::WarpEvent::LoggedOut);
+    crate::platform::wasm::emit_event(crate::platform::wasm::CognixEvent::LoggedOut);
 }
 
 // Remove the cloud persisted settings from user defaults.

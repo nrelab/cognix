@@ -8,10 +8,10 @@ use crate::persistence::model::{
 use crate::ui_components::blended_colors;
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::Icon;
-use warpui::elements::ConstrainedBox;
-use warpui::{
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::Icon;
+use cognixui::elements::ConstrainedBox;
+use cognixui::{
     elements::{
         Border, Container, CornerRadius, CrossAxisAlignment, Empty, Flex, MainAxisSize,
         MouseStateHandle, ParentElement, Radius, Text,
@@ -79,13 +79,13 @@ impl ConversationUsageView {
     }
     /// Helper to collect models grouped by category.
     /// Returns a HashMap mapping category name to list of (model_id, is_byok) tuples.
-    /// Handles both category-based fields and legacy warp_tokens/byok_tokens fields.
+    /// Handles both category-based fields and legacy cognix_tokens/byok_tokens fields.
     fn collect_models_by_category(&self) -> HashMap<String, Vec<(String, bool)>> {
         let mut entries_by_category: HashMap<String, Vec<(String, bool)>> = HashMap::new();
 
         // Collect from category-based fields
         for model in &self.usage_info.models {
-            for (category, &tokens) in &model.warp_token_usage_by_category {
+            for (category, &tokens) in &model.cognix_token_usage_by_category {
                 if tokens > 0 {
                     entries_by_category
                         .entry(category.clone())
@@ -106,7 +106,7 @@ impl ConversationUsageView {
         // Fallback to legacy fields for backwards compatibility
         if entries_by_category.is_empty() {
             for model in &self.usage_info.models {
-                if model.warp_tokens > 0 {
+                if model.cognix_tokens > 0 {
                     entries_by_category
                         .entry(PRIMARY_AGENT_CATEGORY.to_string())
                         .or_default()
@@ -232,7 +232,7 @@ impl ConversationUsageView {
 
                 if *is_byok {
                     model_elements.push(
-                        ConstrainedBox::new(Icon::Key.to_warpui_icon(text_color.into()).finish())
+                        ConstrainedBox::new(Icon::Key.to_cognixui_icon(text_color.into()).finish())
                             .with_width(font_size)
                             .with_height(font_size)
                             .finish(),

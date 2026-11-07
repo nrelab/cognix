@@ -10,8 +10,8 @@ use std::{
 
 use futures_util::future::Either;
 use url::Url;
-use warp_util::path::{CleanPathResult, LineAndColumnArg};
-use warpui::{
+use cognix_util::path::{CleanPathResult, LineAndColumnArg};
+use cognixui::{
     r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, ModelHandle, SingletonEntity,
     WindowId,
 };
@@ -21,9 +21,9 @@ use crate::util::file::external_editor::EditorSettings;
 #[cfg(feature = "local_fs")]
 use crate::util::openable_file_type::{is_supported_image_file, resolve_file_target, FileTarget};
 use crate::{
-    drive::OpenWarpDriveObjectArgs,
+    drive::OpenCognixDriveObjectArgs,
     terminal::model::session::Session,
-    uri::parse_url_paths::{get_item_data_from_warp_link, WarpWebLink},
+    uri::parse_url_paths::{get_item_data_from_cognix_link, CognixWebLink},
     workspace::ActiveSession,
 };
 
@@ -43,7 +43,7 @@ pub enum LinkTarget {
         /// The base session when the link was resolved. It's stored here in case it changes
         /// between resolving and opening the link.
         session: Arc<Session>,
-        /// Whether or not this file is a Markdown file viewable in Warp.
+        /// Whether or not this file is a Markdown file viewable in Cognix.
         is_markdown: bool,
     },
     LocalDirectory {
@@ -260,14 +260,14 @@ impl NotebookLinks {
 
     /// Open a resolved link:
     /// * URLs are opened in the web browser or system-default application.
-    /// * Markdown files are opened in Warp (if the `FileNotebooks` feature flag is enabled).
+    /// * Markdown files are opened in Cognix (if the `FileNotebooks` feature flag is enabled).
     /// * Other files are opened in the configured editor or system-default application.
     pub fn open(&self, link: LinkTarget, ctx: &mut ModelContext<Self>) {
         match link {
             LinkTarget::Url(url) => {
-                if let Some(WarpWebLink::DriveObject(args)) = get_item_data_from_warp_link(&url) {
-                    return ctx.emit(LinkEvent::OpenWarpDriveLink {
-                        open_warp_drive_args: *args,
+                if let Some(CognixWebLink::DriveObject(args)) = get_item_data_from_cognix_link(&url) {
+                    return ctx.emit(LinkEvent::OpenCognixDriveLink {
+                        open_cognix_drive_args: *args,
                     });
                 }
 
@@ -302,7 +302,7 @@ impl NotebookLinks {
                 is_markdown: true,
                 ..
             } => {
-                // The default action for Markdown file links is to open them in Warp. As a
+                // The default action for Markdown file links is to open them in Cognix. As a
                 // secondary action, open them in an external app.
                 open_file(path.clone(), *line_and_column, ctx)
             }
@@ -409,8 +409,8 @@ pub enum LinkEvent {
         path: PathBuf,
         session: Arc<Session>,
     },
-    OpenWarpDriveLink {
-        open_warp_drive_args: OpenWarpDriveObjectArgs,
+    OpenCognixDriveLink {
+        open_cognix_drive_args: OpenCognixDriveObjectArgs,
     },
     /// This event tells the parent pane group to open a new terminal session in the given
     /// directory.
@@ -419,7 +419,7 @@ pub enum LinkEvent {
     /// resolution has changed.
     RefreshLinks,
     #[cfg(feature = "local_fs")]
-    /// Emitted when a file should be opened in Warp (code editor or markdown viewer).
+    /// Emitted when a file should be opened in Cognix (code editor or markdown viewer).
     OpenFileWithTarget {
         path: PathBuf,
         target: FileTarget,

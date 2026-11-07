@@ -9,15 +9,15 @@ use crate::util::time_format::format_approx_duration_from_now_utc;
 use chrono::{DateTime, Local};
 use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
-use warp_core::ui::color::coloru_with_opacity;
-use warp_core::ui::theme::Fill;
-use warp_core::ui::Icon;
-use warpui::elements::{ConstrainedBox, Container, Highlight, ParentElement, Shrinkable, Text};
-use warpui::fonts::{Properties, Weight};
-use warpui::prelude::{Align, CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize};
-use warpui::scene::{CornerRadius, Radius};
-use warpui::text_layout::ClipConfig;
-use warpui::{AppContext, Element, SingletonEntity};
+use cognix_core::ui::color::coloru_with_opacity;
+use cognix_core::ui::theme::Fill;
+use cognix_core::ui::Icon;
+use cognixui::elements::{ConstrainedBox, Container, Highlight, ParentElement, Shrinkable, Text};
+use cognixui::fonts::{Properties, Weight};
+use cognixui::prelude::{Align, CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize};
+use cognixui::scene::{CornerRadius, Radius};
+use cognixui::text_layout::ClipConfig;
+use cognixui::{AppContext, Element, SingletonEntity};
 
 #[derive(Debug, Clone)]
 pub struct InlineHistoryItem {
@@ -123,7 +123,7 @@ impl SearchItem for InlineHistoryItem {
             HistoryItemType::Command { .. } => {
                 let icon_color = inline_styles::icon_color(appearance);
                 Container::new(
-                    ConstrainedBox::new(Icon::Terminal.to_warpui_icon(icon_color).finish())
+                    ConstrainedBox::new(Icon::Terminal.to_cognixui_icon(icon_color).finish())
                         .with_width(icon_size)
                         .with_height(icon_size)
                         .finish(),
@@ -138,7 +138,7 @@ impl SearchItem for InlineHistoryItem {
             HistoryItemType::AIPrompt { .. } => {
                 let icon_color = inline_styles::icon_color(appearance);
                 Container::new(
-                    ConstrainedBox::new(Icon::Prompt.to_warpui_icon(icon_color).finish())
+                    ConstrainedBox::new(Icon::Prompt.to_cognixui_icon(icon_color).finish())
                         .with_width(icon_size)
                         .with_height(icon_size)
                         .finish(),

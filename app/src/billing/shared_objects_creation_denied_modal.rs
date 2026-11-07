@@ -1,4 +1,4 @@
-use crate::drive::cloud_object_styling::warp_drive_icon_color;
+use crate::drive::cloud_object_styling::cognix_drive_icon_color;
 use crate::drive::DriveObjectType;
 use crate::modal::{Modal, ModalEvent};
 use crate::server::ids::ServerId;
@@ -7,15 +7,15 @@ use crate::ui_components::icons::Icon;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::CustomerType;
 use std::default::Default;
-use warp_core::ui::appearance::Appearance;
-use warpui::fonts::Weight;
-use warpui::keymap::FixedBinding;
-use warpui::presenter::ChildView;
-use warpui::ui_components::components::{Coords, UiComponentStyles};
-use warpui::AppContext;
-use warpui::SingletonEntity;
-use warpui::ViewHandle;
-use warpui::{Element, Entity, TypedActionView, View, ViewContext};
+use cognix_core::ui::appearance::Appearance;
+use cognixui::fonts::Weight;
+use cognixui::keymap::FixedBinding;
+use cognixui::presenter::ChildView;
+use cognixui::ui_components::components::{Coords, UiComponentStyles};
+use cognixui::AppContext;
+use cognixui::SingletonEntity;
+use cognixui::ViewHandle;
+use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
 
 use super::shared_objects_creation_denied_body::{
     SharedObjectsCreationDeniedBody, SharedObjectsCreationDeniedBodyEvent,
@@ -39,7 +39,7 @@ pub enum SharedObjectsCreationDeniedModalEvent {
 }
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_fixed_bindings([FixedBinding::new(
         "escape",
@@ -132,14 +132,14 @@ impl SharedObjectsCreationDeniedModal {
         let (icon, icon_color) = match object_type {
             DriveObjectType::Notebook { is_ai_document } => (
                 Some(Icon::Notebook),
-                Some(Fill::Solid(warp_drive_icon_color(
+                Some(Fill::Solid(cognix_drive_icon_color(
                     appearance,
                     DriveObjectType::Notebook { is_ai_document },
                 ))),
             ),
             DriveObjectType::Workflow => (
                 Some(Icon::Workflow),
-                Some(Fill::Solid(warp_drive_icon_color(
+                Some(Fill::Solid(cognix_drive_icon_color(
                     appearance,
                     DriveObjectType::Workflow,
                 ))),

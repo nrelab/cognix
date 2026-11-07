@@ -14,8 +14,8 @@ use crate::transport::RemoteTransport;
 use crate::HostId;
 use repo_metadata::RepoMetadataUpdate;
 use serde::Serialize;
-use warp_core::SessionId;
-use warpui::{Entity, ModelContext, ModelSpawner, SingletonEntity};
+use cognix_core::SessionId;
+use cognixui::{Entity, ModelContext, ModelSpawner, SingletonEntity};
 
 /// Which phase of the remote server connection flow failed.
 #[derive(Clone, Copy, Debug, Serialize)]

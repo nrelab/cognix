@@ -10,7 +10,7 @@
 use super::integration_tests;
 
 integration_tests! {
-    // Test a local shell command while Warp service URLs are unreachable.
+    // Test a local shell command while Cognix service URLs are unreachable.
     test_local_command_with_unreachable_services,
     // Test shell process terminates when session is closed.
     test_add_and_close_session,
@@ -43,11 +43,11 @@ integration_tests! {
     // Tests zsh-specific behavior.
     test_auto_title,
     // Tests zsh-specific behavior.
-    test_warp_auto_title_disabled,
+    test_cognix_auto_title_disabled,
     // Tests bash-specific behavior.
-    test_warp_honors_user_title_bash,
+    test_cognix_honors_user_title_bash,
     // Tests zsh-specific behavior.
-    test_warp_honors_user_title_zsh,
+    test_cognix_honors_user_title_zsh,
     // Tests shell-specific "autocd" behavior.
     test_completions_with_autocd,
     // Tests bootstrap reports completable executables.

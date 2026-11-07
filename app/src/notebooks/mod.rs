@@ -15,7 +15,7 @@ use async_trait::async_trait;
 use anyhow::Result;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use warpui::AppContext;
+use cognixui::AppContext;
 
 use crate::server::cloud_objects::update_manager::InitiatedBy;
 use crate::{
@@ -27,7 +27,7 @@ use crate::{
         UpdateCloudObjectResult,
     },
     drive::{
-        items::{notebook::WarpDriveNotebook, WarpDriveItem},
+        items::{notebook::CognixDriveNotebook, CognixDriveItem},
         CloudObjectTypeAndId,
     },
     persistence::ModelEvent,
@@ -190,7 +190,7 @@ impl CloudModelType for CloudNotebookModel {
             .await
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         true
     }
 
@@ -198,13 +198,13 @@ impl CloudModelType for CloudNotebookModel {
         true
     }
 
-    fn to_warp_drive_item(
+    fn to_cognix_drive_item(
         &self,
         id: SyncId,
         _appearance: &Appearance,
         notebook: &CloudNotebook,
-    ) -> Option<Box<dyn WarpDriveItem>> {
-        Some(Box::new(WarpDriveNotebook::new(
+    ) -> Option<Box<dyn CognixDriveItem>> {
+        Some(Box::new(CognixDriveNotebook::new(
             self.cloud_object_type_and_id(id),
             notebook.clone(),
             notebook.model().ai_document_id.is_some(),
@@ -269,7 +269,7 @@ pub fn post_process_notebook(data: &str) -> String {
 /// * Includes extra context for embedded objects.
 #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
 pub fn export_notebook(data: &str, ctx: &AppContext) -> anyhow::Result<String> {
-    use warp_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
+    use cognix_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
 
     // Parse the Markdown directly rather than using [`Buffer::from_markdown`] so that we can
     // report errors to the exporter.

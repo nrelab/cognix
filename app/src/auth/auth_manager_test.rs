@@ -10,7 +10,7 @@ use crate::auth::{
 };
 use crate::server::server_api::auth::UserAuthenticationError;
 use crate::ServerApiProvider;
-use warpui::{App, SingletonEntity};
+use cognixui::{App, SingletonEntity};
 
 fn initialize_app(app: &mut App) {
     app.add_singleton_model(|_ctx| ServerApiProvider::new_for_test());
@@ -37,7 +37,7 @@ fn track_invalid_state_failures(app: &mut App) -> Arc<AtomicBool> {
 }
 
 /// After a logged-in user successfully completes auth, pressing the browser's
-/// "Take me to Warp" button a second time should silently drop the stale
+/// "Take me to Cognix" button a second time should silently drop the stale
 /// redirect rather than surface an `InvalidStateParameter` error.
 #[test]
 fn test_duplicate_redirect_for_logged_in_user_is_silently_ignored() {
@@ -181,7 +181,7 @@ fn test_log_out_clears_pending_auth_state() {
         // routes to `PersistedUser::remove_from_secure_storage`. That requires
         // a `SecureStorage` singleton, so register a no-op one for this test.
         app.update(|ctx| {
-            warpui_extras::secure_storage::register_noop("warp_test", ctx);
+            cognixui_extras::secure_storage::register_noop("cognix_test", ctx);
         });
 
         AuthManager::handle(&app).update(&mut app, |auth_manager, ctx| {

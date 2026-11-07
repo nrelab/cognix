@@ -1,13 +1,13 @@
 use std::{collections::HashMap, ops::Range, sync::Arc};
 
 use itertools::Itertools;
-use markdown_parser::html_parser::WARP_EMBED_ATTRIBUTE_NAME;
+use markdown_parser::html_parser::COGNIX_EMBED_ATTRIBUTE_NAME;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use serde_yaml::Mapping;
 use string_offset::ByteOffset;
-use warp_core::ui::appearance::Appearance;
-use warp_editor::{
+use cognix_core::ui::appearance::Appearance;
+use cognix_editor::{
     content::{markdown::MarkdownStyle, text::TextStylesWithMetadata},
     editor::EmbeddedItemModel,
     extract_block,
@@ -22,11 +22,11 @@ use warp_editor::{
         BLOCK_FOOTER_HEIGHT,
     },
 };
-use warpui::{
+use cognixui::{
     elements::{Border, Empty},
     SingletonEntity,
 };
-use warpui::{
+use cognixui::{
     elements::{ConstrainedBox, CornerRadius, Margin, Padding, Radius},
     text_layout::TextFrame,
     units::{IntoPixels, Pixels},
@@ -35,7 +35,7 @@ use warpui::{
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, CloudObject},
-    drive::{cloud_object_styling::warp_drive_icon_color, DriveObjectType},
+    drive::{cloud_object_styling::cognix_drive_icon_color, DriveObjectType},
     server::ids::{HashableId, ToServerId},
     ui_components::icons::Icon,
     workflows::{workflow::Workflow, CloudWorkflow, WorkflowId},
@@ -310,7 +310,7 @@ impl EmbeddedItem for EmbeddedWorkflow {
 
         // If the workflow is no longer accessible or is trashed, set the content to
         // an empty string. But we should still keep the HTML element formatting and
-        // attributes so we could re-parse the ID and metadata when pasted into Warp.
+        // attributes so we could re-parse the ID and metadata when pasted into Cognix.
         let workflow_content = workflow
             .and_then(|workflow| {
                 if !workflow.is_trashed(cloud_model) {
@@ -326,7 +326,7 @@ impl EmbeddedItem for EmbeddedWorkflow {
             html: EmbeddedItemHTMLRepresentation {
                 element_name: "pre",
                 content: workflow_content,
-                attributes: HashMap::from([(WARP_EMBED_ATTRIBUTE_NAME, self.hashed_id())]),
+                attributes: HashMap::from([(COGNIX_EMBED_ATTRIBUTE_NAME, self.hashed_id())]),
             },
         }
     }
@@ -458,16 +458,16 @@ impl RenderableEmbeddedWorkflow {
         let (icon, icon_color) = if is_agent_mode_prompt {
             (
                 Icon::Prompt,
-                warp_drive_icon_color(appearance, DriveObjectType::AgentModeWorkflow),
+                cognix_drive_icon_color(appearance, DriveObjectType::AgentModeWorkflow),
             )
         } else {
             (
                 Icon::Workflow,
-                warp_drive_icon_color(appearance, DriveObjectType::Workflow),
+                cognix_drive_icon_color(appearance, DriveObjectType::Workflow),
             )
         };
         let workflow_icon = ConstrainedBox::new(
-            icon.to_warpui_icon(icon_color.into())
+            icon.to_cognixui_icon(icon_color.into())
                 .with_opacity(1.0)
                 .finish(),
         )
@@ -616,7 +616,7 @@ impl RenderableBlock for RenderableEmbeddedWorkflow {
             );
         }
 
-        ctx.paint.scene.start_layer(warpui::ClipBounds::ActiveLayer);
+        ctx.paint.scene.start_layer(cognixui::ClipBounds::ActiveLayer);
 
         // Position the block footer right below the content area, flush with its right-hand edge.
         // This gives the footer some padding relative to the visible area with a background.
@@ -631,15 +631,15 @@ impl RenderableBlock for RenderableEmbeddedWorkflow {
         ctx.paint.scene.stop_layer();
     }
 
-    fn after_layout(&mut self, ctx: &mut warpui::AfterLayoutContext, app: &warpui::AppContext) {
+    fn after_layout(&mut self, ctx: &mut cognixui::AfterLayoutContext, app: &cognixui::AppContext) {
         self.footer.after_layout(ctx, app);
     }
 
     fn dispatch_event(
         &mut self,
-        _model: &warp_editor::render::model::RenderState,
-        event: &warpui::event::DispatchedEvent,
-        ctx: &mut warpui::EventContext,
+        _model: &cognix_editor::render::model::RenderState,
+        event: &cognixui::event::DispatchedEvent,
+        ctx: &mut cognixui::EventContext,
         app: &AppContext,
     ) -> bool {
         self.footer.dispatch_event(event, ctx, app)

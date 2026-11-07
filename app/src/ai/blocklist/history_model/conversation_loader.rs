@@ -8,8 +8,8 @@ use std::sync::Arc;
 use futures::FutureExt;
 use itertools::Itertools as _;
 use persistence::model::AgentConversationRecord;
-use warp_core::features::FeatureFlag;
-use warpui::{AppContext, SingletonEntity};
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, SingletonEntity};
 
 use crate::ai::agent::api::convert_conversation::{
     convert_conversation_data_to_ai_conversation, RestorationMode,
@@ -179,9 +179,9 @@ pub async fn load_conversation_from_server(
 
 /// Boxes a future with the right type for the platform.
 /// On WASM, futures must not implement Send.
-fn box_future<F>(f: F) -> warpui::r#async::BoxFuture<'static, Option<CloudConversationData>>
+fn box_future<F>(f: F) -> cognixui::r#async::BoxFuture<'static, Option<CloudConversationData>>
 where
-    F: Future<Output = Option<CloudConversationData>> + warpui::r#async::Spawnable,
+    F: Future<Output = Option<CloudConversationData>> + cognixui::r#async::Spawnable,
 {
     cfg_if::cfg_if! {
         if #[cfg(target_family = "wasm")] {
@@ -207,7 +207,7 @@ impl BlocklistAIHistoryModel {
         &self,
         conversation_id: AIConversationId,
         ctx: &AppContext,
-    ) -> warpui::r#async::BoxFuture<'static, Option<CloudConversationData>> {
+    ) -> cognixui::r#async::BoxFuture<'static, Option<CloudConversationData>> {
         // First check if the conversation is already in memory
         if let Some(conversation) = self.conversations_by_id.get(&conversation_id) {
             return box_future(futures::future::ready(Some(CloudConversationData::Oz(
@@ -263,7 +263,7 @@ impl BlocklistAIHistoryModel {
         &self,
         server_token: &ServerConversationToken,
         ctx: &AppContext,
-    ) -> warpui::r#async::BoxFuture<'static, Option<CloudConversationData>> {
+    ) -> cognixui::r#async::BoxFuture<'static, Option<CloudConversationData>> {
         // Fast path: token is known locally.
         if let Some(conversation_id) = self.find_conversation_id_by_server_token(server_token) {
             return self.load_conversation_data(conversation_id, ctx);
@@ -490,11 +490,11 @@ impl BlocklistAIHistoryModel {
                 for task in &agent_conv.tasks {
                     for message in &task.messages {
                         match &message.message {
-                            Some(warp_multi_agent_api::message::Message::UserQuery(_)) => {
+                            Some(cognix_multi_agent_api::message::Message::UserQuery(_)) => {
                                 has_user_query = true;
                             }
-                            Some(warp_multi_agent_api::message::Message::SystemQuery(sys)) => {
-                                if let Some(warp_multi_agent_api::message::system_query::Type::AutoCodeDiff(_)) = &sys.r#type {
+                            Some(cognix_multi_agent_api::message::Message::SystemQuery(sys)) => {
+                                if let Some(cognix_multi_agent_api::message::system_query::Type::AutoCodeDiff(_)) = &sys.r#type {
                                     has_autocodediff = true;
                                 }
                             }
@@ -515,15 +515,15 @@ impl BlocklistAIHistoryModel {
                     // (or in the case of a passive code diff, the summary of the diff)
                     task.messages.iter().find_map(|msg| {
                         match &msg.message {
-                            Some(warp_multi_agent_api::message::Message::UserQuery(user_query)) => {
+                            Some(cognix_multi_agent_api::message::Message::UserQuery(user_query)) => {
                                 Some(user_query.query.clone())
                             }
-                            Some(warp_multi_agent_api::message::Message::ToolCall(tool_call))  => {
+                            Some(cognix_multi_agent_api::message::Message::ToolCall(tool_call))  => {
                                 let Some(tool) = &tool_call.tool else {
                                     return None;
                                 };
 
-                                if let warp_multi_agent_api::message::tool_call::Tool::ApplyFileDiffs(diff_suggestion) = tool {
+                                if let cognix_multi_agent_api::message::tool_call::Tool::ApplyFileDiffs(diff_suggestion) = tool {
                                     Some(diff_suggestion.summary.clone())
                                 } else {
                                     None

@@ -1,4 +1,4 @@
-use warpui::keymap::{BindingDescription, PerPlatformKeystroke};
+use cognixui::keymap::{BindingDescription, PerPlatformKeystroke};
 
 use super::StaticCommand;
 

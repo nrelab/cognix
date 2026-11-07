@@ -1,5 +1,5 @@
-use warp_core::ui::{appearance::Appearance, Icon};
-use warpui::{
+use cognix_core::ui::{appearance::Appearance, Icon};
+use cognixui::{
     elements::ParentElement,
     prelude::{
         ConstrainedBox, Container, CrossAxisAlignment, Cursor, Empty, Flex, Hoverable,
@@ -164,7 +164,7 @@ impl View for CloudModeSetupTextBlock {
                 .with_child(
                     Container::new(
                         ConstrainedBox::new(
-                            chevron_icon.to_warpui_icon(text_color.into()).finish(),
+                            chevron_icon.to_cognixui_icon(text_color.into()).finish(),
                         )
                         .with_width(icon_size)
                         .with_height(icon_size)

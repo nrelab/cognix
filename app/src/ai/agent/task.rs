@@ -14,7 +14,7 @@ use itertools::Itertools;
 use prost_types::FieldMask;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use warp_multi_agent_api::{
+use cognix_multi_agent_api::{
     self as api,
     message::{tool_call::subagent::Metadata, Message},
 };
@@ -517,12 +517,12 @@ impl Task {
         }
     }
 
-    pub fn is_warp_documentation_search_subagent(&self) -> bool {
+    pub fn is_cognix_documentation_search_subagent(&self) -> bool {
         match &self.data {
             TaskImpl::Server(server_data) => server_data
                 .subagent_params
                 .as_ref()
-                .is_some_and(|params| params.call.is_warp_documentation_search()),
+                .is_some_and(|params| params.call.is_cognix_documentation_search()),
             TaskImpl::Optimistic(_) => false,
         }
     }

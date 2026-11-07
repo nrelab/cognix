@@ -1,8 +1,8 @@
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
-use warp_util::path::ShellFamily;
-use warpui::platform::OperatingSystem;
+use cognix_util::path::ShellFamily;
+use cognixui::platform::OperatingSystem;
 
 #[derive(
     Debug,

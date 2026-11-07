@@ -2,8 +2,8 @@
 
 use std::ops::Range;
 
-use warp_core::ui::appearance::DEFAULT_UI_FONT_SIZE;
-use warpui::{
+use cognix_core::ui::appearance::DEFAULT_UI_FONT_SIZE;
+use cognixui::{
     PaintContext,
     elements::{CornerRadius, Point, Radius},
     geometry::{

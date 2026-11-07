@@ -13,9 +13,9 @@ use std::{
     path::{Path, PathBuf},
     sync::Arc,
 };
-use warp_core::features::FeatureFlag;
+use cognix_core::features::FeatureFlag;
 
-use warpui::{AppContext, Entity, ModelContext, SingletonEntity};
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::{

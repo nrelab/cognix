@@ -1,19 +1,19 @@
 ---
 name: add-mcp-server
-description: Use this skill when helping users add MCP servers to their Warp configuration.
+description: Use this skill when helping users add MCP servers to their Cognix configuration.
 ---
 
-# Adding MCP Servers to Warp
+# Adding MCP Servers to Cognix
 
-Warp supports MCP servers via native config files. Follow these steps when helping a user add an MCP server.
+Cognix supports MCP servers via native config files. Follow these steps when helping a user add an MCP server.
 
 ## Step 1: Determine Scope
 
 If the user hasn't specified, ask whether they want to configure the server **globally** (for all projects) or **project-scoped** (for a specific repository only).
 
 Config file paths:
-- **Global (user-scoped):** `~/.warp/.mcp.json`
-- **Project-scoped:** `{repo_root}/.warp/.mcp.json`
+- **Global (user-scoped):** `~/.cognix/.mcp.json`
+- **Project-scoped:** `{repo_root}/.cognix/.mcp.json`
 
 ## Step 2: Gather Server Details
 
@@ -76,10 +76,10 @@ Check whether the target config file exists.
 }
 ```
 
-For environment variables containing secrets, use `${VAR_NAME}` syntax — Warp will substitute the value from the user's environment at runtime.
+For environment variables containing secrets, use `${VAR_NAME}` syntax — Cognix will substitute the value from the user's environment at runtime.
 
 ## Notes
 
-- Warp auto-detects changes to `.mcp.json` files on save — no restart required.
-- Configured servers appear in Warp's Settings under MCP, labeled **"Detected from Warp"**.
+- Cognix auto-detects changes to `.mcp.json` files on save — no restart required.
+- Configured servers appear in Cognix's Settings under MCP, labeled **"Detected from Cognix"**.
 - Global config applies across all sessions; project config only applies when working inside that repository.

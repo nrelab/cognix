@@ -10,7 +10,7 @@ use crate::terminal::shared_session::shared_handlers::{
     build_selected_conversation_update, RemoteUpdateGuard,
 };
 use crate::terminal::shell::ShellName;
-use crate::terminal::warpify::settings::WarpifySettings;
+use crate::terminal::cognixify::settings::CognixifySettings;
 use crate::terminal::TerminalManager as _;
 use anyhow::Context as _;
 use async_broadcast::InactiveReceiver;
@@ -50,10 +50,10 @@ use session_sharing_protocol::common::{
     LongRunningCommandAgentInteractionState, SelectedConversation, UniversalDeveloperInputContext,
 };
 use settings::Setting as _;
-use warpui::r#async::executor::Background;
-use warpui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
+use cognixui::r#async::executor::Background;
+use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 
-use warp_core::execution_mode::AppExecutionMode;
+use cognix_core::execution_mode::AppExecutionMode;
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::ai::agent::conversation::AIConversation;
@@ -76,7 +76,7 @@ use crate::send_telemetry_on_executor;
 use crate::server::telemetry::{TelemetryAgentViewEntryOrigin, TelemetryEvent};
 use crate::settings::DebugSettings;
 use crate::settings::{PrivacySettings, SshSettings};
-use warp_core::send_telemetry_from_ctx;
+use cognix_core::send_telemetry_from_ctx;
 
 use crate::terminal::model::session::Sessions;
 
@@ -296,7 +296,7 @@ impl TerminalManager {
 
         let model = Arc::new(FairMutex::new(model));
 
-        // This is purely for measuring throughput on WarpDev.
+        // This is purely for measuring throughput on CognixDev.
         if FeatureFlag::RecordPtyThroughput.is_enabled() {
             Self::record_pty_throughput(inactive_pty_reads_rx.clone(), model.clone(), ctx);
         }
@@ -332,9 +332,9 @@ impl TerminalManager {
         let prompt_type = ctx.add_model(|ctx| PromptType::new_dynamic(current_prompt.clone(), ctx));
         let session_sharer_clone = session_sharer.clone();
 
-        // Send warp prompt updates.
+        // Send cognix prompt updates.
         ctx.observe_model(&current_prompt, move |current_prompt, ctx| {
-            // If for some reason ctx.notify() was called on the warp prompt but we're using ps1, do nothing.
+            // If for some reason ctx.notify() was called on the cognix prompt but we're using ps1, do nothing.
             if *SessionSettings::as_ref(ctx).honor_ps1 {
                 return
             }
@@ -439,8 +439,8 @@ impl TerminalManager {
         ctx.subscribe_to_model(&SessionSettings::handle(ctx), move |_, event, ctx| {
             if let SessionSettingsChangedEvent::HonorPS1 { .. } = event {
                 if !*SessionSettings::as_ref(ctx).honor_ps1 {
-                    // We don't need to send a WarpPrompt message here when turning off PS1 because this will be sent
-                    // as part of observing the warp prompt and sending messages on updates.
+                    // We don't need to send a CognixPrompt message here when turning off PS1 because this will be sent
+                    // as part of observing the cognix prompt and sending messages on updates.
                     return;
                 }
                 if let Some(network) = session_sharer_clone.borrow().as_ref() {
@@ -956,12 +956,12 @@ impl TerminalManager {
         });
     }
 
-    /// Sends bindkey to notify shell process to switch to Warp prompt logic for prompt
+    /// Sends bindkey to notify shell process to switch to Cognix prompt logic for prompt
     /// with the combined prompt/command grid (we unset the PS1, but save the value for potential
     /// future restoration).
-    pub fn send_switch_to_warp_prompt_bindkey(&self, app_ctx: &mut AppContext) {
+    pub fn send_switch_to_cognix_prompt_bindkey(&self, app_ctx: &mut AppContext) {
         self.pty_controller.update(app_ctx, |pty_controller, ctx| {
-            pty_controller.send_switch_to_warp_prompt_bindkey(ctx);
+            pty_controller.send_switch_to_cognix_prompt_bindkey(ctx);
         });
     }
 
@@ -986,7 +986,7 @@ impl TerminalManager {
     fn enqueue_init_script(&self, shell_starter: &ShellStarter) -> Result<(), SendError<Message>> {
         let shell_type = shell_starter.shell_type();
         if shell_type == crate::terminal::shell::ShellType::Zsh
-            // For more on why this is necessary on Git Bash, see https://linear.app/warpdotdev/issue/CORE-3202.
+            // For more on why this is necessary on Git Bash, see https://linear.app/nrelab/issue/CORE-3202.
             || shell_starter.is_msys2()
         {
             let init_shell_script =
@@ -1015,10 +1015,10 @@ impl TerminalManager {
 
         // The TMUX SSH wrapper supercedes the original ControlMaster wrapper.
         let enable_ssh_wrapper = if FeatureFlag::SSHTmuxWrapper.is_enabled() {
-            *WarpifySettings::as_ref(ctx)
-                .enable_ssh_warpification
+            *CognixifySettings::as_ref(ctx)
+                .enable_ssh_cognixification
                 .value()
-                && !*WarpifySettings::as_ref(ctx).use_ssh_tmux_wrapper.value()
+                && !*CognixifySettings::as_ref(ctx).use_ssh_tmux_wrapper.value()
         } else {
             *SshSettings::as_ref(ctx).enable_legacy_ssh_wrapper.value()
         };
@@ -2433,7 +2433,7 @@ pub fn get_shell_starter(
     // TODO(alokedesai): Further refactor this function to make it clear that it's expensive.
     shell_starter_or_wsl_name
         .and_then(|starter| {
-            warpui::r#async::block_on(async { starter.to_shell_starter_source().await })
+            cognixui::r#async::block_on(async { starter.to_shell_starter_source().await })
         })
         .map(|starter_source| {
             get_shell_starter_internal(

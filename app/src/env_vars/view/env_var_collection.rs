@@ -1,7 +1,7 @@
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 
-use warp_core::features::FeatureFlag;
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognixui::{
     clipboard::ClipboardContent,
     elements::{
         Align, AnchorPair, ChildAnchor, Clipped, ClippedScrollStateHandle, ClippedScrollable,
@@ -27,7 +27,7 @@ use crate::{
         CloudObjectEventEntrypoint, Owner,
     },
     drive::{
-        items::WarpDriveItemId,
+        items::CognixDriveItemId,
         sharing::{ContentEditability, ShareableObject},
     },
     editor::EditorView,
@@ -80,7 +80,7 @@ const SECTION_SPACING: f32 = 16.;
 
 // Variable rows
 pub(super) const ROW_SPACING: f32 = 8.;
-pub const EDUCATION_TEXT: &str = "Add secret or command. Warp never stores external secrets";
+pub const EDUCATION_TEXT: &str = "Add secret or command. Cognix never stores external secrets";
 const VARIABLE_FONT_SIZE: f32 = 13.;
 const DESCRIPTION_EDITOR_CUTOFF: f32 = 30.;
 const DESCRIPTION_BOTTOM_MARGIN: f32 = 12.;
@@ -315,7 +315,7 @@ pub struct EnvVarCollectionView {
 pub enum EnvVarCollectionEvent {
     Pane(PaneEvent),
     UpdatedEnvVarCollection(SyncId),
-    ViewInWarpDrive(WarpDriveItemId),
+    ViewInCognixDrive(CognixDriveItemId),
     Invoke(EnvVarCollectionType),
 }
 #[derive(Debug, Clone)]
@@ -351,7 +351,7 @@ pub enum EnvVarCollectionAction {
     ForceClose,
     CloseUnsavedChangesDialog,
     // Breadcrumbs action
-    ViewInWarpDrive(WarpDriveItemId),
+    ViewInCognixDrive(CognixDriveItemId),
 }
 
 /// Defines the view for a collection of environment variables
@@ -673,7 +673,7 @@ impl EnvVarCollectionView {
         if let Some(server_id) = env_var_collection.id.into_server() {
             self.pane_configuration.update(ctx, |pane_config, ctx| {
                 pane_config
-                    .set_shareable_object(Some(ShareableObject::WarpDriveObject(server_id)), ctx);
+                    .set_shareable_object(Some(ShareableObject::CognixDriveObject(server_id)), ctx);
             });
         }
 
@@ -969,7 +969,7 @@ impl EnvVarCollectionView {
                 self.update_breadcrumbs(ctx);
                 self.pane_configuration.update(ctx, |pane_config, ctx| {
                     pane_config.set_shareable_object(
-                        Some(ShareableObject::WarpDriveObject(*server_id)),
+                        Some(ShareableObject::CognixDriveObject(*server_id)),
                         ctx,
                     );
                 });
@@ -1104,8 +1104,8 @@ impl EnvVarCollectionView {
             });
     }
 
-    fn view_in_warp_drive(&mut self, id: WarpDriveItemId, ctx: &mut ViewContext<Self>) {
-        ctx.emit(EnvVarCollectionEvent::ViewInWarpDrive(id));
+    fn view_in_cognix_drive(&mut self, id: CognixDriveItemId, ctx: &mut ViewContext<Self>) {
+        ctx.emit(EnvVarCollectionEvent::ViewInCognixDrive(id));
     }
 
     // This is a public re-export of close since it's a trait method
@@ -1292,7 +1292,7 @@ impl View for EnvVarCollectionView {
         }
     }
 
-    fn render(&self, app: &AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &AppContext) -> Box<dyn cognixui::Element> {
         let appearance = Appearance::as_ref(app);
         let theme = appearance.theme();
         let mut content = Flex::column();
@@ -1315,7 +1315,7 @@ impl View for EnvVarCollectionView {
                             self.breadcrumbs.clone(),
                             appearance,
                             |ctx, _, breadcrumb| {
-                                ctx.dispatch_typed_action(EnvVarCollectionAction::ViewInWarpDrive(
+                                ctx.dispatch_typed_action(EnvVarCollectionAction::ViewInCognixDrive(
                                     breadcrumb.kind.into_item_id(),
                                 ));
                             },
@@ -1545,7 +1545,7 @@ impl TypedActionView for EnvVarCollectionView {
                 self.update_open_modal_state(ctx);
                 ctx.notify();
             }
-            EnvVarCollectionAction::ViewInWarpDrive(id) => self.view_in_warp_drive(*id, ctx),
+            EnvVarCollectionAction::ViewInCognixDrive(id) => self.view_in_cognix_drive(*id, ctx),
         }
     }
 }

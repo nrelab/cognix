@@ -1,6 +1,6 @@
 //! Integration tests for CTRL-D / EOT behaviour.
 
-use warp::{
+use cognix::{
     integration_testing::{
         step::new_step_with_default_assertions,
         terminal::{
@@ -15,7 +15,7 @@ use warp::{
     terminal::{model::bootstrap::BootstrapStage, shell::ShellType, TerminalView},
     workspace::Workspace,
 };
-use warpui::integration::TestStep;
+use cognixui::integration::TestStep;
 
 use super::{new_builder, Builder};
 use crate::util::write_all_rc_files_for_test;
@@ -53,7 +53,7 @@ pub fn test_ctrl_d_handled_by_read_during_bootstrapping() -> Builder {
     new_builder()
         .set_should_run_test(|| {
             let (starter, _) = current_shell_starter_and_version();
-            // We need to fix https://github.com/warpdotdev/Warp/issues/1869 before
+            // We need to fix https://github.com/nrelab/cognix/issues/1869 before
             // this test works on fish.
             !matches!(starter.shell_type(), ShellType::Fish)
         })

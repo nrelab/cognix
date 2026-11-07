@@ -2,14 +2,14 @@ use crate::ai::agent::comment::ReviewComment;
 use crate::ai::agent::icons::addressed_comment_icon;
 use crate::ai::blocklist::block::CommentElementState;
 use crate::code_review::comments::ReviewCommentBatch;
-use warp_core::ui::appearance::Appearance;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::Icon;
-use warpui::elements::{
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::Icon;
+use cognixui::elements::{
     Axis, Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty,
     Expanded, Flex, Hoverable, MouseState, ParentElement, Radius, Text, Wrap, WrapFillEntireRun,
 };
-use warpui::{AppContext, Element, SingletonEntity};
+use cognixui::{AppContext, Element, SingletonEntity};
 
 const COMMENT_CHIP_MAX_HEIGHT: f32 = 200.;
 
@@ -162,7 +162,7 @@ fn comment_icon(is_addressed: bool, appearance: &Appearance) -> Box<dyn Element>
         addressed_comment_icon(appearance).finish()
     } else {
         Icon::MessageText
-            .to_warpui_icon(
+            .to_cognixui_icon(
                 appearance
                     .theme()
                     .sub_text_color(appearance.theme().background()),

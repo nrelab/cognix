@@ -1,6 +1,6 @@
 use crate::features::FeatureFlag;
 use crate::report_if_error;
-use crate::settings::{InputSettings, WarpPromptSeparator};
+use crate::settings::{InputSettings, CognixPromptSeparator};
 use crate::terminal::event::{BlockType, UserBlockCompleted};
 use crate::terminal::model::session::{ExecuteCommandOptions, Session, SessionsEvent};
 use crate::terminal::model_events::{ModelEvent, ModelEventDispatcher};
@@ -23,8 +23,8 @@ use crate::{
 use futures::{pin_mut, FutureExt as _};
 use itertools::Itertools;
 use settings::Setting as _;
-use warp_completer::completer::{CommandExitStatus, CommandOutput};
-use warp_core::user_preferences::GetUserPreferences;
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
+use cognix_core::user_preferences::GetUserPreferences;
 
 use super::ChipResult;
 use super::{
@@ -47,12 +47,12 @@ use std::hash::{Hash as _, Hasher as _};
 use std::sync::Arc;
 use std::time::Duration;
 #[cfg(feature = "local_fs")]
-use warpui::WeakModelHandle;
-use warpui::{
+use cognixui::WeakModelHandle;
+use cognixui::{
     r#async::{SpawnedFutureHandle, Timer},
     AppContext, ViewHandle,
 };
-use warpui::{Entity, ModelAsRef, ModelContext, ModelHandle, SingletonEntity};
+use cognixui::{Entity, ModelAsRef, ModelContext, ModelHandle, SingletonEntity};
 
 #[cfg(test)]
 #[path = "current_prompt_test.rs"]
@@ -171,8 +171,8 @@ pub struct CurrentPrompt {
     renderable_chips: HashSet<ContextChipKind>,
 
     same_line_prompt_enabled: bool,
-    /// The separator to use as a trailing character at the end of Warp prompt, if any.
-    separator: WarpPromptSeparator,
+    /// The separator to use as a trailing character at the end of Cognix prompt, if any.
+    separator: CognixPromptSeparator,
 
     latest_context: Option<PromptContext>,
     sessions: ModelHandle<Sessions>,
@@ -267,7 +267,7 @@ impl CurrentPrompt {
         // A WeakViewHandle is used here to avoid leaking the terminal model
         let weak_editor_handle = editor.downgrade();
         ctx.subscribe_to_view(&editor, move |me, _, ctx| {
-            // CurrentPrompt exists and this fn is called even if we're not using warp prompt.
+            // CurrentPrompt exists and this fn is called even if we're not using cognix prompt.
             // We don't need to do anything if we're honoring PS1 unless universal developer input
             // or AgentView is enabled (agent view needs chips regardless of PS1 setting).
             if *SessionSettings::as_ref(ctx).honor_ps1
@@ -330,13 +330,13 @@ impl CurrentPrompt {
             .collect()
     }
 
-    /// Whether same line prompt is enabled for the Warp prompt.
+    /// Whether same line prompt is enabled for the Cognix prompt.
     pub fn same_line_prompt_enabled(&self) -> bool {
         self.same_line_prompt_enabled
     }
 
-    /// The separator for the current Warp prompt.
-    pub fn separator(&self) -> WarpPromptSeparator {
+    /// The separator for the current Cognix prompt.
+    pub fn separator(&self) -> CognixPromptSeparator {
         self.separator
     }
 
@@ -592,7 +592,7 @@ impl CurrentPrompt {
         current_dir_path: Option<String>,
         environment_variables: Option<HashMap<String, String>>,
         timeout: Option<Duration>,
-    ) -> (Option<warp_completer::completer::CommandOutput>, bool) {
+    ) -> (Option<cognix_completer::completer::CommandOutput>, bool) {
         let command_future = session
             .execute_command(
                 &command,
@@ -1217,7 +1217,7 @@ impl CurrentPrompt {
     #[cfg(test)]
     pub fn await_generators(
         &self,
-        ctx: &mut warpui::AppContext,
+        ctx: &mut cognixui::AppContext,
     ) -> futures_util::future::BoxFuture<'static, ()> {
         use futures_util::FutureExt;
         use itertools::Itertools;

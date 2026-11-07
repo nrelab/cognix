@@ -1,6 +1,6 @@
-# Contributing to Warp
+# Contributing to Cognix
 
-Thanks for helping improve Warp! This guide explains how to open issues, propose changes, and get your work reviewed.
+Thanks for helping improve Cognix! This guide explains how to open issues, propose changes, and get your work reviewed.
 
 ## TL;DR
 
@@ -9,34 +9,34 @@ Thanks for helping improve Warp! This guide explains how to open issues, propose
 - Specs are the place where technical and design discussion on larger issues happen.
 - Oz automatically triages incoming issues and reviews open PRs.
 
-## How Contributing to Warp Works
+## How Contributing to Cognix Works
 
-Warp's contribution model is shaped by [Oz](https://oz.warp.dev), an agent that automates parts of triage, spec writing, implementation, and review. Compared with a typical open-source repository, a few things work differently here:
+Cognix's contribution model is shaped by [Oz](https://oz.cognix.dev), an agent that automates parts of triage, spec writing, implementation, and review. Compared with a typical open-source repository, a few things work differently here:
 
 - **Issues are the starting point for everything.** Discussion, scoping, and design happen on the issue before any PR is opened.
 - **Feature requests differ from bug fixes:**
   - Features are gated by readiness labels — `ready-to-spec`, then `ready-to-implement` once the design is settled — that signal when contributors can pick up the work. Discussion alone is not approval to begin work.
   - Feature work needs a written spec first: feature requests go through a spec PR (a *product spec* + *tech spec* committed under [`specs/`](specs/)) before any code is written.
   - Bug fixes skip both steps; they are implicitly `ready-to-implement` once triaged.
-- **Review is largely automated.** When you open a PR, Oz is auto-assigned and produces an initial review. Once Oz approves, it automatically requests a follow-up review from a Warp team subject-matter expert — you do not need to assign human reviewers yourself.
+- **Review is largely automated.** When you open a PR, Oz is auto-assigned and produces an initial review. Once Oz approves, it automatically requests a follow-up review from a Cognix team subject-matter expert — you do not need to assign human reviewers yourself.
 
 ### Readiness labels
 
-The Warp team applies one of the following labels when an issue is ready for contribution:
+The Cognix team applies one of the following labels when an issue is ready for contribution:
 
 - **`ready-to-spec`** — The problem is understood but the design is open. Open a spec PR with a *product spec* (`product.md`) and a *tech spec* (`tech.md`) under [`specs/`](specs/) — see [Opening a Spec PR](#opening-a-spec-pr) for what goes in each. This label is **reserved for feature requests**.
 - **`ready-to-implement`** — The design is settled. Open a code PR. **All triaged bug reports are implicitly `ready-to-implement`** once accepted — you don't need to wait for an explicit label on a confirmed bug.
-- **`needs-mocks`** — Design mocks are required before implementation can begin. Wait for the Warp team to land them.
+- **`needs-mocks`** — Design mocks are required before implementation can begin. Wait for the Cognix team to land them.
 
 Anyone can pick up a ready issue — readiness labels are not assignments, and the best implementation wins through normal review. If an issue has been sitting un-triaged or you'd like readiness re-evaluated, mention **@oss-maintainers** in a comment to flag it for the team.
 
 ## Contribution Flow
 
-Steps owned by you (the contributor) are shown in yellow; steps owned by the Warp team or Oz are shown in blue.
+Steps owned by you (the contributor) are shown in yellow; steps owned by the Cognix team or Oz are shown in blue.
 
 ```mermaid
 flowchart TD
-    A[File an issue] --> B{Warp team triages}
+    A[File an issue] --> B{Cognix team triages}
     B -- ready-to-spec<br/>(feature requests) --> C[Open spec PR<br/>product.md + tech.md]
     B -- needs-mocks --> D[Design mocks produced]
     D --> E[Open code PR]
@@ -45,16 +45,16 @@ flowchart TD
     E --> F[Oz review → SME review → CI → merge]
 
     classDef contributor fill:#fef3c7,stroke:#b45309,color:#78350f;
-    classDef warpTeam fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a;
+    classDef cognixTeam fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a;
     class A,C,E contributor;
-    class B,D,F warpTeam;
+    class B,D,F cognixTeam;
 ```
 
 ## Filing a Good Issue
 
-Search [existing issues](https://github.com/warpdotdev/warp/issues) before filing to avoid duplicates. Use the issue templates when filing.
+Search [existing issues](https://github.com/nrelab/cognix/issues) before filing to avoid duplicates. Use the issue templates when filing.
 
-If you're already running Warp, the fastest way to file is the `/feedback` command — it opens a public GitHub issue with relevant context (logs, environment details) automatically attached.
+If you're already running Cognix, the fastest way to file is the `/feedback` command — it opens a public GitHub issue with relevant context (logs, environment details) automatically attached.
 
 ### Bug reports
 
@@ -63,7 +63,7 @@ A good bug report includes:
 - A clear title and a one-paragraph summary of the problem.
 - Steps to reproduce (with a minimal example where possible).
 - Expected vs. actual behavior.
-- Warp version and OS (see `Settings → About` or `warp --version`).
+- Cognix version and OS (see `Settings → About` or `cognix --version`).
 - Logs, screenshots, or screen recordings when relevant.
 
 Once an issue is triaged as a bug (by Oz's triage agent or a maintainer), it is implicitly **`ready-to-implement`** — you can pick it up and open a code PR without waiting for a separate label.
@@ -104,13 +104,13 @@ For issues labeled `ready-to-implement` (this includes any triaged bug):
 4. Open a PR using the [pull request template](.github/pull_request_template.md) and add a changelog entry (`CHANGELOG-NEW-FEATURE`, `CHANGELOG-IMPROVEMENT`, or `CHANGELOG-BUG-FIX`); omit only for docs-only or refactoring-only changes.
 5. Keep the PR focused on a single logical change and merge `master` in before the PR enters review.
 
-You **do not need to manually request reviewers**. Oz is auto-assigned to PRs that target a ready issue and produces an initial review. After Oz approves, it automatically requests a follow-up review from the appropriate Warp team subject-matter expert.
+You **do not need to manually request reviewers**. Oz is auto-assigned to PRs that target a ready issue and produces an initial review. After Oz approves, it automatically requests a follow-up review from the appropriate Cognix team subject-matter expert.
 
 After you push changes that address Oz's feedback, comment `/oz-review` on the PR to request a re-review — you can do this up to **three times** per PR. If something looks stuck or you need more reviews than that, mention **@oss-maintainers** on the PR to escalate to the team.
 
 ## Using a Coding Agent
 
-You can use **any coding agent** to implement a contribution — for example, Warp's built-in agent, Claude Code, Codex, Gemini CLI, or others — or no agent at all. This repository ships agent-readable context (skills under [`.agents/skills/`](.agents/skills/), specs under [`specs/`](specs/), and [`WARP.md`](WARP.md)) that any harness supporting these formats can pick up.
+You can use **any coding agent** to implement a contribution — for example, Cognix's built-in agent, Claude Code, Codex, Gemini CLI, or others — or no agent at all. This repository ships agent-readable context (skills under [`.agents/skills/`](.agents/skills/), specs under [`specs/`](specs/), and [`COGNIX.md`](COGNIX.md)) that any harness supporting these formats can pick up.
 
 If you'd rather have an **Oz cloud agent** implement a ready issue for you, mention **@oss-maintainers** on the issue to request it. Approved requests run **for free** on complimentary Oz credits — you don't need to set up your own Oz account or pay for compute.
 
@@ -118,17 +118,17 @@ If you'd rather have an **Oz cloud agent** implement a ready issue for you, ment
 
 Contributors with several merged PRs may be invited to become collaborators. Collaborators receive expanded permissions including the ability to:
 
-- Assign [Oz](https://warp.dev/oz) to work on issues by mentioning `@oz` in a comment on any issue that has a readiness label.
+- Assign [Oz](https://cognix.dev/oz) to work on issues by mentioning `@oz` in a comment on any issue that has a readiness label.
 - Use complimentary Oz credits for contributions to this repository.
 - Apply and manage issue labels.
 
 ## Development Setup
 
-See [README.md](README.md) and [WARP.md](WARP.md) for the full engineering guide. Quick start:
+See [README.md](README.md) and [COGNIX.md](COGNIX.md) for the full engineering guide. Quick start:
 
 ```bash
 ./script/bootstrap   # platform-specific setup
-cargo run            # build and run Warp
+cargo run            # build and run Cognix
 ./script/presubmit   # fmt, clippy, and tests
 ```
 
@@ -140,13 +140,13 @@ Tests are required for most code changes:
 - **Algorithmic or non-trivial logic** needs unit tests.
 - **User-facing flows** should have end-to-end coverage under [`crates/integration/`](crates/integration/) whenever the behavior can be exercised that way. The bar is high-quality coverage of the changes you ship — with agent-driven development the expectation is more integration tests, not just coverage of P0 paths. If a flow is worth shipping, it's usually worth an integration test.
 
-Run unit tests with `cargo nextest run`. See [WARP.md](WARP.md) for more detail.
+Run unit tests with `cargo nextest run`. See [COGNIX.md](COGNIX.md) for more detail.
 
 ## Code Style
 
 - `cargo fmt` and `cargo clippy --workspace --all-targets --all-features --tests -- -D warnings` must pass.
 - Prefer imports over path qualifiers, inline format args (`println!("{x}")`), and exhaustive `match` over `_` wildcards.
-- See [WARP.md](WARP.md) for the full style guide, including WarpUI patterns and terminal model locking rules.
+- See [COGNIX.md](COGNIX.md) for the full style guide, including CognixUI patterns and terminal model locking rules.
 
 ## Commit and Branch Conventions
 
@@ -155,7 +155,7 @@ Run unit tests with `cargo nextest run`. See [WARP.md](WARP.md) for more detail.
 
 ## Code of Conduct
 
-This project adopts the [Contributor Covenant](https://www.contributor-covenant.org/) (v2.1) as its code of conduct. All contributors and maintainers are expected to follow it in every project space. See [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for the full text, or report violations to warp-coc at warp.dev.
+This project adopts the [Contributor Covenant](https://www.contributor-covenant.org/) (v2.1) as its code of conduct. All contributors and maintainers are expected to follow it in every project space. See [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for the full text, or report violations to cognix-coc at cognix.dev.
 
 ## Reporting Security Issues
 
@@ -163,6 +163,6 @@ See [`SECURITY.md`](SECURITY.md) for our security disclosure policy and private 
 
 ## Getting Help
 
-- Browse the [Warp docs](https://docs.warp.dev/).
-- Join the [Slack Community](https://go.warp.dev/join-preview) to ask questions and connect with other contributors.
-- Open a [GitHub issue](https://github.com/warpdotdev/warp/issues) for bugs or feature requests.
+- Browse the [Cognix docs](https://docs.cognix.dev/).
+- Join the [Slack Community](https://go.cognix.dev/join-preview) to ask questions and connect with other contributors.
+- Open a [GitHub issue](https://github.com/nrelab/cognix/issues) for bugs or feature requests.

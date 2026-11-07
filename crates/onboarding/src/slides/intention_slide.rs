@@ -4,11 +4,11 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::visuals::{intention_terminal_visual, intention_visual};
 use crate::{OnboardingIntention, AI_FEATURES};
 use ui_components::{button, Component as _, Options as _};
-use warp_core::features::FeatureFlag;
-use warp_core::ui::theme::Fill;
-use warp_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
-use warpui::prelude::Align;
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::theme::Fill;
+use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
+use cognixui::prelude::Align;
+use cognixui::{
     elements::{
         Border, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
         CrossAxisAlignment, Flex, FormattedTextElement, Hoverable, MainAxisAlignment, MainAxisSize,
@@ -73,14 +73,14 @@ impl IntentionSlide {
         let theme = appearance.theme();
 
         let logo_fill = internal_colors::fg_overlay_4(theme);
-        let logo = ConstrainedBox::new(Icon::WarpLogoLight.to_warpui_icon(logo_fill).finish())
+        let logo = ConstrainedBox::new(Icon::CognixLogoLight.to_cognixui_icon(logo_fill).finish())
             .with_width(64.)
             .with_height(64.)
             .finish();
 
         let title = appearance
             .ui_builder()
-            .paragraph("Welcome to Warp")
+            .paragraph("Welcome to Cognix")
             .with_style(UiComponentStyles {
                 font_size: Some(36.),
                 font_weight: Some(Weight::Medium),
@@ -216,7 +216,7 @@ impl IntentionSlide {
                 .iter()
                 .enumerate()
             {
-                let el = ConstrainedBox::new(icon.to_warpui_icon(icon_fill).finish())
+                let el = ConstrainedBox::new(icon.to_cognixui_icon(icon_fill).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish();
@@ -260,7 +260,7 @@ impl IntentionSlide {
                 .with_main_axis_size(MainAxisSize::Min)
                 .with_cross_axis_alignment(CrossAxisAlignment::Start);
             for &item in items {
-                let icon_el = ConstrainedBox::new(Icon::Check.to_warpui_icon(check_fill).finish())
+                let icon_el = ConstrainedBox::new(Icon::Check.to_cognixui_icon(check_fill).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish();
@@ -396,9 +396,9 @@ impl IntentionSlide {
             },
         );
 
-        let new_settings_modes = FeatureFlag::OpenWarpNewSettingsModes.is_enabled();
+        let new_settings_modes = FeatureFlag::OpenCognixNewSettingsModes.is_enabled();
         let next_text = if !new_settings_modes && selected_index == 1 {
-            "Get Warping"
+            "Get Cognixing"
         } else {
             "Next"
         };
@@ -446,7 +446,7 @@ impl IntentionSlide {
     fn render_visual(&self, appearance: &Appearance, selected_index: usize) -> Box<dyn Element> {
         let theme = appearance.theme();
 
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
             let path = if selected_index == 1 {
                 Self::VISUAL_IMAGE_PATHS[1]
             } else {
@@ -519,7 +519,7 @@ impl IntentionSlide {
 
     fn next(&mut self, ctx: &mut ViewContext<Self>) {
         self.onboarding_state.update(ctx, |model, ctx| {
-            if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+            if FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
                 // Always advance to Customize slide; both intentions continue the flow.
                 model.next(ctx);
             } else {

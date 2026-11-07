@@ -11,11 +11,11 @@ use crate::telemetry::OnboardingEvent;
 use ai::LLMId;
 use instant::Instant;
 use std::time::Duration;
-use warp_core::features::FeatureFlag;
-use warp_core::send_telemetry_from_ctx;
-use warpui::assets::asset_cache::AssetSource;
-use warpui::image_cache::ImageType;
-use warpui::windowing::{
+use cognix_core::features::FeatureFlag;
+use cognix_core::send_telemetry_from_ctx;
+use cognixui::assets::asset_cache::AssetSource;
+use cognixui::image_cache::ImageType;
+use cognixui::windowing::{
     state::{ApplicationStage, StateEvent},
     WindowManager,
 };
@@ -24,9 +24,9 @@ const APP_BECAME_ACTIVE_DEBOUNCE: Duration = Duration::from_secs(15);
 
 use pathfinder_geometry::vector::vec2f;
 use ui_components::{button, Component as _, Options as _};
-use warp_core::ui::{appearance::Appearance, theme::WarpTheme};
-use warpui::elements::Rect;
-use warpui::{
+use cognix_core::ui::{appearance::Appearance, theme::CognixTheme};
+use cognixui::elements::Rect;
+use cognixui::{
     elements::{
         CacheOption, ChildAnchor, Container, Empty, Image, OffsetPositioning, ParentAnchor,
         ParentElement, ParentOffsetBounds, Shrinkable, Stack,
@@ -111,7 +111,7 @@ impl AgentOnboardingView {
     /// Creates a new AgentOnboardingView.
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        theme_picker_themes: [WarpTheme; 4],
+        theme_picker_themes: [CognixTheme; 4],
         skippable: bool,
         models: Vec<OnboardingModelInfo>,
         default_model_id: LLMId,
@@ -323,7 +323,7 @@ impl AgentOnboardingView {
         ctx.focus_self();
 
         // Preload customize-slide images so they're ready when the user reaches that slide.
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
             Self::preload_onboarding_images(ctx);
         }
 
@@ -339,7 +339,7 @@ impl AgentOnboardingView {
     /// Eagerly loads all onboarding slide images into the asset cache
     /// so they display instantly when the user navigates between slides.
     fn preload_onboarding_images(ctx: &mut ViewContext<Self>) {
-        let asset_cache = warpui::assets::asset_cache::AssetCache::as_ref(ctx);
+        let asset_cache = cognixui::assets::asset_cache::AssetCache::as_ref(ctx);
         // Preload the shared background image used on all right panels.
         asset_cache.load_asset::<ImageType>(AssetSource::Bundled {
             path: crate::slides::layout::ONBOARDING_BG_PATH,

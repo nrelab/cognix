@@ -9,7 +9,7 @@ use std::{
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use tempfile::NamedTempFile;
-use warp_core::safe_debug;
+use cognix_core::safe_debug;
 
 use crate::client::TaskIdentityToken;
 
@@ -46,7 +46,7 @@ pub struct GcpFederationConfig {
 pub struct GcpCredentials {
     /// Temporary file holding the GCP credentials configuration file.
     config_file: NamedTempFile,
-    /// Temporary file where Warp OIDC tokens are cached.
+    /// Temporary file where Cognix OIDC tokens are cached.
     output_file: NamedTempFile,
 }
 

@@ -30,7 +30,7 @@ mutation CreateTeam($input: CreateTeamInput!, $request_context: RequestContext!)
           tier {
             name
             description
-            warpAiPolicy {
+            cognixAiPolicy {
               limit
               isCodeSuggestionsToggleable
               isPromptSuggestionsToggleable

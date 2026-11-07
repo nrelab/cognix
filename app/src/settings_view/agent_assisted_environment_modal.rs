@@ -5,10 +5,10 @@ use std::{
 };
 
 use pathfinder_color::ColorU;
-use warp_core::{
+use cognix_core::{
     features::FeatureFlag, paths::home_relative_path, ui::theme::color::internal_colors,
 };
-use warpui::{
+use cognixui::{
     elements::{
         Align, Border, ChildView, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox,
         Container, CornerRadius, CrossAxisAlignment, Dismiss, Element, Empty, Expanded, Flex,
@@ -529,7 +529,7 @@ impl AgentAssistedEnvironmentModal {
             ScrollbarWidth::Auto,
             theme.nonactive_ui_text_color().into(),
             theme.active_ui_text_color().into(),
-            warpui::elements::Fill::None,
+            cognixui::elements::Fill::None,
         )
         .with_overlayed_scrollbar()
         .with_padding_start(0.)

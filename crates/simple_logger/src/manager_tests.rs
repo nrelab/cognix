@@ -6,7 +6,7 @@ use std::{
     },
 };
 
-use warpui::r#async::executor::Background;
+use cognixui::r#async::executor::Background;
 
 use super::LogManager;
 

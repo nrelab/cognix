@@ -18,9 +18,9 @@ use itertools::Itertools;
 use ordered_float::OrderedFloat;
 use std::collections::HashSet;
 use std::time::Duration;
-use warpui::r#async::Timer;
-use warpui::AppContext;
-use warpui::{elements::Empty, App, Element};
+use cognixui::r#async::Timer;
+use cognixui::AppContext;
+use cognixui::{elements::Empty, App, Element};
 
 #[derive(Clone, Debug)]
 enum TestItemAction {

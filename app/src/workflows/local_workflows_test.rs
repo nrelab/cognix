@@ -1,10 +1,10 @@
 use std::sync::Arc;
-use warpui::App;
+use cognixui::App;
 
 use super::*;
 
 fn initialize_app(app: &App) {
-    app.add_singleton_model(WarpConfig::mock);
+    app.add_singleton_model(CognixConfig::mock);
 }
 
 #[test]

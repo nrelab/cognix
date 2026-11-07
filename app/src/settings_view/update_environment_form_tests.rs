@@ -18,10 +18,10 @@ use crate::workspaces::team_tester::TeamTesterStatus;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::Workspace;
 use url::Url;
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::{Empty, MouseStateHandle};
-use warpui::platform::WindowStyle;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::elements::{Empty, MouseStateHandle};
+use cognixui::platform::WindowStyle;
+use cognixui::{
     AddSingletonModel, App, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     WindowId,
 };
@@ -36,23 +36,23 @@ fn test_parse_repo_input_owner_repo() {
 
 #[test]
 fn test_parse_repo_input_github_url() {
-    let (owner, repo) = UpdateEnvironmentForm::parse_repo_input("https://github.com/warp/warp.git")
+    let (owner, repo) = UpdateEnvironmentForm::parse_repo_input("https://github.com/cognix/cognix.git")
         .expect("expected github url to parse");
-    assert_eq!(owner, "warp");
-    assert_eq!(repo, "warp");
+    assert_eq!(owner, "cognix");
+    assert_eq!(repo, "cognix");
 }
 
 #[test]
 fn test_parse_repo_inputs_multiple_entries() {
     let parsed = UpdateEnvironmentForm::parse_repo_inputs(
-        "https://github.com/warp/warp, warp/warp-internal\n git@github.com:warp/warp-server",
+        "https://github.com/cognix/cognix, cognix/cognix-internal\n git@github.com:cognix/cognix-server",
     );
     assert_eq!(
         parsed,
         vec![
-            ("warp".to_string(), "warp".to_string()),
-            ("warp".to_string(), "warp-internal".to_string()),
-            ("warp".to_string(), "warp-server".to_string()),
+            ("cognix".to_string(), "cognix".to_string()),
+            ("cognix".to_string(), "cognix-internal".to_string()),
+            ("cognix".to_string(), "cognix-server".to_string()),
         ]
     );
 }
@@ -71,7 +71,7 @@ fn test_build_auth_url_with_next_overrides_existing() {
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::SettingsEnvironments,
-        "warpdev",
+        "cognixdev",
     );
     let parsed = Url::parse(&result).expect("result should be valid url");
     let mut next_values = parsed
@@ -82,7 +82,7 @@ fn test_build_auth_url_with_next_overrides_existing() {
     assert_eq!(next_values.len(), 1);
     assert_eq!(
         next_values.pop(),
-        Some("warpdev://settings/environments".to_string())
+        Some("cognixdev://settings/environments".to_string())
     );
     assert!(parsed
         .query_pairs()
@@ -95,7 +95,7 @@ fn test_build_auth_url_with_next_focus_cloud_mode() {
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::FocusCloudMode,
-        "warplocal",
+        "cognixlocal",
     );
     let parsed = Url::parse(&result).expect("result should be valid url");
     let next_value = parsed
@@ -104,17 +104,17 @@ fn test_build_auth_url_with_next_focus_cloud_mode() {
         .map(|(_, value)| value.into_owned());
     assert_eq!(
         next_value,
-        Some("warplocal://action/focus_cloud_mode".to_string())
+        Some("cognixlocal://action/focus_cloud_mode".to_string())
     );
 }
 
 #[test]
 fn test_build_auth_url_with_next_uses_scheme_param() {
-    let base_url = "https://example.com/oauth/connect/github?scheme=warp";
+    let base_url = "https://example.com/oauth/connect/github?scheme=cognix";
     let result = UpdateEnvironmentForm::build_auth_url_with_next(
         base_url,
         GithubAuthRedirectTarget::FocusCloudMode,
-        "warplocal",
+        "cognixlocal",
     );
     let parsed = Url::parse(&result).expect("result should be valid url");
     let next_value = parsed
@@ -123,7 +123,7 @@ fn test_build_auth_url_with_next_uses_scheme_param() {
         .map(|(_, value)| value.into_owned());
     assert_eq!(
         next_value,
-        Some("warp://action/focus_cloud_mode".to_string())
+        Some("cognix://action/focus_cloud_mode".to_string())
     );
 }
 
@@ -516,7 +516,7 @@ fn test_render_repos_field_with_selected_repos() {
             view_handle.update(ctx, |form, _| {
                 set_github_auth_call_state(form, GithubAuthCallState::Authed);
                 form.form_state.selected_repos = vec![
-                    GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string()),
+                    GithubRepo::new("nrelab".to_string(), "cognix-internal".to_string()),
                     GithubRepo::new("facebook".to_string(), "react".to_string()),
                 ];
                 form.remove_repo_mouse_states =
@@ -532,8 +532,8 @@ fn test_render_repos_field_with_selected_repos() {
                 "Expected 'Repo(s)' label in rendered content: {text_content}"
             );
             assert!(
-                text_content.contains("warpdotdev/warp-internal"),
-                "Expected 'warpdotdev/warp-internal' in rendered content: {text_content}"
+                text_content.contains("nrelab/cognix-internal"),
+                "Expected 'nrelab/cognix-internal' in rendered content: {text_content}"
             );
             assert!(
                 text_content.contains("facebook/react"),
@@ -588,7 +588,7 @@ fn test_selected_repos_as_remote_repo_args_formats_owner_repo_strings() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![
-                    GithubRepo::new("warpdotdev".to_string(), "warp-internal".to_string()),
+                    GithubRepo::new("nrelab".to_string(), "cognix-internal".to_string()),
                     GithubRepo::new("facebook".to_string(), "react".to_string()),
                 ];
             });
@@ -599,7 +599,7 @@ fn test_selected_repos_as_remote_repo_args_formats_owner_repo_strings() {
             assert_eq!(
                 args,
                 vec![
-                    "warpdotdev/warp-internal".to_string(),
+                    "nrelab/cognix-internal".to_string(),
                     "facebook/react".to_string(),
                 ]
             );
@@ -618,8 +618,8 @@ fn test_can_suggest_image_for_edit_requires_repos_modified() {
             name: "Env".to_string(),
             description: "".to_string(),
             selected_repos: vec![GithubRepo::new(
-                "warpdotdev".to_string(),
-                "warp-internal".to_string(),
+                "nrelab".to_string(),
+                "cognix-internal".to_string(),
             )],
             docker_image: "ubuntu:latest".to_string(),
             setup_commands: vec![],
@@ -669,8 +669,8 @@ fn test_can_suggest_image_for_create_does_not_require_repos_modified() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "nrelab".to_string(),
+                    "cognix-internal".to_string(),
                 )];
                 form.edit_repos_modified = false;
                 form.suggest_image_last_attempt_key = None;
@@ -763,8 +763,8 @@ fn test_render_docker_image_field_shows_generating_state() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "nrelab".to_string(),
+                    "cognix-internal".to_string(),
                 )];
                 let key = form
                     .selected_repos_key()
@@ -798,8 +798,8 @@ fn test_render_docker_image_field_shows_custom_image_warning() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "nrelab".to_string(),
+                    "cognix-internal".to_string(),
                 )];
                 let key = form
                     .selected_repos_key()
@@ -845,8 +845,8 @@ fn test_render_docker_image_field_shows_github_auth_required_message() {
             });
             view_handle.update(ctx, |form, _| {
                 form.form_state.selected_repos = vec![GithubRepo::new(
-                    "warpdotdev".to_string(),
-                    "warp-internal".to_string(),
+                    "nrelab".to_string(),
+                    "cognix-internal".to_string(),
                 )];
                 let key = form
                     .selected_repos_key()
@@ -966,48 +966,48 @@ fn test_create_environment_form_without_team_does_not_render_checkbox_and_defaul
 #[test]
 fn test_parse_docker_hub_url_bare_owner_repo() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("cognix/base-image"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_with_tag() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image:latest"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("cognix/base-image:latest"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image:v1.2.3"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("cognix/base-image:v1.2.3"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_with_digest() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("warp/base-image@sha256:abc123"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("cognix/base-image@sha256:abc123"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_explicit_docker_io() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/warp/base-image"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/cognix/base-image"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/warp/base-image:latest"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("docker.io/cognix/base-image:latest"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
 }
 
 #[test]
 fn test_parse_docker_hub_url_explicit_index_docker_io() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("index.docker.io/warp/base-image"),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("index.docker.io/cognix/base-image"),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
 }
 
@@ -1046,7 +1046,7 @@ fn test_parse_docker_hub_url_official_image_explicit_library_prefix() {
 #[test]
 fn test_parse_docker_hub_url_other_registry_returns_none() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("ghcr.io/warp/base-image"),
+        UpdateEnvironmentForm::parse_docker_hub_url("ghcr.io/cognix/base-image"),
         None
     );
     assert_eq!(
@@ -1068,7 +1068,7 @@ fn test_parse_docker_hub_url_empty_or_whitespace() {
 #[test]
 fn test_parse_docker_hub_url_trims_whitespace() {
     assert_eq!(
-        UpdateEnvironmentForm::parse_docker_hub_url("  warp/base-image  "),
-        Some("https://hub.docker.com/r/warp/base-image".to_string())
+        UpdateEnvironmentForm::parse_docker_hub_url("  cognix/base-image  "),
+        Some("https://hub.docker.com/r/cognix/base-image".to_string())
     );
 }

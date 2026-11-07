@@ -1,7 +1,7 @@
 use anyhow::{Context as AnyhowContext, Result};
 use async_channel::Receiver;
 use rquickjs::{Context, Function, Runtime};
-use warp_js::JsFunctionId;
+use cognix_js::JsFunctionId;
 
 use super::{
     js_api,
@@ -49,7 +49,7 @@ impl PluginRunner {
     /// incoming [`PluginRequest`]s.
     ///
     /// After compiling the plugin module, its exported 'activate()' function is called with an
-    /// instance of the warp API object.
+    /// instance of the cognix API object.
     ///
     /// After `activate()`, listens for incoming [`PluginRequest`]s from the host main thread and
     /// serves corresponding responses.
@@ -63,13 +63,13 @@ impl PluginRunner {
 
             ctx.globals().set("console", js_api::console(ctx))?;
 
-            let warp_api = js_api::warp(plugin, ctx);
+            let cognix_api = js_api::cognix(plugin, ctx);
 
             let activate_fn: Function = plugin_module
                 .get("activate")
                 .context("Could not resolve activate() function")?;
             activate_fn
-                .call::<_, ()>((warp_api,))
+                .call::<_, ()>((cognix_api,))
                 .context("Failed to call activate() function")?;
 
             Ok(())

@@ -2,8 +2,8 @@
 //!
 //! Queries are not rendered in blocks corresponding to requested command or requested action responses.
 
-use warp_core::{features::FeatureFlag, ui::theme::color::internal_colors};
-use warpui::{
+use cognix_core::{features::FeatureFlag, ui::theme::color::internal_colors};
+use cognixui::{
     elements::{
         Container, CornerRadius, Flex, MainAxisAlignment, MainAxisSize, ParentElement, Radius,
         Shrinkable, Wrap,
@@ -116,7 +116,7 @@ pub(crate) fn render_query(
     }
 
     Flex::row()
-        .with_cross_axis_alignment(warpui::elements::CrossAxisAlignment::Start)
+        .with_cross_axis_alignment(cognixui::elements::CrossAxisAlignment::Start)
         .with_child(avatar)
         .with_child(Shrinkable::new(1., query.finish()).finish())
         .finish()
@@ -153,7 +153,7 @@ fn render_attachments(
                 ..Default::default()
             },
         )
-        .with_icon(icon.to_warpui_icon(
+        .with_icon(icon.to_cognixui_icon(
             blended_colors::text_sub(appearance.theme(), appearance.theme().background()).into(),
         ))
         .build()

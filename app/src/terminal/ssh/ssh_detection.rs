@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
-use warp_core::{features::FeatureFlag, settings::Setting};
-use warp_util::path::ShellFamily;
+use cognix_core::{features::FeatureFlag, settings::Setting};
+use cognix_util::path::ShellFamily;
 
-use crate::terminal::warpify::settings::WarpifySettings;
+use crate::terminal::cognixify::settings::CognixifySettings;
 
 /// The different possible outcomes of detecting an interactive SSH session.
 /// Also the payload for the [`crate::server::telemetry::TelemetryEvent::SshInteractiveSessionDetected`] event.
@@ -12,8 +12,8 @@ pub enum SshInteractiveSessionDetected {
     FeatureDisabled,
     #[serde(rename = "host_denylisted")]
     HostDenylisted,
-    #[serde(rename = "warpify_prompt")]
-    ShouldPromptWarpification {
+    #[serde(rename = "cognixify_prompt")]
+    ShouldPromptCognixification {
         #[serde(skip)]
         command: String,
         #[serde(skip)]
@@ -21,17 +21,17 @@ pub enum SshInteractiveSessionDetected {
     },
 }
 
-/// Determines whether a host could be warpified.
-pub fn evaluate_warpify_ssh_host(
+/// Determines whether a host could be cognixified.
+pub fn evaluate_cognixify_ssh_host(
     command: &str,
     ssh_host: Option<&str>,
     shell_family: ShellFamily,
-    warpify_settings: &WarpifySettings,
+    cognixify_settings: &CognixifySettings,
 ) -> SshInteractiveSessionDetected {
-    let should_prompt_ssh_tmux_wrapper = *warpify_settings.enable_ssh_warpification.value()
-        && *warpify_settings.use_ssh_tmux_wrapper.value();
-    let matches_subshell = warpify_settings.is_denylisted_subshell_command(command)
-        || warpify_settings.is_compatible_subshell_command(command, shell_family);
+    let should_prompt_ssh_tmux_wrapper = *cognixify_settings.enable_ssh_cognixification.value()
+        && *cognixify_settings.use_ssh_tmux_wrapper.value();
+    let matches_subshell = cognixify_settings.is_denylisted_subshell_command(command)
+        || cognixify_settings.is_compatible_subshell_command(command, shell_family);
     if !should_prompt_ssh_tmux_wrapper
         || matches_subshell
         || !FeatureFlag::SSHTmuxWrapper.is_enabled()
@@ -40,12 +40,12 @@ pub fn evaluate_warpify_ssh_host(
     }
 
     if let Some(ssh_host) = ssh_host {
-        if warpify_settings.is_ssh_host_denylisted(ssh_host) {
+        if cognixify_settings.is_ssh_host_denylisted(ssh_host) {
             return SshInteractiveSessionDetected::HostDenylisted;
         }
     }
 
-    SshInteractiveSessionDetected::ShouldPromptWarpification {
+    SshInteractiveSessionDetected::ShouldPromptCognixification {
         host: ssh_host.map(|host| host.to_owned()),
         command: command.to_string(),
     }

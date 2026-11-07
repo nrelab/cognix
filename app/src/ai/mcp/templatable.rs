@@ -4,8 +4,8 @@ use chrono::DateTime;
 use handlebars::get_arguments;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use warp_core::ui::appearance::Appearance;
-use warpui::{AppContext, SingletonEntity as _};
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{AppContext, SingletonEntity as _};
 
 use crate::{
     cloud_object::{
@@ -17,7 +17,7 @@ use crate::{
         GenericCloudObject, GenericStringObjectFormat, GenericStringObjectUniqueKey,
         JsonObjectType, Revision, ServerCloudObject, UniquePer,
     },
-    drive::items::WarpDriveItem,
+    drive::items::CognixDriveItem,
     server::{datetime_ext::DateTimeExt, ids::SyncId, sync_queue::QueueItem},
 };
 
@@ -286,16 +286,16 @@ impl StringModel for TemplatableMCPServer {
         })
     }
 
-    fn renders_in_warp_drive(&self) -> bool {
+    fn renders_in_cognix_drive(&self) -> bool {
         false
     }
 
-    fn to_warp_drive_item(
+    fn to_cognix_drive_item(
         &self,
         _id: SyncId,
         _appearance: &Appearance,
         _templatable_mcp_server: &CloudTemplatableMCPServer,
-    ) -> Option<Box<dyn WarpDriveItem>> {
+    ) -> Option<Box<dyn CognixDriveItem>> {
         None
     }
 }

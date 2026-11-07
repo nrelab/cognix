@@ -14,7 +14,7 @@ use std::any::Any;
 
 use std::sync::Arc;
 
-use warpui::{AppContext, ModelHandle, SingletonEntity, ViewHandle, WeakViewHandle, WindowId};
+use cognixui::{AppContext, ModelHandle, SingletonEntity, ViewHandle, WeakViewHandle, WindowId};
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::ai::agent::conversation::ConversationStatus;
@@ -31,7 +31,7 @@ use crate::pane_group::pane::DetachType;
 
 use crate::network::{NetworkStatus, NetworkStatusEvent, NetworkStatusKind};
 
-use crate::settings::{DebugSettings, InputModeSettings, WarpPromptSeparator};
+use crate::settings::{DebugSettings, InputModeSettings, CognixPromptSeparator};
 use crate::terminal::event_listener::ChannelEventListener;
 
 use crate::terminal::input::CommandExecutionSource;
@@ -205,7 +205,7 @@ impl TerminalManager {
             ctx.add_model(|ctx| ModelEventDispatcher::new(events_rx, sessions.clone(), ctx));
         // The prompt is initially empty until we receive the update from the server.
         let prompt_type =
-            ctx.add_model(|_| PromptType::new_static(vec![], false, WarpPromptSeparator::None));
+            ctx.add_model(|_| PromptType::new_static(vec![], false, CognixPromptSeparator::None));
 
         let view = ctx.add_typed_action_view(window_id, |ctx| {
             let size_info = cloned_model.lock().block_list().size().to_owned();
@@ -669,7 +669,7 @@ impl TerminalManager {
                 });
 
                 #[cfg(target_family = "wasm")]
-                crate::platform::wasm::emit_event(crate::platform::wasm::WarpEvent::SessionJoined);
+                crate::platform::wasm::emit_event(crate::platform::wasm::CognixEvent::SessionJoined);
             }
             NetworkEvent::SessionEnded { reason } => {
                 let Some(view) = weak_view_handle.upgrade(ctx) else {
@@ -1081,7 +1081,7 @@ impl TerminalManager {
                     view.update(ctx, |terminal_view, ctx| {
                         let reason_string = match reason {
                             session_sharing_protocol::common::FailedToAddGuestsReason::NotWarpUsers => {
-                                "One or more of the emails are not Warp users.".to_owned()
+                                "One or more of the emails are not Cognix users.".to_owned()
                             }
                             session_sharing_protocol::common::FailedToAddGuestsReason::GuestAlreadyAdded => {
                                 "One or more of the guests has already been added.".to_owned()
@@ -1142,7 +1142,7 @@ impl TerminalManager {
                                 *snapshot = prompt_snapshot;
                                 ctx.notify();
                             } else {
-                                log::warn!("Received ActivePrompt::WarpPrompt updated but prompt type is not Static");
+                                log::warn!("Received ActivePrompt::CognixPrompt updated but prompt type is not Static");
                             }
                         });
                     }

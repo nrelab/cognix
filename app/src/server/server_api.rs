@@ -34,10 +34,10 @@ use prost::Message;
 use referral::ReferralsClient;
 use team::TeamClient;
 use url::Url;
-use warp_core::context_flag::ContextFlag;
-use warp_core::errors::{register_error, AnyhowErrorExt, ErrorExt};
-use warp_managed_secrets::client::ManagedSecretsClient;
-use warpui::{r#async::BoxFuture, ModelContext};
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::errors::{register_error, AnyhowErrorExt, ErrorExt};
+use cognix_managed_secrets::client::ManagedSecretsClient;
+use cognixui::{r#async::BoxFuture, ModelContext};
 use workspace::WorkspaceClient;
 
 use crate::server::telemetry::TelemetryApi;
@@ -57,9 +57,9 @@ use std::borrow::Cow;
 use std::path::Path;
 use std::sync::Arc;
 use std::time::Duration;
-use warp_core::telemetry::TelemetryEvent;
-use warpui::Entity;
-use warpui::SingletonEntity;
+use cognix_core::telemetry::TelemetryEvent;
+use cognixui::Entity;
+use cognixui::SingletonEntity;
 
 use super::experiments::ServerExperiment;
 use super::experiments::ServerExperiments;
@@ -67,21 +67,21 @@ use super::graphql::GraphQLError;
 
 pub const FETCH_CHANNEL_VERSIONS_TIMEOUT: std::time::Duration = Duration::from_secs(60);
 
-const EXPERIMENT_ID_HEADER: &str = "X-Warp-Experiment-Id";
+const EXPERIMENT_ID_HEADER: &str = "X-Cognix-Experiment-Id";
 
-/// We use a special error code header `X-Warp-Error-Code` to allow the server to send
+/// We use a special error code header `X-Cognix-Error-Code` to allow the server to send
 /// more specific error code information, so that the client can discern between different
 /// errors with the same error code.
 /// See errors/http_error_codes.go on the server for possible values.
-const WARP_ERROR_CODE_HEADER: &str = "X-Warp-Error-Code";
+const COGNIX_ERROR_CODE_HEADER: &str = "X-Cognix-Error-Code";
 
 /// An error indicating the user is out of credits. The server sends 429s to communicate this
 /// state, but if Cloud Run is overloaded, it can also send 429s that aren't credit-related.
 /// So we use this to distinguish between the two cases.
-const WARP_ERROR_CODE_OUT_OF_CREDITS: &str = "OUT_OF_CREDITS";
+const COGNIX_ERROR_CODE_OUT_OF_CREDITS: &str = "OUT_OF_CREDITS";
 
 /// Error code indicating the user has reached their cloud agent concurrency limit.
-const WARP_ERROR_CODE_AT_CAPACITY: &str = "AT_CLOUD_AGENT_CAPACITY";
+const COGNIX_ERROR_CODE_AT_CAPACITY: &str = "AT_CLOUD_AGENT_CAPACITY";
 
 /// Header used to communicate the source of an agent run (e.g. "CLI", "GITHUB_ACTION").
 pub(crate) const AGENT_SOURCE_HEADER: &str = "X-Oz-Api-Source";
@@ -94,7 +94,7 @@ pub const EVAL_USER_ID_HEADER: &str = "X-Eval-User-ID";
 /// DO NOT REMOVE OR CHANGE THESE USERS!
 ///
 /// Keep this list in sync with `script/populate_agent_mode_eval_user.sql`
-/// in warp-server. Those rows need to exist in the DB so the authz user loader
+/// in cognix-server. Those rows need to exist in the DB so the authz user loader
 /// can resolve these IDs during task creation; otherwise the server will 500
 /// on every eval request with a nil-deref in `UserIDFromUser`.
 #[cfg(feature = "agent_mode_evals")]
@@ -157,7 +157,7 @@ pub enum AIApiError {
     #[error("Request failed due to lack of AI quota.")]
     QuotaLimit,
 
-    #[error("Warp is currently overloaded. Please try again later.")]
+    #[error("Cognix is currently overloaded. Please try again later.")]
     ServerOverloaded,
 
     #[error("Internal error occurred at transport layer.")]
@@ -205,7 +205,7 @@ impl AIApiError {
     /// Converts a reqwest error to an AIApiError, using response headers to distinguish
     /// between different types of 429 errors.
     fn from_response_error(err: reqwest::Error, headers: &::http::HeaderMap) -> Self {
-        // For HTTP 429 errors, check the X-Warp-Error-Code header to distinguish
+        // For HTTP 429 errors, check the X-Cognix-Error-Code header to distinguish
         // between out-of-credits and server-overload.
         if err.status() == Some(http::StatusCode::TOO_MANY_REQUESTS) {
             return Self::error_for_429(headers);
@@ -243,12 +243,12 @@ impl AIApiError {
         AIApiError::Transport(err)
     }
 
-    /// Returns the appropriate error for a 429 response by checking the X-Warp-Error-Code header.
+    /// Returns the appropriate error for a 429 response by checking the X-Cognix-Error-Code header.
     fn error_for_429(headers: &::http::HeaderMap) -> Self {
         if headers
-            .get(WARP_ERROR_CODE_HEADER)
+            .get(COGNIX_ERROR_CODE_HEADER)
             .and_then(|v| v.to_str().ok())
-            == Some(WARP_ERROR_CODE_OUT_OF_CREDITS)
+            == Some(COGNIX_ERROR_CODE_OUT_OF_CREDITS)
         {
             AIApiError::QuotaLimit
         } else {
@@ -327,7 +327,7 @@ pub enum TranscribeError {
     #[error("Request failed due to lack of Voice quota.")]
     QuotaLimit,
 
-    #[error("Warp is currently overloaded. Please try again later.")]
+    #[error("Cognix is currently overloaded. Please try again later.")]
     ServerOverloaded,
 
     #[error("Internal error occurred at transport layer.")]
@@ -360,13 +360,13 @@ pub enum ServerApiEvent {
     /// We made a staging API call that was blocked, which may indicate a firewall misconfiguration.
     StagingAccessBlocked,
     /// The user's access token was invalid, so they need to reauth before they can make
-    /// requests to warp-server.
+    /// requests to cognix-server.
     NeedsReauth,
     /// The user's account has been disabled.
     UserAccountDisabled,
 }
 
-/// An API wrapper struct with methods to requests to warp-server.
+/// An API wrapper struct with methods to requests to cognix-server.
 ///
 /// Prefer NOT adding new methods directly on this struct; instead, add to one of the existing
 /// client trait objects, or create your own. This helps keep `ServerApi` from being overloaded
@@ -381,7 +381,7 @@ pub struct ServerApi {
     // We technically use OAuth2 for headless device authentication.
     oauth_client: self::auth::OAuth2Client,
     /// Cached ambient workload token for requests from ambient agents.
-    ambient_workload_token: Arc<Mutex<Option<warp_isolation_platform::WorkloadToken>>>,
+    ambient_workload_token: Arc<Mutex<Option<cognix_isolation_platform::WorkloadToken>>>,
     /// The ambient agent task ID for requests from cloud agents.
     ambient_agent_task_id: Arc<RwLock<Option<AmbientAgentTaskId>>>,
     /// The source of agent runs (e.g. CLI, GitHub Action). Set once at startup and immutable.
@@ -514,12 +514,12 @@ impl ServerApi {
             .join("/api/v1/oauth/device/auth")
             .expect("Invalid device URL");
 
-        oauth2::basic::BasicClient::new(oauth2::ClientId::new("warp-cli".to_string()))
+        oauth2::basic::BasicClient::new(oauth2::ClientId::new("cognix-cli".to_string()))
             .set_token_uri(oauth2::TokenUrl::from_url(token_url))
             .set_device_authorization_url(oauth2::DeviceAuthorizationUrl::from_url(device_url))
     }
 
-    pub fn send_graphql_request<'a, QF, O: warp_graphql::client::Operation<QF> + Send + 'a>(
+    pub fn send_graphql_request<'a, QF, O: cognix_graphql::client::Operation<QF> + Send + 'a>(
         &'a self,
         operation: O,
         timeout: Option<Duration>,
@@ -556,9 +556,10 @@ impl ServerApi {
             #[cfg(test)]
             let timeout = self.request_timeout_override.or(timeout);
 
-            let options = warp_graphql::client::RequestOptions {
+            let options = cognix_graphql::client::RequestOptions {
                 auth_token: auth_token.bearer_token(),
                 timeout,
+                #[cfg(test)]
                 server_root_url: self.server_root_url_override.clone(),
                 headers,
                 ..default_request_options()
@@ -579,7 +580,7 @@ impl ServerApi {
                     full: ("graphql response for {:?} had errors {:?}", operation_name, errors)
                 );
 
-                // "User not in context: Not found" comes from warp-server as an error when attempting
+                // "User not in context: Not found" comes from cognix-server as an error when attempting
                 // to get a required user for some gql field. If we see that, since we have already
                 // successfully refreshed the user's access token earlier in this function, we know
                 // that this error is the result of the user's account being disabled/deleted.
@@ -691,7 +692,7 @@ impl ServerApi {
     /// items until the connection closes or an error occurs. The caller is
     /// responsible for reading the stream and handling reconnection.
     ///
-    /// The stream is served by warp-server-rtc (not the main warp-server pool),
+    /// The stream is served by cognix-server-rtc (not the main cognix-server pool),
     /// so the URL is built from `ChannelState::rtc_http_url()` rather than
     /// `server_root_url()`.
     pub async fn stream_agent_events(
@@ -769,14 +770,14 @@ impl ServerApi {
         let status = response.status();
         let is_at_capacity = response
             .headers()
-            .get(WARP_ERROR_CODE_HEADER)
+            .get(COGNIX_ERROR_CODE_HEADER)
             .and_then(|v| v.to_str().ok())
-            == Some(WARP_ERROR_CODE_AT_CAPACITY);
+            == Some(COGNIX_ERROR_CODE_AT_CAPACITY);
         let is_out_of_credits = response
             .headers()
-            .get(WARP_ERROR_CODE_HEADER)
+            .get(COGNIX_ERROR_CODE_HEADER)
             .and_then(|v| v.to_str().ok())
-            == Some(WARP_ERROR_CODE_OUT_OF_CREDITS);
+            == Some(COGNIX_ERROR_CODE_OUT_OF_CREDITS);
 
         // Get the response text first since we may need to try multiple deserializations.
         let response_text = response.text().await.unwrap_or_default();
@@ -1051,9 +1052,9 @@ impl ServerApi {
                 } else if res.status() == http::StatusCode::TOO_MANY_REQUESTS {
                     if res
                         .headers()
-                        .get(WARP_ERROR_CODE_HEADER)
+                        .get(COGNIX_ERROR_CODE_HEADER)
                         .and_then(|v| v.to_str().ok())
-                        == Some(WARP_ERROR_CODE_OUT_OF_CREDITS)
+                        == Some(COGNIX_ERROR_CODE_OUT_OF_CREDITS)
                     {
                         Err(TranscribeError::QuotaLimit)
                     } else {
@@ -1073,8 +1074,8 @@ impl ServerApi {
 
     pub async fn generate_multi_agent_output(
         &self,
-        request: &warp_multi_agent_api::Request,
-    ) -> std::result::Result<AIOutputStream<warp_multi_agent_api::ResponseEvent>, Arc<AIApiError>>
+        request: &cognix_multi_agent_api::Request,
+    ) -> std::result::Result<AIOutputStream<cognix_multi_agent_api::ResponseEvent>, Arc<AIApiError>>
     {
         let auth_token = self
             .get_or_refresh_access_token()
@@ -1085,7 +1086,7 @@ impl ServerApi {
         let is_passive = request.input.as_ref().is_some_and(|input| {
             matches!(
                 input.r#type,
-                Some(warp_multi_agent_api::request::input::Type::GeneratePassiveSuggestions(_))
+                Some(cognix_multi_agent_api::request::input::Type::GeneratePassiveSuggestions(_))
             )
         });
         let is_evals = cfg!(feature = "agent_mode_evals");
@@ -1135,7 +1136,7 @@ impl ServerApi {
                 Ok(reqwest_eventsource::Event::Message(message_event)) => {
                     match BASE64_URL_SAFE.decode(message_event.data.trim_matches('"')) {
                         Ok(decoded_data) => {
-                            let action = warp_multi_agent_api::ResponseEvent::decode(
+                            let action = cognix_multi_agent_api::ResponseEvent::decode(
                                 decoded_data.as_slice(),
                             );
                             Some(action.map_err(|e| AIApiError::Other(anyhow::Error::from(e))))
@@ -1213,7 +1214,7 @@ impl ServerApi {
         }
     }
 
-    /// Fetches updated Warp Channel Versions from Warp Server. If it is the first such request of
+    /// Fetches updated Cognix Channel Versions from Cognix Server. If it is the first such request of
     /// the current calendar day, first attempts to call the '/client_version/daily'. If that call
     /// fails or if it not the first request of the calendar day, returns the result of a call to
     /// `/client_version'. The caller can specify whether or not changelog information should be
@@ -1234,9 +1235,9 @@ impl ServerApi {
             .append_pair("include_changelogs", &include_changelogs.to_string());
 
         if include_changelogs {
-            log::info!("Fetching channel versions and changelogs from Warp server");
+            log::info!("Fetching channel versions and changelogs from Cognix server");
         } else {
-            log::info!("Fetching channel versions (without changelogs) from Warp server");
+            log::info!("Fetching channel versions (without changelogs) from Cognix server");
         }
 
         let mut request_builder = self
@@ -1260,7 +1261,7 @@ impl ServerApi {
 
         let response = request_builder.send().await?;
         let versions: ChannelVersions = response.json().await?;
-        log::info!("Received channel versions from Warp server: {versions}");
+        log::info!("Received channel versions from Cognix server: {versions}");
         Ok(versions)
     }
 }
@@ -1389,7 +1390,7 @@ impl ServerApiProvider {
     }
 
     /// Returns the shared HTTP client. This client is wired into network logging
-    /// and includes standard Warp request headers.
+    /// and includes standard Cognix request headers.
     pub fn get_http_client(&self) -> Arc<http_client::Client> {
         self.server_api.client.clone()
     }

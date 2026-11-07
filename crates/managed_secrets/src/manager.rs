@@ -2,9 +2,9 @@ use std::{collections::HashMap, future::Future, sync::Arc, time::Duration};
 
 use vec1::vec1;
 
-use warp_core::features::FeatureFlag;
-use warp_graphql::managed_secrets::ManagedSecret;
-use warpui::{Entity, SingletonEntity};
+use cognix_core::features::FeatureFlag;
+use cognix_graphql::managed_secrets::ManagedSecret;
+use cognixui::{Entity, SingletonEntity};
 
 use crate::{
     ManagedSecretValue,
@@ -15,9 +15,9 @@ use crate::{
     envelope::UploadKey,
     gcp::{self, GcpWorkloadIdentityFederationError, GcpWorkloadIdentityFederationToken},
 };
-use warp_graphql::queries::task_secrets::ManagedSecretValue as GqlManagedSecretValue;
+use cognix_graphql::queries::task_secrets::ManagedSecretValue as GqlManagedSecretValue;
 
-/// Singleton model for working with Warp-managed secrets.
+/// Singleton model for working with Cognix-managed secrets.
 pub struct ManagedSecretManager {
     client: Arc<dyn ManagedSecretsClient>,
     actor_provider: Arc<dyn ActorProvider>,
@@ -49,7 +49,7 @@ impl ManagedSecretManager {
         let client = self.client.clone();
         let actor_provider = self.actor_provider.clone();
         async move {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::CognixManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("This feature is not enabled"));
             }
             // We retrieve all upload keys on demand. These should potentially be fetched and stored
@@ -91,7 +91,7 @@ impl ManagedSecretManager {
     ) -> impl Future<Output = anyhow::Result<()>> + use<> {
         let client = self.client.clone();
         async move {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::CognixManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("This feature is not enabled"));
             }
 
@@ -110,7 +110,7 @@ impl ManagedSecretManager {
         let client = self.client.clone();
         let actor_provider = self.actor_provider.clone();
         async move {
-            if !FeatureFlag::WarpManagedSecrets.is_enabled() {
+            if !FeatureFlag::CognixManagedSecrets.is_enabled() {
                 return Err(anyhow::anyhow!("This feature is not enabled"));
             }
 
@@ -154,7 +154,7 @@ impl ManagedSecretManager {
         }
     }
 
-    /// Get Warp-managed secrets scoped to the currently-executing task.
+    /// Get Cognix-managed secrets scoped to the currently-executing task.
     ///
     /// This will fail if not in an ambient agent.
     pub fn get_task_secrets(
@@ -165,7 +165,7 @@ impl ManagedSecretManager {
         async move {
             // We only need the workload token for the duration of the request.
             let workload_token =
-                warp_isolation_platform::issue_workload_token(Some(Duration::from_mins(5))).await?;
+                cognix_isolation_platform::issue_workload_token(Some(Duration::from_mins(5))).await?;
             let gql_secrets = client
                 .get_task_secrets(task_id, workload_token.token)
                 .await?;

@@ -15,9 +15,9 @@ use crate::{
     integration_testing::view_getters::terminal_view,
     BlocklistAIHistoryModel,
 };
-use warp_multi_agent_api as api;
-use warpui::{integration::AssertionCallback, integration_assert, EntityId};
-use warpui::{integration::AssertionOutcome, SingletonEntity};
+use cognix_multi_agent_api as api;
+use cognixui::{integration::AssertionCallback, integration_assert, EntityId};
+use cognixui::{integration::AssertionOutcome, SingletonEntity};
 
 type TextAssertion = Box<dyn Fn(&str) -> bool + 'static>;
 type ActionAssertion = Box<dyn Fn(&AIAgentActionType) -> bool + 'static>;
@@ -94,7 +94,7 @@ pub fn assert_latest_exchange_text(
 }
 
 // Make an assertion on the action requested in the exchange at exchange_index.
-/// This is private because `AIAgentActionType` is not public outside the warp app crate
+/// This is private because `AIAgentActionType` is not public outside the cognix app crate
 /// for use within agent mode evals, so they can't write the `ActionAssertion` directly.
 /// We need to define other functions for specific action assertions that don't expose the type.
 /// TODO: consider exposing `AIAgentActionType`

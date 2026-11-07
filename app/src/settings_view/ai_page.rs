@@ -26,14 +26,14 @@ use crate::settings::{
     AIAutoDetectionEnabled, AICommandDenylist, AISettingsChangedEvent,
     AgentModeCodingPermissionsType, AgentModeCommandExecutionDenylist,
     AgentModeCommandExecutionPredicate, AgentModeQuerySuggestionsEnabled, AwsBedrockAutoLogin,
-    AwsBedrockCredentialsEnabled, CanUseWarpCreditsWithByok, CodeSettings, CodebaseContextEnabled,
+    AwsBedrockCredentialsEnabled, CanUseCognixCreditsWithByok, CodeSettings, CodebaseContextEnabled,
     FileBasedMcpEnabled, GitOperationsAutogenEnabled, IncludeAgentCommandsInHistory,
     IntelligentAutosuggestionsEnabled, MemoryEnabled, NLDInTerminalEnabled,
     NaturalLanguageAutosuggestionsEnabled, OrchestrationEnabled, RuleSuggestionsEnabled,
     SharedBlockTitleGenerationEnabled, ShouldRenderCLIAgentToolbar,
     ShouldRenderUseAgentToolbarForUserCommands, ShouldShowOzUpdatesInZeroState, ShowAgentTips,
     ShowConversationHistory, ShowHintText, ThinkingDisplayMode, VoiceInputEnabled,
-    WarpDriveContextEnabled,
+    CognixDriveContextEnabled,
 };
 use crate::terminal::session_settings::{SessionSettings, SessionSettingsChangedEvent};
 use crate::terminal::CLIAgent;
@@ -48,18 +48,18 @@ use itertools::Itertools;
 use regex::Regex;
 use settings::{Setting, ToggleableSetting};
 use strum::IntoEnumIterator;
-use warp_core::channel::ChannelState;
-use warp_core::context_flag::ContextFlag;
-use warp_core::features::FeatureFlag;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::elements::{
+use cognix_core::channel::ChannelState;
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::features::FeatureFlag;
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::elements::{
     Border, ChildView, ConstrainedBox, CornerRadius, CrossAxisAlignment, Expanded, Fill,
     HyperlinkLens, MainAxisAlignment, MainAxisSize, MouseStateHandle, Radius, Shrinkable, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::id;
-use warpui::keymap::ContextPredicate;
-use warpui::{
+use cognixui::fonts::{Properties, Weight};
+use cognixui::id;
+use cognixui::keymap::ContextPredicate;
+use cognixui::{
     elements::{
         Container, Flex, FormattedTextElement, HighlightedHyperlink, HyperlinkUrl, ParentElement,
     },
@@ -91,8 +91,8 @@ use super::{
 /// When `None`, the page shows all widgets (legacy/full view).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AISubpage {
-    /// The main "WarpAgent" page: global AI toggle + Active AI + Input + Other sections.
-    WarpAgent,
+    /// The main "CognixAgent" page: global AI toggle + Active AI + Input + Other sections.
+    CognixAgent,
     /// Agent profiles and permissions.
     Profiles,
     /// Knowledge / Rules settings.
@@ -104,7 +104,7 @@ pub enum AISubpage {
 impl AISubpage {
     pub fn from_section(section: SettingsSection) -> Option<Self> {
         match section {
-            SettingsSection::WarpAgent => Some(Self::WarpAgent),
+            SettingsSection::CognixAgent => Some(Self::CognixAgent),
             SettingsSection::AgentProfiles => Some(Self::Profiles),
             SettingsSection::Knowledge => Some(Self::Knowledge),
             SettingsSection::ThirdPartyCLIAgents => Some(Self::ThirdPartyCLIAgents),
@@ -170,7 +170,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             context,
             flags::IS_ANY_AI_ENABLED,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::CognixAi)],
         app,
     );
 
@@ -181,7 +181,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::IS_ACTIVE_AI_ENABLED,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::CognixAi)],
         app,
     );
 
@@ -198,7 +198,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::AI_INPUT_AUTODETECTION_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| FeatureFlag::AgentMode.is_enabled())],
         app,
     );
@@ -211,7 +211,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::NLD_IN_TERMINAL_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| FeatureFlag::AgentView.is_enabled())],
         app,
     );
@@ -224,7 +224,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::INTELLIGENT_AUTOSUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::CognixAi)],
         app,
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
@@ -236,7 +236,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::PROMPT_SUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::CognixAi)],
         app,
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
@@ -250,7 +250,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
                 & id!(flags::PROMPT_SUGGESTIONS_FLAG)),
             flags::CODE_SUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::CognixAi)],
         app,
     );
     ToggleSettingActionPair::add_toggle_setting_action_pairs_as_bindings(
@@ -265,7 +265,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             ),
             None,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| FeatureFlag::AgentTips.is_enabled())],
         app,
     );
@@ -288,13 +288,13 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             ),
             None,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| FeatureFlag::AgentView.is_enabled())],
         app,
     );
     {
         use crate::settings::ThinkingDisplayMode;
-        use warpui::keymap::FixedBinding;
+        use cognixui::keymap::FixedBinding;
 
         let ai_context = context.clone() & id!(flags::IS_ANY_AI_ENABLED);
         let mode_bindings: Vec<FixedBinding> = ThinkingDisplayMode::iter()
@@ -313,7 +313,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
                     )),
                     ai_context.clone() & !id!(context_flag),
                 )
-                .with_group(bindings::BindingGroup::WarpAi.as_str())
+                .with_group(bindings::BindingGroup::CognixAi.as_str())
             })
             .collect();
         app.register_fixed_bindings(mode_bindings);
@@ -327,7 +327,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::NATURAL_LANGUAGE_AUTOSUGGESTIONS_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| FeatureFlag::PredictAMQueries.is_enabled())],
         app,
     );
@@ -340,7 +340,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ACTIVE_AI_ENABLED)),
             flags::SHARED_BLOCK_TITLE_GENERATION_FLAG,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| FeatureFlag::SharedBlockTitleGeneration.is_enabled())],
         app,
     );
@@ -351,7 +351,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             &(context.clone() & id!(flags::IS_ANY_AI_ENABLED)),
             flags::IS_VOICE_INPUT_ENABLED,
         )
-        .with_group(bindings::BindingGroup::WarpAi)
+        .with_group(bindings::BindingGroup::CognixAi)
         .with_enabled(|| cfg!(feature = "voice_input"))],
         app,
     );
@@ -372,7 +372,7 @@ pub fn init_actions_from_parent_view<T: Action + Clone>(
             ),
             None,
         )
-        .with_group(bindings::BindingGroup::WarpAi)],
+        .with_group(bindings::BindingGroup::CognixAi)],
         app,
     );
     if !FeatureFlag::FullSourceCodeEmbedding.is_enabled() {
@@ -709,7 +709,7 @@ impl AISettingsPageView {
         });
         // The coding agent footer command editor is always enabled,
         // independent of the global AI toggle, because it controls
-        // third-party coding agents rather than Warp's own AI.
+        // third-party coding agents rather than Cognix's own AI.
         Self::update_editor_interaction_state(
             cli_agent_footer_command_editor.as_ref(ctx).editor().clone(),
             true,
@@ -1475,7 +1475,7 @@ impl AISettingsPageView {
                     widgets.push(Box::new(CloudAgentComputerUseWidget::default()));
                 }
             }
-            Some(AISubpage::WarpAgent) => {
+            Some(AISubpage::CognixAgent) => {
                 // Oz page: global toggle + Active AI + Input + Other
                 widgets.push(Box::new(GlobalAIWidget::default()));
                 if ai_settings
@@ -2034,7 +2034,7 @@ impl View for AISettingsPageView {
         "AISettingsPage"
     }
 
-    fn render(&self, app: &warpui::AppContext) -> Box<dyn warpui::Element> {
+    fn render(&self, app: &cognixui::AppContext) -> Box<dyn cognixui::Element> {
         self.page.render(self, app)
     }
 }
@@ -2068,7 +2068,7 @@ pub enum AISettingsPageAction {
     ToggleCLIAgentToolbar,
     ToggleUseAgentToolbar,
     ToggleVoiceInput,
-    ToggleCanUseWarpCreditsWithByok,
+    ToggleCanUseCognixCreditsWithByok,
     HyperlinkClick(HyperlinkUrl),
     ToggleCodebaseContext,
     ToggleShowInputHintText,
@@ -2090,7 +2090,7 @@ pub enum AISettingsPageAction {
     RemoveDirectoryFromCodeReadAllowlist(PathBuf),
     ToggleRules,
     ToggleRuleSuggestions,
-    ToggleWarpDriveContext,
+    ToggleCognixDriveContext,
     SetApplyCodeDiffs(ActionPermission),
     SetReadFiles(ActionPermission),
     SetExecuteCommands(ActionPermission),
@@ -2450,10 +2450,10 @@ impl TypedActionView for AISettingsPageView {
                 }
                 ctx.notify();
             }
-            AISettingsPageAction::ToggleCanUseWarpCreditsWithByok => {
+            AISettingsPageAction::ToggleCanUseCognixCreditsWithByok => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     report_if_error!(settings
-                        .can_use_warp_credits_with_byok
+                        .can_use_cognix_credits_with_byok
                         .toggle_and_save_value(ctx));
                 });
                 ctx.notify();
@@ -2653,10 +2653,10 @@ impl TypedActionView for AISettingsPageView {
                 });
                 ctx.notify();
             }
-            AISettingsPageAction::ToggleWarpDriveContext => {
+            AISettingsPageAction::ToggleCognixDriveContext => {
                 AISettings::handle(ctx).update(ctx, |settings, ctx| {
                     let _ = settings
-                        .warp_drive_context_enabled
+                        .cognix_drive_context_enabled
                         .toggle_and_save_value(ctx);
                 });
                 ctx.notify();
@@ -3051,7 +3051,7 @@ impl SettingsWidget for GlobalAIWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "oz warp agent global ai a.i. active next command prompt code diffs suggestion suggested suggestions \
+        "oz cognix agent global ai a.i. active next command prompt code diffs suggestion suggested suggestions \
                 agent mode natural language detection input hint api keys bring your own byo google anthropic openai"
     }
 
@@ -3075,7 +3075,7 @@ impl SettingsWidget for GlobalAIWidget {
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_child(
                 Text::new_inline(
-                    "Warp Agent",
+                    "Cognix Agent",
                     appearance.ui_font_family(),
                     PRIMARY_HEADER_FONT_SIZE,
                 )
@@ -3190,13 +3190,13 @@ impl UsageWidget {
         is_unlimited: bool,
         workspace_is_delinquent_due_to_payment_issue: bool,
         appearance: &Appearance,
-    ) -> Box<dyn warpui::Element> {
+    ) -> Box<dyn cognixui::Element> {
         let mut row = Flex::row();
         if used >= limit || workspace_is_delinquent_due_to_payment_issue {
             row.add_child(
                 ConstrainedBox::new(
                     Icon::AlertTriangle
-                        .to_warpui_icon(appearance.theme().ui_error_color().into())
+                        .to_cognixui_icon(appearance.theme().ui_error_color().into())
                         .finish(),
                 )
                 .with_height(16.)
@@ -3255,7 +3255,7 @@ impl UsageWidget {
         is_unlimited: bool,
         workspace_is_delinquent_due_to_payment_issue: bool,
         appearance: &Appearance,
-    ) -> Box<dyn warpui::Element> {
+    ) -> Box<dyn cognixui::Element> {
         let request_usage_details = Flex::column()
             .with_cross_axis_alignment(CrossAxisAlignment::End)
             .with_child(self.render_request_usage_count(
@@ -3416,7 +3416,7 @@ impl SettingsWidget for UsageWidget {
                 }
             } else {
                 vec![
-                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@warp.dev"),
+                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@cognix.dev"),
                     FormattedTextFragment::plain_text(" for more AI usage."),
                 ]
             }
@@ -3533,8 +3533,8 @@ impl ActiveAIWidget {
     fn render_next_command_section(
         &self,
         view: &AISettingsPageView,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_active_ai_enabled(app);
 
@@ -3561,8 +3561,8 @@ impl ActiveAIWidget {
     fn render_prompt_suggestions_section(
         &self,
         view: &AISettingsPageView,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_active_ai_enabled(app);
         Flex::column()
@@ -3588,8 +3588,8 @@ impl ActiveAIWidget {
     fn render_suggested_code_banners_section(
         &self,
         view: &AISettingsPageView,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_active_ai_enabled(app);
         Flex::column()
@@ -3615,8 +3615,8 @@ impl ActiveAIWidget {
     fn render_natural_language_autosuggestions_section(
         &self,
         view: &AISettingsPageView,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_active_ai_enabled(app);
         Flex::column()
@@ -3642,8 +3642,8 @@ impl ActiveAIWidget {
     fn render_shared_block_title_generation_section(
         &self,
         view: &AISettingsPageView,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_active_ai_enabled(app);
         Flex::column()
@@ -3669,8 +3669,8 @@ impl ActiveAIWidget {
     fn render_git_operations_autogen_section(
         &self,
         view: &AISettingsPageView,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_active_ai_enabled(app);
         Flex::column()
@@ -4103,7 +4103,7 @@ impl AgentsWidget {
         dropdown_menu: &ViewHandle<Dropdown<AISettingsPageAction>>,
         ai_settings: &AISettings,
         appearance: &Appearance,
-        app: &warpui::AppContext,
+        app: &cognixui::AppContext,
     ) -> Box<dyn Element> {
         let header = Container::new(render_body_item_label_with_icon::<AISettingsPageAction>(
             header_text.into(),
@@ -4123,7 +4123,7 @@ impl AgentsWidget {
         let alert_icon = Container::new(
             ConstrainedBox::new(
                 Icon::AlertCircle
-                    .to_warpui_icon(
+                    .to_cognixui_icon(
                         appearance
                             .theme()
                             .sub_text_color(appearance.theme().surface_2()),
@@ -4182,7 +4182,7 @@ impl AgentsWidget {
         );
         render_ai_list(
             "Command denylist",
-            "Regular expressions to match commands that the Warp Agent should always ask permission to execute.",
+            "Regular expressions to match commands that the Cognix Agent should always ask permission to execute.",
             list,
             view,
             ai_settings,
@@ -4215,7 +4215,7 @@ impl AgentsWidget {
 
         render_ai_list(
             "Command allowlist",
-            "Regular expressions to match commands that can be automatically executed by the Warp Agent.",
+            "Regular expressions to match commands that can be automatically executed by the Cognix Agent.",
             list,
             view,
             ai_settings,
@@ -4314,7 +4314,7 @@ impl AgentsWidget {
         render_dropdown_item(
             appearance,
             "Base model",
-            Some("This model serves as the primary engine behind the Warp Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Warp may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization."),
+            Some("This model serves as the primary engine behind the Cognix Agent. It powers most interactions and invokes other models for tasks like planning or code generation when necessary. Cognix may automatically switch to alternate models based on model availability or for auxiliary tasks such as conversation summarization."),
             Some(show_in_prompt_checkbox),
             LocalOnlyIconState::Hidden,
             (!ai_settings.is_any_ai_enabled(app)).then(|| appearance.theme().disabled_ui_text_color()),
@@ -4328,7 +4328,7 @@ impl AgentsWidget {
         view: &AISettingsPageView,
         ai_settings: &AISettings,
         appearance: &Appearance,
-        app: &warpui::AppContext,
+        app: &cognixui::AppContext,
     ) -> Box<dyn Element> {
         let code_settings = CodeSettings::as_ref(app);
         let toggle = render_ai_setting_toggle::<CodebaseContextEnabled>(
@@ -4343,11 +4343,11 @@ impl AgentsWidget {
 
         let codebase_context_description = vec![
             FormattedTextFragment::plain_text(
-                "Allow the Warp Agent to generate an outline of your codebase that can be used for context. No code is ever stored on our servers. "
+                "Allow the Cognix Agent to generate an outline of your codebase that can be used for context. No code is ever stored on our servers. "
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.warp.dev/agent-platform/capabilities/codebase-context",
+                "https://docs.cognix.dev/agent-platform/capabilities/codebase-context",
             ),
         ];
         let description = Container::new(
@@ -4415,10 +4415,10 @@ impl AgentsWidget {
 
         let subtext = {
             let subtext_fragments = vec![
-                FormattedTextFragment::plain_text("You haven't added any MCP servers yet. Once you do, you'll be able to control how much autonomy the Warp Agent has when interacting with them. "),
+                FormattedTextFragment::plain_text("You haven't added any MCP servers yet. Once you do, you'll be able to control how much autonomy the Cognix Agent has when interacting with them. "),
                 FormattedTextFragment::hyperlink_action("Add a server", AISettingsPageAction::OpenMCPServerCollection),
                 FormattedTextFragment::plain_text(" or "),
-                FormattedTextFragment::hyperlink("learn more about MCPs.", "https://docs.warp.dev/agent-platform/capabilities/mcp"),
+                FormattedTextFragment::hyperlink("learn more about MCPs.", "https://docs.cognix.dev/agent-platform/capabilities/mcp"),
             ];
 
             Container::new(
@@ -4489,7 +4489,7 @@ impl AgentsWidget {
         {
             let allowlist = self.render_mcp_list(
                 "MCP allowlist",
-                "Allow the Warp Agent to call these MCP servers.",
+                "Allow the Cognix Agent to call these MCP servers.",
                 &view.mcp_allowlist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_allowlist(app, None),
                 view.mcp_allowlist_mouse_state_handles.clone(),
@@ -4506,7 +4506,7 @@ impl AgentsWidget {
         {
             let denylist = self.render_mcp_list(
                 "MCP denylist",
-                "The Warp Agent will always ask for permission before calling any MCP servers on this list.",
+                "The Cognix Agent will always ask for permission before calling any MCP servers on this list.",
                 &view.mcp_denylist_dropdown,
                 BlocklistAIPermissions::as_ref(app).get_mcp_denylist(app, None),
                 view.mcp_denylist_mouse_state_handles.clone(),
@@ -4682,8 +4682,8 @@ impl AIInputWidget {
         view: &AISettingsPageView,
         ai_settings: &AISettings,
         appearance: &Appearance,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let is_toggleable = ai_settings.is_any_ai_enabled(app);
         let is_nld_enabled = *ai_settings.ai_autodetection_enabled_internal.value();
 
@@ -4713,7 +4713,7 @@ impl AIInputWidget {
                         FormattedTextFragment::plain_text("Encountered an incorrect detection? "),
                         FormattedTextFragment::hyperlink(
                             "Let us know",
-                            "https://warpdotdev.typeform.com/to/offrTIpq",
+                            "https://nrelab.typeform.com/to/offrTIpq",
                         ),
                     ]
                 });
@@ -4768,7 +4768,7 @@ impl AIInputWidget {
                 "Enabling natural language detection will detect when natural language is written in the terminal input, and then automatically switch to Agent Mode for AI queries."
                 ),
                 FormattedTextFragment::plain_text(" Encountered an incorrect input detection? "),
-                FormattedTextFragment::hyperlink("Let us know", "https://warpdotdev.typeform.com/to/offrTIpq"),
+                FormattedTextFragment::hyperlink("Let us know", "https://nrelab.typeform.com/to/offrTIpq"),
                 ]
             });
 
@@ -4871,12 +4871,12 @@ impl SettingsWidget for MCPServersWidget {
 
         let mcp_description = vec![
             FormattedTextFragment::plain_text(
-               "Add MCP servers to extend the Warp Agent's capabilities. \
+               "Add MCP servers to extend the Cognix Agent's capabilities. \
             MCP servers expose data sources or tools to agents through a standardized interface, essentially acting like plugins. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.warp.dev/agent-platform/capabilities/mcp",
+                "https://docs.cognix.dev/agent-platform/capabilities/mcp",
             ),
         ];
 
@@ -4922,7 +4922,7 @@ impl SettingsWidget for MCPServersWidget {
                                 ),
                                 FormattedTextFragment::hyperlink(
                                     "See supported providers.",
-                                    "https://docs.warp.dev/agent-platform/capabilities/mcp#file-based-mcp-servers",
+                                    "https://docs.cognix.dev/agent-platform/capabilities/mcp#file-based-mcp-servers",
                                 ),
                             ]
                         });
@@ -4980,7 +4980,7 @@ struct AIFactWidget {
     rules_link_index: HighlightedHyperlink,
     manage_rules_button: MouseStateHandle,
     rule_suggestions_toggle: SwitchStateHandle,
-    warp_drive_context_toggle: SwitchStateHandle,
+    cognix_drive_context_toggle: SwitchStateHandle,
 }
 
 impl AIFactWidget {
@@ -4989,7 +4989,7 @@ impl AIFactWidget {
         view: &AISettingsPageView,
         ai_settings: &AISettings,
         appearance: &Appearance,
-        app: &warpui::AppContext,
+        app: &cognixui::AppContext,
     ) -> Box<dyn Element> {
         let toggle = render_ai_setting_toggle::<MemoryEnabled>(
             "Rules",
@@ -5003,11 +5003,11 @@ impl AIFactWidget {
 
         let rules_description = vec![
             FormattedTextFragment::plain_text(
-                "Rules help the Warp Agent follow your conventions, whether for codebases or specific workflows. ",
+                "Rules help the Cognix Agent follow your conventions, whether for codebases or specific workflows. ",
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.warp.dev/agent-platform/capabilities/rules",
+                "https://docs.cognix.dev/agent-platform/capabilities/rules",
             ),
         ];
         let description = Container::new(
@@ -5040,7 +5040,7 @@ impl AIFactWidget {
         &self,
         view: &AISettingsPageView,
         ai_settings: &AISettings,
-        app: &warpui::AppContext,
+        app: &cognixui::AppContext,
     ) -> Box<dyn Element> {
         let toggle = render_ai_setting_toggle::<RuleSuggestionsEnabled>(
             "Suggested Rules",
@@ -5064,24 +5064,24 @@ impl AIFactWidget {
             .finish()
     }
 
-    fn render_warp_drive_context_toggle(
+    fn render_cognix_drive_context_toggle(
         &self,
         view: &AISettingsPageView,
         ai_settings: &AISettings,
-        app: &warpui::AppContext,
+        app: &cognixui::AppContext,
     ) -> Box<dyn Element> {
-        let toggle = render_ai_setting_toggle::<WarpDriveContextEnabled>(
-            "Warp Drive as agent context",
-            AISettingsPageAction::ToggleWarpDriveContext,
-            *ai_settings.warp_drive_context_enabled,
+        let toggle = render_ai_setting_toggle::<CognixDriveContextEnabled>(
+            "Cognix Drive as agent context",
+            AISettingsPageAction::ToggleCognixDriveContext,
+            *ai_settings.cognix_drive_context_enabled,
             ai_settings.is_any_ai_enabled(app),
-            self.warp_drive_context_toggle.clone(),
+            self.cognix_drive_context_toggle.clone(),
             &view.local_only_icon_tooltip_states,
             app,
         );
 
         let description = render_ai_setting_description(
-            "The Warp Agent can leverage your Warp Drive Contents to tailor responses to your personal and team developer workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
+            "The Cognix Agent can leverage your Cognix Drive Contents to tailor responses to your personal and team developer workflows and environments. This includes any Workflows, Notebooks, and Environment Variables.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -5097,7 +5097,7 @@ impl SettingsWidget for AIFactWidget {
     type View = AISettingsPageView;
 
     fn search_terms(&self) -> &str {
-        "agent oz ai a.i. knowledge fact memory memories rules warp drive context workflows notebooks environment variables"
+        "agent oz ai a.i. knowledge fact memory memories rules cognix drive context workflows notebooks environment variables"
     }
 
     fn should_render(&self, _app: &AppContext) -> bool {
@@ -5139,7 +5139,7 @@ impl SettingsWidget for AIFactWidget {
 
         column
             .with_child(button)
-            .with_child(self.render_warp_drive_context_toggle(view, ai_settings, app))
+            .with_child(self.render_cognix_drive_context_toggle(view, ai_settings, app))
             .finish()
     }
 }
@@ -5155,8 +5155,8 @@ impl VoiceWidget {
         &self,
         view: &AISettingsPageView,
         appearance: &Appearance,
-        app: &warpui::AppContext,
-    ) -> Box<dyn warpui::Element> {
+        app: &cognixui::AppContext,
+    ) -> Box<dyn cognixui::Element> {
         let ai_settings = AISettings::as_ref(app);
         let is_toggleable = ai_settings.is_any_ai_enabled(app);
         let mut column = Flex::column().with_child(render_ai_setting_toggle::<VoiceInputEnabled>(
@@ -5170,7 +5170,7 @@ impl VoiceWidget {
         ));
 
         let voice_input_description_text_fragments = vec![
-                FormattedTextFragment::plain_text("Voice input allows you to control Warp by speaking directly to your terminal (powered by "),
+                FormattedTextFragment::plain_text("Voice input allows you to control Cognix by speaking directly to your terminal (powered by "),
                 FormattedTextFragment::hyperlink("Wispr Flow", WISPR_FLOW_URL),
                 FormattedTextFragment::plain_text(")."),
             ];
@@ -5377,7 +5377,7 @@ impl SettingsWidget for OtherAIWidget {
         // TODO: OpenConversationLayoutPreference should not depend on local_fs, but it lives under the external editor settings
         // which does require local_fs. It was a mistake to put it there, but now we keep it there for backward compatibility.
         #[cfg(feature = "local_fs")]
-        if FeatureFlag::OpenWarpNewSettingsModes.is_enabled() {
+        if FeatureFlag::OpenCognixNewSettingsModes.is_enabled() {
             use crate::util::file::external_editor::settings::OpenConversationLayoutPreference;
 
             column.add_child(render_dropdown_item(
@@ -5431,7 +5431,7 @@ impl SettingsWidget for CLIAgentWidget {
 
         // The Coding Agents section is always enabled, independent of the
         // global AI toggle, because these settings control third-party coding
-        // agents (Claude Code, Codex, Gemini CLI) rather than Warp's own AI.
+        // agents (Claude Code, Codex, Gemini CLI) rather than Cognix's own AI.
         let cli_agent_footer_toggle = render_ai_setting_toggle::<ShouldRenderCLIAgentToolbar>(
             "Show coding agent toolbar",
             AISettingsPageAction::ToggleCLIAgentToolbar,
@@ -5501,7 +5501,7 @@ impl SettingsWidget for CLIAgentWidget {
                         on_click_action: None,
                         secondary_text: None,
                         tooltip_override_text: Some(
-                            "Requires the Warp plugin for your coding agent".to_owned(),
+                            "Requires the Cognix plugin for your coding agent".to_owned(),
                         ),
                     }),
                     LocalOnlyIconState::for_setting(
@@ -5771,7 +5771,7 @@ impl SettingsWidget for CloudAgentComputerUseWidget {
             )
             .with_child(toggle_row)
             .with_child(render_ai_setting_description(
-                "Enable computer use in cloud agent conversations started from the Warp app.",
+                "Enable computer use in cloud agent conversations started from the Cognix app.",
                 !is_disabled,
                 app,
             ));
@@ -5803,7 +5803,7 @@ struct ApiKeysWidget {
     anthropic_api_key_editor: ViewHandle<EditorView>,
     google_api_key_editor: ViewHandle<EditorView>,
 
-    can_use_warp_credits_with_byok: SwitchStateHandle,
+    can_use_cognix_credits_with_byok: SwitchStateHandle,
     upgrade_highlight_index: HighlightedHyperlink,
 }
 
@@ -5911,7 +5911,7 @@ impl ApiKeysWidget {
             anthropic_api_key_editor,
             google_api_key_editor,
 
-            can_use_warp_credits_with_byok: Default::default(),
+            can_use_cognix_credits_with_byok: Default::default(),
             upgrade_highlight_index: Default::default(),
         }
     }
@@ -5931,7 +5931,7 @@ impl ApiKeysWidget {
             .with_child(
                 Container::new(
                     render_ai_setting_description(
-                        "Use your own API keys from model providers for the Warp Agent to use. API keys are stored locally and never synced to the cloud. Using auto models or models from providers you have not provided API keys for will consume Warp credits.",
+                        "Use your own API keys from model providers for the Cognix Agent to use. API keys are stored locally and never synced to the cloud. Using auto models or models from providers you have not provided API keys for will consume Cognix credits.",
                         is_enabled,
                         app,
                     ))
@@ -6010,7 +6010,7 @@ impl ApiKeysWidget {
                 // to sales to enable BYOK on their existing plan.
                 if team.billing_metadata.customer_type == CustomerType::Enterprise {
                     vec![
-                        FormattedTextFragment::hyperlink("Contact sales", "mailto:sales@warp.dev"),
+                        FormattedTextFragment::hyperlink("Contact sales", "mailto:sales@cognix.dev"),
                         FormattedTextFragment::plain_text(
                             " to enable bringing your own API keys on your Enterprise plan.",
                         ),
@@ -6063,25 +6063,25 @@ impl ApiKeysWidget {
         column.finish()
     }
 
-    fn render_can_use_warp_credits_with_byok_toggle(
+    fn render_can_use_cognix_credits_with_byok_toggle(
         &self,
         view: &AISettingsPageView,
         app: &AppContext,
     ) -> Box<dyn Element> {
         let ai_settings = AISettings::as_ref(app);
 
-        let toggle = render_ai_setting_toggle::<CanUseWarpCreditsWithByok>(
-            "Warp credit fallback",
-            AISettingsPageAction::ToggleCanUseWarpCreditsWithByok,
-            *ai_settings.can_use_warp_credits_with_byok,
+        let toggle = render_ai_setting_toggle::<CanUseCognixCreditsWithByok>(
+            "Cognix credit fallback",
+            AISettingsPageAction::ToggleCanUseCognixCreditsWithByok,
+            *ai_settings.can_use_cognix_credits_with_byok,
             ai_settings.is_any_ai_enabled(app),
-            self.can_use_warp_credits_with_byok.clone(),
+            self.can_use_cognix_credits_with_byok.clone(),
             &view.local_only_icon_tooltip_states,
             app,
         );
 
         let description = render_ai_setting_description(
-            "When enabled, agent requests may be routed to one of Warp's provided models in the event of an error. Warp will prioritize using your API keys over your Warp credits.",
+            "When enabled, agent requests may be routed to one of Cognix's provided models in the event of an error. Cognix will prioritize using your API keys over your Cognix credits.",
             ai_settings.is_any_ai_enabled(app),
             app,
         );
@@ -6125,7 +6125,7 @@ impl SettingsWidget for ApiKeysWidget {
 
         if is_byo_enabled {
             column.add_child(
-                Container::new(self.render_can_use_warp_credits_with_byok_toggle(view, app))
+                Container::new(self.render_can_use_cognix_credits_with_byok_toggle(view, app))
                     .with_margin_top(16.)
                     .finish(),
             );
@@ -6353,9 +6353,9 @@ impl AwsBedrockWidget {
         let are_credentials_enabled = user_workspaces.is_aws_bedrock_credentials_enabled(app);
         let is_usage_enabled = is_section_enabled && are_credentials_enabled;
         let toggle_description = if is_admin_enforced {
-            "Warp loads and sends local AWS CLI credentials for Bedrock-supported models. This setting is managed by your organization.".to_string()
+            "Cognix loads and sends local AWS CLI credentials for Bedrock-supported models. This setting is managed by your organization.".to_string()
         } else {
-            "Warp loads and sends local AWS CLI credentials for Bedrock-supported models."
+            "Cognix loads and sends local AWS CLI credentials for Bedrock-supported models."
                 .to_string()
         };
 
@@ -6431,7 +6431,7 @@ impl AwsBedrockWidget {
                 .user_facing_components();
 
             let icon = Container::new(
-                ConstrainedBox::new(icon.to_warpui_icon(title_color).finish())
+                ConstrainedBox::new(icon.to_cognixui_icon(title_color).finish())
                     .with_width(16.)
                     .with_height(16.)
                     .finish(),
@@ -6577,8 +6577,8 @@ impl SettingsWidget for AwsBedrockWidget {
 }
 
 mod styles {
-    use warp_core::ui::{appearance::Appearance, theme::Fill};
-    use warpui::{AppContext, SingletonEntity};
+    use cognix_core::ui::{appearance::Appearance, theme::Fill};
+    use cognixui::{AppContext, SingletonEntity};
 
     // Apply a negative margin to the description text so it appears closer to the main
     // settings option text.

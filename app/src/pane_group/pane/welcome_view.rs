@@ -3,15 +3,15 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use itertools::Itertools as _;
-use warp_core::context_flag::ContextFlag;
-use warp_core::ui::appearance::Appearance;
-use warpui::elements::{
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::ui::appearance::Appearance;
+use cognixui::elements::{
     Align, ChildView, ConstrainedBox, Container, CrossAxisAlignment, Flex, Icon, ParentElement,
 };
-use warpui::keymap::EditableBinding;
-use warpui::platform::FilePickerConfiguration;
-use warpui::ViewHandle;
-use warpui::{
+use cognixui::keymap::EditableBinding;
+use cognixui::platform::FilePickerConfiguration;
+use cognixui::ViewHandle;
+use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext, WindowId,
 };
@@ -30,7 +30,7 @@ use crate::view_components::DismissibleToast;
 use crate::workspace::{ToastStack, Workspace};
 
 pub fn init(app: &mut AppContext) {
-    use warpui::keymap::macros::*;
+    use cognixui::keymap::macros::*;
 
     app.register_editable_bindings([
         EditableBinding::new(
@@ -243,7 +243,7 @@ impl View for WelcomeView {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::new(
-                                "bundled/svg/warp-logo-neutral.svg",
+                                "bundled/svg/cognix-logo-neutral.svg",
                                 appearance.theme().foreground(),
                             )
                             .finish(),

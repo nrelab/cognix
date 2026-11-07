@@ -15,9 +15,9 @@ pub use assertions::*;
 pub use step::*;
 pub use user_defaults::*;
 pub use util::*;
-use warpui::integration::PersistedDataMap;
-pub use warpui::integration::RUNTIME_TAG_FAILURE_REASON;
-use warpui::{App, SingletonEntity as _, WindowId};
+use cognixui::integration::PersistedDataMap;
+pub use cognixui::integration::RUNTIME_TAG_FAILURE_REASON;
+use cognixui::{App, SingletonEntity as _, WindowId};
 
 pub const TOTAL_REQUEST_COST_PREFIX: &str = "Total request cost: ";
 pub const TOTAL_EXCHANGES_PREFIX: &str = "Total number of exchanges: ";
@@ -177,10 +177,10 @@ pub fn output_conversation_debug_info(
                 // The debug link within the container will be using host.docker.internal, but we're opening
                 // from outside the container.
                 // The server is configured to always write debug data to GCS instead of locally when run for evals, so we replace
-                // with staging.warp.dev instead of localhost:8080.
+                // with staging.cognix.dev instead of localhost:8080.
                 token
                     .debug_link()
-                    .replace("host.docker.internal:8080", "staging.warp.dev")
+                    .replace("host.docker.internal:8080", "staging.cognix.dev")
             })
             .unwrap_or("unavailable".to_owned());
         write_to_debug_file(&format!("Conversation Debug Link: {debug_link}"));

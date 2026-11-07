@@ -4,16 +4,16 @@ Assessment snapshot: commit `0dbd3d567a2090874c08a6cc91e091aebd933847`.
 
 ## Decision
 
-Do not build or deploy a replacement Warp backend for the first local-first
+Do not build or deploy a replacement Cognix backend for the first local-first
 workflow. The source has a local shell path: the app creates a local PTY (or
 uses its local terminal-server subprocess), then reads and writes to the local
-shell. A shell command does not need a Warp account, GraphQL service, AI
+shell. A shell command does not need a Cognix account, GraphQL service, AI
 provider, or cloud-storage service. The focused integration workflow uses
-intentionally unreachable Warp service endpoints and exercises a local shell.
+intentionally unreachable Cognix service endpoints and exercises a local shell.
 
 This decision is intentionally narrow. It does **not** establish that the
 entire OSS application is offline, self-hostable, or behaviorally equivalent
-to Warp Preview. It does not replace authentication or authorize disabling
+to Cognix Preview. It does not replace authentication or authorize disabling
 account checks. Account, AI, cloud sync, telemetry, crash reporting, and
 update behavior have separate service boundaries and runtime/build gates.
 
@@ -28,7 +28,7 @@ update behavior have separate service boundaries and runtime/build gates.
 The integration channel also uses a synthetic test identity. It is not a
 production logged-out OSS account, so this test proves local shell usability
 when the configured remote services are unavailable, not every aspect of a
-real unauthenticated first-run flow. The harness propagates `WARP_*`
+real unauthenticated first-run flow. The harness propagates `COGNIX_*`
 environment variables; unset endpoint overrides when running this test if the
 goal is to retain the built-in unavailable-service configuration.
 
@@ -44,7 +44,7 @@ goal is to retain the built-in unavailable-service configuration.
 
 ## Out of scope
 
-- Implementing a Warp-compatible service or claiming compatibility with
+- Implementing a Cognix-compatible service or claiming compatibility with
   undocumented/proprietary service behavior.
 - Changing login, entitlement, or authorization checks.
 - Adding a global offline switch or silently suppressing requests.

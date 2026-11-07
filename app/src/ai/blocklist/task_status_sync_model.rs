@@ -9,8 +9,8 @@ use crate::terminal::cli_agent_sessions::{
 };
 use std::collections::HashMap;
 use std::sync::Arc;
-use warp_graphql::ai::{AgentTaskState, PlatformErrorCode};
-use warpui::{Entity, EntityId, ModelContext, SingletonEntity};
+use cognix_graphql::ai::{AgentTaskState, PlatformErrorCode};
+use cognixui::{Entity, EntityId, ModelContext, SingletonEntity};
 
 /// Listens for conversation status changes and CLI agent session status
 /// changes, then reports the corresponding task state to the server via
@@ -268,11 +268,11 @@ pub(crate) fn classify_renderable_error(
         RenderableAIError::ServerOverloaded => (
             AgentTaskState::Error,
             Some(TaskStatusUpdate::with_error_code(
-                "Warp is temporarily overloaded. Please try again shortly.",
+                "Cognix is temporarily overloaded. Please try again shortly.",
                 PlatformErrorCode::ResourceUnavailable,
             )),
         ),
-        RenderableAIError::InternalWarpError => (
+        RenderableAIError::InternalCognixError => (
             AgentTaskState::Error,
             Some(TaskStatusUpdate::with_error_code(
                 "An internal error occurred during the conversation. Please try again.",

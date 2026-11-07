@@ -1,7 +1,7 @@
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use std::{cell::RefCell, rc::Rc};
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{
     elements::{
         new_scrollable::SingleAxisConfig, ChildView, Clipped, ClippedScrollStateHandle,
         ConstrainedBox, Fill,
@@ -71,8 +71,8 @@ impl View for TestView {
         "NumberShortcutButtonsTestView"
     }
 
-    fn render(&self, _app: &warpui::AppContext) -> Box<dyn warpui::Element> {
-        let scrollable = warpui::elements::NewScrollable::vertical(
+    fn render(&self, _app: &cognixui::AppContext) -> Box<dyn cognixui::Element> {
+        let scrollable = cognixui::elements::NewScrollable::vertical(
             SingleAxisConfig::Clipped {
                 handle: self.scroll_state.clone(),
                 child: ChildView::new(&self.buttons).finish(),

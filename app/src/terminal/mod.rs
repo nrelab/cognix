@@ -11,11 +11,11 @@ mod package_installers;
 pub(crate) use history::UpArrowHistoryConfig;
 pub use view::Event;
 pub use view::TerminalView;
-pub use warp_terminal::shell::{self, ShellLaunchData};
-use warpui::geometry::vector::Vector2F;
-use warpui::units::{IntoPixels, Lines, Pixels};
-use warpui::AppContext;
-use warpui::WindowId;
+pub use cognix_terminal::shell::{self, ShellLaunchData};
+use cognixui::geometry::vector::Vector2F;
+use cognixui::units::{IntoPixels, Lines, Pixels};
+use cognixui::AppContext;
+use cognixui::WindowId;
 pub use {history::History, history::HistoryEntry, history::HistoryEvent, history::ShellHost};
 mod block_list_settings;
 
@@ -79,7 +79,7 @@ pub mod ssh;
 pub mod terminal_manager;
 mod terminal_size_element;
 pub mod view;
-pub mod warpify;
+pub mod cognixify;
 mod waterfall_gap_element;
 mod writeable_pty;
 #[cfg(windows)]
@@ -367,7 +367,7 @@ impl SizeInfo {
     }
 
     /// Create SizeInfo for a [`TerminalModel`] instance that doesn't have font metrics,
-    /// which comes from either a headless Warp instance or tests.
+    /// which comes from either a headless Cognix instance or tests.
     pub fn new_without_font_metrics(rows: usize, cols: usize) -> Self {
         let width = cols as f32;
         let height = rows as f32;

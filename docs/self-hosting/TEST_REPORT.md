@@ -11,7 +11,7 @@ was 1.93.1).
 | Command | Result |
 |---|---|
 | `cargo fmt -- --check` | Passed. |
-| `cargo nextest run -p warp_core -p warp_terminal -p warp_editor -p warpui_core` | Passed: 812 tests, 9 skipped. |
+| `cargo nextest run -p cognix_core -p cognix_terminal -p cognix_editor -p cognixui_core` | Passed: 812 tests, 9 skipped. |
 | `cargo nextest run --no-fail-fast --workspace --exclude command-signatures-v2` | Partial only: started 5,660 tests and was stopped after at least 248; four observed SSH integration tests failed because their remote connection was closed. |
 | Pinned-toolchain `./script/presubmit` | App compile/presubmit blocked because generated `local_config.json` was absent; the pinned channel-config tool requires a separate SSH repository. |
 
@@ -43,7 +43,7 @@ The integration runner configures `server_root_url`,
 `rtc_server_url`, and `oz_root_url` at `192.0.2.0:9`, and sets telemetry and
 crash-reporting configs to `None`. It creates a synthetic integration test
 identity, not a real logged-out production account. The test exercises a local
-shell and an `echo` command. The harness propagates `WARP_*` variables, which
+shell and an `echo` command. The harness propagates `COGNIX_*` variables, which
 can override the intended test environment.
 
 ## Logged-out AI auth-failure characterization
@@ -56,12 +56,12 @@ idle state and adds an error-marked fallback answer to the transcript.
 Command:
 
 ```sh
-rustup run 1.92.0 cargo nextest run -p warp --lib logged_out_ai_request_shows_failure_in_transcript
+rustup run 1.92.0 cargo nextest run -p cognix --lib logged_out_ai_request_shows_failure_in_transcript
 ```
 
-Result: exit status 0. Nextest compiled the `warp` test target in 35m 31s and
+Result: exit status 0. Nextest compiled the `cognix` test target in 35m 31s and
 ran the selected test in 20.532s: 1 passed, 3,581 skipped. The earlier
-`rustup run 1.92.0 cargo check -p warp --lib --tests` also passed.
+`rustup run 1.92.0 cargo check -p cognix --lib --tests` also passed.
 
 The fixture has no user or credentials. `get_or_refresh_access_token` returns
 an error immediately for a logged-out user; `send_graphql_request` awaits that
@@ -91,10 +91,10 @@ fallback as an error-marked transcript answer rather than a success.
 Command:
 
 ```sh
-rustup run 1.92.0 cargo nextest run -p warp --lib ai_request_shows_failure_when_backend_returns_service_unavailable
+rustup run 1.92.0 cargo nextest run -p cognix --lib ai_request_shows_failure_when_backend_returns_service_unavailable
 ```
 
-Result: exit status 0. Nextest compiled the `warp` test target in 60m 19s and
+Result: exit status 0. Nextest compiled the `cognix` test target in 60m 19s and
 ran the selected test in 1.271s: 1 passed, 3,582 skipped.
 
 This characterizes an immediate HTTP 503 response only. The next section
@@ -129,16 +129,16 @@ overrides do not alter production request behavior.
 Focused command:
 
 ```sh
-rustup run 1.92.0 cargo nextest run -p warp --lib -E 'test(ai_request_shows_failure_when_backend_connection_is_refused) | test(ai_request_shows_failure_when_backend_response_times_out) | test(repeated_ai_request_failures_leave_request_state_consistent)'
+rustup run 1.92.0 cargo nextest run -p cognix --lib -E 'test(ai_request_shows_failure_when_backend_connection_is_refused) | test(ai_request_shows_failure_when_backend_response_times_out) | test(repeated_ai_request_failures_leave_request_state_consistent)'
 ```
 
-Result: exit status 0. Nextest compiled the `warp` test target in 36m 01s and
+Result: exit status 0. Nextest compiled the `cognix` test target in 36m 01s and
 ran the three selected tests in 4.033s: 3 passed, 3,583 skipped.
 
 AI-assistant regression command:
 
 ```sh
-rustup run 1.92.0 cargo nextest run -p warp --lib -E 'test(ai_assistant)'
+rustup run 1.92.0 cargo nextest run -p cognix --lib -E 'test(ai_assistant)'
 ```
 
 Result: exit status 0. All 16 selected AI-assistant tests passed; 3,570 were
@@ -151,17 +151,17 @@ Both GraphQL library configurations compiled successfully:
 
 | Command | Result |
 |---|---|
-| `rustup run 1.92.0 cargo check -p warp_graphql --no-default-features` | Passed. |
-| `rustup run 1.92.0 cargo check -p warp_graphql --features test-util` | Passed. |
+| `rustup run 1.92.0 cargo check -p cognix_graphql --no-default-features` | Passed. |
+| `rustup run 1.92.0 cargo check -p cognix_graphql --features test-util` | Passed. |
 
 The GraphQL crate currently defines no unit tests. A plain
-`cargo nextest run -p warp_graphql` could not compile its HTTP-client test
+`cargo nextest run -p cognix_graphql` could not compile its HTTP-client test
 helper because reqwest's `tls_built_in_webpki_certs` API is not enabled by
 that target's default feature set. With the test-only TLS feature enabled,
 the GraphQL test target compiles:
 
 ```sh
-rustup run 1.92.0 cargo test -p warp_graphql --no-run --features 'test-util reqwest/rustls-tls-webpki-roots-no-provider'
+rustup run 1.92.0 cargo test -p cognix_graphql --no-run --features 'test-util reqwest/rustls-tls-webpki-roots-no-provider'
 ```
 
 Result: exit status 0; the test binary was produced. Running nextest with the

@@ -6,7 +6,7 @@ use itertools::Itertools as _;
 use serde::{Deserialize, Serialize};
 use strum_macros::EnumDiscriminants;
 use uuid::Uuid;
-use warp_terminal::model::BlockId;
+use cognix_terminal::model::BlockId;
 
 use crate::{
     agent::{
@@ -27,7 +27,7 @@ use crate::{
     document::AIDocumentId,
     skills::SkillReference,
 };
-pub use warp_multi_agent_api::LifecycleEventType;
+pub use cognix_multi_agent_api::LifecycleEventType;
 
 #[derive(Debug, Clone, Eq, PartialEq, EnumDiscriminants)]
 pub enum AIAgentActionType {
@@ -704,7 +704,7 @@ impl AIAgentPtyWriteMode {
         bytes: impl Into<Vec<u8>>,
         is_bracketed_paste_enabled: bool,
     ) -> Vec<u8> {
-        use warp_terminal::model::escape_sequences;
+        use cognix_terminal::model::escape_sequences;
 
         let bytes = bytes.into();
         match self {

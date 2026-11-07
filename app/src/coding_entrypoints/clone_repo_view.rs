@@ -1,7 +1,7 @@
 use crate::coding_entrypoints::glowing_editor::{GlowingEditor, GlowingEditorEvent};
 use crate::TelemetryEvent;
-use warp_core::send_telemetry_from_ctx;
-use warpui::{
+use cognix_core::send_telemetry_from_ctx;
+use cognixui::{
     elements::{ChildView, Flex, ParentElement as _},
     AppContext, Element, Entity, FocusContext, TypedActionView, View, ViewContext, ViewHandle,
 };

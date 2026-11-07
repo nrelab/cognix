@@ -129,7 +129,7 @@ jobs:
         uses: getsentry/action-release@5657c9e888b4e2cc85f4d29143ea4131fde4a73a # v3.6.0
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          SENTRY_ORG: warpdotdev
+          SENTRY_ORG: nrelab
           SENTRY_PROJECT: ${{ steps.get-config.outputs.sentry_project }}
         with:
           environment: ${{ steps.get-config.outputs.sentry_environment }}
@@ -190,11 +190,11 @@ jobs:
         env:
           CHANNEL: ${{ steps.get-config.outputs.channel }}
           GIT_RELEASE_TAG: ${{ needs.prepare_release.outputs.release_tag }}
-          WARP_DEVELOPER_ID_CERT: ${{ secrets.WARP_DEVELOPER_ID_CERT }}
-          WARP_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.WARP_DEVELOPER_ID_CERT_PASSWORD }}
-          WARP_CODESIGN_KEYCHAIN_PASSWORD: ${{ secrets.WARP_CODESIGN_KEYCHAIN_PASSWORD }}
-          WARP_NOTARIZATION_APPLE_ID: ${{ secrets.WARP_NOTARIZATION_APPLE_ID }}
-          WARP_NOTARIZATION_PASSWORD: ${{ secrets.WARP_NOTARIZATION_PASSWORD }}
+          COGNIX_DEVELOPER_ID_CERT: ${{ secrets.COGNIX_DEVELOPER_ID_CERT }}
+          COGNIX_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.COGNIX_DEVELOPER_ID_CERT_PASSWORD }}
+          COGNIX_CODESIGN_KEYCHAIN_PASSWORD: ${{ secrets.COGNIX_CODESIGN_KEYCHAIN_PASSWORD }}
+          COGNIX_NOTARIZATION_APPLE_ID: ${{ secrets.COGNIX_NOTARIZATION_APPLE_ID }}
+          COGNIX_NOTARIZATION_PASSWORD: ${{ secrets.COGNIX_NOTARIZATION_PASSWORD }}
 
       - name: Add DMG to GitHub release assets
         if: ${{ needs.prepare_release.outputs.should_publish == 'true' }}
@@ -214,7 +214,7 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: ${{ steps.bundle_app.outputs.dmg_path }}
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           headers: |-
             cache-control: ${{ steps.get-config.outputs.gcs_cache_control_value }}
 
@@ -230,7 +230,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload debug symbols from frameworks to Sentry
@@ -323,18 +323,18 @@ jobs:
         env:
           CHANNEL: ${{ steps.get-config.outputs.channel }}
           GIT_RELEASE_TAG: ${{ needs.prepare_release.outputs.release_tag }}
-          WARP_DEVELOPER_ID_CERT: ${{ secrets.WARP_DEVELOPER_ID_CERT }}
-          WARP_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.WARP_DEVELOPER_ID_CERT_PASSWORD }}
-          WARP_CODESIGN_KEYCHAIN_PASSWORD: ${{ secrets.WARP_CODESIGN_KEYCHAIN_PASSWORD }}
-          WARP_NOTARIZATION_APPLE_ID: ${{ secrets.WARP_NOTARIZATION_APPLE_ID }}
-          WARP_NOTARIZATION_PASSWORD: ${{ secrets.WARP_NOTARIZATION_PASSWORD }}
+          COGNIX_DEVELOPER_ID_CERT: ${{ secrets.COGNIX_DEVELOPER_ID_CERT }}
+          COGNIX_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.COGNIX_DEVELOPER_ID_CERT_PASSWORD }}
+          COGNIX_CODESIGN_KEYCHAIN_PASSWORD: ${{ secrets.COGNIX_CODESIGN_KEYCHAIN_PASSWORD }}
+          COGNIX_NOTARIZATION_APPLE_ID: ${{ secrets.COGNIX_NOTARIZATION_APPLE_ID }}
+          COGNIX_NOTARIZATION_PASSWORD: ${{ secrets.COGNIX_NOTARIZATION_PASSWORD }}
 
       - name: Set up Sentry CLI
         if: ${{ needs.prepare_release.outputs.should_publish == 'true' }}
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload debugging symbols to Sentry
@@ -388,7 +388,7 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: ${{ steps.bundle_app.outputs.dmg_path }}
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           # IMPORTANT: both the key and value of the cache-control header must be all lowercase;
           # uppercase values will not be respected by Cloud CDN and using "Cache-Control" will be
           # ignored by the upload-cloud-storage action.
@@ -449,11 +449,11 @@ jobs:
         env:
           CHANNEL: ${{ steps.get-config.outputs.channel }}
           GIT_RELEASE_TAG: ${{ needs.prepare_release.outputs.release_tag }}
-          WARP_DEVELOPER_ID_CERT: ${{ secrets.WARP_DEVELOPER_ID_CERT }}
-          WARP_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.WARP_DEVELOPER_ID_CERT_PASSWORD }}
-          WARP_CODESIGN_KEYCHAIN_PASSWORD: ${{ secrets.WARP_CODESIGN_KEYCHAIN_PASSWORD }}
-          WARP_NOTARIZATION_APPLE_ID: ${{ secrets.WARP_NOTARIZATION_APPLE_ID }}
-          WARP_NOTARIZATION_PASSWORD: ${{ secrets.WARP_NOTARIZATION_PASSWORD }}
+          COGNIX_DEVELOPER_ID_CERT: ${{ secrets.COGNIX_DEVELOPER_ID_CERT }}
+          COGNIX_DEVELOPER_ID_CERT_PASSWORD: ${{ secrets.COGNIX_DEVELOPER_ID_CERT_PASSWORD }}
+          COGNIX_CODESIGN_KEYCHAIN_PASSWORD: ${{ secrets.COGNIX_CODESIGN_KEYCHAIN_PASSWORD }}
+          COGNIX_NOTARIZATION_APPLE_ID: ${{ secrets.COGNIX_NOTARIZATION_APPLE_ID }}
+          COGNIX_NOTARIZATION_PASSWORD: ${{ secrets.COGNIX_NOTARIZATION_PASSWORD }}
 
       - name: Package CLI binary
         run: |
@@ -478,7 +478,7 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: oz-${{ steps.get-config.outputs.channel }}-macos-${{ matrix.arch }}.tar.gz
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}/cli/macos/${{ matrix.arch }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}/cli/macos/${{ matrix.arch }}
           headers: |-
             cache-control: ${{ steps.get-config.outputs.gcs_cache_control_value }}
 
@@ -494,7 +494,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload debugging symbols to Sentry
@@ -617,7 +617,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload debugging symbols to Sentry
@@ -645,7 +645,7 @@ jobs:
           # Only upload the files from within `packages_dir`, don't include the
           # (parent) folder itself.
           parent: false
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           # IMPORTANT: both the key and value of the cache-control header must be all lowercase;
           # uppercase values will not be respected by Cloud CDN and using "Cache-Control" will be
           # ignored by the upload-cloud-storage action.
@@ -768,7 +768,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload debugging symbols to Sentry
@@ -796,7 +796,7 @@ jobs:
           # Only upload the files from within `packages_dir`, don't include the
           # (parent) folder itself.
           parent: false
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           # IMPORTANT: both the key and value of the cache-control header must be all lowercase;
           # uppercase values will not be respected by Cloud CDN and using "Cache-Control" will be
           # ignored by the upload-cloud-storage action.
@@ -816,7 +816,7 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: oz-${{ steps.get-config.outputs.channel }}-linux-x86_64.tar.gz
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}/cli/linux/x86_64
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}/cli/linux/x86_64
           headers: |-
             cache-control: ${{ steps.get-config.outputs.gcs_cache_control_value }}
 
@@ -1026,7 +1026,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       # Install gcc 10, as gcc 9.5 has a bug with memcmp that is incompatible
@@ -1217,7 +1217,7 @@ jobs:
         with:
           path: ${{ steps.bundle_app.outputs.packages_dir }}
           parent: false
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           # IMPORTANT: both the key and value of the cache-control header must be all lowercase;
           # uppercase values will not be respected by Cloud CDN and using "Cache-Control" will be
           # ignored by the upload-cloud-storage action.
@@ -1230,7 +1230,7 @@ jobs:
         with:
           path: ${{ steps.bundle_cli.outputs.packages_dir }}
           parent: false
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           # IMPORTANT: both the key and value of the cache-control header must be all lowercase;
           # uppercase values will not be respected by Cloud CDN and using "Cache-Control" will be
           # ignored by the upload-cloud-storage action.
@@ -1242,7 +1242,7 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: oz-${{ steps.get-config.outputs.channel }}-linux-aarch64.tar.gz
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}/cli/linux/aarch64
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}/cli/linux/aarch64
           headers: |-
             cache-control: ${{ steps.get-config.outputs.gcs_cache_control_value }}
 
@@ -1301,7 +1301,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload debugging symbols to Sentry
@@ -1383,8 +1383,8 @@ jobs:
             runner: windows-latest-large
     env:
       TRUSTED_SIGNING_ENDPOINT: https://eus.codesigning.azure.net/
-      TRUSTED_SIGNING_ACCOUNT: warpdotdev
-      TRUSTED_SIGNING_CERT_PROFILE: warpterminal
+      TRUSTED_SIGNING_ACCOUNT: nrelab
+      TRUSTED_SIGNING_CERT_PROFILE: cognixterminal
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
@@ -1440,7 +1440,7 @@ jobs:
       # We locate them so ISCC can call signtool during compilation to sign the inner setup engine
       # (the file extracted to %TEMP% at runtime). This prevents Defender ASR rule D4F940AB from
       # blocking the installer in enterprise environments. See this issue:
-      # https://github.com/warpdotdev/Warp/issues/8794
+      # https://github.com/nrelab/cognix/issues/8794
       - name: Build sign-tool command for Inno Setup
         id: setup_signing
         shell: pwsh
@@ -1478,7 +1478,7 @@ jobs:
         uses: matbour/setup-sentry-cli@3e938c54b3018bdd019973689ef984e033b0454b # v2.0.0
         with:
           token: ${{ secrets.SENTRY_RELEASE_TOKEN }}
-          organization: warpdotdev
+          organization: nrelab
           project: ${{ steps.get-config.outputs.sentry_project }}
 
       - name: Upload binary to Sentry
@@ -1516,7 +1516,7 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: ${{ steps.bundle_app.outputs.installer_path }}
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
           # IMPORTANT: both the key and value of the cache-control header must be all lowercase;
           # uppercase values will not be respected by Cloud CDN and using "Cache-Control" will be
           # ignored by the upload-cloud-storage action.
@@ -1628,7 +1628,7 @@ jobs:
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
       - name: Generate changelog
-        uses: warpdotdev/generate-changelog@main
+        uses: nrelab/generate-changelog@main
         id: generate_changelog
         with:
           channel: ${{ inputs.channel }}
@@ -1737,4 +1737,4 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@e95a15f226403ed658d3e65f40205649f342ba2c # v1
         with:
           path: changelog.json
-          destination: warp-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}
+          destination: cognix-releases/${{ steps.get-config.outputs.channel }}/${{ needs.prepare_release.outputs.release_tag }}

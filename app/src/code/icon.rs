@@ -1,7 +1,7 @@
 use std::path::Path;
 
-use warp_core::ui::appearance::Appearance;
-use warpui::{
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{
     assets::asset_cache::AssetSource,
     elements::{CacheOption, Icon, Image},
     Element,

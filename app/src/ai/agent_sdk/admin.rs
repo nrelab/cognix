@@ -1,9 +1,9 @@
-//! General-purpose administrative commands in the Warp CLI.
+//! General-purpose administrative commands in the Cognix CLI.
 
 use anyhow::{Context, Result};
 use serde::Serialize;
-use warp_cli::agent::OutputFormat;
-use warpui::{platform::TerminationMode, AppContext, SingletonEntity};
+use cognix_cli::agent::OutputFormat;
+use cognixui::{platform::TerminationMode, AppContext, SingletonEntity};
 
 use crate::auth::auth_manager::{AuthManager, AuthManagerEvent};
 use crate::auth::user::PrincipalType;
@@ -116,7 +116,7 @@ struct WhoamiOutput {
 /// Singleton model that provides a `ModelContext` for the `whoami` command's async work.
 struct WhoamiRunner;
 
-impl warpui::Entity for WhoamiRunner {
+impl cognixui::Entity for WhoamiRunner {
     type Event = ();
 }
 
@@ -220,7 +220,7 @@ pub fn whoami(ctx: &mut AppContext, output_format: OutputFormat) -> Result<()> {
     Ok(())
 }
 
-/// Log out of Warp using the same logic as the app.
+/// Log out of Cognix using the same logic as the app.
 pub fn logout(ctx: &mut AppContext) -> Result<()> {
     let auth_state = AuthStateProvider::as_ref(ctx).get();
     if !auth_state.is_logged_in() {

@@ -1,13 +1,13 @@
 use crate::ui_components::blended_colors;
 use crate::{appearance::Appearance, ui_components::icons::Icon};
 use pathfinder_color::ColorU;
-use warp_core::ui::theme::color::internal_colors;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{CornerRadius, MouseState, Radius};
-use warpui::Element;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::theme::Fill;
+use cognixui::elements::{CornerRadius, MouseState, Radius};
+use cognixui::Element;
 
 /// Shared item highlight state for left-panel style lists (file tree, global search results,
-/// warp drive rows, etc.).
+/// cognix drive rows, etc.).
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub(crate) enum ItemHighlightState {
     None,

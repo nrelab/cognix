@@ -27,14 +27,14 @@ use markdown_parser::{
 };
 use std::fmt::Debug;
 use std::path::PathBuf;
-use warp_core::ui::{
+use cognix_core::ui::{
     appearance::{Appearance, AppearanceEvent},
     theme::color::internal_colors,
 };
-use warpui::elements::Shrinkable;
-use warpui::platform::FilePickerConfiguration;
-use warpui::ui_components::button::ButtonVariant;
-use warpui::{
+use cognixui::elements::Shrinkable;
+use cognixui::platform::FilePickerConfiguration;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::{
     elements::{
         Align, Border, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
         Expanded, Flex, FormattedTextElement, HighlightedHyperlink, Hoverable, MainAxisAlignment,
@@ -55,7 +55,7 @@ const DESCRIPTION_TEXT: &str = "Rules enhance the agent by providing structured 
 const SEARCH_PLACEHOLDER_TEXT: &str = "Search rules";
 const ZERO_STATE_TEXT: &str = "Once you add a rule, it will be shown here.";
 const ZERO_STATE_TEXT_PROJECT: &str =
-    "Once you generate a WARP.md rules file for a project, it will appear here.";
+    "Once you generate a COGNIX.md rules file for a project, it will appear here.";
 
 const DISABLED_BANNER_TEXT: &str =
     "Your rules are disabled and won't be used as context in sessions. You can ";
@@ -424,7 +424,7 @@ impl RuleView {
             .with_child(
                 Container::new(
                     ConstrainedBox::new(
-                        warpui::elements::Icon::new(
+                        cognixui::elements::Icon::new(
                             Icon::BookOpen.into(),
                             appearance
                                 .theme()
@@ -527,13 +527,13 @@ impl RuleView {
             if is_selected {
                 container = container
                     .with_background(appearance.theme().surface_2())
-                    .with_corner_radius(CornerRadius::with_all(warpui::elements::Radius::Pixels(
+                    .with_corner_radius(CornerRadius::with_all(cognixui::elements::Radius::Pixels(
                         4.,
                     )));
             } else if state.is_hovered() {
                 container = container
                     .with_background(appearance.theme().surface_1())
-                    .with_corner_radius(CornerRadius::with_all(warpui::elements::Radius::Pixels(
+                    .with_corner_radius(CornerRadius::with_all(cognixui::elements::Radius::Pixels(
                         4.,
                     )));
             }
@@ -591,7 +591,7 @@ impl RuleView {
                     Container::new(
                         ConstrainedBox::new(
                             Icon::Info
-                                .to_warpui_icon(
+                                .to_cognixui_icon(
                                     appearance
                                         .theme()
                                         .sub_text_color(appearance.theme().background()),
@@ -609,7 +609,7 @@ impl RuleView {
                 .finish(),
         )
         .with_background(appearance.theme().accent_overlay())
-        .with_corner_radius(CornerRadius::with_all(warpui::elements::Radius::Pixels(4.)))
+        .with_corner_radius(CornerRadius::with_all(cognixui::elements::Radius::Pixels(4.)))
         .with_uniform_padding(style::BANNER_PADDING)
         .with_margin_bottom(style::ITEM_BOTTOM_MARGIN)
         .finish()
@@ -639,7 +639,7 @@ impl RuleView {
             return None;
         }
 
-        let item = ai_row.fact.to_warp_drive_item(appearance)?;
+        let item = ai_row.fact.to_cognix_drive_item(appearance)?;
         let icon = item.sync_status_icon(
             SyncQueue::as_ref(app).is_dequeueing(),
             ai_row.mouse_states.sync_status_icon.clone(),
@@ -704,7 +704,7 @@ impl RuleView {
         Some(
             Container::new(row.finish())
                 .with_background(internal_colors::neutral_1(appearance.theme()))
-                .with_corner_radius(CornerRadius::with_all(warpui::elements::Radius::Pixels(4.)))
+                .with_corner_radius(CornerRadius::with_all(cognixui::elements::Radius::Pixels(4.)))
                 .with_border(
                     Border::all(1.)
                         .with_border_color(internal_colors::neutral_2(appearance.theme())),
@@ -785,7 +785,7 @@ impl RuleView {
 
             Container::new(row.finish())
                 .with_background(bg_color)
-                .with_corner_radius(CornerRadius::with_all(warpui::elements::Radius::Pixels(4.)))
+                .with_corner_radius(CornerRadius::with_all(cognixui::elements::Radius::Pixels(4.)))
                 .with_border(
                     Border::all(1.)
                         .with_border_color(internal_colors::neutral_2(appearance.theme())),

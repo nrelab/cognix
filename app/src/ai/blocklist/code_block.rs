@@ -6,9 +6,9 @@ use crate::code::editor_management::CodeSource;
 use crate::search::files::icon::icon_from_file_path;
 use crate::search::ItemHighlightState;
 use std::iter;
-use warp_core::ui::theme::Fill;
-use warpui::elements::{ChildView, HighlightedRange, MouseStateHandle};
-use warpui::{
+use cognix_core::ui::theme::Fill;
+use cognixui::elements::{ChildView, HighlightedRange, MouseStateHandle};
+use cognixui::{
     elements::{
         Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Expanded, Flex,
         MainAxisAlignment, MainAxisSize, ParentElement, Radius, Shrinkable, Text,
@@ -16,7 +16,7 @@ use warpui::{
     ui_components::components::UiComponent,
     AppContext, Element, SingletonEntity,
 };
-use warpui::{EventContext, ViewHandle};
+use cognixui::{EventContext, ViewHandle};
 
 use crate::code::editor::view::CodeEditorView;
 use crate::ui_components::blended_colors;
@@ -102,7 +102,7 @@ pub struct CodeBlockOptions {
     pub file_path: Option<String>,
 }
 
-pub fn render_code_block_with_warp_text(
+pub fn render_code_block_with_cognix_text(
     options: CodeBlockOptions,
     view: &ViewHandle<CodeEditorView>,
     app: &AppContext,
@@ -254,7 +254,7 @@ fn render_linked_code_block_internal(
             let open_button = render_button(
                 appearance,
                 Icon::LinkExternal,
-                "Open in Warp",
+                "Open in Cognix",
                 mouse_handles.open_button,
                 code_clone.clone(),
                 on_open,

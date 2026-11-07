@@ -3,19 +3,19 @@
 #![cfg_attr(feature = "release_bundle", windows_subsystem = "windows")]
 
 use anyhow::Result;
-use warp_core::{
-    channel::{Channel, ChannelConfig, ChannelState, OzConfig, WarpServerConfig},
+use cognix_core::{
+    channel::{Channel, ChannelConfig, ChannelState, OzConfig, CognixServerConfig},
     AppId,
 };
 
-// Simple wrapper around warp::run() for Warp OSS builds.
+// Simple wrapper around cognix::run() for Cognix OSS builds.
 fn main() -> Result<()> {
     let mut state = ChannelState::new(
         Channel::Oss,
         ChannelConfig {
-            app_id: AppId::new("dev", "warp", "WarpOss"),
-            logfile_name: "warp-oss.log".into(),
-            server_config: WarpServerConfig::production(),
+            app_id: AppId::new("dev", "cognix", "CognixOss"),
+            logfile_name: "cognix-oss.log".into(),
+            server_config: CognixServerConfig::production(),
             oz_config: OzConfig::production(),
             telemetry_config: None,
             crash_reporting_config: None,
@@ -24,11 +24,11 @@ fn main() -> Result<()> {
         },
     );
     if cfg!(debug_assertions) {
-        state = state.with_additional_features(warp_core::features::DEBUG_FLAGS);
+        state = state.with_additional_features(cognix_core::features::DEBUG_FLAGS);
     }
     ChannelState::set(state);
 
-    warp::run()
+    cognix::run()
 }
 
 // If we're not using an external plist, embed the following as the Info.plist.
@@ -41,15 +41,15 @@ embed_plist::embed_info_plist_bytes!(r#"
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleDisplayName</key>
-    <string>WarpOss</string>
+    <string>CognixOss</string>
     <key>CFBundleExecutable</key>
-    <string>warp-oss</string>
+    <string>cognix-oss</string>
     <key>CFBundleIdentifier</key>
-    <string>dev.warp.WarpOss</string>
+    <string>dev.cognix.CognixOss</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>WarpOss</string>
+    <string>CognixOss</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -61,7 +61,7 @@ embed_plist::embed_info_plist_bytes!(r#"
     <key>UIDesignRequiresCompatibility</key>
     <true/>
     <key>CFBundleURLTypes</key>
-    <array><dict><key>CFBundleURLName</key><string>Custom App</string><key>CFBundleURLSchemes</key><array><string>warposs</string></array></dict></array>
+    <array><dict><key>CFBundleURLName</key><string>Custom App</string><key>CFBundleURLSchemes</key><array><string>cognixoss</string></array></dict></array>
     <key>NSHumanReadableCopyright</key>
     <string>© 2026, Denver Technologies, Inc</string>
     </dict>

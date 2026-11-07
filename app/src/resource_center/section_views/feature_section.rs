@@ -5,7 +5,7 @@ use crate::{
     settings_view::keybindings::{KeybindingChangedEvent, KeybindingChangedNotifier},
     themes::theme::Fill,
 };
-use warpui::{
+use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Element, Flex, Hoverable, Icon,
         MouseState, MouseStateHandle, ParentElement, Shrinkable,
@@ -31,7 +31,7 @@ use super::{
 pub enum FeatureSection {
     WhatsNew,
     GettingStarted,
-    MaximizeWarp,
+    MaximizeCognix,
     AdvancedSetup,
 }
 
@@ -40,7 +40,7 @@ impl FeatureSection {
         match self {
             FeatureSection::WhatsNew => "What's New?",
             FeatureSection::GettingStarted => "Getting Started",
-            FeatureSection::MaximizeWarp => "Maximize Warp",
+            FeatureSection::MaximizeCognix => "Maximize Cognix",
             FeatureSection::AdvancedSetup => "Advanced Setup",
         }
     }

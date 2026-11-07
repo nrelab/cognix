@@ -13,8 +13,8 @@ use crate::{
     terminal::input::MenuPositioningProvider,
 };
 use std::path::PathBuf;
-use warp_core::features::FeatureFlag;
-use warpui::{
+use cognix_core::features::FeatureFlag;
+use cognixui::{
     elements::{
         ChildView, Clipped, Container, CrossAxisAlignment, Element, Flex, MainAxisAlignment,
         MainAxisSize, ParentElement, Wrap,

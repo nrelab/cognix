@@ -1,4 +1,4 @@
-use warpui::{async_assert, integration::AssertionCallback};
+use cognixui::{async_assert, integration::AssertionCallback};
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, CloudModelType, GenericCloudObject, Revision},

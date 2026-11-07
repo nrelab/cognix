@@ -1,5 +1,5 @@
 use chrono::{Local, TimeZone};
-use warpui::{App, ModelHandle, ReadModel, UpdateModel};
+use cognixui::{App, ModelHandle, ReadModel, UpdateModel};
 
 use crate::{
     auth::{AuthManager, AuthStateProvider},
@@ -8,7 +8,7 @@ use crate::{
     },
 };
 
-use warp_core::execution_mode::{AppExecutionMode, ExecutionMode};
+use cognix_core::execution_mode::{AppExecutionMode, ExecutionMode};
 
 use super::*;
 

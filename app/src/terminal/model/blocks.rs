@@ -35,13 +35,13 @@ use std::ops::{AddAssign, Range, RangeInclusive};
 use std::sync::Arc;
 use std::time::Duration;
 use sum_tree::{Dimension, Item, SeekBias, SumTree};
-use warp_core::features::FeatureFlag;
-use warpui::color::ColorU;
-use warpui::r#async::executor::Background;
-use warpui::record_trace_event;
+use cognix_core::features::FeatureFlag;
+use cognixui::color::ColorU;
+use cognixui::r#async::executor::Background;
+use cognixui::record_trace_event;
 
 use std::collections::{HashMap, HashSet};
-use warpui::{
+use cognixui::{
     units::{IntoLines, IntoPixels, Lines},
     AppContext, EntityId, ViewHandle,
 };
@@ -65,7 +65,7 @@ use crate::terminal::model::blockgrid::BlockGrid;
 use crate::terminal::model::grid::Dimensions;
 use crate::terminal::model::secrets::ObfuscateSecrets;
 use crate::terminal::model::terminal_model::{BlockIndex, WithinBlock};
-use warp_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 
 use selection::BlockListSelection;
 pub use selection::SelectionRange;
@@ -276,12 +276,12 @@ pub struct BlockList {
     bootstrap_stage: BootstrapStage,
 
     padding: BlockPadding,
-    warp_prompt_height_lines: f32,
+    cognix_prompt_height_lines: f32,
 
     /// Executor used for spawning threads in the background.
     background_executor: Arc<Background>,
 
-    show_warp_bootstrap_block: bool,
+    show_cognix_bootstrap_block: bool,
 
     show_in_band_command_blocks: bool,
 
@@ -302,7 +302,7 @@ pub struct BlockList {
     ///
     /// This isn't a simple boolean 'is_in_band_command_in_flight' because it is possible that
     /// with two in-band commands queued in quick succession, the second command may be written
-    /// to the PTY before warp_precmd is executed after the first command. `warp_precmd` is used
+    /// to the PTY before cognix_precmd is executed after the first command. `cognix_precmd` is used
     /// to emit the `CommandFinished` hook, and so it would be possible to mistakenly mark the
     /// boolean `false`.
     in_flight_in_band_command_count: usize,
@@ -552,7 +552,7 @@ impl BlockList {
         sizes: BlockSize,
         event_proxy: ChannelEventListener,
         background_executor: Arc<Background>,
-        show_warp_bootstrap_input: bool,
+        show_cognix_bootstrap_input: bool,
         show_in_band_command_blocks: bool,
         show_memory_stats: bool,
         honor_ps1: bool,
@@ -564,7 +564,7 @@ impl BlockList {
             sizes,
             event_proxy,
             background_executor,
-            show_warp_bootstrap_input,
+            show_cognix_bootstrap_input,
             show_in_band_command_blocks,
             show_memory_stats,
             honor_ps1,
@@ -587,8 +587,8 @@ impl BlockList {
     /// the block as the input and consider that one whole block to create,
     /// feed input into, and finish whereas `finalize_block_and_advance_list` will create the _subsequent_
     /// block.
-    /// 3. Create the `BootstrapStage::WarpInput` block through
-    /// `create_warp_input_block`. From here on, there is always a default
+    /// 3. Create the `BootstrapStage::CognixInput` block through
+    /// `create_cognix_input_block`. From here on, there is always a default
     /// block which is hidden until it is started.
     /// 4. We progress through the bootstrap stages with the `finalize_block_and_advance_list` function.
     /// 5. After we hit `BootstrapStage::PostBootstrapPrecmd`, it's normal
@@ -601,7 +601,7 @@ impl BlockList {
         sizes: BlockSize,
         event_proxy: ChannelEventListener,
         background_executor: Arc<Background>,
-        show_warp_bootstrap_input: bool,
+        show_cognix_bootstrap_input: bool,
         show_in_band_command_blocks: bool,
         show_memory_stats: bool,
         honor_ps1: bool,
@@ -626,9 +626,9 @@ impl BlockList {
             smart_select_override: None,
             bootstrap_stage,
             padding: sizes.block_padding,
-            warp_prompt_height_lines: sizes.warp_prompt_height_lines,
+            cognix_prompt_height_lines: sizes.cognix_prompt_height_lines,
             background_executor,
-            show_warp_bootstrap_block: show_warp_bootstrap_input,
+            show_cognix_bootstrap_block: show_cognix_bootstrap_input,
             show_in_band_command_blocks,
             show_memory_stats,
             honor_ps1,
@@ -681,7 +681,7 @@ impl BlockList {
                 }
             }
         }
-        self.create_warp_input_block();
+        self.create_cognix_input_block();
         // Note: We no longer call start() here.
         // When shell input arrives, the block will be started (see the `input` handler).
         // This ensures sessions without a shell (like cloude mode) don't permanently trigger is_active_and_long_running()
@@ -725,14 +725,14 @@ impl BlockList {
     /// This is an important function in the block list lifecycle. After this
     /// is called, there's an invariant where we always have an active block
     /// that's hidden until it's `start`ed.
-    fn create_warp_input_block(&mut self) {
+    fn create_cognix_input_block(&mut self) {
         self.create_new_block(
             BlockId::new(),
-            BootstrapStage::WarpInput,
+            BootstrapStage::CognixInput,
             Default::default(),
             None,
         );
-        self.bootstrap_stage = BootstrapStage::WarpInput;
+        self.bootstrap_stage = BootstrapStage::CognixInput;
     }
 
     pub fn restored_session_ts(&self) -> &Option<DateTime<Local>> {
@@ -970,7 +970,7 @@ impl BlockList {
             self.append_item_to_blocklist(BlockHeightItem::RichContent(item))
         } else {
             // If there's no long-running block, then the active block is a default block that is hidden
-            // until it's started. This is an invariant of the blocklist (see create_warp_input_block). In this
+            // until it's started. This is an invariant of the blocklist (see create_cognix_input_block). In this
             // case, we should add the rich content above that hidden block.
             self.insert_non_block_item_before_block(
                 self.active_block_index(),
@@ -1210,7 +1210,7 @@ impl BlockList {
 
     /// Inserts the `item` into the blocklist at the given `index`.
     /// We only want to use this in the block list lifecycle after
-    /// `create_warp_input_block`. For non-block items before then, we should
+    /// `create_cognix_input_block`. For non-block items before then, we should
     /// insert the item directly into the sumtree.
     /// Returns the inserted index (according to the TotalCount dimension).
     fn insert_non_block_item_before_block(
@@ -2182,7 +2182,7 @@ impl BlockList {
     }
 
     pub fn set_show_bootstrap_block(&mut self, show_bootstrap_block: bool) {
-        self.show_warp_bootstrap_block = show_bootstrap_block;
+        self.show_cognix_bootstrap_block = show_bootstrap_block;
         self.update_blocks_and_sumtree(
             None,
             None,
@@ -2304,7 +2304,7 @@ impl BlockList {
                 let next_block = self.block_at(next_block_index)?;
                 let next_command_is_empty = next_block.is_command_empty();
                 // NOTE: there is a semantic difference here of seeking down to the next "prompt" (in the PS1 case)
-                // vs the next "command" (in the Warp prompt case), when using the combined grid, rather than
+                // vs the next "command" (in the Cognix prompt case), when using the combined grid, rather than
                 // directly going to the next "command" in both cases.
                 let grid_type = GridType::PromptAndCommand;
 
@@ -2486,7 +2486,7 @@ impl BlockList {
             self.event_proxy.clone(),
             self.background_executor.clone(),
             bootstrap_stage,
-            self.show_warp_bootstrap_block,
+            self.show_cognix_bootstrap_block,
             self.show_in_band_command_blocks,
             self.show_memory_stats,
             self.blocks.len().into(),
@@ -2540,7 +2540,7 @@ impl BlockList {
             self.event_proxy.clone(),
             self.background_executor.clone(),
             self.bootstrap_stage,
-            self.show_warp_bootstrap_block,
+            self.show_cognix_bootstrap_block,
             self.show_in_band_command_blocks,
             self.show_memory_stats,
             BlockIndex::zero(),
@@ -2709,7 +2709,7 @@ impl BlockList {
             block_padding: self.padding,
             size: self.size,
             max_block_scroll_limit: self.max_grid_size_limit,
-            warp_prompt_height_lines: self.warp_prompt_height_lines,
+            cognix_prompt_height_lines: self.cognix_prompt_height_lines,
         }
     }
 
@@ -2720,11 +2720,11 @@ impl BlockList {
 
         self.create_new_block(
             BlockId::new(),
-            BootstrapStage::WarpInput,
+            BootstrapStage::CognixInput,
             None, /* precmd_value */
             None, /* restored_block_is_local */
         );
-        self.bootstrap_stage = BootstrapStage::WarpInput;
+        self.bootstrap_stage = BootstrapStage::CognixInput;
     }
 
     /// Starts the active block and resets block-to-block state. For local sessions, this is called
@@ -3282,7 +3282,7 @@ impl BlockList {
         let mut contents = String::new();
         for block in self.blocks.iter() {
             match block.bootstrap_stage() {
-                BootstrapStage::WarpInput | BootstrapStage::ScriptExecution => {
+                BootstrapStage::CognixInput | BootstrapStage::ScriptExecution => {
                     contents.push_str(&block.command_to_string());
                     contents.push('\n');
                 }
@@ -3520,10 +3520,10 @@ impl ansi::Handler for BlockList {
             }
             ClearMode::All => {
                 // TODO(alokedesai): Investigate how we can call `clear_visible_screen` here to have
-                // Warp's custom logic for "clear". It's not immediately straightforward because a
+                // Cognix's custom logic for "clear". It's not immediately straightforward because a
                 // a running program that writes output, clears the visible screen, and then writes
                 // more output should all be encapsulated within a single block, which wouldn't be
-                // quite right with Warp's custom clear screen logic.
+                // quite right with Cognix's custom clear screen logic.
             }
             _ => {}
         }

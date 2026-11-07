@@ -1,7 +1,7 @@
 use crate::terminal::model::session::Session;
 use smol_str::SmolStr;
 use std::sync::Arc;
-use warp_completer::parsers::simple::all_parsed_commands;
+use cognix_completer::parsers::simple::all_parsed_commands;
 
 /// Contains information about an aliased command.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -12,7 +12,7 @@ pub struct AliasedCommand {
     pub alias_value: String,
 }
 
-/// Returns whether the alias can be expanded by Warp given its value.
+/// Returns whether the alias can be expanded by Cognix given its value.
 ///
 /// We don't expand on any alias that starts with itself, as it leads to
 /// cases where the alias is expanded twice: once as the user types in the

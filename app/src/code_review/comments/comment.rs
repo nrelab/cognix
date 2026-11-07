@@ -5,12 +5,12 @@ use crate::{
 use chrono::{DateTime, Local};
 use std::fmt::{Display, Formatter};
 use std::path::PathBuf;
-use warp_editor::render::model::LineCount;
-use warp_multi_agent_api::{self as api};
+use cognix_editor::render::model::LineCount;
+use cognix_multi_agent_api::{self as api};
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub enum CommentOrigin {
-    /// Comments originally created in the Warp UI.
+    /// Comments originally created in the Cognix UI.
     #[default]
     Native,
     /// Comments imported from a GitHub pull request.

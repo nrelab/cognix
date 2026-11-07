@@ -3,9 +3,9 @@ use std::{collections::HashMap, sync::Arc, time::Duration};
 use chrono::{DateTime, Utc};
 use futures_lite::future;
 use settings::{RespectUserSyncSetting, SyncToCloud};
-use warp_core::features::FeatureFlag;
-use warp_graphql::{object_permissions::AccessLevel, scalars::time::ServerTimestamp};
-use warpui::{App, ModelHandle, SingletonEntity};
+use cognix_core::features::FeatureFlag;
+use cognix_graphql::{object_permissions::AccessLevel, scalars::time::ServerTimestamp};
+use cognixui::{App, ModelHandle, SingletonEntity};
 
 #[cfg(test)]
 use crate::server::server_api::object::MockObjectClient;
@@ -327,7 +327,7 @@ fn mock_server_folder(id: FolderId, owner: Owner, metadata: ServerMetadata) -> S
         model: CloudFolderModel {
             name: format!("f{id}"),
             is_open: false,
-            is_warp_pack: false,
+            is_cognix_pack: false,
         },
     }
 }
@@ -1666,7 +1666,7 @@ fn test_sync_state_after_creation_failure_item_not_in_sync_queue() {
             .await;
 
         // await long enough that all the sync queue retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         // because there aren't any items in the sync queue left for this object,
         // it should be marked as errored
@@ -1758,7 +1758,7 @@ fn test_sync_state_after_update_failure_item_in_sync_queue() {
             .await;
 
         // await long enough that all the sync queue retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         // because notebook updates are dependent on one another, all should have registered
         // as failed and there should be no updates left in the sync queue.
@@ -2348,7 +2348,7 @@ fn test_pending_metadata_update_with_rtc() {
             is_welcome_object: false,
             creator_uid: None,
             last_editor_uid: None,
-            current_editor_uid: Some("ian@warp.dev".to_string()),
+            current_editor_uid: Some("ian@cognix.dev".to_string()),
         };
         let notebook: ServerNotebook =
             mock_server_notebook(notebook_id, Owner::mock_current_user(), metadata);
@@ -2484,7 +2484,7 @@ fn test_metadata_update_with_rtc_no_pending() {
             is_welcome_object: false,
             creator_uid: None,
             last_editor_uid: None,
-            current_editor_uid: Some("ian@warp.dev".to_string()),
+            current_editor_uid: Some("ian@cognix.dev".to_string()),
         };
 
         let mocked_metadata_update_message = ObjectUpdateMessage::ObjectMetadataChanged {
@@ -2580,7 +2580,7 @@ fn test_metadata_after_trash_item_failure() {
             .await;
 
         // await long enough that all the trash object retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         assert_trashed_status_for_object(&mut app, &sync_id.uid(), false);
         assert_pending_status_for_object(&mut app, &sync_id.uid(), false);
@@ -2662,7 +2662,7 @@ fn test_pending_metadata_update_with_polling() {
             is_welcome_object: false,
             creator_uid: None,
             last_editor_uid: None,
-            current_editor_uid: Some("ian@warp.dev".to_string()),
+            current_editor_uid: Some("ian@cognix.dev".to_string()),
         };
 
         // Add a generic object just for kicks and make sure it gets upserted
@@ -2803,7 +2803,7 @@ fn test_metadata_update_with_polling_no_pending() {
             is_welcome_object: false,
             creator_uid: None,
             last_editor_uid: None,
-            current_editor_uid: Some("ian@warp.dev".to_string()),
+            current_editor_uid: Some("ian@cognix.dev".to_string()),
         };
         let mocked_response = InitialLoadResponse {
             updated_notebooks: vec![ServerNotebook {
@@ -5761,7 +5761,7 @@ fn test_move_object_personal_to_team_failure() {
             .await;
 
         // await long enough that all the move object retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         assert_pending_online_only_change_for_object(&mut app, &sync_id.uid(), false);
 
@@ -6096,7 +6096,7 @@ fn test_move_workflow_with_enums_personal_to_team_failure() {
             .await;
 
         // await long enough that all the move object retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         // The workflow and enum should remain in the personal space
         assert_pending_online_only_change_for_object(&mut app, &workflow_sync_id.uid(), false);
@@ -6341,7 +6341,7 @@ fn test_move_object_root_to_folder_failure() {
             .await;
 
         // await long enough that all the move object retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         assert_pending_online_only_change_for_object(&mut app, &sync_id.uid(), false);
 
@@ -6533,7 +6533,7 @@ fn test_move_object_folder_to_root_failure() {
             .await;
 
         // await long enough that all the move object retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         assert_pending_online_only_change_for_object(&mut app, &sync_id.uid(), false);
 
@@ -6729,7 +6729,7 @@ fn test_move_object_folder_to_folder_failure() {
             .await;
 
         // await long enough that all the move object retries are exhausted
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         assert_pending_online_only_change_for_object(&mut app, &sync_id.uid(), false);
 
@@ -7160,8 +7160,8 @@ fn test_permissions_update_grants_access() {
         let guest_user_id = UserUid::new("abc123");
         let other_guests = vec![UserProfileWithUID {
             firebase_uid: guest_user_id,
-            display_name: Some("Warp User".to_string()),
-            email: "user@warp.dev".to_string(),
+            display_name: Some("Cognix User".to_string()),
+            email: "user@cognix.dev".to_string(),
             photo_url: String::new(),
         }];
 
@@ -7374,7 +7374,7 @@ fn test_add_guest_success() {
                     profiles: vec![UserProfileWithUID {
                         firebase_uid: UserUid::new("guest"),
                         display_name: Some("Guest User".to_string()),
-                        email: "guest@warp.dev".to_string(),
+                        email: "guest@cognix.dev".to_string(),
                         photo_url: "http://example.com".to_string(),
                     }],
                 })
@@ -7388,7 +7388,7 @@ fn test_add_guest_success() {
             .update(&mut app, |update_manager, ctx| {
                 update_manager.add_object_guests(
                     server_id,
-                    vec!["guest@warp.dev".to_string()],
+                    vec!["guest@cognix.dev".to_string()],
                     AccessLevel::Editor,
                     ctx,
                 );
@@ -7477,7 +7477,7 @@ fn test_add_guest_failure() {
             .update(&mut app, |update_manager, ctx| {
                 update_manager.add_object_guests(
                     server_id,
-                    vec!["guest@warp.dev".to_string()],
+                    vec!["guest@cognix.dev".to_string()],
                     AccessLevel::Editor,
                     ctx,
                 );
@@ -7496,7 +7496,7 @@ fn test_add_guest_failure() {
                 ctx.await_spawned_future(update_manager.spawned_futures[0])
             })
             .await;
-        warpui::r#async::Timer::after(Duration::from_secs(10)).await;
+        cognixui::r#async::Timer::after(Duration::from_secs(10)).await;
 
         assert_pending_online_only_change_for_object(&mut app, &uid, false);
 

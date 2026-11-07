@@ -1,4 +1,4 @@
-use warpui::App;
+use cognixui::App;
 
 use crate::server::ids::SyncId;
 

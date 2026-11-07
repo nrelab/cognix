@@ -13,18 +13,18 @@ use crate::util::time_format::format_approx_duration_from_now;
 use ordered_float::OrderedFloat;
 use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::vec2f;
-use warp_core::ui::color::{blend::Blend, coloru_with_opacity};
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::color::internal_colors;
-use warpui::elements::{
+use cognix_core::ui::color::{blend::Blend, coloru_with_opacity};
+use cognix_core::ui::icons::Icon;
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::elements::{
     AnchorPair, Container, CrossAxisAlignment, Expanded, Fill, Flex, Highlight, MainAxisSize,
     MouseStateHandle, OffsetPositioning, OffsetType, ParentElement, ParentOffsetBounds,
     PositioningAxis, Stack, Text, XAxisAnchor, YAxisAnchor,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::ui_components::button::ButtonTooltipPosition;
-use warpui::ui_components::components::{UiComponent, UiComponentStyles};
-use warpui::{AppContext, Element, Gradient, SingletonEntity};
+use cognixui::fonts::{Properties, Weight};
+use cognixui::ui_components::button::ButtonTooltipPosition;
+use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
+use cognixui::{AppContext, Element, Gradient, SingletonEntity};
 
 /// Information about which action to take once the conversation item is accepted.
 #[derive(Debug)]

@@ -1,7 +1,7 @@
 # Client architecture and service boundaries
 
 This is a source-based map of the checked-out client, not a reconstruction of
-Warp Preview internals.
+Cognix Preview internals.
 
 ## Local terminal workflow
 
@@ -9,7 +9,7 @@ Warp Preview internals.
 app entry point / ChannelState
             |
             v
-Warp app initialization and workspace UI
+Cognix app initialization and workspace UI
             |
             v
 Terminal pane / terminal model
@@ -38,9 +38,9 @@ service URLs in
 ## Startup and shutdown outline
 
 1. The selected binary sets a `ChannelState` and channel configuration. The
-   OSS entry point sets production Warp service roots and does not provide
+   OSS entry point sets production Cognix service roots and does not provide
    telemetry, crash-reporting, or updater configuration by default.
-2. `warp::run` initializes app state, reads persisted auth state, constructs
+2. `cognix::run` initializes app state, reads persisted auth state, constructs
    `ServerApiProvider`, registers auth and settings models, and initializes
    the UI. Constructing a client is not itself a network request.
 3. Auth refresh is conditional on existing login state and a usable token;
@@ -60,7 +60,7 @@ gated-service table below.
 
 ```text
                          +----------------------+
-                         |  Warp desktop client |
+                         |  Cognix desktop client |
                          +----------+-----------+
                                     |
                 +-------------------+-------------------+
@@ -79,7 +79,7 @@ gated-service table below.
 
 The diagram shows logical boundaries, not a complete list of every transport
 or a guarantee that every listed request occurs at startup. The OSS channel
-uses production Warp configuration; the Integration channel sets its service
+uses production Cognix configuration; the Integration channel sets its service
 roots to the reserved unavailable address for tests. Telemetry, crash
 reporting, and update paths have separate build, privacy, and execution gates.
 
@@ -88,11 +88,11 @@ reporting, and update paths have separate build, privacy, and execution gates.
 | Subsystem | Primary owner | Local behavior | Remote dependency / trigger |
 |---|---|---|---|
 | Terminal process and PTY | `app/src/terminal/local_tty/` | Starts and controls local shells; direct PTY path and optional local server process. | Remote SSH/shared-session modes are separate features. |
-| Terminal rendering and input | `app/src/terminal/`, `crates/warp_terminal/`, `crates/warpui/` | Local input, terminal state, parsing, and rendering. | No Warp account is needed for ordinary local shell input/output. |
+| Terminal rendering and input | `app/src/terminal/`, `crates/cognix_terminal/`, `crates/cognixui/` | Local input, terminal state, parsing, and rendering. | No Cognix account is needed for ordinary local shell input/output. |
 | Auth/account | `app/src/auth/`, `app/src/server/server_api/auth.rs` | Reads stored auth state and local secure-storage credentials. | Login, anonymous-account creation, user fetch, and token refresh call service APIs when their flows run. |
 | GraphQL and shared server client | `app/src/server/server_api.rs`, `crates/graphql/src/client.rs` | Builds shared clients and operation wrappers. | GraphQL operation sends are remote and operation-triggered. |
 | Local settings/state | `app/src/settings/`, persistence modules | Platform preferences, local files, and SQLite/session state. | Cloud preference/object sync is a separate remote path. |
-| AI | `app/src/ai/`, `app/src/server/server_api/ai.rs` | UI and request construction. | Authenticated operations and some public model-list requests call Warp services when invoked. |
+| AI | `app/src/ai/`, `app/src/server/server_api/ai.rs` | UI and request construction. | Authenticated operations and some public model-list requests call Cognix services when invoked. |
 | Cloud sync/objects | `app/src/settings/cloud_preferences_syncer.rs`, `app/src/server/cloud_objects/` | Local settings and cached state remain local. | Sync waits for cloud-object load and is triggered by login/settings changes; polling stops while logged out. |
 | Telemetry | `app/src/server/telemetry/` | Local queue and privacy decisions. | Remote flush requires eligible events, privacy enablement, and release/sandbox gates. |
 | Crash reporting | `app/src/crash_reporting/` | Local initialization and consent/config checks. | Reporting is build-, config-, and privacy-gated. |
@@ -116,7 +116,7 @@ The OSS entry point uses `Channel::Oss` and production service configuration.
 Release channels (`Stable`, `Preview`, `Oss`) ignore server URL overrides.
 Internal `Local` and `Integration` channels have different configuration
 behavior. `script/run` translates the legacy `with_local_server` flag into an
-environment setting for `warp-channel-config`; it is not a Cargo feature.
+environment setting for `cognix-channel-config`; it is not a Cargo feature.
 The installer pins a separate SSH Git dependency. A self-hosted service cannot
 be connected by assuming that setting `SERVER_ROOT_URL` while running the OSS
 binary will redirect it.

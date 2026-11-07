@@ -1,6 +1,6 @@
 //! Skill provider definitions and utilities.
 //!
-//! This module defines the supported skill providers (i.e. Agents, Claude, Codex, Warp) and their
+//! This module defines the supported skill providers (i.e. Agents, Claude, Codex, Cognix) and their
 //! associated skills directory paths. It provides utilities for looking up providers
 //! from paths and vice versa.
 use dirs::home_dir;
@@ -10,11 +10,11 @@ use std::sync::LazyLock;
 use serde::{Deserialize, Serialize};
 
 use strum_macros::{Display, EnumString, VariantNames};
-use warp_core::ui::color::CLAUDE_ORANGE;
-use warp_core::ui::icons::Icon;
-use warp_core::ui::theme::Fill;
+use cognix_core::ui::color::CLAUDE_ORANGE;
+use cognix_core::ui::icons::Icon;
+use cognix_core::ui::theme::Fill;
 
-/// Represents a skill provider/origin (Agents, Claude, Codex, or Warp).
+/// Represents a skill provider/origin (Agents, Claude, Codex, or Cognix).
 #[derive(
     Debug,
     Clone,
@@ -29,7 +29,7 @@ use warp_core::ui::theme::Fill;
     VariantNames,
 )]
 pub enum SkillProvider {
-    Warp,
+    Cognix,
     Agents,
     Claude,
     Codex,
@@ -62,7 +62,7 @@ pub enum SkillScope {
     Home,
     /// Skills from a project directory (e.g., `./repo/.agents/skills`).
     Project,
-    /// Bundled skills distributed with Warp.
+    /// Bundled skills distributed with Cognix.
     Bundled,
 }
 
@@ -82,11 +82,11 @@ impl SkillProvider {
             SkillProvider::Gemini => Icon::GeminiLogo,
             SkillProvider::Droid => Icon::DroidLogo,
             SkillProvider::OpenCode => Icon::OpenCodeLogo,
-            SkillProvider::Warp
+            SkillProvider::Cognix
             | SkillProvider::Agents
             | SkillProvider::Cursor
             | SkillProvider::Copilot
-            | SkillProvider::Github => Icon::WarpLogoLight,
+            | SkillProvider::Github => Icon::CognixLogoLight,
         }
     }
 
@@ -109,8 +109,8 @@ pub static SKILL_PROVIDER_DEFINITIONS: LazyLock<Vec<SkillProviderDefinition>> =
                 skills_path: PathBuf::from(".agents").join("skills"),
             },
             SkillProviderDefinition {
-                provider: SkillProvider::Warp,
-                skills_path: PathBuf::from(".warp").join("skills"),
+                provider: SkillProvider::Cognix,
+                skills_path: PathBuf::from(".cognix").join("skills"),
             },
             SkillProviderDefinition {
                 provider: SkillProvider::Claude,
@@ -158,8 +158,8 @@ pub fn provider_rank(provider: SkillProvider) -> usize {
 }
 
 pub fn home_skills_path(provider: SkillProvider) -> Option<PathBuf> {
-    if provider == SkillProvider::Warp {
-        return warp_core::paths::warp_home_skills_dir();
+    if provider == SkillProvider::Cognix {
+        return cognix_core::paths::cognix_home_skills_dir();
     }
     let definition = SKILL_PROVIDER_DEFINITIONS
         .iter()
@@ -217,22 +217,22 @@ mod tests {
     };
 
     #[test]
-    fn warp_home_skills_path_uses_warp_home_path() {
+    fn cognix_home_skills_path_uses_cognix_home_path() {
         assert_eq!(
-            home_skills_path(SkillProvider::Warp),
-            warp_core::paths::warp_home_skills_dir()
+            home_skills_path(SkillProvider::Cognix),
+            cognix_core::paths::cognix_home_skills_dir()
         );
     }
 
     #[test]
-    fn warp_home_skill_path_is_home_warp_skill() {
-        let Some(warp_home_skills_dir) = warp_core::paths::warp_home_skills_dir() else {
+    fn cognix_home_skill_path_is_home_cognix_skill() {
+        let Some(cognix_home_skills_dir) = cognix_core::paths::cognix_home_skills_dir() else {
             eprintln!("Skipping test: home directory not available");
             return;
         };
-        let path = warp_home_skills_dir.join("my-skill").join("SKILL.md");
+        let path = cognix_home_skills_dir.join("my-skill").join("SKILL.md");
 
-        assert_eq!(get_provider_for_path(&path), Some(SkillProvider::Warp));
+        assert_eq!(get_provider_for_path(&path), Some(SkillProvider::Cognix));
         assert_eq!(get_scope_for_path(&path), SkillScope::Home);
     }
 }

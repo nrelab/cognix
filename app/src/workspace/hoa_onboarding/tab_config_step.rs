@@ -1,12 +1,12 @@
 use std::path::Path;
 
-use warpui::elements::{
+use cognixui::elements::{
     Container, CrossAxisAlignment, Flex, MouseStateHandle, ParentElement, Text,
 };
-use warpui::fonts::{Properties, Weight};
-use warpui::geometry::vector::Vector2F;
-use warpui::Element;
-use warpui::EventContext;
+use cognixui::fonts::{Properties, Weight};
+use cognixui::geometry::vector::Vector2F;
+use cognixui::Element;
+use cognixui::EventContext;
 
 use crate::appearance::Appearance;
 use crate::tab_configs::session_config::SessionType;

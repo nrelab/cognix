@@ -8,16 +8,16 @@ pub mod browser_url_handler;
 use crate::ai::active_agent_views_model::{ActiveAgentViewsModel, ConversationOrTaskId};
 use crate::ai::agent::api::ServerConversationToken;
 use crate::auth::AuthStateProvider;
-use crate::drive::OpenWarpDriveObjectSettings;
+use crate::drive::OpenCognixDriveObjectSettings;
 use crate::launch_configs::launch_config::LaunchConfig;
 use crate::linear::{LinearAction, LinearIssueWork};
 use crate::root_view::{open_new_window_get_handles, OpenLaunchConfigArg};
 use crate::server::ids::ServerId;
 use crate::server::telemetry::{LaunchConfigUiLocation, TelemetryEvent};
-use crate::util::openable_file_type::{is_file_openable_in_warp, is_markdown_file};
+use crate::util::openable_file_type::{is_file_openable_in_cognix, is_markdown_file};
 use crate::workspace::{Workspace, WorkspaceAction, WorkspaceRegistry};
 use crate::{cloud_object::ObjectType, workspace::ToastStack};
-use crate::{drive::OpenWarpDriveObjectArgs, view_components::DismissibleToast};
+use crate::{drive::OpenCognixDriveObjectArgs, view_components::DismissibleToast};
 use crate::{features::FeatureFlag, workspace::active_terminal_in_window};
 
 use crate::ai::ambient_agents::github_auth_notifier::GitHubAuthNotifier;
@@ -34,10 +34,10 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;
 use url::Url;
-use warpui::notification::UserNotification;
-use warpui::{platform::TerminationMode, SingletonEntity as _, TypedActionView};
+use cognixui::notification::UserNotification;
+use cognixui::{platform::TerminationMode, SingletonEntity as _, TypedActionView};
 
-use warpui::{AppContext, EntityId, ViewHandle, WindowId};
+use cognixui::{AppContext, EntityId, ViewHandle, WindowId};
 
 use self::docker::open_docker_container;
 
@@ -62,13 +62,13 @@ pub enum UriHost {
     Action,
     /// A host prefix for all actions that involve launch configurations
     Launch,
-    /// Supports joining shared sessions via a warp:// URI.
+    /// Supports joining shared sessions via a cognix:// URI.
     SharedSession,
-    /// Supports viewing AI conversations via a warp:// URI.
+    /// Supports viewing AI conversations via a cognix:// URI.
     Conversation,
     /// Supports WD object actions
     Drive,
-    /// Supports opening warp's settings panel via URI
+    /// Supports opening cognix's settings panel via URI
     Settings,
     /// A host prefix for a general-purpose home/landing page. Unlike other intent URIs, the home
     /// page behavior may change over time and vary from platform to platform.
@@ -187,7 +187,7 @@ impl UriHost {
             }
             UriHost::SharedSession => {
                 // We expect the uri to have the ID of the session to join as the last segment.
-                // e.g. warp://shared_session/{id}
+                // e.g. cognix://shared_session/{id}
                 let session_id = url
                     .path_segments()
                     .into_iter()
@@ -219,7 +219,7 @@ impl UriHost {
             }
             UriHost::Conversation => {
                 // We expect the uri to have the conversation ID as the last segment.
-                // e.g. warp://conversation/{conversation_id}
+                // e.g. cognix://conversation/{conversation_id}
                 let conversation_id: Option<ServerConversationToken> = url
                     .path_segments()
                     .into_iter()
@@ -253,7 +253,7 @@ impl UriHost {
             }
             UriHost::Drive => {
                 // We expect the uri to have the ID of the object we are trying to open and the object_type.
-                // e.g. warp://drive/{object_type}?id={UID}
+                // e.g. cognix://drive/{object_type}?id={UID}
                 // For folder links, we expect an additional query parameter primary_object_id which refers to the id object
                 // that should be opened
                 // When the user is directed here via the request access flow, we expect an additional query parameter invitee_email
@@ -281,10 +281,10 @@ impl UriHost {
                         ctx.root_view_id(window_id)
                             .map(|view_id| (window_id, view_id))
                     });
-                    let args = OpenWarpDriveObjectArgs {
+                    let args = OpenCognixDriveObjectArgs {
                         object_type,
                         server_id,
-                        settings: OpenWarpDriveObjectSettings {
+                        settings: OpenCognixDriveObjectSettings {
                             focused_folder_id,
                             invitee_email,
                         },
@@ -293,7 +293,7 @@ impl UriHost {
                     if let Some((primary_window_id, root_view_id)) = primary_window_and_view {
                         // `args` may contain user-identifiable fields
                         // (e.g. `invitee_email`), so avoid writing the full
-                        // debug representation to `warp.log` on non-dogfood
+                        // debug representation to `cognix.log` on non-dogfood
                         // release channels.
                         safe_info!(
                             safe: (
@@ -318,12 +318,12 @@ impl UriHost {
             }
             UriHost::Settings => {
                 // We support opening different settings pages through URI:
-                // - warp://settings/teams?invite={email} - opens team settings with invite modal
-                // - warp://settings/billing_and_usage - opens billing and usage settings page
-                // - warp://settings/environments - opens environments settings page
-                // - warp://settings/mcp - opens MCP servers settings page
-                // - warp://settings/platform - opens platform settings page
-                // - warp://settings/appearance - opens appearance settings page (themes, fonts, etc.)
+                // - cognix://settings/teams?invite={email} - opens team settings with invite modal
+                // - cognix://settings/billing_and_usage - opens billing and usage settings page
+                // - cognix://settings/environments - opens environments settings page
+                // - cognix://settings/mcp - opens MCP servers settings page
+                // - cognix://settings/platform - opens platform settings page
+                // - cognix://settings/appearance - opens appearance settings page (themes, fonts, etc.)
                 let settings_sub_page: Option<String> = url
                     .path_segments()
                     .into_iter()
@@ -375,7 +375,7 @@ impl UriHost {
                             }
                         }
                         "mcp" => {
-                            // warp://settings/mcp?autoinstall=<name> auto-installs a gallery MCP server.
+                            // cognix://settings/mcp?autoinstall=<name> auto-installs a gallery MCP server.
                             // The value is matched case-insensitively against gallery titles.
                             let autoinstall =
                                 query_string.get("autoinstall").map(|v| v.to_string());
@@ -921,7 +921,7 @@ impl Action {
             | Self::FocusCloudMode => W::default(),
             Self::NewTab => W::ShowPrimaryWindow(WindowActivationFallbackBehavior::Notify {
                 title: "New tab created".to_owned(),
-                description: "Go to Warp to see your new tab.".to_owned(),
+                description: "Go to Cognix to see your new tab.".to_owned(),
             }),
             Self::NewWindow => W::Nothing,
         }
@@ -933,7 +933,7 @@ impl Action {
 pub fn handle_incoming_uri(url: &Url, ctx: &mut AppContext) {
     // Non-dogfood builds must never log the full URL here: URLs routed to this
     // handler can carry secrets in their query string (for example, the
-    // Firebase `refresh_token` on `warp://auth/desktop_redirect?...`). Log
+    // Firebase `refresh_token` on `cognix://auth/desktop_redirect?...`). Log
     // only the non-sensitive components (scheme, host, path) on release
     // channels; dogfood builds retain the full URL for local debugging.
     safe_info!(
@@ -1030,19 +1030,19 @@ fn open_file(window_id: Option<WindowId>, path: PathBuf, ctx: &mut AppContext) {
         } else {
             ctx.dispatch_global_action("root_view:open_new_with_file_notebook", &path);
         }
-    } else if path.is_file() && is_file_openable_in_warp(&path).is_some() {
+    } else if path.is_file() && is_file_openable_in_cognix(&path).is_some() {
         #[cfg(feature = "local_fs")]
         {
             use crate::code::editor_management::CodeSource;
             use crate::root_view::{open_new_with_workspace_source, NewWorkspaceSource};
             use crate::util::{
                 file::external_editor::EditorSettings,
-                openable_file_type::resolve_file_target_to_open_in_warp,
+                openable_file_type::resolve_file_target_to_open_in_cognix,
             };
 
-            // Open text/code files in Warp's code editor, respecting the user's layout preference.
+            // Open text/code files in Cognix's code editor, respecting the user's layout preference.
             let editor_settings = EditorSettings::as_ref(ctx);
-            let target = resolve_file_target_to_open_in_warp(&path, editor_settings, None);
+            let target = resolve_file_target_to_open_in_cognix(&path, editor_settings, None);
 
             let window_id = if let Some((wid, _)) = primary_window_and_view {
                 wid
@@ -1329,7 +1329,7 @@ fn validate_custom_uri(url: &Url) -> Result<UriHost> {
 /// The returned string contains only the URL's scheme, host, and path — never
 /// its query string, fragment, or userinfo component. URLs that reach
 /// [`handle_incoming_uri`] can carry secrets in their query (for example, the
-/// Firebase refresh token in `warp://auth/desktop_redirect?refresh_token=...`),
+/// Firebase refresh token in `cognix://auth/desktop_redirect?refresh_token=...`),
 /// so this helper exists to give [`safe_info!`] a redacted representation that
 /// still preserves enough signal for triage.
 ///

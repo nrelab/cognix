@@ -17,16 +17,16 @@ use cfg_if::cfg_if;
 use chrono::{DateTime, Utc};
 use lazy_static::lazy_static;
 use regex::Regex;
-use warpui::platform::OperatingSystem;
-use warpui::{
+use cognixui::platform::OperatingSystem;
+use cognixui::{
     platform::keyboard::KeyCode, AppContext, Entity, ModelContext, SingletonEntity, UpdateModel,
 };
 
 use settings::{
     define_settings_group, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
-use warp_core::execution_mode::AppExecutionMode;
-use warp_core::features::FeatureFlag;
+use cognix_core::execution_mode::AppExecutionMode;
+use cognix_core::features::FeatureFlag;
 
 use serde::{de::Deserializer, Deserialize, Serialize};
 use strum::IntoEnumIterator;
@@ -215,8 +215,8 @@ impl VoiceInputToggleKey {
     /// Converts the voice input toggle key to a Keystroke representation.
     /// Since these are standalone modifier keys, we construct the Keystroke directly
     /// rather than using `parse()` (which always requires a non-modifier key to be included).
-    pub fn keystroke(&self) -> Option<warpui::keymap::Keystroke> {
-        use warpui::keymap::Keystroke;
+    pub fn keystroke(&self) -> Option<cognixui::keymap::Keystroke> {
+        use cognixui::keymap::Keystroke;
 
         let keystroke = match self {
             VoiceInputToggleKey::None => return None,
@@ -363,7 +363,7 @@ settings::macros::implement_setting_for_enum!(
     SupportedPlatforms::ALL,
     SyncToCloud::Globally(RespectUserSyncSetting::Yes),
     private: false,
-    toml_path: "agents.warp_agent.other.thinking_display_mode",
+    toml_path: "agents.cognix_agent.other.thinking_display_mode",
     description: "Controls how agent thinking traces are displayed after streaming.",
 );
 
@@ -715,7 +715,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
-        toml_path: "agents.warp_agent.is_any_ai_enabled",
+        toml_path: "agents.cognix_agent.is_any_ai_enabled",
         description: "Controls whether all AI features are enabled.",
     },
     // This field should not be referenced directly to lookup active AI enablement -- use the
@@ -726,7 +726,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::No),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.enabled",
+        toml_path: "agents.cognix_agent.active_ai.enabled",
         description: "Controls whether proactive AI features like suggestions are enabled.",
     },
     // This field should not be referenced directly to lookup autodetection enablement -- use the
@@ -737,7 +737,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.ai_auto_detection_enabled",
+        toml_path: "agents.cognix_agent.input.ai_auto_detection_enabled",
         description: "Controls whether AI automatically detects natural language input.",
     },
     // This field should not be referenced directly -- use the
@@ -751,7 +751,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.nld_in_terminal_enabled",
+        toml_path: "agents.cognix_agent.input.nld_in_terminal_enabled",
         description: "Controls whether natural language detection is enabled in the terminal input.",
     },
     autodetection_command_denylist: AICommandDenylist {
@@ -760,7 +760,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.ai_command_denylist",
+        toml_path: "agents.cognix_agent.input.ai_command_denylist",
         description: "Commands to exclude from AI natural language autodetection.",
     },
     // This field should not be referenced directly to lookup intelligent autosuggestion enablement
@@ -771,7 +771,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.intelligent_autosuggestions_enabled",
+        toml_path: "agents.cognix_agent.active_ai.intelligent_autosuggestions_enabled",
         description: "Controls whether AI-powered intelligent autosuggestions are enabled.",
     }
     // This field should not be referenced directly to lookup Prompt Suggestions
@@ -785,7 +785,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.agent_mode_query_suggestions_enabled",
+        toml_path: "agents.cognix_agent.active_ai.agent_mode_query_suggestions_enabled",
         description: "Controls whether prompt suggestions are shown in agent mode.",
     }
 
@@ -797,7 +797,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.code_suggestions_enabled",
+        toml_path: "agents.cognix_agent.active_ai.code_suggestions_enabled",
         description: "Controls whether AI code suggestions are enabled.",
     }
     // This field should not be referenced directly to lookup natural language autosuggestions
@@ -809,7 +809,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.natural_language_autosuggestions_enabled",
+        toml_path: "agents.cognix_agent.active_ai.natural_language_autosuggestions_enabled",
         description: "Controls whether ghosted text autosuggestions are shown for AI input queries.",
         feature_flag: FeatureFlag::PredictAMQueries,
     }
@@ -822,7 +822,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.shared_block_title_generation_enabled",
+        toml_path: "agents.cognix_agent.active_ai.shared_block_title_generation_enabled",
         description: "Controls whether titles are auto-generated when sharing blocks.",
     }
     // This field should not be referenced directly to lookup git operations AI autogen
@@ -833,7 +833,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.git_operations_autogen_enabled",
+        toml_path: "agents.cognix_agent.active_ai.git_operations_autogen_enabled",
         description: "Controls whether AI auto-generates commit messages and PR title/body in the code review dialogs.",
     }
     // This field should not be referenced directly to lookup Rule Suggestions
@@ -844,7 +844,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.active_ai.rule_suggestions_enabled",
+        toml_path: "agents.cognix_agent.active_ai.rule_suggestions_enabled",
         description: "Controls whether the agent suggests rules to save after responses.",
         feature_flag: FeatureFlag::SuggestedRules,
     }
@@ -1015,7 +1015,7 @@ define_settings_group!(AISettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "cloud_platform.third_party_api_keys.aws_bedrock_credentials_enabled",
-        description: "Whether Warp should use your local AWS credentials for Bedrock-enabled requests.",
+        description: "Whether Cognix should use your local AWS credentials for Bedrock-enabled requests.",
     }
     // Whether to automatically run the AWS login command when Bedrock credentials are expired.
     //
@@ -1070,15 +1070,15 @@ define_settings_group!(AISettings, settings: [
         toml_path: "agents.knowledge.rules_enabled",
         description: "Whether the agent uses your saved rules during requests.",
     }
-    // Whether warp drive context should be included in AI requests
-    warp_drive_context_enabled: WarpDriveContextEnabled {
+    // Whether cognix drive context should be included in AI requests
+    cognix_drive_context_enabled: CognixDriveContextEnabled {
         type: bool,
         default: true,
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.knowledge.warp_drive_context_enabled",
-        description: "Whether Warp Drive context is included in AI requests.",
+        toml_path: "agents.knowledge.cognix_drive_context_enabled",
+        description: "Whether Cognix Drive context is included in AI requests.",
     }
 
     // Whether the codebase speedbump banner has been permanently dismissed for a given repo path.
@@ -1188,20 +1188,20 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.should_show_oz_updates_in_zero_state",
+        toml_path: "agents.cognix_agent.other.should_show_oz_updates_in_zero_state",
         description: "Whether the \"What's new\" section is shown in the agent view.",
     }
 
-    // Whether or not the user has enabled the ability to use Warp credits even when providing
+    // Whether or not the user has enabled the ability to use Cognix credits even when providing
     // their own LLM provider API key.
-    can_use_warp_credits_with_byok: CanUseWarpCreditsWithByok {
+    can_use_cognix_credits_with_byok: CanUseCognixCreditsWithByok {
         type: bool,
         default: false,
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "cloud_platform.third_party_api_keys.can_use_warp_credits_with_byok",
-        description: "Whether Warp credits can be used even when providing your own API key.",
+        toml_path: "cloud_platform.third_party_api_keys.can_use_cognix_credits_with_byok",
+        description: "Whether Cognix credits can be used even when providing your own API key.",
     }
 
     should_render_use_agent_footer_for_user_commands: ShouldRenderUseAgentToolbarForUserCommands {
@@ -1210,7 +1210,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.should_render_use_agent_toolbar_for_user_commands",
+        toml_path: "agents.cognix_agent.other.should_render_use_agent_toolbar_for_user_commands",
         description: "Whether to show the \"Use Agent\" footer for terminal commands.",
     }
 
@@ -1345,15 +1345,15 @@ define_settings_group!(AISettings, settings: [
         toml_path: "general.default_tab_config_path",
     }
 
-    // Whether computer use is enabled for cloud agent conversations started from the Warp app.
+    // Whether computer use is enabled for cloud agent conversations started from the Cognix app.
     // This setting is only used when the AI autonomy setting is AlwaysAsk or not set.
     cloud_agent_computer_use_enabled: CloudAgentComputerUseEnabled {
         type: bool,
-        default: warp_core::channel::ChannelState::channel().is_dogfood(),
+        default: cognix_core::channel::ChannelState::channel().is_dogfood(),
         supported_platforms: SupportedPlatforms::DESKTOP,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.cloud_agent_computer_use_enabled",
+        toml_path: "agents.cognix_agent.other.cloud_agent_computer_use_enabled",
         description: "Whether computer use is enabled for cloud agent conversations.",
     }
 
@@ -1367,13 +1367,13 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::DESKTOP,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.orchestration_enabled",
+        toml_path: "agents.cognix_agent.other.orchestration_enabled",
         description: "Whether multi-agent orchestration is enabled.",
         feature_flag: FeatureFlag::Orchestration,
     }
 
     // Whether file-based MCP servers from third-party AI tools (e.g. Claude, Codex) should
-    // be automatically detected and spawned. Warp-native config files (.warp/.mcp.json) are
+    // be automatically detected and spawned. Cognix-native config files (.cognix/.mcp.json) are
     // always detected and spawned, regardless of this setting.
     file_based_mcp_enabled: FileBasedMcpEnabled {
         type: bool,
@@ -1397,7 +1397,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.include_agent_commands_in_history",
+        toml_path: "agents.cognix_agent.input.include_agent_commands_in_history",
         description: "Whether agent-executed commands are included in command history.",
     }
 
@@ -1408,7 +1408,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.show_conversation_history",
+        toml_path: "agents.cognix_agent.other.show_conversation_history",
         description: "Whether conversation history appears in the tools panel.",
     }
 
@@ -1420,7 +1420,7 @@ define_settings_group!(AISettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.other.show_agent_notifications",
+        toml_path: "agents.cognix_agent.other.show_agent_notifications",
         description: "Whether agent notifications are shown.",
     }
 
@@ -1534,48 +1534,48 @@ impl AISettings {
             return None;
         }
         let path = std::path::Path::new(path_str);
-        crate::user_config::WarpConfig::as_ref(app)
+        crate::user_config::CognixConfig::as_ref(app)
             .tab_configs()
             .iter()
             .find(|config| config.source_path.as_deref().is_some_and(|p| p == path))
             .cloned()
     }
 
-    pub fn is_active_ai_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_active_ai_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_any_ai_enabled(app)
             && *self.is_active_ai_enabled_internal
             && AppExecutionMode::as_ref(app).allows_active_ai()
     }
 
-    pub fn is_prompt_suggestions_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_prompt_suggestions_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.prompt_suggestions_enabled_internal
     }
 
-    pub fn is_rule_suggestions_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_rule_suggestions_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.rule_suggestions_enabled_internal
     }
 
-    pub fn is_code_suggestions_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_code_suggestions_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.code_suggestions_enabled_internal
     }
 
-    pub fn is_natural_language_autosuggestions_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_natural_language_autosuggestions_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.natural_language_autosuggestions_enabled_internal
     }
 
-    pub fn is_shared_block_title_generation_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_shared_block_title_generation_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.shared_block_title_generation_enabled_internal
     }
 
-    pub fn is_git_operations_autogen_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_git_operations_autogen_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.git_operations_autogen_enabled_internal
     }
 
-    pub fn is_intelligent_autosuggestions_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_intelligent_autosuggestions_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_active_ai_enabled(app) && *self.intelligent_autosuggestions_enabled_internal
     }
 
-    pub fn is_voice_input_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_voice_input_enabled(&self, app: &cognixui::AppContext) -> bool {
         // Voice input is conditionally-compiled because it requires additional dependencies on some platforms.
         cfg!(feature = "voice_input")
             && self.is_any_ai_enabled(app)
@@ -1586,7 +1586,7 @@ impl AISettings {
     ///
     /// If `FeatureFlag::AgentView` is enabled, this specifically gates NLD enablement in the agent
     /// view only.
-    pub fn is_ai_autodetection_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_ai_autodetection_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_any_ai_enabled(app) && *self.ai_autodetection_enabled_internal
     }
 
@@ -1595,19 +1595,19 @@ impl AISettings {
     /// This is only used when `FeatureFlag::AgentView` is enabled.
     /// If the user has not explicitly set this setting, it defaults to the value of
     /// `ai_autodetection_enabled_internal`.
-    pub fn is_nld_in_terminal_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_nld_in_terminal_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_any_ai_enabled(app) && *self.nld_in_terminal_enabled_internal
     }
 
-    pub fn is_memory_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_memory_enabled(&self, app: &cognixui::AppContext) -> bool {
         self.is_any_ai_enabled(app) && *self.memory_enabled
     }
 
-    pub fn is_warp_drive_context_enabled(&self, app: &warpui::AppContext) -> bool {
-        self.is_any_ai_enabled(app) && *self.warp_drive_context_enabled
+    pub fn is_cognix_drive_context_enabled(&self, app: &cognixui::AppContext) -> bool {
+        self.is_any_ai_enabled(app) && *self.cognix_drive_context_enabled
     }
 
-    pub fn is_file_based_mcp_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_file_based_mcp_enabled(&self, app: &cognixui::AppContext) -> bool {
         if !FeatureFlag::FileBasedMcp.is_enabled() || !self.is_any_ai_enabled(app) {
             return false;
         }
@@ -1622,7 +1622,7 @@ impl AISettings {
         *self.file_based_mcp_enabled
     }
 
-    pub fn is_orchestration_enabled(&self, app: &warpui::AppContext) -> bool {
+    pub fn is_orchestration_enabled(&self, app: &cognixui::AppContext) -> bool {
         FeatureFlag::Orchestration.is_enabled()
             && self.is_any_ai_enabled(app)
             && *self.orchestration_enabled

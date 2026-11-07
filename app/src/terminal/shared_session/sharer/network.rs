@@ -31,14 +31,14 @@ use session_sharing_protocol::sharer::{
 };
 use session_sharing_protocol::sharer::{FailedToInitializeSessionReason, SessionEndedReason};
 use std::collections::HashMap;
-use warp_core::features::FeatureFlag;
+use cognix_core::features::FeatureFlag;
 
 use std::pin::pin;
 use std::sync::Arc;
 use std::time::Duration;
 
-use warpui::r#async::Timer;
-use warpui::{Entity, ModelContext, ModelHandle, RequestState, RetryOption, SingletonEntity};
+use cognixui::r#async::Timer;
+use cognixui::{Entity, ModelContext, ModelHandle, RequestState, RetryOption, SingletonEntity};
 use websocket::{Message, Sink, Stream, WebSocket, WebsocketMessage as _};
 
 use crate::editor::CrdtOperation;
@@ -225,7 +225,7 @@ impl Network {
         active_prompt: ActivePrompt,
         selection: Selection,
         input_replica_id: ReplicaId,
-        terminal_view_id: warpui::EntityId,
+        terminal_view_id: cognixui::EntityId,
         universal_developer_input_context: UniversalDeveloperInputContext,
         lifetime: Lifetime,
         source_type: SessionSourceType,
@@ -586,7 +586,7 @@ impl Network {
         window_size: WindowSize,
         init_block_id: BlockId,
         input_replica_id: ReplicaId,
-        terminal_view_id: warpui::EntityId,
+        terminal_view_id: cognixui::EntityId,
         universal_developer_input_context: UniversalDeveloperInputContext,
         lifetime: Lifetime,
         source_type: SessionSourceType,
@@ -1174,7 +1174,7 @@ impl Network {
 
     /// Stores the event if it's an OrderedTerminalEvent, and sends the message to the server if we're connected.
     /// If we're not connected, the event will be flushed to the server once we've connected.
-    /// TODO(roland): non OrderedTerminalEvents (like warp prompt) can be dropped if we're not connected. For non OrderedTerminalEvents,
+    /// TODO(roland): non OrderedTerminalEvents (like cognix prompt) can be dropped if we're not connected. For non OrderedTerminalEvents,
     /// we only need the latest value and can drop old values. We can send the latest value of needed events as part of reconnection.
     fn send_message_to_server(&mut self, message: UpstreamMessage) {
         if let UpstreamMessage::OrderedTerminalEvent(event) = &message {
@@ -1281,7 +1281,7 @@ pub fn failed_to_add_guests_user_error(reason: &FailedToAddGuestsReason) -> Stri
     match reason {
         FailedToAddGuestsReason::Invalid => "Something went wrong. Please try again.",
         FailedToAddGuestsReason::NotWarpUsers => {
-            "One or more emails were not associated with Warp accounts."
+            "One or more emails were not associated with Cognix accounts."
         }
         FailedToAddGuestsReason::GuestAlreadyAdded => {
             "One or more emails have already been added to the session."

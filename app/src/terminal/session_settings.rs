@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 pub use startup_shell::*;
 pub use working_directory_config::*;
 
-use warp_core::settings::{
+use cognix_core::settings::{
     macros::define_settings_group, RespectUserSyncSetting, SupportedPlatforms, SyncToCloud,
 };
 
@@ -60,7 +60,7 @@ pub enum NotificationsMode {
  * Added [serde(default)] to ensure that new notification settings are backwards compatible with old clients.
  * Otherwise, clients will fail to deserialize existing settings after updating.
  *
- * @see https://github.com/warpdotdev/warp-internal/pull/14596/files#diff-90221c7ecae01c6faf8f170158dea3e49d34d40225a306da42ccc76489d1f84cR43-R44
+ * @see https://github.com/nrelab/cognix-internal/pull/14596/files#diff-90221c7ecae01c6faf8f170158dea3e49d34d40225a306da42ccc76489d1f84cR43-R44
  *
  * Alternative considered: Using Option<bool> fields would have required more
  * complex defaulting logic to set the default value to true.
@@ -285,7 +285,7 @@ define_settings_group!(SessionSettings, settings: [
         sync_to_cloud: SyncToCloud::Never,
         private: false,
         toml_path: "session.startup_shell_override",
-        description: "The shell to use when Warp starts up.",
+        description: "The shell to use when Cognix starts up.",
     },
     new_session_shell_override: NewSessionShellOverride {
         type: Option<NewSessionShell>,
@@ -303,7 +303,7 @@ define_settings_group!(SessionSettings, settings: [
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
         toml_path: "terminal.input.honor_ps1",
-        description: "Whether to use your shell's PS1 prompt instead of the Warp prompt.",
+        description: "Whether to use your shell's PS1 prompt instead of the Cognix prompt.",
     },
     saved_prompt: SavedPrompt {
         type: PromptSelection,
@@ -366,7 +366,7 @@ define_settings_group!(SessionSettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.show_model_selectors_in_prompt",
+        toml_path: "agents.cognix_agent.input.show_model_selectors_in_prompt",
         description: "Whether to show AI model selectors in the input prompt.",
     },
     agent_footer_chip_selection: AgentToolbarChipSelectionSetting {
@@ -375,7 +375,7 @@ define_settings_group!(SessionSettings, settings: [
         supported_platforms: SupportedPlatforms::ALL,
         sync_to_cloud: SyncToCloud::Globally(RespectUserSyncSetting::Yes),
         private: false,
-        toml_path: "agents.warp_agent.input.agent_toolbar_chip_selection_setting",
+        toml_path: "agents.cognix_agent.input.agent_toolbar_chip_selection_setting",
         description: "Controls the layout of context chips in the Agent Mode toolbar.",
     },
     cli_agent_footer_chip_selection: CLIAgentToolbarChipSelectionSetting {
