@@ -450,8 +450,8 @@ impl Input {
                 #[cfg(feature = "local_fs")]
                 match argument {
                     Some(args) if !args.is_empty() => {
-                        use shellexpand::tilde;
                         use cognix_util::path::CleanPathResult;
+                        use shellexpand::tilde;
 
                         let Some(session_id) = self.active_block_session_id() else {
                             return false;

@@ -346,7 +346,8 @@ where
         appearance: &Appearance,
         object: &GenericCloudObject<GenericStringObjectId, Self>,
     ) -> Option<Box<dyn CognixDriveItem>> {
-        self.string_model.to_cognix_drive_item(id, appearance, object)
+        self.string_model
+            .to_cognix_drive_item(id, appearance, object)
     }
 }
 

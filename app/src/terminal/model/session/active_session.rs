@@ -1,5 +1,5 @@
-use std::sync::Arc;
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
+use std::sync::Arc;
 
 use crate::{
     ai_assistant::execution_context::CognixAiExecutionContext,
@@ -86,7 +86,9 @@ impl ActiveSession {
 
     /// Returns the `CognixAiExecutionContext` for the active session.
     pub fn ai_execution_environment(&self, app: &AppContext) -> Option<CognixAiExecutionContext> {
-        self.session(app).as_ref().map(CognixAiExecutionContext::new)
+        self.session(app)
+            .as_ref()
+            .map(CognixAiExecutionContext::new)
     }
 }
 

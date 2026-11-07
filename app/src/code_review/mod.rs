@@ -21,12 +21,12 @@ pub(crate) mod diff_selector;
 pub(crate) mod file_invalidation_queue;
 
 use code_review_view::CodeReviewAction;
-use std::path::{Path, PathBuf};
 use cognixui::{
     id,
     keymap::{EditableBinding, FixedBinding},
     AppContext, Entity, EntityId, ModelContext, SingletonEntity, WeakViewHandle, WindowId,
 };
+use std::path::{Path, PathBuf};
 
 use crate::code_review::telemetry_event::CodeReviewPaneEntrypoint;
 use crate::terminal::{view::TerminalView, CLIAgent};

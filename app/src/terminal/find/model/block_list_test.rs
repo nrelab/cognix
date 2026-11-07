@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-use itertools::Itertools;
 use cognixui::App;
+use itertools::Itertools;
 
 use crate::terminal::{
     block_filter::BlockFilterQuery,

@@ -7,8 +7,8 @@ use crate::terminal::{
     color::{self, Colors},
     event_listener::ChannelEventListener,
 };
-use std::{path::PathBuf, sync::Arc};
 use cognixui::r#async::executor::Background;
+use std::{path::PathBuf, sync::Arc};
 
 fn terminal_with_startup_path(startup_path: Option<&str>) -> TerminalModel {
     TerminalModel::new_for_test(

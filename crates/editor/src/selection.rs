@@ -1,7 +1,7 @@
+use cognixui::{AppContext, Entity, ModelAsRef, ModelContext, ModelHandle, units::Pixels};
 use num_traits::SaturatingSub;
 use std::ops::Range;
 use vec1::Vec1;
-use cognixui::{AppContext, Entity, ModelAsRef, ModelContext, ModelHandle, units::Pixels};
 
 use crate::{
     content::{
@@ -15,8 +15,8 @@ use crate::{
     },
     render::model::{RenderState, SoftWrapPoint},
 };
-use string_offset::CharOffset;
 use cognixui::text::{TextBuffer, point::Point, word_boundaries::WordBoundariesPolicy};
+use string_offset::CharOffset;
 
 #[cfg(test)]
 #[path = "selection_tests.rs"]

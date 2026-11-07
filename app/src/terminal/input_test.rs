@@ -17,12 +17,12 @@ use crate::auth::auth_manager::AuthManager;
 use crate::auth::AuthStateProvider;
 use crate::changelog_model::ChangelogModel;
 use crate::cloud_object::model::persistence::CloudModel;
+use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use crate::pricing::PricingInfoModel;
 use crate::search::files::model::FileSearchModel;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::terminal::input::slash_command_model::SlashCommandEntryState;
 use crate::terminal::input::slash_commands::SlashCommandsEvent;
-use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::watcher::DirectoryWatcher;
 use repo_metadata::RepoMetadataModel;
@@ -71,21 +71,21 @@ use crate::{
     terminal::TerminalView,
 };
 use crate::{experiments, AgentNotificationsModel};
-use fuzzy_match::FuzzyMatchResult;
-use session_sharing_protocol::common::Role;
-use smol_str::SmolStr;
 use cognix_completer::completer::{
     EngineFileType, Match, MatchStrategy, MatchedSuggestion, Priority, Suggestion,
     SuggestionResults, SuggestionType,
 };
 use cognix_completer::meta::Span;
+use fuzzy_match::FuzzyMatchResult;
+use session_sharing_protocol::common::Role;
+use smol_str::SmolStr;
 
 use unindent::Unindent;
 
-#[cfg(feature = "voice_input")]
-use voice_input::VoiceInputToggledFrom;
 use cognixui::platform::WindowStyle;
 use cognixui::{App, ReadModel, UpdateView};
+#[cfg(feature = "voice_input")]
+use voice_input::VoiceInputToggledFrom;
 
 use crate::terminal::universal_developer_input::UniversalDeveloperInputButtonBarEvent;
 

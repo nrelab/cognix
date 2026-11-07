@@ -19,8 +19,6 @@ use crate::{
     util::time_format::format_approx_duration_from_now_utc,
 };
 use chrono::{DateTime, Utc};
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use std::collections::HashMap;
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     elements::{
@@ -35,6 +33,8 @@ use cognixui::{
     },
     AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use std::collections::HashMap;
 
 const MODAL_WIDTH: f32 = 460.;
 const MODAL_HEIGHT: f32 = 320.;

@@ -1,4 +1,8 @@
 use chrono::{DateTime, Utc};
+use cognix_graphql::scalars::time::ServerTimestamp;
+use cognixui::{
+    r#async::FutureId, Entity, ModelContext, RequestState, RetryOption, SingletonEntity,
+};
 use derivative::Derivative;
 use http::StatusCode;
 use std::borrow::Cow;
@@ -7,8 +11,6 @@ use std::{
     sync::Arc,
     time::Duration,
 };
-use cognix_graphql::scalars::time::ServerTimestamp;
-use cognixui::{r#async::FutureId, Entity, ModelContext, RequestState, RetryOption, SingletonEntity};
 
 use lazy_static::lazy_static;
 use uuid::Uuid;

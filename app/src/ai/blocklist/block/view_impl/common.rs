@@ -11,11 +11,6 @@ use std::path::Path;
 #[cfg(feature = "local_fs")]
 use std::path::PathBuf;
 
-use itertools::Itertools;
-use markdown_parser::{FormattedText, FormattedTextInline, TableAlignment};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use std::sync::Arc;
 use cognix_core::{
     features::FeatureFlag,
     ui::{appearance::Appearance, color::blend::Blend, theme::color::internal_colors},
@@ -43,6 +38,11 @@ use cognixui::{
     },
     Action, AppContext, Element, EventContext, SingletonEntity, View, ViewHandle,
 };
+use itertools::Itertools;
+use markdown_parser::{FormattedText, FormattedTextInline, TableAlignment};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use std::sync::Arc;
 
 use super::{add_highlights_to_rich_text, add_highlights_to_text, output::LinkActionConstructors};
 use crate::ai::agent::MessageId;

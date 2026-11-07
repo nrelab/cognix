@@ -5,10 +5,10 @@ use crate::search::command_palette::navigation::DataSource;
 use crate::search::data_source::QueryResult;
 use crate::search::SyncDataSource;
 use crate::session_management::{CommandContext, SessionNavigationData, SessionSource};
+use cognixui::{AppContext, ModelHandle};
 use fuzzy_match::match_indices_case_insensitive;
 use itertools::Itertools;
 use std::ops::Range;
-use cognixui::{AppContext, ModelHandle};
 
 /// A session that was fuzzy matched against a search term.
 pub struct MatchedSession {
@@ -252,9 +252,9 @@ mod full_text_searcher {
     use crate::search::data_source::QueryResult;
     use crate::search::searcher::{DEFAULT_MEMORY_BUDGET, SCORE_CONVERSION_FACTOR};
     use crate::session_management::{SessionNavigationData, SessionSource};
+    use cognixui::{AppContext, ModelHandle};
     use itertools::Itertools;
     use std::collections::HashMap;
-    use cognixui::{AppContext, ModelHandle};
 
     define_search_schema!(
         schema_name: SESSION_SEARCH_SCHEMA,

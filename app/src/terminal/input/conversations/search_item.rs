@@ -1,7 +1,5 @@
 //! SearchItem implementation for conversation menu items.
 
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::color::coloru_with_opacity;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::Icon;
@@ -11,6 +9,8 @@ use cognixui::prelude::{Align, CrossAxisAlignment, Flex, MainAxisAlignment, Main
 use cognixui::scene::{CornerRadius, Radius};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::ai::active_agent_views_model::{ActiveAgentViewsModel, ConversationOrTaskId};
 use crate::ai::agent::conversation::ConversationStatus;

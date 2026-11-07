@@ -5,9 +5,9 @@ use std::{
 
 use crate::ai::skills::SkillOpenOrigin;
 use ai::skills::SkillReference;
-use serde::{Deserialize, Serialize};
 use cognix_util::path::LineAndColumnArg;
 use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity, ViewHandle, WindowId};
+use serde::{Deserialize, Serialize};
 
 use crate::{
     ai::agent::AIAgentActionId,

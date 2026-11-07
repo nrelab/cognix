@@ -9,27 +9,27 @@ use super::frame_capture::capture_frame;
 use crate::platform::mac::rendering::renderer::Device;
 use crate::platform::mac::window::WindowState;
 use cocoa::base::id;
+use cognixui_core::platform::CapturedFrame;
 use metal::{
     Function, MTLBlendFactor, MTLBlendOperation, MTLIndexType, MTLPrimitiveType,
     MTLResourceOptions, RenderPipelineDescriptor,
 };
 use objc::{msg_send, sel, sel_impl};
-use cognixui_core::platform::CapturedFrame;
 
+use cognixui_core::fonts::{canvas, RasterizedGlyph};
+use cognixui_core::scene::{CornerRadius, GlyphFade, Icon, Image, Layer, Scene};
 use pathfinder_color::{ColorF, ColorU};
 use pathfinder_geometry::{
     rect::RectF,
     vector::{vec2f, Vector2F},
 };
-use cognixui_core::fonts::{canvas, RasterizedGlyph};
-use cognixui_core::scene::{CornerRadius, GlyphFade, Icon, Image, Layer, Scene};
 
 use std::collections::HashMap;
 
+use cognixui_core::scene::GlyphKey;
 use pathfinder_geometry::rect::RectI;
 use std::{fs::File, mem, sync::Once};
 use std::{io::Write, os::raw::c_void};
-use cognixui_core::scene::GlyphKey;
 
 const METAL_LIB_BYTES: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/shaders.metallib"));
 static WRITE_LIB_TO_FILE: Once = Once::new();

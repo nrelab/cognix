@@ -1,9 +1,9 @@
 use std::ops::Range;
 
 use ai::diff_validation::DiffDelta;
-use rangemap::RangeSet;
 use cognix_editor::content::text::LineCount;
 use cognix_editor::render::model::LineCount as RenderLineCount;
+use rangemap::RangeSet;
 
 /// The number of context lines to show before and after each change
 const CONTEXT_LINES: usize = 4;

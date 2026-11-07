@@ -1,5 +1,5 @@
-use serde::Serialize;
 use cognixui::{elements::MouseStateHandle, notification::RequestPermissionsOutcome, Element};
+use serde::Serialize;
 
 use crate::{
     appearance::Appearance,

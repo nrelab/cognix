@@ -1,8 +1,8 @@
-use pathfinder_geometry::vector::vec2f;
-use string_offset::ByteOffset;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::model::CoreEditorModel;
 use cognixui::{platform::WindowStyle, App};
+use pathfinder_geometry::vector::vec2f;
+use string_offset::ByteOffset;
 
 use crate::search::files::model::FileSearchModel;
 

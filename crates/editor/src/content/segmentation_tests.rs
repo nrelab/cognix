@@ -1,7 +1,7 @@
+use cognix_core::features::FeatureFlag;
 use itertools::Itertools;
 use markdown_parser::parse_markdown;
 use string_offset::CharOffset;
-use cognix_core::features::FeatureFlag;
 
 use crate::content::{
     buffer::{Buffer, EditOrigin},

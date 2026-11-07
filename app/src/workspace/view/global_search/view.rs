@@ -8,10 +8,10 @@ use std::time::Duration;
 use crate::coding_panel_enablement_state::CodingPanelEnablementState;
 
 use async_channel::Sender;
-use pathfinder_geometry::vector::vec2f;
-use string_offset::{ByteOffset, CharCounter};
 use cognix_editor::editor::NavigationKey;
 use cognix_ripgrep::search::{Match as RipgrepMatch, Submatch};
+use pathfinder_geometry::vector::vec2f;
+use string_offset::{ByteOffset, CharCounter};
 
 use crate::code::icon_from_file_path;
 use crate::debounce::debounce;

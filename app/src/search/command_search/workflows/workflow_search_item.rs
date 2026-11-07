@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{
         Border, Clipped, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex,
@@ -10,6 +9,7 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, SingletonEntity,
 };
+use ordered_float::OrderedFloat;
 
 use crate::appearance::Appearance;
 use crate::search::command_search::searcher::{AcceptedWorkflow, CommandSearchItemAction};

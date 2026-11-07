@@ -2,6 +2,10 @@ use std::sync::Arc;
 
 use async_process::{Child, ChildStdin, ChildStdout, Stdio};
 use async_trait::async_trait;
+use cognixui::r#async::{
+    executor::{Background, BackgroundTask},
+    Timer,
+};
 use command::r#async::Command;
 use futures::lock::Mutex;
 use futures::{
@@ -10,10 +14,6 @@ use futures::{
 };
 use jsonrpc::Transport;
 use simple_logger::SimpleLogger;
-use cognixui::r#async::{
-    executor::{Background, BackgroundTask},
-    Timer,
-};
 
 /// Transport implementation for LSP communication over process stdin/stdout.
 /// Also manages the LSP server process lifecycle with graceful shutdown capabilities.

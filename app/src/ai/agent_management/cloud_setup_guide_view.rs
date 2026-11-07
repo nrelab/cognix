@@ -8,9 +8,6 @@ use crate::send_telemetry_from_ctx;
 use crate::view_components::action_button::{ActionButton, SecondaryTheme};
 use crate::workflows::workflow::{Argument, ArgumentType, Workflow};
 use crate::workflows::WorkflowType;
-use serde::Serialize;
-use std::collections::HashMap;
-use string_offset::CharCounter;
 use cognix_completer::signatures::CommandRegistry;
 use cognix_completer::{util::parse_current_commands_and_tokens, ParsedTokensSnapshot};
 use cognix_core::report_error;
@@ -28,6 +25,9 @@ use cognixui::text_layout::TextStyle;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::ViewHandle;
 use cognixui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use serde::Serialize;
+use std::collections::HashMap;
+use string_offset::CharCounter;
 
 const DOCS_URL: &str = "https://docs.cognix.dev/agent-platform/cloud-agents/overview";
 const ENV_DOCS_URL: &str =

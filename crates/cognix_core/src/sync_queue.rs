@@ -1,4 +1,5 @@
 use async_broadcast::{InactiveReceiver, Sender as BroadcastSender};
+use cognixui::r#async::executor::Background;
 use futures::channel::mpsc::{self, Receiver as MpscReceiver, Sender as MpscSender};
 use futures::channel::oneshot::{self, Receiver, Sender};
 use futures::future::{AbortHandle, Abortable};
@@ -9,7 +10,6 @@ use std::future::Future;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
-use cognixui::r#async::executor::Background;
 
 use anyhow::Result;
 use cognixui::{r#async::Timer, Entity, RetryOption, SingletonEntity};

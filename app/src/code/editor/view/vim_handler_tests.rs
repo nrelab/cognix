@@ -13,9 +13,6 @@ use crate::{
     workspace::sync_inputs::SyncedInputState,
     workspaces::user_workspaces::UserWorkspaces,
 };
-use std::sync::Arc;
-use unindent::Unindent;
-use vim::vim::{MotionType, VimMode};
 use cognix_core::{features::FeatureFlag, settings::Setting, ui::appearance::Appearance};
 use cognix_editor::model::CoreEditorModel;
 use cognix_editor::{
@@ -28,6 +25,9 @@ use cognixui::{
     keymap::Keystroke, platform::WindowStyle, App, SingletonEntity, TypedActionView, UpdateModel,
     ViewHandle,
 };
+use std::sync::Arc;
+use unindent::Unindent;
+use vim::vim::{MotionType, VimMode};
 
 // Await render/layout completion for a CodeEditorView in tests.
 async fn layout_editor_view(app: &mut App, editor: &ViewHandle<CodeEditorView>) {

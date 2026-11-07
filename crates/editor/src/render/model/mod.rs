@@ -11,16 +11,6 @@ use std::{
 use parking_lot::Mutex;
 use rangemap::RangeSet;
 
-use float_cmp::ApproxEq;
-use itertools::Itertools;
-use markdown_parser::TableAlignment;
-use num_traits::SaturatingSub;
-use ordered_float::OrderedFloat;
-use serde::{Deserialize, Serialize};
-use serde_yaml::Mapping;
-use sum_tree::{SeekBias, SumTree};
-use vec1::Vec1;
-use vim::vim::{MotionType, VimMode};
 use cognix_core::{
     channel::ChannelState,
     ui::{Icon, theme::Fill as ThemeFill},
@@ -44,6 +34,16 @@ use cognixui::{
     },
     units::{IntoPixels, Pixels},
 };
+use float_cmp::ApproxEq;
+use itertools::Itertools;
+use markdown_parser::TableAlignment;
+use num_traits::SaturatingSub;
+use ordered_float::OrderedFloat;
+use serde::{Deserialize, Serialize};
+use serde_yaml::Mapping;
+use sum_tree::{SeekBias, SumTree};
+use vec1::Vec1;
+use vim::vim::{MotionType, VimMode};
 
 pub use self::location::{HitTestOptions, Location};
 pub use self::offset_map::{OffsetMap, SelectableTextRun};
@@ -68,8 +68,8 @@ use crate::{
     editor::EmbeddedItemModel,
     render::model::debug::Describe,
 };
-use string_offset::{CharOffset, impl_offset};
 use cognixui::elements::ListIndentLevel;
+use string_offset::{CharOffset, impl_offset};
 
 use super::{
     BLOCK_FOOTER_HEIGHT,

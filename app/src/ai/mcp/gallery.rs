@@ -6,8 +6,8 @@ use crate::ai::mcp::templatable::{
 use crate::server::cloud_objects::update_manager::{UpdateManager, UpdateManagerEvent};
 use crate::server::datetime_ext::DateTimeExt;
 use chrono::DateTime;
-use uuid::Uuid;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use uuid::Uuid;
 
 #[derive(Clone, Debug)]
 pub struct GalleryMCPServer {

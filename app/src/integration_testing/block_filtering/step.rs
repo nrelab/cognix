@@ -5,10 +5,10 @@ use crate::integration_testing::terminal::execute_long_running_command;
 use crate::integration_testing::terminal::util::ExpectedExitStatus;
 use crate::integration_testing::view_getters::single_terminal_view_for_tab;
 use crate::terminal::model::terminal_model::BlockIndex;
-use std::time::Duration;
 use cognixui::integration::AssertionCallback;
 use cognixui::integration::TestStep;
 use cognixui::{async_assert, async_assert_eq};
+use std::time::Duration;
 
 /// This test case covers the creates the following output grid:
 /// -----------

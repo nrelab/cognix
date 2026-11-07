@@ -1,4 +1,3 @@
-use std::sync::Arc;
 use cognixui::elements::{Border, DispatchEventResult, DropShadow, Fill as ElementFill};
 use cognixui::{
     elements::{
@@ -9,6 +8,7 @@ use cognixui::{
     platform::Cursor,
     Action, AppContext, Element, EventContext, SingletonEntity,
 };
+use std::sync::Arc;
 
 use crate::search::item::IconLocation;
 use crate::{appearance::Appearance, themes::theme::Fill};

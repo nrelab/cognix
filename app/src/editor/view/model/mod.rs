@@ -26,9 +26,6 @@ use std::{
     rc::Rc,
 };
 
-use num_traits::SaturatingSub;
-use string_offset::{ByteOffset, CharOffset};
-use vec1::{vec1, Vec1};
 use cognixui::{
     accessibility::{AccessibilityContent, CognixA11yRole},
     text_layout::TextStyle,
@@ -38,6 +35,9 @@ use cognixui::{
     text::{point::Point, word_boundaries::WordBoundariesPolicy, TextBuffer},
     SingletonEntity,
 };
+use num_traits::SaturatingSub;
+use string_offset::{ByteOffset, CharOffset};
+use vec1::{vec1, Vec1};
 
 use crate::{editor::RangeExt, vim_registers::VimRegisters};
 

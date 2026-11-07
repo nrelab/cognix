@@ -15,8 +15,6 @@ use crate::{
 };
 use anyhow::Result;
 use chrono::{DateTime, FixedOffset, Local};
-use pathfinder_geometry::vector::vec2f;
-use std::sync::Arc;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::ui_components::button::ButtonVariant;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
@@ -35,6 +33,8 @@ use cognixui::{elements::ScrollbarWidth, fonts::Weight};
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
+use std::sync::Arc;
 
 const SCROLLBAR_WIDTH: ScrollbarWidth = ScrollbarWidth::Auto;
 

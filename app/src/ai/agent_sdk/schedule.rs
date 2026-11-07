@@ -1,7 +1,4 @@
 use chrono::{DateTime, Utc};
-use comfy_table::Cell;
-use futures::future;
-use serde::Serialize;
 use cognix_cli::schedule::{
     CreateScheduleArgs, DeleteScheduleArgs, GetScheduleArgs, PauseScheduleArgs, ScheduleCommand,
     ScheduleSubcommand, UnpauseScheduleArgs, UpdateScheduleArgs,
@@ -10,6 +7,9 @@ use cognix_cli::{agent::OutputFormat, GlobalOptions};
 use cognix_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
 use cognixui::platform::TerminationMode;
 use cognixui::{AppContext, SingletonEntity};
+use comfy_table::Cell;
+use futures::future;
+use serde::Serialize;
 
 use crate::ai::ambient_agents::scheduled::{
     CloudScheduledAmbientAgent, ScheduledAgentManager, ScheduledAmbientAgent, UpdateScheduleParams,

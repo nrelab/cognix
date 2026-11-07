@@ -1,7 +1,3 @@
-use markdown_parser::markdown_parser::RUNNABLE_BLOCK_MARKDOWN_LANG;
-use markdown_parser::CodeBlockText;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::builder::AnimatedButtonOptions;
 use cognixui::clipboard::ClipboardContent;
 use cognixui::elements::{DispatchEventResult, Stack};
@@ -22,12 +18,16 @@ use cognixui::{
     WeakViewHandle,
 };
 use cognixui::{BlurContext, FocusContext};
+use markdown_parser::markdown_parser::RUNNABLE_BLOCK_MARKDOWN_LANG;
+use markdown_parser::CodeBlockText;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{
     appearance::Appearance,
     send_telemetry_from_ctx,
-    server::telemetry::{SaveAsWorkflowModalSource, TelemetryEvent, CognixAIActionType},
+    server::telemetry::{CognixAIActionType, SaveAsWorkflowModalSource, TelemetryEvent},
     ui_components::blended_colors,
 };
 

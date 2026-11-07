@@ -1,6 +1,3 @@
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use settings::Setting;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::color::blend::Blend;
 use cognix_core::ui::theme::Fill;
@@ -12,6 +9,9 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use settings::Setting;
 
 use std::sync::Arc;
 

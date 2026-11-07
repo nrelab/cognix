@@ -15,7 +15,7 @@ use crate::{
     send_telemetry_from_ctx,
     server::{
         server_api::{ai::AIClient, ServerApi},
-        telemetry::{TelemetryEvent, CognixAIRequestResult},
+        telemetry::{CognixAIRequestResult, TelemetryEvent},
     },
     workspaces::user_workspaces::UserWorkspaces,
 };

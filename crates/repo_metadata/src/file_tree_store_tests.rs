@@ -1,7 +1,7 @@
 use crate::entry::{DirectoryEntry, Entry, FileId, FileMetadata};
 use crate::file_tree_store::{FileTreeEntry, FileTreeEntryState};
-use std::sync::Arc;
 use cognix_util::standardized_path::StandardizedPath;
+use std::sync::Arc;
 
 fn std_path(s: &str) -> StandardizedPath {
     StandardizedPath::try_new(s).expect("test path should be valid")

@@ -2,11 +2,11 @@
 //! app -- for example, the payloads sent from shell precmd and preexec.
 use crate::terminal::model::block::BlockId;
 use crate::terminal::model::session::SessionId;
+use cognix_core::command::ExitCode;
 use ordered_float::OrderedFloat;
 use serde::{Deserialize, Deserializer, Serialize};
 use std::collections::HashSet;
 use std::path::PathBuf;
-use cognix_core::command::ExitCode;
 
 /// Indicates that the following JSON-encoded message is hex-encoded for Cognix's lifecycle hooks.
 /// In DCS, it is used as the final char in the DCS start sequence.

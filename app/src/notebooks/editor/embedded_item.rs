@@ -1,11 +1,5 @@
 use std::{collections::HashMap, ops::Range, sync::Arc};
 
-use itertools::Itertools;
-use markdown_parser::html_parser::COGNIX_EMBED_ATTRIBUTE_NAME;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use serde_yaml::Mapping;
-use string_offset::ByteOffset;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::{
     content::{markdown::MarkdownStyle, text::TextStylesWithMetadata},
@@ -32,6 +26,12 @@ use cognixui::{
     units::{IntoPixels, Pixels},
     AppContext, Element, LayoutContext, SizeConstraint,
 };
+use itertools::Itertools;
+use markdown_parser::html_parser::COGNIX_EMBED_ATTRIBUTE_NAME;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use serde_yaml::Mapping;
+use string_offset::ByteOffset;
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, CloudObject},
@@ -616,7 +616,9 @@ impl RenderableBlock for RenderableEmbeddedWorkflow {
             );
         }
 
-        ctx.paint.scene.start_layer(cognixui::ClipBounds::ActiveLayer);
+        ctx.paint
+            .scene
+            .start_layer(cognixui::ClipBounds::ActiveLayer);
 
         // Position the block footer right below the content area, flush with its right-hand edge.
         // This gives the footer some padding relative to the visible area with a background.

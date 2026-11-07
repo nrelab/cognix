@@ -1,6 +1,6 @@
-use pathfinder_color::ColorU;
 use cognixui::elements::Align;
 use cognixui::Element;
+use pathfinder_color::ColorU;
 
 use crate::visuals::onboarding_visual::Rect;
 

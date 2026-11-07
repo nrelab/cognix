@@ -1,6 +1,5 @@
 use crate::ui_components::blended_colors;
 use crate::{appearance::Appearance, themes::theme::Fill, ui_components::icons};
-use pathfinder_geometry::vector::vec2f;
 use cognixui::{
     color::ColorU,
     elements::{
@@ -14,6 +13,7 @@ use cognixui::{
     AppContext, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 pub const MODAL_CORNER_RADIUS: Radius = Radius::Pixels(8.);
 pub const MODAL_WIDTH: f32 = 440.;

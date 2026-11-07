@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 
 use crate::Builder;
-use settings::Setting as _;
 use cognix::{
     integration_testing::{
         self,
@@ -16,6 +15,7 @@ use cognix::{
     terminal::{input::Input, model::session::get_local_hostname, shell::ShellType},
 };
 use cognixui::{async_assert, ViewHandle};
+use settings::Setting as _;
 
 use crate::util::{get_local_user, write_histfiles_for_test};
 

@@ -4,13 +4,12 @@ use crate::ai::blocklist::inline_action::requested_action::{ENTER_KEYSTROKE, ESC
 use crate::ai::blocklist::inline_action::requested_script::{self, RequestedScriptMouseStates};
 use crate::ai::blocklist::inline_action::requested_script::{RequestedScriptStatus, TitledScript};
 use crate::appearance::Appearance;
-use crate::terminal::model::ansi::SystemDetails;
-use crate::terminal::model::escape_sequences;
 use crate::terminal::cognixify::render;
 use crate::terminal::cognixify::settings::CognixifySettings;
+use crate::terminal::model::ansi::SystemDetails;
+use crate::terminal::model::escape_sequences;
 use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon as UiIcon;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::elements::{
     FormattedTextElement, HighlightedHyperlink, Hoverable, Icon, MainAxisAlignment, MainAxisSize,
@@ -23,6 +22,7 @@ use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
 use cognixui::{BlurContext, FocusContext};
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 pub const WHY_INSTALL_TMUX_URL: &str =
     "https://docs.cognix.dev/terminal/cognixify/ssh#why-do-i-need-tmux-on-the-remote-machine";
@@ -404,8 +404,9 @@ impl View for SshInstallTmuxBlock {
         })
         .finish();
 
-        content
-            .add_child(render::apply_spacing_styles(Container::new(cognixify_description)).finish());
+        content.add_child(
+            render::apply_spacing_styles(Container::new(cognixify_description)).finish(),
+        );
 
         if let Some(root_install_state) = &self.system_install_state {
             content.add_child(self.render_system_install_ui(root_install_state, app));

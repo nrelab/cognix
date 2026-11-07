@@ -3,13 +3,13 @@ use std::ffi::OsStr;
 
 use byte_unit::Byte;
 use chrono::{DateTime, Local, Utc};
+use cognix_core::channel::ChannelState;
+use cognixui::{App, AppContext, Entity, ModelContext, SingletonEntity};
 use itertools::Itertools as _;
 use num_traits::Zero;
 use ordered_float::OrderedFloat;
 use serde::Serialize;
 use sysinfo::ProcessesToUpdate;
-use cognix_core::channel::ChannelState;
-use cognixui::{App, AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     send_telemetry_from_app_ctx, send_telemetry_sync_from_ctx, server::telemetry,

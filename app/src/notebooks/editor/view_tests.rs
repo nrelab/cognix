@@ -1,17 +1,19 @@
 use crate::features::FeatureFlag;
 use async_channel::TryRecvError;
-use std::sync::Arc;
-use string_offset::CharOffset;
 use cognix_editor::render::{
     element::RichTextAction,
     model::{HitTestBlockType, Location, RenderEvent},
 };
 use cognix_util::user_input::UserInput;
+use std::sync::Arc;
+use string_offset::CharOffset;
 
 use cognixui::event::ModifiersState;
 use cognixui::r#async::block_on;
 use cognixui::windowing::WindowManager;
-use cognixui::{platform::WindowStyle, presenter::ChildView, App, Element, Entity, View, ViewHandle};
+use cognixui::{
+    platform::WindowStyle, presenter::ChildView, App, Element, Entity, View, ViewHandle,
+};
 use cognixui::{SingletonEntity, TypedActionView, WindowId};
 
 use super::{EditorViewAction, RichTextEditorConfig, RichTextEditorView};

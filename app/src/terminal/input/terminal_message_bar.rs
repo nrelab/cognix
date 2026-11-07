@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
-use parking_lot::FairMutex;
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::elements::{Container, Element};
 use cognixui::keymap::Keystroke;
 use cognixui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
+use parking_lot::FairMutex;
+use pathfinder_color::ColorU;
 
 use super::buffer_model::InputBufferModel;
 use super::message_bar::{

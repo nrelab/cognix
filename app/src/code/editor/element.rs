@@ -9,12 +9,6 @@ use std::{
     },
 };
 
-use parking_lot::Mutex;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::{
-    rect::RectF,
-    vector::{vec2f, Vector2F},
-};
 use cognix_core::ui::{
     appearance::Appearance,
     theme::{color::internal_colors, Fill},
@@ -44,6 +38,12 @@ use cognixui::{
     units::{IntoPixels, Pixels},
     AfterLayoutContext, AppContext, ClipBounds, Element, Event, EventContext, LayoutContext,
     ModelHandle, PaintContext, SingletonEntity, SizeConstraint,
+};
+use parking_lot::Mutex;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::{
+    rect::RectF,
+    vector::{vec2f, Vector2F},
 };
 
 use super::diff::{DiffHunkDisplay, DiffStatus};

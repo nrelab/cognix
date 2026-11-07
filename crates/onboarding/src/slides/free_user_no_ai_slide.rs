@@ -3,7 +3,6 @@ use crate::model::OnboardingStateModel;
 use crate::slides::{bottom_nav, layout, slide_content};
 use crate::telemetry::OnboardingEvent;
 use crate::OnboardingIntention;
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
@@ -23,6 +22,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext,
 };
+use ui_components::{button, Component as _, Options as _};
 
 const SUBSCRIBE_ITEMS: &[&str] = &[
     "1,500 credits per month",

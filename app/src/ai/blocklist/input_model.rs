@@ -7,6 +7,8 @@
 
 use std::sync::Arc;
 
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 use futures::stream::AbortHandle;
 use input_classifier::util::{is_agent_follow_up_input, is_one_off_natural_language_word};
 use instant::Instant;
@@ -14,8 +16,6 @@ use parking_lot::FairMutex;
 use serde::{Deserialize, Serialize};
 use session_sharing_protocol::common::{InputMode, InputType as ProtocolInputType};
 use settings::Setting as _;
-use cognix_core::features::FeatureFlag;
-use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 pub use input_classifier::InputType;
 

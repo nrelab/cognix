@@ -1,6 +1,5 @@
 use std::{borrow::Cow, mem, ops::Range, sync::Arc};
 
-use string_offset::{ByteOffset, CharOffset};
 use cognix_completer::signatures::CommandRegistry;
 use cognix_editor::{
     content::{anchor::Anchor, buffer::Buffer, selection_model::BufferSelectionModel},
@@ -16,6 +15,7 @@ use cognixui::{
     ui_components::{button::ButtonVariant, components::UiComponent},
     AppContext, Element, Entity, ModelAsRef, ModelContext, ModelHandle, SingletonEntity,
 };
+use string_offset::{ByteOffset, CharOffset};
 
 use crate::{
     appearance::Appearance,

@@ -1,8 +1,8 @@
-use uuid::Uuid;
 use cognixui::{
     r#async::SpawnedFutureHandle, AppContext, ClosedWindowData, Entity, EntityId, ModelContext,
     ModelHandle, SingletonEntity, ViewHandle, WeakViewHandle, WindowId,
 };
+use uuid::Uuid;
 
 use crate::{
     ai::active_agent_views_model::ActiveAgentViewsModel,

@@ -1,7 +1,7 @@
 use super::{Event, Heartbeat};
-use std::time::Duration;
 use cognixui::r#async::Timer;
 use cognixui::App;
+use std::time::Duration;
 
 #[test]
 #[ignore = "Flakes in CI"]

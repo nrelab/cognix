@@ -8,8 +8,8 @@ use crate::ai::agent::AIAgentActionType;
 use crate::ai::agent::ReadSkillRequest;
 use crate::ai::agent::ReadSkillResult;
 use ai::agent::action_result::FileContext;
-use futures::future::{BoxFuture, FutureExt};
 use cognixui::Entity;
+use futures::future::{BoxFuture, FutureExt};
 
 pub struct ReadSkillExecutor;
 

@@ -1,9 +1,9 @@
-use regex::Regex;
-use std::time::Duration;
 use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionOutcome, TestStep},
 };
+use regex::Regex;
+use std::time::Duration;
 
 use crate::{
     integration_testing::{

@@ -1,5 +1,5 @@
-use float_cmp::assert_approx_eq;
 use cognixui::App;
+use float_cmp::assert_approx_eq;
 
 use crate::{
     ai::blocklist::agent_view::AgentViewState,

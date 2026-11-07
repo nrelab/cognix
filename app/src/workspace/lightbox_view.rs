@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
-use pathfinder_geometry::vector::Vector2F;
-use ui_components::{lightbox, Component as _};
 use cognixui::assets::asset_cache::{AssetCache, AssetSource, AssetState};
 use cognixui::image_cache::ImageType;
 use cognixui::keymap::{FixedBinding, Keystroke};
 use cognixui::prelude::*;
 use cognixui::{AppContext, BlurContext, Element, Entity, SingletonEntity, View, ViewContext};
+use pathfinder_geometry::vector::Vector2F;
+use ui_components::{lightbox, Component as _};
 
 use crate::appearance::Appearance;
 

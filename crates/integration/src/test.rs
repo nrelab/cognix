@@ -70,11 +70,6 @@ pub use workspace::*;
 use std::{borrow::Cow, collections::HashMap, path::PathBuf, rc::Rc, time::Duration};
 
 use anyhow::{anyhow, Result};
-use parking_lot::Mutex;
-use pathfinder_geometry::{rect::RectF, vector::Vector2F};
-use rust_embed::RustEmbed;
-use settings::Setting as _;
-use shell::ShellType;
 use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionOutcome, StepData, TestStep},
@@ -83,19 +78,25 @@ use cognixui::{
     windowing::WindowManager,
     AssetProvider, Event, SingletonEntity, UpdateView, ViewHandle,
 };
+use parking_lot::Mutex;
+use pathfinder_geometry::{rect::RectF, vector::Vector2F};
+use rust_embed::RustEmbed;
+use settings::Setting as _;
+use shell::ShellType;
 
-use cognix::{terminal::find::TerminalFindModel, util::bindings::CustomAction, AgentModeEntrypoint};
+use cognix::{
+    terminal::find::TerminalFindModel, util::bindings::CustomAction, AgentModeEntrypoint,
+};
 
+use cognixui::units::Lines;
 use sysinfo::{Pid, ProcessesToUpdate, System};
 use version_compare::Cmp;
-use cognixui::units::Lines;
 
 use crate::util::{skip_if_powershell_core_2303, ShellRcType};
 
 use crate::builder::cargo_target_tmpdir;
 use crate::user_defaults;
 use crate::Builder;
-use sum_tree::SeekBias;
 use cognix::integration_testing::terminal::assert_focused_editor_in_tab;
 use cognix::integration_testing::{
     settings::assert_theme_chooser_contains,
@@ -167,6 +168,7 @@ use cognix::{
         view::BlockVisibilityMode,
     },
 };
+use sum_tree::SeekBias;
 
 use cognix::terminal::view::ALIAS_EXPANSION_BANNER_SEEN_KEY;
 use cognix::{
@@ -182,7 +184,7 @@ use cognix::{
 };
 use cognix::{
     integration_testing::cognix_drive::{
-        assert_is_left_panel_open, assert_cognix_drive_is_closed, assert_cognix_drive_is_open,
+        assert_cognix_drive_is_closed, assert_cognix_drive_is_open, assert_is_left_panel_open,
     },
     settings::CompletionsOpenWhileTyping,
 };

@@ -11,8 +11,6 @@
 //! - Smart truncation of long file paths with ellipsis
 //! - Responsive layout that adapts to different highlight states
 
-use fuzzy_match::FuzzyMatchResult;
-use std::path::Path;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
     Container, CrossAxisAlignment, Flex, Highlight, MainAxisSize, ParentElement, Shrinkable, Text,
@@ -20,6 +18,8 @@ use cognixui::elements::{
 use cognixui::fonts::{Properties, Weight};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element};
+use fuzzy_match::FuzzyMatchResult;
+use std::path::Path;
 
 use crate::appearance::Appearance;
 use crate::search::ai_context_menu::safe_truncate;

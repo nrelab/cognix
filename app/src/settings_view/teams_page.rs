@@ -48,6 +48,8 @@ use crate::{
     },
 };
 
+use cognix_core::ui::theme::color::internal_colors;
+use cognixui::FocusContext;
 use core::default::Default;
 use email_address::EmailAddress;
 use itertools::Itertools;
@@ -58,8 +60,6 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use std::{cmp::Ordering, collections::HashSet};
-use cognix_core::ui::theme::color::internal_colors;
-use cognixui::FocusContext;
 
 use cognixui::{
     clipboard::ClipboardContent,

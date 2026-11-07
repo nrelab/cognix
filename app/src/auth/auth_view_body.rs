@@ -13,7 +13,6 @@ use crate::{
 };
 
 use anyhow::anyhow;
-use lazy_static::lazy_static;
 use cognix_core::{
     features::FeatureFlag,
     ui::{appearance::DEFAULT_COMMAND_PALETTE_FONT_SIZE, builder::UiBuilder},
@@ -32,6 +31,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, UpdateModel, View,
     ViewContext, ViewHandle,
 };
+use lazy_static::lazy_static;
 
 use super::{
     auth_manager::AuthManager,

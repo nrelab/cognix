@@ -10,11 +10,11 @@ use std::{
 };
 
 use async_trait::async_trait;
-use smol_str::SmolStr;
-use typed_path::{TypedPath, TypedPathBuf};
 use cognix_command_signatures::IconType;
 use cognix_core::command::ExitCode;
 use cognix_util::path::{EscapeChar, ShellFamily, TEST_SESSION_HOME_DIR};
+use smol_str::SmolStr;
+use typed_path::{TypedPath, TypedPathBuf};
 
 use crate::{
     completer::{

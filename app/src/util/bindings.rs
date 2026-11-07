@@ -5,13 +5,6 @@ use fuzzy_match::match_indices_case_insensitive;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 
-use regex::Regex;
-use std::borrow::Cow;
-use std::{
-    cmp::Ordering,
-    collections::{HashMap, HashSet},
-    sync::Arc,
-};
 use cognixui::keymap::{BindingId, IsBindingValid};
 use cognixui::platform::OperatingSystem;
 use cognixui::{
@@ -23,6 +16,13 @@ use cognixui::{
     Action,
 };
 use cognixui::{AppContext, SingletonEntity};
+use regex::Regex;
+use std::borrow::Cow;
+use std::{
+    cmp::Ordering,
+    collections::{HashMap, HashSet},
+    sync::Arc,
+};
 
 pub const MAC_MENUS_CONTEXT: DescriptionContext = DescriptionContext::Custom("mac_menus");
 

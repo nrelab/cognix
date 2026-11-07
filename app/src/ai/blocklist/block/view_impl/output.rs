@@ -38,9 +38,6 @@ use ai::agent::action::{
     RequestComputerUseRequest, SuggestPromptRequest, UploadArtifactRequest, UseComputerRequest,
 };
 use ai::skills::SkillReference;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::ui::theme::color::internal_colors;
 #[allow(unused_imports)]
 use cognix_util::path::{common_path, CleanPathResult};
@@ -49,6 +46,9 @@ use cognixui::elements::{
     ChildAnchor, NewScrollable, OffsetPositioning, ParentAnchor, ParentOffsetBounds, Stack,
 };
 use cognixui::EntityId;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use ui_components::{button, Component as _, Options as _};
 
 use crate::ai::blocklist::block::{
     CollapsibleElementState, CollapsibleExpansionState, FinishReason, ImportedCommentGroup,
@@ -108,9 +108,9 @@ use crate::{
     workspace::WorkspaceAction,
     FeatureFlag,
 };
+use cognix_core::channel::ChannelState;
 use itertools::Itertools;
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use cognix_core::channel::ChannelState;
 
 use super::common::{
     format_elapsed_seconds, render_debug_footer, render_failed_output, render_informational_footer,

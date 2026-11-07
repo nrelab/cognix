@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use serde::{Deserialize, Serialize};
 use cognix_editor::content::text::BufferBlockItem;
 use cognixui::{
     elements::{
@@ -15,6 +14,7 @@ use cognixui::{
     },
     AppContext, Element, SingletonEntity, ViewContext, ViewHandle,
 };
+use serde::{Deserialize, Serialize};
 
 use crate::{
     appearance::Appearance,

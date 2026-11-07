@@ -1,10 +1,10 @@
 use std::{collections::HashSet, sync::Arc};
 
-use smol_str::SmolStr;
 use cognix_completer::{
     completer::{GeneratorContext, PathCompletionContext},
     signatures::CommandRegistry,
 };
+use smol_str::SmolStr;
 
 /// An implementation of `CompletionContext` for testing purposes.
 pub struct CompletionContext {

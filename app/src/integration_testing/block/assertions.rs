@@ -1,10 +1,10 @@
-use settings::Setting as _;
 use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionCallback, AssertionOutcome},
     units::{IntoPixels, Lines},
     AppContext, SingletonEntity, WindowId,
 };
+use settings::Setting as _;
 
 use crate::{
     integration_testing::view_getters::single_terminal_view,

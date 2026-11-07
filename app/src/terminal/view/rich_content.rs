@@ -8,10 +8,13 @@ use crate::{
     env_vars::env_var_collection_block::EnvVarCollectionBlock,
     terminal::{
         block_list_viewport::ScrollPositionUpdate,
+        cognixify::success_block::CognixifySuccessBlock,
         model::{
             blocks::RichContentItem, rich_content::RichContentType, terminal_model::BlockIndex,
         },
-        ssh::{error::SshErrorBlock, install_tmux::SshInstallTmuxBlock, cognixify::SshCognixifyBlock},
+        ssh::{
+            cognixify::SshCognixifyBlock, error::SshErrorBlock, install_tmux::SshInstallTmuxBlock,
+        },
         view::{
             ambient_agent::AmbientAgentEntryBlock,
             block_onboarding::onboarding_agentic_suggestions_block::OnboardingAgenticSuggestionsBlock,
@@ -19,7 +22,6 @@ use crate::{
             ssh_remote_server_choice_view::SshRemoteServerChoiceView,
             ssh_remote_server_failed_banner::SshRemoteServerFailedBanner,
         },
-        cognixify::success_block::CognixifySuccessBlock,
         TerminalView,
     },
 };

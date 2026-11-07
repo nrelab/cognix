@@ -147,11 +147,11 @@ fn new_command_executor_for_local_tty_session(
     parent_session_info: Option<&SessionInfo>,
     ctx: &mut ModelContext<Sessions>,
 ) -> Arc<dyn CommandExecutor> {
+    use cognixui::SingletonEntity as _;
     use msys2_command_executor::MSYS2CommandExecutor;
     use remote_server_executor::RemoteServerCommandExecutor;
     use settings::Setting as _;
     use tmux_executor::TmuxCommandExecutor;
-    use cognixui::SingletonEntity as _;
     use wsl_command_executor::WslCommandExecutor;
 
     use crate::{
@@ -372,8 +372,8 @@ pub mod testing {
     use crate::terminal::shell::ShellType;
 
     use anyhow::anyhow;
-    use command::r#async::Command;
     use cognix_completer::completer::CommandOutput;
+    use command::r#async::Command;
 
     use super::*;
 

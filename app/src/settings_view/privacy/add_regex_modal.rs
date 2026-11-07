@@ -4,7 +4,6 @@ use crate::{
     appearance::Appearance,
     editor::{EditorView, PropagateAndNoOpNavigationKeys, SingleLineEditorOptions, TextOptions},
 };
-use regex::Regex;
 use cognix_editor::editor::NavigationKey;
 use cognixui::elements::{CrossAxisAlignment, Expanded, MainAxisSize};
 use cognixui::{
@@ -15,6 +14,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use regex::Regex;
 
 const LABEL_FONT_SIZE: f32 = 12.;
 

@@ -3,10 +3,10 @@ use crate::{
     code::editor::{line::EditorLineLocation, EditorReviewComment},
 };
 use chrono::{DateTime, Local};
-use std::fmt::{Display, Formatter};
-use std::path::PathBuf;
 use cognix_editor::render::model::LineCount;
 use cognix_multi_agent_api::{self as api};
+use std::fmt::{Display, Formatter};
+use std::path::PathBuf;
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub enum CommentOrigin {

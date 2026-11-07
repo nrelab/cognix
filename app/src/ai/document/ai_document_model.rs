@@ -9,9 +9,11 @@ use std::time::Duration;
 pub use ai::document::{AIDocumentId, AIDocumentVersion};
 use anyhow;
 use chrono::{DateTime, Local, Utc};
+use cognixui::{
+    AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity, WindowId,
+};
 use itertools::Itertools;
 use uuid::Uuid;
-use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity, WindowId};
 
 use crate::ai::ai_document_view::DEFAULT_PLANNING_DOCUMENT_TITLE;
 use crate::auth::auth_state::AuthStateProvider;

@@ -1,6 +1,6 @@
+use cognixui::AppContext;
 use itertools::Itertools;
 use std::collections::HashMap;
-use cognixui::AppContext;
 
 use crate::completer::SessionContext;
 use crate::search::command_search::settings::CommandSearchSettings;

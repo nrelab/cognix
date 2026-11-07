@@ -16,14 +16,14 @@ use crate::terminal::view::{TerminalAction, TerminalView};
 use crate::terminal::view::throttle;
 use crate::ui_components::icons::Icon;
 use chrono::{DateTime, Local};
+use cognix_core::features::FeatureFlag;
+use cognixui::{elements::MouseStateHandle, ModelHandle, ViewContext, ViewHandle};
+use cognixui::{AppContext, Element};
 use markdown_parser::FormattedTextFragment;
 use session_sharing_protocol::common::{ParticipantId, ParticipantList, Role, SessionId};
 use session_sharing_protocol::sharer::SessionSourceType;
 use std::collections::{HashMap, HashSet};
 use std::time::Duration;
-use cognix_core::features::FeatureFlag;
-use cognixui::{elements::MouseStateHandle, ModelHandle, ViewContext, ViewHandle};
-use cognixui::{AppContext, Element};
 
 /// The kind of shared session this is.
 pub enum Kind {

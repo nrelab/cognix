@@ -10,7 +10,6 @@ use crate::ui_components::{blended_colors, icons::Icon};
 use serde::Serialize;
 
 use crate::themes::theme::Fill;
-use pathfinder_color::ColorU;
 use cognixui::elements::{ChildAnchor, OffsetPositioning, Radius, SavePosition, Shrinkable};
 use cognixui::keymap::EditableBinding;
 use cognixui::ui_components::components::UiComponent;
@@ -30,6 +29,7 @@ use cognixui::{
 };
 use cognixui::{presenter::ChildView, ViewContext, ViewHandle};
 use cognixui::{FocusContext, ModelHandle};
+use pathfinder_color::ColorU;
 
 pub const FIND_BAR_WIDTH: f32 = 500.;
 const ICON_PADDING: f32 = 4.;

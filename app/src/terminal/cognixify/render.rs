@@ -1,11 +1,7 @@
 use crate::ai::blocklist::inline_action::inline_action_icons;
 use crate::ui_components::blended_colors;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::ui::appearance::Appearance;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognixui::elements::{
     Align, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, FormattedTextElement,
     HighlightedHyperlink, Icon, MouseStateHandle, ParentElement, Radius, Rect, Shrinkable, Stack,
@@ -15,6 +11,10 @@ use cognixui::fonts::{FamilyId, Properties, Weight};
 use cognixui::ui_components::components::UiComponent as _;
 use cognixui::ui_components::components::UiComponentStyles;
 use cognixui::{AppContext, Element, EventContext, PaintContext, SingletonEntity as _};
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::Vector2F;
 
 use super::settings::CognixifySettings;
 use super::SubshellSource;
@@ -150,7 +150,11 @@ pub fn build_description_row(
     )
 }
 
-pub fn description_row(text: &str, theme: &CognixTheme, appearance: &Appearance) -> Box<dyn Element> {
+pub fn description_row(
+    text: &str,
+    theme: &CognixTheme,
+    appearance: &Appearance,
+) -> Box<dyn Element> {
     let text = FormattedText::new(vec![FormattedTextLine::Line(vec![
         FormattedTextFragment::plain_text(text),
     ])]);

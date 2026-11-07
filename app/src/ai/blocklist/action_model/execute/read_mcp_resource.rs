@@ -2,8 +2,8 @@ use super::{ActionExecution, AnyActionExecution, ExecuteActionInput, PreprocessA
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::mcp::TemplatableMCPServerManager;
 use crate::terminal::model::session::active_session::ActiveSession;
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, EntityId, ModelContext, ModelHandle};
+use futures::{future::BoxFuture, FutureExt};
 
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::{

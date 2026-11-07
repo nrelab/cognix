@@ -1,9 +1,9 @@
 use std::any::Any;
 use std::sync::Arc;
 
+use cognixui::{AppContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 use parking_lot::FairMutex;
 use pathfinder_geometry::vector::Vector2F;
-use cognixui::{AppContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::{

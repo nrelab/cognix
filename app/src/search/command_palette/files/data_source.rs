@@ -6,6 +6,8 @@ use crate::search::data_source::{Query, QueryResult};
 use crate::search::files::model::FileSearchModel;
 use crate::search::files::search_item::FileSearchResult;
 use crate::search::mixer::{AsyncDataSource, BoxFuture, DataSourceRunErrorWrapper};
+use cognix_util::path::CleanPathResult;
+use cognixui::{AppContext, Entity, SingletonEntity};
 use futures_lite::FutureExt;
 use fuzzy_match::FuzzyMatchResult;
 use instant::Instant;
@@ -15,8 +17,6 @@ use std::collections::HashSet;
 use std::path::Path;
 use std::path::PathBuf;
 use std::sync::Arc;
-use cognix_util::path::CleanPathResult;
-use cognixui::{AppContext, Entity, SingletonEntity};
 
 const MAX_RESULTS: usize = 100;
 

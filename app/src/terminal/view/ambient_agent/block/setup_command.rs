@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use parking_lot::FairMutex;
 use cognix_core::ui::appearance::Appearance;
 use cognix_terminal::model::BlockId;
 use cognixui::{
@@ -8,6 +7,7 @@ use cognixui::{
     scene::{CornerRadius, Radius},
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use parking_lot::FairMutex;
 
 use crate::{
     ai::{

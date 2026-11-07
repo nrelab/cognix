@@ -66,18 +66,6 @@ use std::sync::{mpsc::SyncSender, Arc};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 
-use markdown_parser::FormattedTextFragment;
-use parking_lot::FairMutex;
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use serde::{Deserialize, Serialize};
-use session_sharing_protocol::common::{
-    ParticipantId, Role, RoleRequestId, RoleRequestRejectedReason, RoleRequestResponse, SessionId,
-};
-use tree::DEFAULT_FLEX_VALUE;
-use typed_path::TypedPath;
-use url::Url;
-use uuid::Uuid;
 use cognix_cli::agent::Harness;
 use cognix_core::command::ExitCode;
 use cognix_core::context_flag::ContextFlag;
@@ -91,6 +79,18 @@ use cognixui::elements::{
 };
 use cognixui::keymap::{Context, EditableBinding, FixedBinding};
 use cognixui::notification::NotificationSendError;
+use markdown_parser::FormattedTextFragment;
+use parking_lot::FairMutex;
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use serde::{Deserialize, Serialize};
+use session_sharing_protocol::common::{
+    ParticipantId, Role, RoleRequestId, RoleRequestRejectedReason, RoleRequestResponse, SessionId,
+};
+use tree::DEFAULT_FLEX_VALUE;
+use typed_path::TypedPath;
+use url::Url;
+use uuid::Uuid;
 
 use cognixui::windowing::WindowManager;
 use cognixui::{

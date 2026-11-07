@@ -1,12 +1,12 @@
 //! This module defines helper functions pertaining to the size/position of items in a Grid,
 //! such as the dimensions of a grid cell and the baseline position of text within a cell.
-use num_traits::Zero;
-use pathfinder_geometry::vector::vec2f;
-use pathfinder_geometry::vector::Vector2F;
 use cognixui::elements::DEFAULT_UI_LINE_HEIGHT_RATIO;
 use cognixui::fonts::Cache as FontCache;
 use cognixui::fonts::FamilyId;
 use cognixui::text_layout::ComputeBaselinePositionFn;
+use num_traits::Zero;
+use pathfinder_geometry::vector::vec2f;
+use pathfinder_geometry::vector::Vector2F;
 
 /// Computes the grid cell size given the font and size at which the grid should
 /// be rendered. We use a similar algorithm to Alacritty to do this, where the

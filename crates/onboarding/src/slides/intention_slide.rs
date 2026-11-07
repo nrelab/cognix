@@ -3,7 +3,6 @@ use crate::model::OnboardingStateModel;
 use crate::slides::{bottom_nav, layout, slide_content};
 use crate::visuals::{intention_terminal_visual, intention_visual};
 use crate::{OnboardingIntention, AI_FEATURES};
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
@@ -22,6 +21,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext,
 };
+use ui_components::{button, Component as _, Options as _};
 
 #[derive(Debug, Clone)]
 pub enum IntentionSlideAction {
@@ -260,10 +260,11 @@ impl IntentionSlide {
                 .with_main_axis_size(MainAxisSize::Min)
                 .with_cross_axis_alignment(CrossAxisAlignment::Start);
             for &item in items {
-                let icon_el = ConstrainedBox::new(Icon::Check.to_cognixui_icon(check_fill).finish())
-                    .with_width(16.)
-                    .with_height(16.)
-                    .finish();
+                let icon_el =
+                    ConstrainedBox::new(Icon::Check.to_cognixui_icon(check_fill).finish())
+                        .with_width(16.)
+                        .with_height(16.)
+                        .finish();
                 let text_el = appearance
                     .ui_builder()
                     .paragraph(item.to_string())

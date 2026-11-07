@@ -1,9 +1,9 @@
 use std::future::Future;
 use std::pin::Pin;
 
-use pathfinder_geometry::vector::vec2f;
 use cognixui::event::{Event, ModifiersState};
 use cognixui::integration::{TestStep, ARTIFACTS_DIR_ENV_VAR};
+use pathfinder_geometry::vector::vec2f;
 
 use crate::Builder;
 use cognix::integration_testing::step::new_step_with_default_assertions;

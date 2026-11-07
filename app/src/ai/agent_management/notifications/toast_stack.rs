@@ -1,6 +1,5 @@
 use std::time::Duration;
 
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::color::blend::Blend;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::{
@@ -14,7 +13,10 @@ use cognixui::platform::Cursor;
 use cognixui::r#async::{SpawnedFutureHandle, Timer};
 use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 use cognixui::ui_components::keyboard_shortcut::KeyboardShortcut;
-use cognixui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle};
+use cognixui::{
+    AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
+};
+use pathfinder_geometry::vector::vec2f;
 
 use crate::ai::agent_management::notifications::item_rendering::{
     create_notification_artifact_buttons_view, handle_notification_artifact_buttons_event,

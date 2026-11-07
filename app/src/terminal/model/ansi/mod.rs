@@ -14,12 +14,12 @@ mod dcs_hooks;
 mod handler;
 
 use ansi_c_decoder::*;
+pub use cognix_terminal::model::ansi::control_sequence_parameters::*;
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 pub use dcs_hooks::*;
 pub use handler::*;
 use instant::Instant;
 use itertools::Itertools;
-pub use cognix_terminal::model::ansi::control_sequence_parameters::*;
-use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 
 use crate::features::FeatureFlag;
 use crate::terminal::model::completions::{
@@ -45,11 +45,11 @@ use log::debug;
 use std::collections::HashMap;
 use std::fmt::Write;
 
+use cognixui::color::ColorU;
 use std::str::FromStr as _;
 use std::time::Duration;
 use std::{io, str};
 use vte::{Params, Parser as VteParser, Perform as VtePerform};
-use cognixui::color::ColorU;
 
 use super::kitty::parse_kitty_chunk;
 use super::terminal_model::TmuxInstallationState;

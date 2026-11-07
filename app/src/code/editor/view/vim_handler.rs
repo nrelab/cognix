@@ -7,11 +7,6 @@ use crate::{
     view_components::find::FindDirection,
     vim_registers::{RegisterContent, VimRegisters},
 };
-use vim::vim::{
-    BracketChar, CharacterMotion, Direction, FindCharMotion, FirstNonWhitespaceMotion,
-    InsertPosition, LineMotion, ModeTransition, MotionType, TextObjectType, VimHandler, VimMode,
-    VimMotion, VimOperand, VimOperator, VimTextObject, WordMotion,
-};
 use cognix_editor::{
     content::buffer::{
         AutoScrollBehavior, BufferEditAction, EditOrigin, SelectionOffsets,
@@ -21,6 +16,11 @@ use cognix_editor::{
     selection::{TextDirection, TextUnit},
 };
 use cognixui::{text::point::Point, SingletonEntity, ViewContext};
+use vim::vim::{
+    BracketChar, CharacterMotion, Direction, FindCharMotion, FirstNonWhitespaceMotion,
+    InsertPosition, LineMotion, ModeTransition, MotionType, TextObjectType, VimHandler, VimMode,
+    VimMotion, VimOperand, VimOperator, VimTextObject, WordMotion,
+};
 
 impl VimHandler for CodeEditorView {
     fn insert_char(&mut self, c: char, ctx: &mut ViewContext<Self>) {

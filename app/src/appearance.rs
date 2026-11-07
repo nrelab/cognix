@@ -1,8 +1,8 @@
-use settings::Setting as _;
 use cognixui::{
     fonts::FamilyId, AddSingletonModel, AppContext, AssetProvider, Entity, ModelContext,
     SingletonEntity,
 };
+use settings::Setting as _;
 
 #[cfg(target_os = "macos")]
 mod macos_app_icon {
@@ -11,9 +11,9 @@ mod macos_app_icon {
         appkit::NSApp,
         base::{id, nil},
     };
-    pub use objc::{class, msg_send, sel, sel_impl};
     pub use cognix_core::channel::{Channel, ChannelState};
     pub use cognixui::platform::mac::{make_nsstring, AutoreleasePoolGuard};
+    pub use objc::{class, msg_send, sel, sel_impl};
 
     pub use crate::settings::app_icon::{AppIcon, AppIconSettings, AppIconSettingsChangedEvent};
 }
@@ -25,7 +25,7 @@ use crate::{
         active_theme_kind, FontSettings, FontSettingsChangedEvent, MonospaceFontSize, Settings,
         ThemeSettings,
     },
-    themes::theme::{ThemeKind, CognixTheme},
+    themes::theme::{CognixTheme, ThemeKind},
     ASSETS,
 };
 
@@ -362,7 +362,8 @@ fn get_or_load_font_family(font_name: &str, ctx: &mut AppContext) -> Option<Fami
     cognixui::fonts::Cache::handle(ctx).update(ctx, |font_cache, _| {
         match font_cache.get_or_load_system_font(font_name) {
             Ok(family) => {
-                let font_id = font_cache.select_font(family, cognixui::fonts::Properties::default());
+                let font_id =
+                    font_cache.select_font(family, cognixui::fonts::Properties::default());
 
                 // Validate that the font contains the `m` glyph since this is assumed in
                 // various parts of the code. We already do this when surfacing fonts in the font

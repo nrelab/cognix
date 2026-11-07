@@ -10,8 +10,6 @@ pub(crate) use modal_shell::{
     ChipEditorMouseHandles, ChipEditorSectionsConfig,
 };
 
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
     Border, ConstrainedBox, Container, CrossAxisAlignment, Dash, DispatchEventResult, Draggable,
@@ -22,6 +20,8 @@ use cognixui::fonts::Properties;
 use cognixui::platform::Cursor;
 use cognixui::ui_components::components::UiComponent;
 use cognixui::{Action, View, ViewContext};
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::ai::blocklist::agent_view::toolbar_item::AgentToolbarItemKind;
 use crate::appearance::Appearance;

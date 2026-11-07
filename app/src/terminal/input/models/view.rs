@@ -1,7 +1,6 @@
 use std::collections::HashSet;
 use std::sync::LazyLock;
 
-use pathfinder_color::ColorU;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_core::ui::theme::Fill;
@@ -10,6 +9,7 @@ use cognixui::{
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity as _, View, ViewContext,
     ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 use crate::ai::blocklist::agent_view::AgentViewController;
 use crate::ai::blocklist::block::cli_controller::{CLISubagentController, CLISubagentEvent};

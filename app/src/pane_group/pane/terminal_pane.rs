@@ -4,9 +4,9 @@ use crate::pane_group::CodeSource;
 use std::{collections::HashMap, sync::mpsc::SyncSender};
 
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
-use url::Url;
 use cognix_cli::agent::Harness;
 use cognix_multi_agent_api as multi_agent_api;
+use url::Url;
 
 use cognixui::{
     AppContext, EntityId, ModelHandle, SingletonEntity, ViewContext, ViewHandle, WindowId,

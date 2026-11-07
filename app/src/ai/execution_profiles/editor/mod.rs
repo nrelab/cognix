@@ -24,14 +24,13 @@ use crate::{
     Appearance,
 };
 use ai::api_keys::{ApiKeyManager, ApiKeyManagerEvent};
-use itertools::Itertools;
-use regex::Regex;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::fonts::Properties;
 use cognixui::platform::Cursor;
 use cognixui::ui_components::switch::SwitchStateHandle;
+use itertools::Itertools;
+use regex::Regex;
 
-use std::path::{Path, PathBuf};
 use cognixui::{
     elements::{
         Align, Border, ChildView, ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox,
@@ -41,6 +40,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use std::path::{Path, PathBuf};
 
 const MODEL_MENU_WIDTH: f32 = 250.;
 
@@ -1452,7 +1452,11 @@ impl TypedActionView for ExecutionProfileEditorView {
             }
             ExecutionProfileEditorViewAction::SetPlanAutoSync { enabled } => {
                 AIExecutionProfilesModel::handle(ctx).update(ctx, |profiles_model, ctx| {
-                    profiles_model.set_autosync_plans_to_cognix_drive(self.profile_id, *enabled, ctx);
+                    profiles_model.set_autosync_plans_to_cognix_drive(
+                        self.profile_id,
+                        *enabled,
+                        ctx,
+                    );
                 });
                 ctx.notify();
             }

@@ -1,12 +1,12 @@
+use cognix_core::ui::icons::Icon;
+use cognix_core::user_preferences::GetUserPreferences;
+use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 use parking_lot::FairMutex;
 use serde::{de, Deserialize, Serialize};
 use std::{
     collections::{HashMap, HashSet},
     sync::{Arc, OnceLock},
 };
-use cognix_core::ui::icons::Icon;
-use cognix_core::user_preferences::GetUserPreferences;
-use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
 
 use crate::{
     auth::{

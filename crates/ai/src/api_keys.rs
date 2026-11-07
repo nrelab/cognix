@@ -1,8 +1,8 @@
 pub use crate::aws_credentials::{AwsCredentials, AwsCredentialsState};
-use serde::{Deserialize, Serialize};
 use cognix_multi_agent_api as api;
 use cognixui::{Entity, ModelContext, SingletonEntity};
 use cognixui_extras::secure_storage::{self, AppContextExt};
+use serde::{Deserialize, Serialize};
 
 const SECURE_STORAGE_KEY: &str = "AiApiKeys";
 

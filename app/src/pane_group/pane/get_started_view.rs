@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::{self, appearance::Appearance, color::blend::Blend as _};
 use cognixui::{
     elements::{
@@ -14,6 +13,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::{
     coding_entrypoints::{
@@ -219,7 +219,8 @@ impl GetStartedView {
             .with_children([
                 Container::new(
                     ConstrainedBox::new(
-                        Icon::new("bundled/svg/cognix-logo-neutral.svg", theme.foreground()).finish(),
+                        Icon::new("bundled/svg/cognix-logo-neutral.svg", theme.foreground())
+                            .finish(),
                     )
                     .with_height(40.)
                     .with_width(40.)

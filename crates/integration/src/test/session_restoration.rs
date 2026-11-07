@@ -1,4 +1,3 @@
-use settings::{RespectUserSyncSetting, SyncToCloud};
 use cognix::{
     features::FeatureFlag,
     integration_testing::{
@@ -28,6 +27,7 @@ use cognixui::{
     integration::{AssertionOutcome, TestStep},
     SingletonEntity, ViewHandle,
 };
+use settings::{RespectUserSyncSetting, SyncToCloud};
 
 use crate::util::{get_local_user, tab_title_in_home_dir};
 

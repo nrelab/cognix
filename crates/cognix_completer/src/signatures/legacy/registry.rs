@@ -4,8 +4,8 @@ use crate::parsers::SignatureAtTokenIndex;
 use itertools::Itertools;
 use memo_map::MemoMap;
 
-use std::collections::HashMap;
 use cognix_command_signatures::{Argument, DynamicCompletionData, IsArgumentOptional, Signature};
+use std::collections::HashMap;
 
 pub enum SignatureResult<'a> {
     /// Successfully parsed the signature. We are returning the signature at the token to complete on.

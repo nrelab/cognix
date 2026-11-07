@@ -17,9 +17,9 @@ use crate::ui::color::contrast::relative_luminance;
 
 use self::color::CustomDetails;
 
+use cognixui::{assets::asset_cache::AssetSource, color::ColorU, geometry::vector::vec2f};
 use dirs::home_dir;
 use serde::{Deserialize, Serialize};
-use cognixui::{assets::asset_cache::AssetSource, color::ColorU, geometry::vector::vec2f};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Image {

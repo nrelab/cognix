@@ -1,7 +1,7 @@
 use std::{collections::VecDeque, time::Duration};
 
-use instant::Instant;
 use cognix_util::content_version::ContentVersion;
+use instant::Instant;
 
 use crate::render::model::RenderedSelectionSet;
 

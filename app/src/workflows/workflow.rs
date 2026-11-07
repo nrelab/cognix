@@ -1,6 +1,6 @@
+use cognix_workflows;
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
-use cognix_workflows;
 
 use crate::{
     cloud_object::model::generic_string_model::GenericStringObjectId, server::ids::SyncId,

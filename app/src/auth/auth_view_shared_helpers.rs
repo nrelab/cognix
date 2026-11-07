@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_core::channel::ChannelState;
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::{
@@ -22,6 +21,7 @@ use cognixui::{
     },
     Action, AppContext, Element, SingletonEntity as _,
 };
+use pathfinder_color::ColorU;
 
 use crate::settings::PrivacySettings;
 use crate::themes::theme::ThemeKind;

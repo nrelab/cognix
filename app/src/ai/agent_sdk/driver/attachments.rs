@@ -3,12 +3,12 @@ use std::sync::Arc;
 
 use anyhow::Context;
 use base64::{engine::general_purpose, Engine};
+use cognix_core::features::FeatureFlag;
 use futures::future::join_all;
 use futures::TryStreamExt as _;
 use mime_guess::from_path;
 use tokio::fs;
 use tokio_util::io::StreamReader;
-use cognix_core::features::FeatureFlag;
 
 use crate::ai::agent_sdk::retry::with_bounded_retry;
 use crate::ai::ambient_agents::task::{AttachmentInput, TaskAttachment};

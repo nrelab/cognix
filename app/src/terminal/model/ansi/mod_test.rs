@@ -1,6 +1,6 @@
-use hex;
 use cognix_core::command::ExitCode;
 use cognixui::color::ColorU;
+use hex;
 
 use super::*;
 use crate::terminal::model::index::VisibleRow;

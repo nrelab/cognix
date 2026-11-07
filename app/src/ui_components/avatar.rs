@@ -9,8 +9,8 @@ use cognixui::{
 use super::red_notification_dot::RedNotificationDot;
 use cognix_core::ui::{external_product_icon::ExternalProductIcon, icons::Icon};
 
-use pathfinder_geometry::vector::vec2f;
 use cognixui::elements::{ChildAnchor, OffsetPositioning, ParentAnchor, ParentOffsetBounds, Stack};
+use pathfinder_geometry::vector::vec2f;
 
 pub enum AvatarContent {
     /// Rendered as capital initial of the given display name.

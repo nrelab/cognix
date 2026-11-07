@@ -1,10 +1,10 @@
-use session_sharing_protocol::common::{ParticipantId, Role, RoleRequestId};
 use cognixui::elements::Empty;
 use cognixui::presenter::ChildView;
 use cognixui::{
     ui_components::components::{Coords, UiComponentStyles},
     AppContext, Element, Entity, View, ViewContext, ViewHandle,
 };
+use session_sharing_protocol::common::{ParticipantId, Role, RoleRequestId};
 
 use crate::modal::Modal;
 use crate::pane_group::TerminalPaneId;

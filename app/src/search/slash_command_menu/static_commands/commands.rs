@@ -1,8 +1,8 @@
 use std::{collections::HashMap, sync::LazyLock};
 
+use cognix_core::features::FeatureFlag;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use cognix_core::features::FeatureFlag;
 
 use crate::search::slash_command_menu::{static_commands::Argument, StaticCommand};
 

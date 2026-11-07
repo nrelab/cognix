@@ -1,12 +1,12 @@
-use itertools::Itertools;
 use cognix_core::ui::theme::Fill;
+use itertools::Itertools;
 
-use pathfinder_geometry::vector::vec2f;
-use serde::Serialize;
 use cognixui::keymap::FixedBinding;
 use cognixui::platform::Cursor;
 use cognixui::ui_components::button::ButtonVariant;
 use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use pathfinder_geometry::vector::vec2f;
+use serde::Serialize;
 
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
@@ -20,7 +20,7 @@ use crate::context_chips::{
 };
 
 use crate::server::telemetry::{PromptChoice, TelemetryEvent};
-use crate::settings::{FontSettings, CognixPromptSeparator};
+use crate::settings::{CognixPromptSeparator, FontSettings};
 use crate::terminal::blockgrid_element::BlockGridElement;
 use crate::terminal::SizeInfo;
 use settings::Setting as _;
@@ -178,7 +178,8 @@ impl EditorModal {
             // If the "default Cognix prompt" i.e. no context chips, is selected, then default to no Cognix prompt separator.
             _ => CognixPromptSeparator::None,
         };
-        let cognix_prompt_separator_label = cognix_prompt_separator.dropdown_item_label().to_owned();
+        let cognix_prompt_separator_label =
+            cognix_prompt_separator.dropdown_item_label().to_owned();
 
         let cognix_prompt_separator_dropdown = ctx.add_typed_action_view(|ctx| {
             let mut dropdown = Dropdown::new(ctx);
@@ -691,7 +692,10 @@ impl EditorModal {
 
         self.render_prompt_section(
             appearance,
-            matches!(self.prompt_type, PromptType::Cognix | PromptType::CognixDefault),
+            matches!(
+                self.prompt_type,
+                PromptType::Cognix | PromptType::CognixDefault
+            ),
             header_row,
             None,
             body,

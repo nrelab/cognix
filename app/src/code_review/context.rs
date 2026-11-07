@@ -1,7 +1,7 @@
 use crate::ai::agent::DiffSetHunk;
 use crate::code_review::diff_state::{DiffLineType, FileDiff};
-use std::collections::HashMap;
 use cognix_editor::render::model::LineCount;
+use std::collections::HashMap;
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {

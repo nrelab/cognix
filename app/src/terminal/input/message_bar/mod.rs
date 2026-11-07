@@ -5,12 +5,12 @@ pub mod common;
 use std::borrow::Cow;
 use std::sync::Arc;
 
-use pathfinder_color::ColorU;
 use cognix_core::ui::Icon;
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::elements::MouseStateHandle;
 use cognixui::keymap::Keystroke;
 use cognixui::EventContext;
+use pathfinder_color::ColorU;
 /// A trait for types that can produce a message based on some contextual arguments.
 ///
 /// The generic `Args` parameter allows each call site to define its own

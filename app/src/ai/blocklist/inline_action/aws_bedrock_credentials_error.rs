@@ -1,4 +1,3 @@
-use settings::Setting as _;
 use cognix_core::ui::Icon;
 use cognixui::elements::{
     ChildView, ConstrainedBox, Container, CrossAxisAlignment, Flex, MainAxisAlignment,
@@ -10,6 +9,7 @@ use cognixui::{
     AppContext, Element, Entity, EventContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use settings::Setting as _;
 
 use crate::report_if_error;
 use crate::Appearance;

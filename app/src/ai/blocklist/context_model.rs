@@ -15,9 +15,9 @@ use crate::ai::{
 
 use super::agent_view::{AgentViewController, AgentViewEntryOrigin, EnterAgentViewError};
 use ai::project_context::model::ProjectContextModel;
-use parking_lot::FairMutex;
 use cognix_core::features::FeatureFlag;
 use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use parking_lot::FairMutex;
 
 use crate::ai::agent::conversation::{AIConversationAutoexecuteMode, ConversationStatus};
 use crate::{

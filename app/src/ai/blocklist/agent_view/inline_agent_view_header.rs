@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
 use ai::agent::action::{AIAgentActionType, ShellCommandDelay};
-use parking_lot::FairMutex;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{CornerRadius, Radius},
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity, View, ViewContext,
 };
+use parking_lot::FairMutex;
 
 use crate::{
     ai::{

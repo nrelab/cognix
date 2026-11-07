@@ -33,7 +33,6 @@ pub use shell_process_terminated::*;
 pub use ssh::*;
 pub use vim_mode::*;
 
-use pathfinder_color::ColorU;
 use cognixui::elements::Clipped;
 use cognixui::{
     elements::{
@@ -48,6 +47,7 @@ use cognixui::{
     },
     Element,
 };
+use pathfinder_color::ColorU;
 
 use crate::ui_components::buttons::icon_button;
 use crate::ui_components::icons::Icon as UiIcon;

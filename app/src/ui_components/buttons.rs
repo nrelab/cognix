@@ -1,8 +1,8 @@
 use super::icons::{Icon, ICON_DIMENSIONS};
 use super::{blended_colors, BORDER_RADIUS};
 use crate::appearance::Appearance;
-use crate::themes::theme::Fill;
 use crate::themes::theme::CognixTheme;
+use crate::themes::theme::Fill;
 use cognixui::elements::Radius;
 use cognixui::elements::{CornerRadius, MouseStateHandle};
 use cognixui::ui_components::button::Button;
@@ -38,7 +38,11 @@ fn all_icon_button_styles(cognix_theme: &CognixTheme, mode: ButtonMode) -> AllBu
         default_styles: icon_button_styles(cognix_theme, mode, ButtonState::Default),
         hovered_styles: Some(icon_button_styles(cognix_theme, mode, ButtonState::Hover)),
         clicked_styles: Some(icon_button_styles(cognix_theme, mode, ButtonState::Pressed)),
-        disabled_styles: Some(icon_button_styles(cognix_theme, mode, ButtonState::Disabled)),
+        disabled_styles: Some(icon_button_styles(
+            cognix_theme,
+            mode,
+            ButtonState::Disabled,
+        )),
     }
 }
 
@@ -51,12 +55,14 @@ fn icon_button_styles(
 
     let (background_color, border_color): (Option<Fill>, Option<Fill>) = match (mode, state) {
         (ButtonMode::Base, ButtonState::Default) => (None, None),
-        (ButtonMode::Base, ButtonState::Hover) => {
-            (Some(cognix_theme.surface_2()), Some(cognix_theme.surface_3()))
-        }
-        (ButtonMode::Base, ButtonState::Pressed) | (ButtonMode::Base, ButtonState::Disabled) => {
-            (Some(cognix_theme.background()), Some(cognix_theme.surface_3()))
-        }
+        (ButtonMode::Base, ButtonState::Hover) => (
+            Some(cognix_theme.surface_2()),
+            Some(cognix_theme.surface_3()),
+        ),
+        (ButtonMode::Base, ButtonState::Pressed) | (ButtonMode::Base, ButtonState::Disabled) => (
+            Some(cognix_theme.background()),
+            Some(cognix_theme.surface_3()),
+        ),
         (ButtonMode::Accent, ButtonState::Default) => (None, None),
         (ButtonMode::Accent, ButtonState::Hover) => (
             Some(cognix_theme.surface_3()),

@@ -54,21 +54,21 @@ use crate::view_components::action_button::{
 use crate::view_components::compactible_action_button::CompactibleActionButton;
 use crate::AIAgentTodoList;
 use crate::FileEdit;
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_core::ui::theme::Fill;
+use pathfinder_color::ColorU;
 
 use cli_controller::CLISubagentController;
 use cli_controller::CLISubagentEvent;
-use find::FindState;
-use model::AIBlockOutputStatus;
-use parking_lot::FairMutex;
-use settings::Setting as _;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::get_rich_content_position_id;
 use cognixui::elements::ClippedScrollStateHandle;
 use cognixui::elements::TableStateHandle;
 use cognixui::ui_components::radio_buttons::RadioButtonStateHandle;
+use find::FindState;
+use model::AIBlockOutputStatus;
+use parking_lot::FairMutex;
+use settings::Setting as _;
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::agent::AIAgentActionResultType;
@@ -111,6 +111,15 @@ use crate::view_components::action_button::KeystrokeSource;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::Appearance;
 use crate::LLMPreferences;
+use cognix_util::path::ShellFamily;
+use cognixui::elements::MainAxisAlignment;
+use cognixui::elements::MainAxisSize;
+use cognixui::elements::SecretRange;
+use cognixui::ui_components::button::ButtonVariant;
+use cognixui::ui_components::button::TextAndIcon;
+use cognixui::ui_components::button::TextAndIconAlignment;
+use cognixui::ui_components::components::UiComponent;
+use cognixui::ui_components::components::UiComponentStyles;
 use indexmap::IndexMap;
 use parking_lot::{Mutex, RwLock};
 use pathfinder_geometry::vector::vec2f;
@@ -121,20 +130,9 @@ use std::ops::Range;
 use std::path::{Path, PathBuf};
 use std::rc::Rc;
 use std::{cell::OnceCell, sync::Arc};
-use cognix_util::path::ShellFamily;
-use cognixui::elements::MainAxisAlignment;
-use cognixui::elements::MainAxisSize;
-use cognixui::elements::SecretRange;
-use cognixui::ui_components::button::ButtonVariant;
-use cognixui::ui_components::button::TextAndIcon;
-use cognixui::ui_components::button::TextAndIconAlignment;
-use cognixui::ui_components::components::UiComponent;
-use cognixui::ui_components::components::UiComponentStyles;
 
 use crate::util::link_detection::*;
 use chrono::Duration;
-use itertools::Itertools;
-use secret_redaction::*;
 #[cfg(feature = "local_fs")]
 use cognix_editor::content::edit::resolve_asset_source_relative_to_directory;
 use cognix_editor::{
@@ -151,6 +149,8 @@ use cognixui::{
     AppContext, Entity, EntityId, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle, WeakViewHandle, WindowId,
 };
+use itertools::Itertools;
+use secret_redaction::*;
 
 use crate::ai::agent::{
     AIAgentAction, AIAgentActionId, AIAgentActionType, AIAgentAttachment, AIAgentCitation,

@@ -7,14 +7,14 @@ use std::time::Duration;
 #[cfg(feature = "local_fs")]
 use std::path::Path;
 
-use futures::future::ready;
-#[cfg(feature = "local_fs")]
-use ignore::gitignore::Gitignore;
 use cognix_util::standardized_path::StandardizedPath;
 use cognixui::r#async::{BoxFuture, SpawnedFutureHandle};
 #[cfg(feature = "local_fs")]
 use cognixui::SingletonEntity;
 use cognixui::{Entity, ModelContext, ModelHandle};
+use futures::future::ready;
+#[cfg(feature = "local_fs")]
+use ignore::gitignore::Gitignore;
 
 #[cfg(feature = "local_fs")]
 use crate::watcher::DirectoryWatcher;

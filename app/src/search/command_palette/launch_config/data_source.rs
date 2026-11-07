@@ -4,10 +4,10 @@ use crate::search::command_palette::mixer::CommandPaletteItemAction;
 use crate::search::data_source::{DataSourceSearchError, Query, QueryResult};
 use crate::search::mixer::{DataSourceRunErrorWrapper, SyncDataSource};
 use crate::user_config::{CognixConfig, CognixConfigUpdateEvent};
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 use fuzzy_match::match_indices_case_insensitive;
 use std::collections::HashMap;
 use std::sync::Arc;
-use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 /// Datasource that searches against `LaunchConfig`s.
 pub struct DataSource {
@@ -46,7 +46,11 @@ impl DataSource {
         Self { searcher }
     }
 
-    fn handle_config_event(&mut self, event: &CognixConfigUpdateEvent, ctx: &mut ModelContext<Self>) {
+    fn handle_config_event(
+        &mut self,
+        event: &CognixConfigUpdateEvent,
+        ctx: &mut ModelContext<Self>,
+    ) {
         if matches!(event, CognixConfigUpdateEvent::LaunchConfigs) {
             self.searcher.refresh_search_index(ctx);
         }
@@ -123,11 +127,11 @@ mod full_text_searcher {
     use crate::search::command_palette::launch_config::search_item::SearchItem;
     use crate::search::searcher::{AsyncSearcher, DEFAULT_MEMORY_BUDGET, SCORE_CONVERSION_FACTOR};
     use crate::user_config::CognixConfig;
+    use cognixui::r#async::executor::Background;
+    use cognixui::{AppContext, SingletonEntity};
     use fuzzy_match::FuzzyMatchResult;
     use std::collections::HashMap;
     use std::sync::Arc;
-    use cognixui::r#async::executor::Background;
-    use cognixui::{AppContext, SingletonEntity};
 
     // The name of the launch configs are duplicated to ensure that the searcher
     // hashes the name to uniquely identify the launch config.

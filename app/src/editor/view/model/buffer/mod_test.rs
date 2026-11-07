@@ -7,6 +7,7 @@ use async_channel::Receiver;
 use test::Network;
 
 use super::*;
+use cognixui::{color::ColorU, App, ModelHandle};
 use enclose::enclose;
 use futures::StreamExt;
 use rand::prelude::StdRng;
@@ -15,7 +16,6 @@ use std::{
     collections::HashSet,
     pin::{pin, Pin},
 };
-use cognixui::{color::ColorU, App, ModelHandle};
 
 fn visible_text_styles(buffer: &Buffer) -> Vec<Option<TextStyle>> {
     buffer

@@ -1,13 +1,13 @@
 use asset_macro::bundled_asset;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::assets::asset_cache::{AssetCache, AssetState};
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::ai::blocklist::inline_action::requested_action::RenderableAction;
 use crate::appearance::Appearance;
-use crate::terminal::shell::ShellType;
 use crate::terminal::cognixify;
 use crate::terminal::cognixify::render::SSH_DOCS_URL;
+use crate::terminal::shell::ShellType;
 use crate::ui_components::icons::Icon as UiIcon;
 use cognixui::elements::{HighlightedHyperlink, Hoverable, Icon, MouseStateHandle};
 use cognixui::keymap::FixedBinding;
@@ -84,12 +84,17 @@ pub fn cognixify_description(
         ),
         FormattedTextFragment::hyperlink("Learn more", SSH_DOCS_URL),
     ])]);
-    cognixify::render::build_description_row(description, theme, appearance, hyperlink_index.clone())
-        .with_hyperlink_font_color(appearance.theme().accent().into_solid())
-        .register_default_click_handlers(|url, _, ctx| {
-            ctx.open_url(&url.url);
-        })
-        .finish()
+    cognixify::render::build_description_row(
+        description,
+        theme,
+        appearance,
+        hyperlink_index.clone(),
+    )
+    .with_hyperlink_font_color(appearance.theme().accent().into_solid())
+    .register_default_click_handlers(|url, _, ctx| {
+        ctx.open_url(&url.url);
+    })
+    .finish()
 }
 
 impl View for SshCognixifyBlock {

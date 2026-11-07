@@ -4,8 +4,8 @@ use crate::search::command_palette::conversations::search_item::ConversationSear
 use crate::search::command_palette::conversations::DataSource;
 use crate::search::data_source::QueryResult;
 use crate::search::SyncDataSource;
-use fuzzy_match::match_indices_case_insensitive;
 use cognixui::AppContext;
+use fuzzy_match::match_indices_case_insensitive;
 
 /// A conversation that was fuzzy matched against a search term.
 #[derive(Debug)]

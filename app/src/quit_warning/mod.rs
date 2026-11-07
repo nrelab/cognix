@@ -1,10 +1,10 @@
-use itertools::Itertools;
-use settings::ToggleableSetting as _;
-use std::fmt::Write;
 use cognixui::{
     modals::{AlertDialogWithCallbacks, AppModalCallback, ModalButton},
     AppContext, EntityId, SingletonEntity, ViewContext, WeakViewHandle, WindowId,
 };
+use itertools::Itertools;
+use settings::ToggleableSetting as _;
+use std::fmt::Write;
 
 use crate::{
     code::editor_management::{CodeEditorStatus, CodeEditorSummary},

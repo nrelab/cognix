@@ -1,5 +1,5 @@
-use itertools::Itertools;
 use cognixui::{AppContext, SingletonEntity};
+use itertools::Itertools;
 
 use crate::ai::blocklist::BlocklistAIHistoryModel;
 use crate::search::ai_queries::fuzzy_match::FuzzyMatchAIQueryResults;

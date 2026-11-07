@@ -17,7 +17,7 @@ use cognixui::SingletonEntity;
 use cognixui::{Entity, ModelContext, ModelHandle};
 
 use super::event::SshLoginStatus;
-use super::model::ansi::{FinishUpdateValue, CognixificationUnavailableReason};
+use super::model::ansi::{CognixificationUnavailableReason, FinishUpdateValue};
 use super::model::block::BlockId;
 use super::model::completions::ShellCompletion;
 use super::model::terminal_model::{ExitReason, TmuxControlModeContext, TmuxInstallationState};
@@ -196,7 +196,8 @@ impl ModelEventDispatcher {
                 context,
             }) => {
                 {
-                    if let Some(TmuxControlModeContext::CognixInitiatedForSsh(control_mode)) = context
+                    if let Some(TmuxControlModeContext::CognixInitiatedForSsh(control_mode)) =
+                        context
                     {
                         let duration_ms = Instant::now()
                             .duration_since(control_mode.start_time)

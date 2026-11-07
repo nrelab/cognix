@@ -3,9 +3,9 @@ use std::{collections::BTreeMap, ffi::OsString};
 
 use crate::terminal::cli_agent_sessions::event::current_protocol_version;
 use crate::terminal::local_tty::shell::{extra_path_entries, ssh_socket_dir};
-use itertools::Itertools;
 use cognix_core::channel::ChannelState;
 use cognix_core::features::FeatureFlag;
+use itertools::Itertools;
 use windows::core::{HSTRING, PCWSTR};
 use windows::Win32::System::Environment::ExpandEnvironmentStringsW;
 use winreg::types::FromRegValue;

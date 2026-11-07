@@ -1,9 +1,9 @@
 use crate::features::FeatureFlag;
 
+use cognixui::{AppContext, SingletonEntity};
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
-use cognixui::{AppContext, SingletonEntity};
 
 define_settings_group!(LigatureSettings, settings: [
     ligature_rendering_enabled: LigatureRenderingEnabled {

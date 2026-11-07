@@ -1,9 +1,6 @@
 use std::rc::Rc;
 use std::time::Duration;
 
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use uuid::Uuid;
 use cognix_core::ui::builder::UiBuilder;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::ChildView;
@@ -22,6 +19,9 @@ use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
 use cognixui::{Action, ViewHandle};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use uuid::Uuid;
 
 use crate::{appearance::Appearance, themes::theme::Fill};
 

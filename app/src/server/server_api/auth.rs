@@ -2,14 +2,6 @@ use std::{result::Result as StdResult, sync::Arc};
 
 use anyhow::{anyhow, bail, Context as _, Result};
 use async_trait::async_trait;
-use cynic::{MutationBuilder, QueryBuilder};
-use firebase::{FetchAccessTokenResponse, FirebaseError};
-use futures::FutureExt;
-use instant::Duration;
-#[cfg(test)]
-use mockall::{automock, predicate::*};
-use oauth2::TokenResponse;
-use thiserror::Error;
 use cognix_core::errors::{AnyhowErrorExt, ErrorExt};
 use cognix_graphql::client::Operation;
 use cognix_graphql::mutations::expire_api_key::{
@@ -18,6 +10,14 @@ use cognix_graphql::mutations::expire_api_key::{
 use cognix_graphql::queries::get_conversation_usage::{
     ConversationUsage, GetConversationUsage, GetConversationUsageVariables, UserResult,
 };
+use cynic::{MutationBuilder, QueryBuilder};
+use firebase::{FetchAccessTokenResponse, FirebaseError};
+use futures::FutureExt;
+use instant::Duration;
+#[cfg(test)]
+use mockall::{automock, predicate::*};
+use oauth2::TokenResponse;
+use thiserror::Error;
 
 use cognix_graphql::mutations::set_user_is_onboarded::{
     SetUserIsOnboarded, SetUserIsOnboardedResult, SetUserIsOnboardedVariables,
@@ -371,7 +371,9 @@ impl AuthClient for ServerApi {
             .ok_or_else(|| anyhow!("Expected valid response.data"))?;
 
         match response.user {
-            cognix_graphql::queries::get_user::UserResult::UserOutput(user_output) => Ok(user_output),
+            cognix_graphql::queries::get_user::UserResult::UserOutput(user_output) => {
+                Ok(user_output)
+            }
             cognix_graphql::queries::get_user::UserResult::Unknown => {
                 Err(anyhow!("Unable to fetch user"))
             }

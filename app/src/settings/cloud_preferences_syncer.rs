@@ -4,14 +4,14 @@ use std::{
     sync::Arc,
 };
 
-use lazy_static::lazy_static;
-use settings::{Setting as _, SyncToCloud};
-use std::time::Duration;
 use cognix_core::settings::ChangeEventReason;
 use cognix_core::user_preferences::GetUserPreferences;
 use cognixui::r#async::Timer;
 use cognixui::{Entity, ModelContext, SingletonEntity};
 use cognixui_extras::user_preferences::toml_backed::TomlBackedUserPreferences;
+use lazy_static::lazy_static;
+use settings::{Setting as _, SyncToCloud};
+use std::time::Duration;
 
 use crate::{
     auth::auth_state::AuthState,

@@ -4,10 +4,10 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
 
+use cognixui::r#async::{executor, FutureExt as _};
 use dashmap::DashMap;
 use futures::channel::oneshot;
 use futures::io::{AsyncRead, AsyncWrite};
-use cognixui::r#async::{executor, FutureExt as _};
 
 use crate::proto::{
     client_message, server_message, Abort, ClientMessage, DeleteFile, ErrorCode, Initialize,

@@ -5,7 +5,9 @@ use super::{
     },
     LocalOnlyIconState, SettingsSection, ToggleState,
 };
-use crate::{appearance::Appearance, auth::AuthStateProvider, drive::settings::CognixDriveSettings};
+use crate::{
+    appearance::Appearance, auth::AuthStateProvider, drive::settings::CognixDriveSettings,
+};
 use cognix_core::{features::FeatureFlag, report_if_error, settings::ToggleableSetting as _};
 use cognixui::{
     elements::{Container, Element, Flex, MouseStateHandle, ParentElement, Shrinkable, Text},

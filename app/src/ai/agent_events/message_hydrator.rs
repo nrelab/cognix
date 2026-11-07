@@ -3,9 +3,9 @@ use std::time::Duration;
 
 use anyhow::{anyhow, Context, Result};
 #[cfg(not(target_family = "wasm"))]
-use futures::future::Either;
-#[cfg(not(target_family = "wasm"))]
 use cognixui::r#async::Timer;
+#[cfg(not(target_family = "wasm"))]
+use futures::future::Either;
 
 use crate::ai::agent::ReceivedMessageInput;
 use crate::server::server_api::ai::{AIClient, AgentRunEvent, ReadAgentMessageResponse};

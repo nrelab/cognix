@@ -1,5 +1,7 @@
 use chrono::Utc;
 #[cfg(feature = "local_fs")]
+use cognixui::ModelHandle;
+#[cfg(feature = "local_fs")]
 use repo_metadata::Repository;
 use std::{
     collections::HashSet,
@@ -7,8 +9,6 @@ use std::{
     path::{Path, PathBuf},
     time::Duration,
 };
-#[cfg(feature = "local_fs")]
-use cognixui::ModelHandle;
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {

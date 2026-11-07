@@ -1,9 +1,9 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::{
     appearance::Appearance,
     color::{contrast::MinimumAllowedContrast, ContrastingColor},
     theme::Fill,
 };
+use pathfinder_color::ColorU;
 
 use super::DriveObjectType;
 use crate::ui_components::blended_colors;

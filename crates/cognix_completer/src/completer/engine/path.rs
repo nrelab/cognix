@@ -1,12 +1,12 @@
 use std::fmt::{Display, Formatter};
 use std::fs::DirEntry;
 
+use cognix_command_signatures::{IconType, PathSuggestionType};
+use cognix_util::path::HOME_DIR_ENV_VAR_PREFIX;
 use itertools::{iproduct, Itertools};
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use typed_path::{TypedPath, TypedPathBuf};
-use cognix_command_signatures::{IconType, PathSuggestionType};
-use cognix_util::path::HOME_DIR_ENV_VAR_PREFIX;
 
 use crate::completer::suggest::Priority;
 use crate::completer::{

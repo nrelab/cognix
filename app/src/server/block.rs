@@ -4,8 +4,8 @@ use crate::terminal::model::{
     ObfuscateSecrets,
 };
 use chrono::{DateTime, FixedOffset, Utc};
-use serde::{Deserialize, Serialize};
 use cognix_graphql::mutations::share_block::DisplaySetting as GqlDisplaySetting;
+use serde::{Deserialize, Serialize};
 
 // These are pixel heights of various parts of an embedded block.
 pub const TITLE_HEIGHT: u32 = 34;

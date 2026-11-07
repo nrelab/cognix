@@ -25,10 +25,6 @@ use crate::workspace::TabBarDropTargetData;
 
 use super::header_content::{HeaderContent, HeaderRenderContext, StandardHeaderOptions};
 
-use pathfinder_geometry::{
-    rect::RectF,
-    vector::{vec2f, Vector2F},
-};
 use cognix_core::{features::FeatureFlag, settings::Setting};
 use cognixui::{
     elements::{
@@ -41,6 +37,10 @@ use cognixui::{
     presenter::ChildView,
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
+};
+use pathfinder_geometry::{
+    rect::RectF,
+    vector::{vec2f, Vector2F},
 };
 
 use super::PaneDropTargetData;

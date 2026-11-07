@@ -7,10 +7,10 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 #[cfg(feature = "local_tty")]
-use settings::Setting as _;
-#[cfg(feature = "local_tty")]
 use cognixui::{AppContext, ModelContext};
 use cognixui::{Entity, SingletonEntity};
+#[cfg(feature = "local_tty")]
+use settings::Setting as _;
 
 #[cfg(feature = "local_tty")]
 use crate::util::path::file_exists_and_is_executable;

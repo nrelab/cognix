@@ -1,7 +1,7 @@
 use crate::{send_telemetry_from_ctx, server::telemetry::TelemetryEvent};
-use itertools::Itertools as _;
 use cognixui::{Entity, ModelContext, SingletonEntity};
 use cognixui_extras::user_preferences::registry_backed::KEY_NOT_FOUND_ERR;
+use itertools::Itertools as _;
 use windows_registry::CURRENT_USER;
 use windows_result::Error as WindowsError;
 

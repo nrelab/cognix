@@ -1,4 +1,3 @@
-use futures::Future;
 use cognixui::{
     elements::{Align, Flex, Hoverable, MouseStateHandle, ParentElement, SavePosition, Shrinkable},
     presenter::ChildView,
@@ -6,6 +5,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use futures::Future;
 
 use crate::{
     ai::{document::ai_document_model::AIDocumentId, facts::CloudAIFactModel},
@@ -604,7 +604,11 @@ impl DrivePanel {
     }
 
     /// This functions scrolls the relevant Cognix Drive item into view.
-    pub fn scroll_item_into_view(&mut self, item_id: CognixDriveItemId, ctx: &mut ViewContext<Self>) {
+    pub fn scroll_item_into_view(
+        &mut self,
+        item_id: CognixDriveItemId,
+        ctx: &mut ViewContext<Self>,
+    ) {
         self.index_view.update(ctx, |index, ctx| {
             index.scroll_item_into_view(item_id, ctx);
         })

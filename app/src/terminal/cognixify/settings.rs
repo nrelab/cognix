@@ -1,4 +1,7 @@
 use anyhow::Result;
+use cognix_util::path::ShellFamily;
+use cognixui::{AppContext, ModelContext};
+use cognixui::{Entity, SingletonEntity};
 use lazy_static::lazy_static;
 use regex::Regex;
 use settings::{
@@ -6,9 +9,6 @@ use settings::{
     ChangeEventReason, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
 use strum_macros::EnumIter;
-use cognix_util::path::ShellFamily;
-use cognixui::{AppContext, ModelContext};
-use cognixui::{Entity, SingletonEntity};
 
 use crate::terminal::ssh::util::{parse_interactive_ssh_command, SshCognixifyCommand};
 

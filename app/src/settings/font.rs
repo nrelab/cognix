@@ -1,10 +1,10 @@
 use cognix_core::ui::builder::MIN_FONT_SIZE;
 use cognixui::{fonts::Weight, rendering::ThinStrokes, AppContext, SingletonEntity};
 
+use cognixui::elements::DEFAULT_UI_LINE_HEIGHT_RATIO;
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
-use cognixui::elements::DEFAULT_UI_LINE_HEIGHT_RATIO;
 
 use super::EnforceMinimumContrast as EnforceMinimumContrastEnum;
 

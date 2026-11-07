@@ -2,13 +2,6 @@
 
 use ai::LLMId;
 use anyhow::Result;
-use onboarding::slides::OnboardingModelInfo;
-use onboarding::{
-    AgentOnboardingEvent, AgentOnboardingView, MockTelemetryContextProvider, SelectedSettings,
-};
-use pathfinder_color::ColorU;
-use rust_embed::RustEmbed;
-use std::borrow::Cow;
 use cognix_core::ui::icons::Icon;
 use cognix_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, Image, TerminalColors};
 use cognix_core::ui::{appearance::Appearance, theme::CognixTheme};
@@ -24,6 +17,13 @@ use cognixui::{
     AddWindowOptions, AppContext, AssetProvider, Element, Entity, SingletonEntity as _,
     TypedActionView, View, ViewContext, ViewHandle,
 };
+use onboarding::slides::OnboardingModelInfo;
+use onboarding::{
+    AgentOnboardingEvent, AgentOnboardingView, MockTelemetryContextProvider, SelectedSettings,
+};
+use pathfinder_color::ColorU;
+use rust_embed::RustEmbed;
+use std::borrow::Cow;
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "../../app/assets"]

@@ -3,9 +3,9 @@ use std::sync::Arc;
 
 use ai::diff_validation::{DiffDelta, ParsedDiff, V4AHunk};
 use async_io::block_on;
+use cognixui::App;
 use tempfile::NamedTempFile;
 use vec1::vec1;
-use cognixui::App;
 
 use crate::ai::agent::{AIIdentifiers, FileEdit};
 use crate::ai::blocklist::SessionContext;

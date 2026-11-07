@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::{
     Border, ConstrainedBox, Container, CornerRadius, Expanded, Flex, MainAxisAlignment,
@@ -7,6 +6,7 @@ use cognixui::elements::{
 use cognixui::prelude::{Align, CrossAxisAlignment};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, SingletonEntity as _};
+use pathfinder_color::ColorU;
 
 use crate::ai::llms::LLMSpec;
 use crate::appearance::Appearance;

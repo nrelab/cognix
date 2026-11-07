@@ -2,14 +2,14 @@
 
 use std::path::{Path, PathBuf};
 
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::theme::{AnsiColorIdentifier, Fill};
 use cognix_core::ui::Icon;
 use cognixui::elements::{ConstrainedBox, Container, Highlight, Text};
 use cognixui::fonts::{Properties, Weight};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::appearance::Appearance;
 use crate::search::result_renderer::ItemHighlightState;

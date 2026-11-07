@@ -4,8 +4,6 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use chrono::Utc;
-use itertools::Itertools as _;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::{
@@ -21,6 +19,8 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView,
     ViewContext, ViewHandle,
 };
+use itertools::Itertools as _;
+use pathfinder_geometry::vector::vec2f;
 
 use super::super::palette_styles as styles;
 use crate::appearance::Appearance;
@@ -34,7 +34,7 @@ use crate::search::binding_source::BindingSource;
 use crate::search::command_palette::conversations::{self};
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
 use crate::search::command_palette::new_session::{AllowedSessionKinds, NewSessionDataSource};
-use crate::search::command_palette::{launch_config, cognix_drive, CommandPaletteMixer};
+use crate::search::command_palette::{cognix_drive, launch_config, CommandPaletteMixer};
 use crate::search::command_search::projects::project_data_source::ProjectDataSource;
 use crate::search::command_search::projects::{ProjectSearchItem, SuggestedProjectsDataSource};
 use crate::search::data_source::QueryResult;

@@ -2,13 +2,13 @@ use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 use std::sync::Arc;
 
+use cognix_core::features::FeatureFlag;
+use cognixui::scene::DropShadow;
+use cognixui::ui_components::button::ButtonVariant;
 use fuzzy_match::match_indices_case_insensitive;
 use lazy_static::lazy_static;
 use pathfinder_color::ColorU;
 use siphasher::sip::SipHasher;
-use cognix_core::features::FeatureFlag;
-use cognixui::scene::DropShadow;
-use cognixui::ui_components::button::ButtonVariant;
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::agent_conversations_model::{
@@ -63,8 +63,6 @@ use crate::workspace::{ForkedConversationDestination, ToastStack};
 use crate::workspace::{RestoreConversationLayout, WorkspaceAction};
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{send_telemetry_from_ctx, AgentModeEntrypoint};
-use pathfinder_geometry::vector::vec2f;
-use settings::Setting;
 use cognix_cli::agent::Harness;
 use cognix_core::ui::icons::Icon;
 use cognix_core::ui::theme::color::internal_colors;
@@ -88,6 +86,8 @@ use cognixui::{
     keymap::FixedBinding, Action, AppContext, Entity, FocusContext, ModelHandle, SingletonEntity,
     TypedActionView, View, ViewContext, ViewHandle, WeakViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
+use settings::Setting;
 
 lazy_static! {
     static ref HASHER: SipHasher = SipHasher::new_with_keys(0, 0);

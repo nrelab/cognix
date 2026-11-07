@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognixui::{
     elements::{Align, Container},
     presenter::ChildView,
@@ -8,6 +7,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 /// Renders a center-aligned slider component against a black background. When the slider is
 /// dragged, the updated value is printed to stdout.

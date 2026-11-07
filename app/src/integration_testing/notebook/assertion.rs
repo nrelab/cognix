@@ -1,11 +1,11 @@
-use itertools::Itertools;
-use string_offset::CharOffset;
 use cognix_editor::render::model::BlockItem;
 use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionCallback, AssertionOutcome, AssertionWithDataCallback},
     App, ViewHandle,
 };
+use itertools::Itertools;
+use string_offset::CharOffset;
 
 use crate::{
     cloud_object::model::{generic_string_model::GenericStringObjectId, persistence::CloudModel},

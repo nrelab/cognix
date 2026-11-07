@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use lazy_static::lazy_static;
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::Wrap;
@@ -11,6 +10,7 @@ use cognixui::{
     platform::Cursor,
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use lazy_static::lazy_static;
 
 use crate::appearance::Appearance;
 use crate::drive::settings::{CognixDriveSettings, CognixDriveSettingsChangedEvent};

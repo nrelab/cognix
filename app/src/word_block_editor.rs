@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
     elements::{
@@ -10,6 +9,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 use crate::{
     appearance::Appearance,

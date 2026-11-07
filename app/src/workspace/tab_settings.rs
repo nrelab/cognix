@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 use std::path::Path;
 
+use cognix_core::ui::theme::AnsiColorIdentifier;
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, SupportedPlatforms, SyncToCloud,
 };
-use cognix_core::ui::theme::AnsiColorIdentifier;
 
 #[derive(
     Default,

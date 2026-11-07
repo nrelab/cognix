@@ -1,12 +1,12 @@
 use std::{cell::RefCell, collections::HashMap};
 
-use settings::{Setting, ToggleableSetting};
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     elements::{Flex, MouseStateHandle, ParentElement},
     ui_components::{components::UiComponent, switch::SwitchStateHandle},
     Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use settings::{Setting, ToggleableSetting};
 
 use crate::{
     appearance::Appearance,
@@ -154,7 +154,10 @@ impl ExternalEditorView {
 
         let mut items = vec![default_app];
 
-        items.push(DropdownItem::new("Cognix", make_action(EditorChoice::Cognix)));
+        items.push(DropdownItem::new(
+            "Cognix",
+            make_action(EditorChoice::Cognix),
+        ));
         if FeatureFlag::AllowOpeningFileLinksUsingEditorEnv.is_enabled() {
             items.push(DropdownItem::new(
                 "$EDITOR",

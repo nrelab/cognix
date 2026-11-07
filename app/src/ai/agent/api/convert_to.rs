@@ -487,7 +487,9 @@ impl From<UserQueryMode> for cognix_multi_agent_api::UserQueryMode {
                 r#type: Some(cognix_multi_agent_api::user_query_mode::Type::Plan(())),
             },
             UserQueryMode::Orchestrate => cognix_multi_agent_api::UserQueryMode {
-                r#type: Some(cognix_multi_agent_api::user_query_mode::Type::Orchestrate(())),
+                r#type: Some(cognix_multi_agent_api::user_query_mode::Type::Orchestrate(
+                    (),
+                )),
             },
         }
     }

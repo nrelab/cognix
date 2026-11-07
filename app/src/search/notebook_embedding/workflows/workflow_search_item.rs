@@ -1,4 +1,3 @@
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{
         Clipped, ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, MainAxisAlignment,
@@ -8,6 +7,7 @@ use cognixui::{
     ui_components::components::{Coords, UiComponent, UiComponentStyles},
     AppContext, Element, SingletonEntity,
 };
+use ordered_float::OrderedFloat;
 
 use crate::search::result_renderer::ItemHighlightState;
 use crate::{

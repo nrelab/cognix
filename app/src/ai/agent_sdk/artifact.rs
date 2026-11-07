@@ -1,13 +1,13 @@
 use std::{path::PathBuf, sync::Arc};
 
 use anyhow::{Context, Result};
-use serde::Serialize;
 use cognix_cli::agent::OutputFormat;
 use cognix_cli::artifact::{
     ArtifactCommand, DownloadArtifactArgs, GetArtifactArgs, UploadArtifactArgs,
 };
 use cognix_cli::GlobalOptions;
 use cognixui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
+use serde::Serialize;
 
 use crate::ai::artifact_download::{download_artifact_bytes, download_destination};
 #[cfg(test)]

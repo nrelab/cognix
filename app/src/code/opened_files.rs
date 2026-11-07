@@ -3,8 +3,8 @@
 
 use std::{collections::HashMap, path::PathBuf};
 
-use instant::Instant;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use instant::Instant;
 
 #[derive(Default, Clone)]
 pub struct OpenedFilesInRepo(HashMap<PathBuf, Instant>);

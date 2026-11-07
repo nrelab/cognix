@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use futures_lite::future::yield_now;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::fonts::FamilyId;
 use cognixui::{AppContext, SingletonEntity};
+use futures_lite::future::yield_now;
+use ordered_float::OrderedFloat;
 
 use crate::cloud_object::model::persistence::CloudModel;
 use crate::cloud_object::CloudObject;

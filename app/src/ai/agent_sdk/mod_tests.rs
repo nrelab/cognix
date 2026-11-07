@@ -1,10 +1,10 @@
-use serde_json::json;
 use cognix_cli::{
     artifact::{ArtifactCommand, DownloadArtifactArgs, GetArtifactArgs, UploadArtifactArgs},
     task::{MessageCommand, MessageSendArgs, MessageWatchArgs, TaskCommand},
     CliCommand,
 };
 use cognix_core::telemetry::TelemetryEvent;
+use serde_json::json;
 
 use super::{command_requires_auth, command_to_telemetry_event};
 

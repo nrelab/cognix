@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::settings::{AISettings, InputSettings, TerminalSpacing};
+use cognixui::{units::Pixels, AppContext, SingletonEntity};
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, SupportedPlatforms, SyncToCloud,
 };
-use cognixui::{units::Pixels, AppContext, SingletonEntity};
 
 #[derive(
     Clone,

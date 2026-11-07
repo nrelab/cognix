@@ -10,8 +10,6 @@ use crate::themes::theme::PromptColors;
 use crate::{appearance::Appearance, terminal::model::blockgrid::BlockGrid};
 use settings::Setting as _;
 
-use std::fmt;
-use std::num::NonZeroUsize;
 use cognix_core::semantic_selection::SemanticSelection;
 use cognixui::elements::{DispatchEventResult, SelectionHandle};
 use cognixui::ModelAsRef;
@@ -21,6 +19,8 @@ use cognixui::{
     presenter::ChildView,
     AppContext, EntityId, ModelHandle, SingletonEntity, ViewHandle,
 };
+use std::fmt;
+use std::num::NonZeroUsize;
 
 use super::input::InputRenderStateModel;
 use super::model::block::Block;

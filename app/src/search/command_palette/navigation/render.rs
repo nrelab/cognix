@@ -16,7 +16,6 @@ use crate::terminal::model::blockgrid::BlockGrid;
 use crate::terminal::model::grid::Dimensions;
 use crate::terminal::safe_mode_settings::get_secret_obfuscation_mode;
 use crate::terminal::SizeInfo;
-use pathfinder_geometry::vector::vec2f;
 use cognixui::elements::{
     Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Highlight,
     ParentElement, Radius, Shrinkable, Wrap,
@@ -25,6 +24,7 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::units::IntoPixels;
 use cognixui::{AppContext, Element, SingletonEntity};
+use pathfinder_geometry::vector::vec2f;
 
 /// Renders a navigation session.
 pub fn render_navigation_session(

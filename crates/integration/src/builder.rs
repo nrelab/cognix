@@ -1,14 +1,14 @@
 use crate::util::{set_zsh_histfile_location, write_rc_files_for_test, ShellRcType};
-use std::collections::HashMap;
-use std::future::Future;
-use std::path::PathBuf;
-use std::pin::Pin;
-use std::time::Duration;
 use cognixui::integration::{self, PersistedDataMap, TestStep};
 use cognixui::integration::{TestDriver, TestSetupUtils};
 use cognixui::{App, WindowId};
 use cognixui_extras::user_preferences::file_backed::FileBackedUserPreferences;
 use cognixui_extras::user_preferences::UserPreferences;
+use std::collections::HashMap;
+use std::future::Future;
+use std::path::PathBuf;
+use std::pin::Pin;
+use std::time::Duration;
 
 // We have logic in our build script to pass the path of the cargo target
 // tmp directory to our app. This needs to be done as a build script because

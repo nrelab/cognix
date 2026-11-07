@@ -51,17 +51,12 @@ use crate::workspace::{
 };
 use languages::language_by_filename;
 
-use pathfinder_color::ColorU;
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use settings::Setting as _;
-use std::path::{Path, PathBuf};
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::telemetry::TelemetryEvent as _;
 use cognix_core::ui::color::blend::Blend;
 use cognix_core::ui::color::coloru_with_opacity;
 use cognix_core::ui::theme::color::internal_colors;
-use cognix_core::ui::theme::{AnsiColorIdentifier, Fill as CognixThemeFill, CognixTheme};
+use cognix_core::ui::theme::{AnsiColorIdentifier, CognixTheme, Fill as CognixThemeFill};
 use cognix_core::ui::Icon as CognixIcon;
 use cognixui::elements::DispatchEventResult;
 use cognixui::elements::{
@@ -80,6 +75,11 @@ use cognixui::text_layout::ClipConfig;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::ui_components::text_input::TextInput;
 use cognixui::{AppContext, EntityId, SingletonEntity, ViewHandle, WindowId};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use settings::Setting as _;
+use std::path::{Path, PathBuf};
 
 const PANEL_WIDTH: f32 = 248.;
 const MIN_PANEL_WIDTH: f32 = 200.;
@@ -2090,10 +2090,14 @@ fn render_group_action_buttons(
 
     let kebab_button = Hoverable::new(kebab_mouse_state, move |button_state| {
         let mut container = Container::new(
-            ConstrainedBox::new(CognixIcon::DotsVertical.to_cognixui_icon(meta_color).finish())
-                .with_width(GROUP_ACTION_BUTTON_ICON_SIZE)
-                .with_height(GROUP_ACTION_BUTTON_ICON_SIZE)
-                .finish(),
+            ConstrainedBox::new(
+                CognixIcon::DotsVertical
+                    .to_cognixui_icon(meta_color)
+                    .finish(),
+            )
+            .with_width(GROUP_ACTION_BUTTON_ICON_SIZE)
+            .with_height(GROUP_ACTION_BUTTON_ICON_SIZE)
+            .finish(),
         )
         .with_padding(Padding::uniform(GROUP_ACTION_BUTTON_PADDING))
         .with_corner_radius(CornerRadius::with_all(Radius::Pixels(4.)));
@@ -5244,10 +5248,13 @@ fn render_detail_status_pill(
             .with_cross_axis_alignment(CrossAxisAlignment::Center)
             .with_spacing(4.)
             .with_child(
-                ConstrainedBox::new(icon.to_cognixui_icon(CognixThemeFill::Solid(color)).finish())
-                    .with_width(12.)
-                    .with_height(12.)
-                    .finish(),
+                ConstrainedBox::new(
+                    icon.to_cognixui_icon(CognixThemeFill::Solid(color))
+                        .finish(),
+                )
+                .with_width(12.)
+                .with_height(12.)
+                .finish(),
             )
             .with_child(
                 Text::new_inline(status.to_string(), appearance.ui_font_family(), 10.)
@@ -5602,7 +5609,9 @@ fn render_detail_section(
         | TypedPane::Workflow { .. }
         | TypedPane::EnvVarCollection
         | TypedPane::AIFact
-        | TypedPane::AIDocument => render_cognix_drive_object_detail_section(props, appearance, app),
+        | TypedPane::AIDocument => {
+            render_cognix_drive_object_detail_section(props, appearance, app)
+        }
         TypedPane::CodeDiff
         | TypedPane::File
         | TypedPane::Settings

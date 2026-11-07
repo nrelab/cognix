@@ -1,10 +1,10 @@
 use std::ops::Range;
 
+use cognix_core::ui::theme::Fill;
+use cognixui::{Entity, ModelContext, ModelHandle, r#async::SpawnedFutureHandle};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use pathfinder_color::ColorU;
-use cognix_core::ui::theme::Fill;
-use cognixui::{Entity, ModelContext, ModelHandle, r#async::SpawnedFutureHandle};
 
 use crate::{
     content::{

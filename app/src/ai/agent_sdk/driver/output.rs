@@ -1288,8 +1288,8 @@ pub mod json {
 
 use crate::ai::agent::{AIAgentText, AIAgentTextSection};
 use crate::code::editor_management::CodeSource;
-use std::io::{self, BufWriter, Write};
 use cognix_core::channel::ChannelState;
+use std::io::{self, BufWriter, Write};
 
 /// Constructs the Oz dashboard URL for a given run ID.
 fn run_url(run_id: &str) -> String {

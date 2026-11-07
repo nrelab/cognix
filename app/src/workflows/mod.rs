@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use serde::{Deserialize, Serialize};
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::features::FeatureFlag;
 use cognixui::{AppContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
 
 pub mod categories;
 use anyhow::Result;

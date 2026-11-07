@@ -1,13 +1,13 @@
 use std::{future::Future, path::PathBuf, pin::Pin};
 
 use async_channel::Sender;
+use cognix_util::standardized_path::StandardizedPath;
+use cognixui::{ModelContext, SingletonEntity, WeakModelHandle};
 use lsp_types::FileChangeType;
 use repo_metadata::{
     repository::{RepositorySubscriber, SubscriberId},
     DirectoryWatcher, Repository, RepositoryUpdate,
 };
-use cognix_util::standardized_path::StandardizedPath;
-use cognixui::{ModelContext, SingletonEntity, WeakModelHandle};
 
 use crate::{model::LspServerModel, types::WatchedFileChangeEvent, LspServerConfig};
 

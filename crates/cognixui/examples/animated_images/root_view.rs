@@ -1,4 +1,3 @@
-use instant::Instant;
 use cognixui::{
     assets::asset_cache::AssetSource,
     elements::{
@@ -7,6 +6,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, TypedActionView, View,
 };
+use instant::Instant;
 
 pub struct RootView {
     animation_start_time: Instant,

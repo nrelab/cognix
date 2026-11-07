@@ -3,13 +3,13 @@ use crate::search::ai_context_menu::styles;
 use crate::search::ai_context_menu::{mixer::AIContextMenuSearchableAction, safe_truncate};
 use crate::search::item::{IconLocation, SearchItem};
 use crate::search::result_renderer::ItemHighlightState;
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognixui::elements::{
     ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, Icon, ParentElement, Text,
 };
 use cognixui::fonts::{Properties, Weight};
 use cognixui::{AppContext, Element, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 // Import CodeSymbol from the data_source module
 use super::data_source::CodeSymbol;

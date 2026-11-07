@@ -1,10 +1,10 @@
 use super::*;
 use crate::editor::EditorView;
+use cognixui::platform::WindowStyle;
+use cognixui::{App, ViewHandle};
 use itertools::Itertools;
 use std::collections::HashSet;
 use unindent::Unindent;
-use cognixui::platform::WindowStyle;
-use cognixui::{App, ViewHandle};
 
 /// Helper function for testing vim mode commands.
 /// This creates an editor with the given content and enters Vim Normal mode,

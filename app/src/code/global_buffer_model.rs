@@ -5,10 +5,6 @@ use std::rc::Rc;
 
 use bimap::BiMap;
 
-use futures_util::stream::AbortHandle;
-use lsp::types::TextDocumentContentChangeEvent;
-use lsp::{LspManagerModel, LspServerLogLevel, LspServerModel};
-use vec1::vec1;
 use cognix_core::features::FeatureFlag;
 use cognix_editor::content::buffer::Buffer;
 use cognix_editor::content::diff::{text_diff, TextDiff};
@@ -17,6 +13,10 @@ use cognix_editor::content::version::BufferVersion;
 use cognix_util::content_version::ContentVersion;
 use cognix_util::file::{FileId, FileLoadError, FileSaveError};
 use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
+use futures_util::stream::AbortHandle;
+use lsp::types::TextDocumentContentChangeEvent;
+use lsp::{LspManagerModel, LspServerLogLevel, LspServerModel};
+use vec1::vec1;
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {

@@ -2,9 +2,9 @@
 
 use std::ops::Range;
 
+use cognixui::text::TextBuffer;
 use itertools::Itertools;
 use string_offset::CharOffset;
-use cognixui::text::TextBuffer;
 
 use crate::{
     vim::{BracketChar, BracketEnd, BracketType},

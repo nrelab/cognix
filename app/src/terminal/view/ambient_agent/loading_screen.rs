@@ -1,6 +1,5 @@
 //! Loading screen UI for cloud mode initialization.
 
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::AnsiColorIdentifier;
 use cognix_core::ui::Icon;
@@ -17,6 +16,7 @@ use cognixui::text_layout::TextAlignment;
 use cognixui::ui_components::button::ButtonVariant;
 use cognixui::ui_components::components::UiComponent;
 use cognixui::{AppContext, ModelHandle, SingletonEntity};
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::ai::agent_tips::{AITip, AITipModel};
 use crate::ai::loading::shimmering_cognix_loading_text;

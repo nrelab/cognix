@@ -10,14 +10,6 @@ use crate::terminal::model::session::Sessions;
 use crate::terminal::{History, HistoryEntry, TerminalModel};
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use chrono::Utc;
-use futures::stream::AbortHandle;
-use itertools::Itertools;
-#[cfg_attr(not(feature = "local_fs"), allow(unused_imports))]
-use parking_lot::{FairMutex, Mutex};
-use std::collections::HashMap;
-use std::sync::Arc;
-#[cfg(feature = "local_fs")]
-use std::time::Duration;
 use cognix_completer::completer::{
     self, expand_command_aliases, AliasExpansionResult, CompleterOptions,
     CompletionsFallbackStrategy, MatchStrategy,
@@ -29,6 +21,14 @@ use cognix_core::features::FeatureFlag;
 #[cfg(feature = "local_fs")]
 use cognixui::r#async::FutureExt;
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use futures::stream::AbortHandle;
+use itertools::Itertools;
+#[cfg_attr(not(feature = "local_fs"), allow(unused_imports))]
+use parking_lot::{FairMutex, Mutex};
+use std::collections::HashMap;
+use std::sync::Arc;
+#[cfg(feature = "local_fs")]
+use std::time::Duration;
 
 use super::generate_ai_input_suggestions::{
     create_generate_ai_input_suggestions_request, get_context_messages,

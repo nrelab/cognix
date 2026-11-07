@@ -5,14 +5,14 @@ use super::{
     workspace::{
         AIAutonomyPolicy, AddonCreditsSettings, AdminEnablementSetting, AiAutonomySettings,
         AiPermissionsSettings, AmbientAgentsPolicy, BillingMetadata,
-        CloudConversationStorageSettings, CodebaseContextSettings, CustomerType, DelinquencyStatus,
-        EmailInvite, EnterpriseSecretRegex, HostEnablementSetting, InstanceShape,
-        InviteLinkDomainRestriction, LinkSharingSettings, LlmSettings, SandboxedAgentSettings,
-        SecretRedactionSettings, SessionSharingPolicy, SharedNotebooksPolicy,
-        SharedWorkflowsPolicy, TelemetryDataCollectionPolicy, TelemetrySettings, Tier,
-        UgcCollectionEnablementSetting, UgcCollectionSettings, UgcDataCollectionPolicy,
-        UsageBasedPricingPolicy, CognixAiPolicy, Workspace, WorkspaceInviteCode, WorkspaceMember,
-        WorkspaceMemberUsageInfo, WorkspaceSettings, WorkspaceSizePolicy,
+        CloudConversationStorageSettings, CodebaseContextSettings, CognixAiPolicy, CustomerType,
+        DelinquencyStatus, EmailInvite, EnterpriseSecretRegex, HostEnablementSetting,
+        InstanceShape, InviteLinkDomainRestriction, LinkSharingSettings, LlmSettings,
+        SandboxedAgentSettings, SecretRedactionSettings, SessionSharingPolicy,
+        SharedNotebooksPolicy, SharedWorkflowsPolicy, TelemetryDataCollectionPolicy,
+        TelemetrySettings, Tier, UgcCollectionEnablementSetting, UgcCollectionSettings,
+        UgcDataCollectionPolicy, UsageBasedPricingPolicy, Workspace, WorkspaceInviteCode,
+        WorkspaceMember, WorkspaceMemberUsageInfo, WorkspaceSettings, WorkspaceSizePolicy,
     },
 };
 use crate::{
@@ -42,15 +42,14 @@ use crate::{
     server::cloud_objects::listener::ObjectUpdateMessage,
 };
 use anyhow::{anyhow, bail};
-use regex::Regex;
-use std::path::PathBuf;
 use cognix_graphql::workspace::AddonCreditsSettings as GqlAddonCreditsSettings;
 use cognix_graphql::{
     billing::{
         AiAutonomyPolicy as GqlAiAutonomyPolicy, AmbientAgentsPolicy as GqlAmbientAgentsPolicy,
         BillingMetadata as GqlBillingMetadata, BonusGrant as GqlBonusGrant,
         ByoApiKeyPolicy as GqlByoApiKeyPolicy, CodebaseContextPolicy as GqlCodebaseContextPolicy,
-        CustomerType as GqlCustomerType, DelinquencyStatus as GqlDelinquencyStatus,
+        CognixAiPolicy as GqlCognixAiPolicy, CustomerType as GqlCustomerType,
+        DelinquencyStatus as GqlDelinquencyStatus,
         EnterpriseCreditsAutoReloadPolicy as GqlEnterpriseCreditsAutoReloadPolicy,
         EnterprisePayAsYouGoPolicy as GqlEnterprisePayAsYouGoPolicy,
         InstanceShape as GqlInstanceShape, MultiAdminPolicy as GqlMultiAdminPolicy,
@@ -61,7 +60,7 @@ use cognix_graphql::{
         TeamSizePolicy as GqlTeamSizePolicy,
         TelemetryDataCollectionPolicy as GqlTelemetryDataCollectionPolicy, Tier as GqlTier,
         UgcDataCollectionPolicy as GqlUgcDataCollectionPolicy,
-        UsageBasedPricingPolicy as GqlUsageBasedPricingPolicy, CognixAiPolicy as GqlCognixAiPolicy,
+        UsageBasedPricingPolicy as GqlUsageBasedPricingPolicy,
     },
     object::CloudObjectWithDescendants,
     queries::{
@@ -83,6 +82,8 @@ use cognix_graphql::{
         WriteToPtyAutonomyValue as GqlWriteToPtyAutonomyValue,
     },
 };
+use regex::Regex;
+use std::path::PathBuf;
 
 pub const PLACEHOLDER_WORKSPACE_UID: &str = "NOT_A_REAL_WORKSPACE_UID";
 
@@ -1078,7 +1079,9 @@ impl TryFrom<cognix_graphql::workflow::Workflow> for ServerWorkflow {
     }
 }
 
-impl TryFrom<cognix_graphql::generic_string_object::GenericStringObject> for ServerEnvVarCollection {
+impl TryFrom<cognix_graphql::generic_string_object::GenericStringObject>
+    for ServerEnvVarCollection
+{
     type Error = anyhow::Error;
 
     fn try_from(
@@ -1219,7 +1222,9 @@ impl TryFrom<cognix_graphql::generic_string_object::GenericStringObject>
     }
 }
 
-impl TryFrom<cognix_graphql::generic_string_object::GenericStringObject> for ServerCloudAgentConfig {
+impl TryFrom<cognix_graphql::generic_string_object::GenericStringObject>
+    for ServerCloudAgentConfig
+{
     type Error = anyhow::Error;
 
     fn try_from(

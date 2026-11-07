@@ -4,8 +4,8 @@ use futures::Future;
 
 use ai::skills::{read_skills, ParsedSkill, SKILL_PROVIDER_DEFINITIONS};
 use async_channel::Sender;
-use repo_metadata::{repository::RepositorySubscriber, Repository, RepositoryUpdate};
 use cognixui::ModelContext;
+use repo_metadata::{repository::RepositorySubscriber, Repository, RepositoryUpdate};
 
 /// Messages sent from [`RepositorySubscriber`]s to [`SkillManager`].
 pub enum SkillRepositoryMessage {

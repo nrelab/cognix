@@ -44,6 +44,7 @@ pub use block_visibility::*;
 pub use changelog::*;
 pub use cloud_preferences::*;
 pub use code::*;
+use cognix_core::user_preferences::GetUserPreferences as _;
 pub use debug::*;
 pub use editor::*;
 pub use emacs_bindings::*;
@@ -64,7 +65,6 @@ pub use select::*;
 pub use ssh::*;
 pub use theme::*;
 pub use vim_banner::*;
-use cognix_core::user_preferences::GetUserPreferences as _;
 
 /// Describes errors encountered when loading settings from `settings.toml`.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -118,8 +118,13 @@ impl SettingsFileError {
 use crate::{
     root_view::QuakeModePinPosition,
     terminal::{BlockListSettings, BlockPadding},
-    themes::theme::{ThemeKind, CognixTheme},
+    themes::theme::{CognixTheme, ThemeKind},
     user_config::CognixConfig,
+};
+use cognix_core::features::FeatureFlag;
+use cognixui::{
+    elements::DEFAULT_UI_LINE_HEIGHT_RATIO, keymap::Keystroke, AppContext, DisplayIdx,
+    SingletonEntity,
 };
 use lazy_static::lazy_static;
 use pathfinder_geometry::{rect::RectF, vector::Vector2F};
@@ -127,11 +132,6 @@ use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use settings::Setting as _;
 use std::{collections::HashMap, ops::Mul, path::PathBuf};
-use cognix_core::features::FeatureFlag;
-use cognixui::{
-    elements::DEFAULT_UI_LINE_HEIGHT_RATIO, keymap::Keystroke, AppContext, DisplayIdx,
-    SingletonEntity,
-};
 
 // The following are user preferences keys.
 pub const CHANGELOG_VERSIONS: &str = "ChangelogVersions";

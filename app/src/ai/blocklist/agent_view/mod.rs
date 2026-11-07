@@ -13,19 +13,19 @@ mod zero_state_block;
 pub use agent_input_footer::*;
 pub use agent_message_bar::*;
 pub use agent_view_block::*;
+use cognixui::fonts::Properties;
 pub use controller::*;
 pub use ephemeral_message_model::*;
 pub use inline_agent_view_header::*;
-use cognixui::fonts::Properties;
 pub use zero_state_block::*;
 
 use std::sync::LazyLock;
 
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::{appearance::Appearance, color::blend::Blend};
 use cognixui::keymap::Keystroke;
 use cognixui::{AppContext, SingletonEntity};
+use pathfinder_color::ColorU;
 
 use crate::view_components::action_button::ActionButtonTheme;
 

@@ -1,5 +1,4 @@
 use crate::input_suggestions::AIQueryHistoryEntryDetails;
-use std::{borrow::Cow, ops::Sub};
 use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, Icon, ParentElement, Shrinkable,
@@ -7,6 +6,7 @@ use cognixui::{
     ui_components::components::{Coords, UiComponent, UiComponentStyles},
     AppContext, Element, SingletonEntity,
 };
+use std::{borrow::Cow, ops::Sub};
 
 use super::HistoryEntry;
 use crate::{

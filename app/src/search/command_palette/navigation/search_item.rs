@@ -8,9 +8,9 @@ use crate::search::item::IconLocation;
 use crate::search::result_renderer::ItemHighlightState;
 use crate::session_management::SessionNavigationData;
 use crate::ui_components::icons::Icon;
-use ordered_float::OrderedFloat;
 use cognixui::elements::Container;
 use cognixui::{AppContext, Element, SingletonEntity};
+use ordered_float::OrderedFloat;
 
 /// Search item to render a session within the command palette.
 pub struct SearchItem {

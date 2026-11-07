@@ -8,12 +8,12 @@ use std::collections::HashMap;
 use std::path::Path;
 
 use ai::skills::SkillProvider;
+use cognix_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
 use enum_iterator::Sequence;
 use markdown_parser::parse_markdown;
 use pathfinder_color::ColorU;
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
-use cognix_editor::content::{buffer::Buffer, markdown::MarkdownStyle};
 
 use cognixui::{AppContext, SingletonEntity};
 

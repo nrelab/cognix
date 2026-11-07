@@ -1,7 +1,7 @@
 //! The "legacy" implementation of internal command parsing logic that depends on the legacy:
 //! command signature struct (`cognix_command_signatures::Signature`).
-use itertools::Itertools;
 use cognix_command_signatures::{DynamicCompletionData, IsArgumentOptional, Opt, Signature};
+use itertools::Itertools;
 
 use crate::{
     completer::TopLevelCommandCaseSensitivity,

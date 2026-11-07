@@ -4,7 +4,6 @@ use std::{
     sync::Arc,
 };
 
-use pathfinder_geometry::vector::vec2f;
 use cognix_util::path::user_friendly_path;
 #[cfg(feature = "local_fs")]
 use cognixui::clipboard::ClipboardContent;
@@ -24,6 +23,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 #[cfg(feature = "local_fs")]
 use crate::notebooks::post_process_notebook;

@@ -1,16 +1,16 @@
 use std::{path::PathBuf, sync::Arc};
 
-use pathfinder_color::ColorU;
-use serde::Serialize;
-use strum_macros::EnumIter;
 use cognix_core::ui::{
     color::hex_color::HexColorError as UiHexColorError,
     theme::{AnsiColors, CognixTheme},
 };
+use pathfinder_color::ColorU;
+use serde::Serialize;
+use strum_macros::EnumIter;
 
 use async_trait::async_trait;
-use thiserror::Error;
 use cognixui::{fonts::FontInfo, keymap::Keystroke, DisplayIdx};
+use thiserror::Error;
 
 use crate::{
     interval_timer::IntervalTimer,
@@ -29,7 +29,10 @@ use super::iterm_parser::ITermProfile;
 
 #[derive(Debug)]
 pub enum ThemeType {
-    LightAndDark { light: CognixTheme, dark: CognixTheme },
+    LightAndDark {
+        light: CognixTheme,
+        dark: CognixTheme,
+    },
     Single(CognixTheme),
 }
 

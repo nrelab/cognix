@@ -2,6 +2,7 @@ use crate::ai::aws_credentials::AwsCredentialRefresher as _;
 use crate::ai::llms::{LLMPreferences, LLMPreferencesEvent};
 use crate::auth::auth_state::AuthState;
 use crate::auth::AuthStateProvider;
+use crate::terminal::cognixify::settings::CognixifySettings;
 use crate::terminal::model::terminal_model::ExitReason;
 use crate::terminal::shared_session::replay_agent_conversations::reconstruct_response_events_from_conversations;
 use crate::terminal::shared_session::shared_handlers::{
@@ -10,7 +11,6 @@ use crate::terminal::shared_session::shared_handlers::{
     build_selected_conversation_update, RemoteUpdateGuard,
 };
 use crate::terminal::shell::ShellName;
-use crate::terminal::cognixify::settings::CognixifySettings;
 use crate::terminal::TerminalManager as _;
 use anyhow::Context as _;
 use async_broadcast::InactiveReceiver;
@@ -40,6 +40,8 @@ use pathfinder_geometry::vector::Vector2F;
 use crate::terminal::cli_agent_sessions::{
     CLIAgentInputState, CLIAgentSessionsModel, CLIAgentSessionsModelEvent,
 };
+use cognixui::r#async::executor::Background;
+use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 use session_sharing_protocol::common::{
     ActivePrompt, AgentPromptFailureReason, CLIAgentSessionState, CommandExecutionFailureReason,
     ControlAction, ControlActionFailureReason, SelectedAgentModel,
@@ -50,8 +52,6 @@ use session_sharing_protocol::common::{
     LongRunningCommandAgentInteractionState, SelectedConversation, UniversalDeveloperInputContext,
 };
 use settings::Setting as _;
-use cognixui::r#async::executor::Background;
-use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 
 use cognix_core::execution_mode::AppExecutionMode;
 

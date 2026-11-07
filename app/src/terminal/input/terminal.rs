@@ -298,8 +298,8 @@ impl Input {
 }
 
 pub mod styles {
-    use pathfinder_color::ColorU;
     use cognix_core::ui::theme::CognixTheme;
+    use pathfinder_color::ColorU;
 
     pub fn default_border_color(theme: &CognixTheme) -> ColorU {
         theme.outline().into()

@@ -1,9 +1,5 @@
 use super::default_themes::*;
 use anyhow::Result;
-use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::iter::FromIterator;
-use std::path::PathBuf;
 use cognix_core::ui::color::pick_foreground_color;
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::{
@@ -14,6 +10,10 @@ use cognixui::{
     },
     fonts::FamilyId,
 };
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+use std::iter::FromIterator;
+use std::path::PathBuf;
 
 use super::theme_creator::{pick_accent_color_from_options, top_colors_for_image};
 

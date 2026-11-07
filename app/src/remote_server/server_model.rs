@@ -1,16 +1,16 @@
 use crate::terminal::shell::ShellType;
-use repo_metadata::repositories::{DetectedRepositories, RepoDetectionSource};
-use repo_metadata::{RepoMetadataEvent, RepoMetadataModel, RepositoryIdentifier};
-use std::collections::{HashMap, HashSet};
-use std::future::Future;
-use std::path::{Path, PathBuf};
-use std::sync::Arc;
 use cognix_core::channel::ChannelState;
 use cognix_core::SessionId;
 use cognix_util::standardized_path::StandardizedPath;
 use cognixui::platform::TerminationMode;
 use cognixui::r#async::{Spawnable, SpawnableOutput, SpawnedFutureHandle};
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use repo_metadata::repositories::{DetectedRepositories, RepoDetectionSource};
+use repo_metadata::{RepoMetadataEvent, RepoMetadataModel, RepositoryIdentifier};
+use std::collections::{HashMap, HashSet};
+use std::future::Future;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use cognix_files::{FileModel, FileModelEvent};
 use cognix_util::content_version::ContentVersion;

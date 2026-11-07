@@ -9,12 +9,12 @@ use crate::workspaces::workspace::WorkspaceUid;
 use crate::BlocklistAIHistoryModel;
 use ai::api_keys::ApiKeyManager;
 use chrono::{DateTime, Utc};
-use instant::Instant;
-use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 use cognix_core::user_preferences::GetUserPreferences as _;
 use cognix_graphql::scalars::time::ServerTimestamp;
 use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
+use instant::Instant;
+use serde::{Deserialize, Serialize};
+use std::sync::Arc;
 
 pub use cognix_graphql::billing::BonusGrantType;
 

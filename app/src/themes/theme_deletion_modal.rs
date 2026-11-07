@@ -1,7 +1,6 @@
 use crate::modal::Modal;
 use crate::themes::theme::ThemeKind;
 use crate::themes::theme_deletion_body::{ThemeDeletionBody, ThemeDeletionBodyEvent};
-use std::default::Default;
 use cognixui::fonts::Weight;
 use cognixui::keymap::FixedBinding;
 use cognixui::presenter::ChildView;
@@ -9,6 +8,7 @@ use cognixui::ui_components::components::{Coords, UiComponentStyles};
 use cognixui::AppContext;
 use cognixui::ViewHandle;
 use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
+use std::default::Default;
 
 const THEME_DELETION_MODAL_HEADER: &str = "Are you sure you want to delete this theme?";
 

@@ -6,9 +6,9 @@ use crate::search::command_palette::mixer::CommandPaletteItemAction;
 use crate::search::command_palette::render_util::render_search_item_icon;
 use crate::search::result_renderer::ItemHighlightState;
 
+use cognixui::{AppContext, Element, SingletonEntity};
 use ordered_float::OrderedFloat;
 use std::sync::Arc;
-use cognixui::{AppContext, Element, SingletonEntity};
 
 /// SearchItem for a matching [`LaunchConfig`].
 #[derive(Debug)]

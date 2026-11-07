@@ -3,9 +3,6 @@
 use std::{collections::HashMap, str::FromStr, sync::Arc};
 
 use chrono::{DateTime, Duration, Local};
-use instant::Instant;
-use parking_lot::RwLock;
-use pathfinder_color::ColorU;
 use cognix_cli::agent::Harness;
 use cognix_cli::skill::SkillSpec;
 use cognix_core::channel::ChannelState;
@@ -26,6 +23,9 @@ use cognixui::{
     ui_components::components::UiComponent,
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use instant::Instant;
+use parking_lot::RwLock;
+use pathfinder_color::ColorU;
 
 use crate::ai::agent::api::ServerConversationToken;
 #[cfg(target_family = "wasm")]

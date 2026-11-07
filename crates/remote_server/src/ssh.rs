@@ -3,8 +3,8 @@ use std::process::Output;
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
-use command::r#async::Command;
 use cognixui::r#async::FutureExt as _;
+use command::r#async::Command;
 
 /// Timeout for `ssh -O exit`. The command only talks to the local
 /// ControlMaster over a Unix socket, so it should return almost

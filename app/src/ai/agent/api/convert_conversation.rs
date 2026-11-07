@@ -39,12 +39,12 @@ use ai::agent::action_result::{
 };
 use ai::skills::ParsedSkill;
 use chrono::{DateTime, Local, TimeZone};
-use persistence::model::AgentConversationData;
-use std::collections::{HashMap, HashSet};
-use std::sync::Arc;
 use cognix_core::command::ExitCode;
 use cognix_multi_agent_api as api;
 use cognix_multi_agent_api::ask_user_question_result::answer_item::Answer as AskUserQuestionAnswer;
+use persistence::model::AgentConversationData;
+use std::collections::{HashMap, HashSet};
+use std::sync::Arc;
 
 use crate::ai::agent::conversation::ServerAIConversationMetadata;
 use crate::ai::agent::UserQueryMode;
@@ -1479,28 +1479,28 @@ pub(crate) fn convert_tool_call_result_to_input(
         }
         Some(ToolCallResultType::AskUserQuestion(result)) => {
             let ask_result = match &result.result {
-                Some(cognix_multi_agent_api::ask_user_question_result::Result::Success(success)) => {
-                    AskUserQuestionResult::Success {
-                        answers: success
-                            .answers
-                            .iter()
-                            .map(|a| match &a.answer {
-                                Some(AskUserQuestionAnswer::MultipleChoice(mc)) => {
-                                    AskUserQuestionAnswerItem::Answered {
-                                        question_id: a.question_id.clone(),
-                                        selected_options: mc.selected_options.clone(),
-                                        other_text: mc.other_text.clone(),
-                                    }
+                Some(cognix_multi_agent_api::ask_user_question_result::Result::Success(
+                    success,
+                )) => AskUserQuestionResult::Success {
+                    answers: success
+                        .answers
+                        .iter()
+                        .map(|a| match &a.answer {
+                            Some(AskUserQuestionAnswer::MultipleChoice(mc)) => {
+                                AskUserQuestionAnswerItem::Answered {
+                                    question_id: a.question_id.clone(),
+                                    selected_options: mc.selected_options.clone(),
+                                    other_text: mc.other_text.clone(),
                                 }
-                                Some(AskUserQuestionAnswer::Skipped(())) | None => {
-                                    AskUserQuestionAnswerItem::Skipped {
-                                        question_id: a.question_id.clone(),
-                                    }
+                            }
+                            Some(AskUserQuestionAnswer::Skipped(())) | None => {
+                                AskUserQuestionAnswerItem::Skipped {
+                                    question_id: a.question_id.clone(),
                                 }
-                            })
-                            .collect(),
-                    }
-                }
+                            }
+                        })
+                        .collect(),
+                },
                 Some(cognix_multi_agent_api::ask_user_question_result::Result::Error(err)) => {
                     AskUserQuestionResult::Error(err.message.clone())
                 }

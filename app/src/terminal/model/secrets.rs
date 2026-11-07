@@ -3,6 +3,8 @@
 use crate::ai::blocklist::TextLocation;
 use crate::terminal::model::index::Point;
 use anyhow::anyhow;
+use cognixui::elements::SecretRange;
+use cognixui::EntityId;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use parking_lot::RwLock;
@@ -10,8 +12,6 @@ use rangemap::{RangeInclusiveMap, StepLite};
 use std::collections::HashMap;
 use std::ops::{Not, RangeInclusive};
 use std::sync::atomic::{AtomicUsize, Ordering};
-use cognixui::elements::SecretRange;
-use cognixui::EntityId;
 
 use super::grid::grid_handler::GridHandler;
 use super::grid::{Dimensions as _, RespectDisplayedOutput};

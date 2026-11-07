@@ -1,5 +1,5 @@
-use pathfinder_color::ColorU;
 use cognixui::fonts::Properties;
+use pathfinder_color::ColorU;
 
 use crate::context_chips::{ChipAvailability, ChipDisabledReason, ContextChipKind};
 

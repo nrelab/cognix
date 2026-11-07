@@ -1,6 +1,6 @@
-use ordered_float::OrderedFloat;
 use cognix_core::ui::theme::Fill;
 use cognixui::{Action, AppContext, Element};
+use ordered_float::OrderedFloat;
 
 use crate::appearance::Appearance;
 

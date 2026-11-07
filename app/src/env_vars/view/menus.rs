@@ -1,6 +1,6 @@
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::context_flag::ContextFlag;
 use cognixui::{keymap::Trigger, SingletonEntity, ViewContext, ViewHandle};
+use pathfinder_geometry::vector::Vector2F;
 
 use crate::{
     cloud_object::{CloudObject, GenericStringObjectFormat, Space},

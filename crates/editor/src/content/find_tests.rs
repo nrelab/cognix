@@ -1,10 +1,10 @@
 use std::{iter, pin::pin, sync::Once};
 
+use cognixui::App;
 use futures_lite::future;
 use itertools::Itertools;
 use rangemap::RangeSet;
 use sum_tree::SumTree;
-use cognixui::App;
 
 use crate::content::{
     buffer::Buffer,

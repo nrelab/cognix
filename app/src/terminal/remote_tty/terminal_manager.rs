@@ -17,11 +17,11 @@ use crate::terminal::model_events::ModelEventDispatcher;
 use crate::terminal::writeable_pty::{self, Message};
 use crate::terminal::{terminal_manager, SizeInfo, TerminalModel, TerminalView};
 use async_channel::{Receiver, Sender, TrySendError};
+use cognixui::{AppContext, ModelHandle, ViewHandle, WindowId};
 use parking_lot::FairMutex;
 use pathfinder_geometry::vector::Vector2F;
 use std::sync::mpsc::SyncSender;
 use std::sync::Arc;
-use cognixui::{AppContext, ModelHandle, ViewHandle, WindowId};
 
 type PtyController = writeable_pty::PtyController<Sender<Message>>;
 

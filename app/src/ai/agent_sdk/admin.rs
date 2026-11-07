@@ -1,9 +1,9 @@
 //! General-purpose administrative commands in the Cognix CLI.
 
 use anyhow::{Context, Result};
-use serde::Serialize;
 use cognix_cli::agent::OutputFormat;
 use cognixui::{platform::TerminationMode, AppContext, SingletonEntity};
+use serde::Serialize;
 
 use crate::auth::auth_manager::{AuthManager, AuthManagerEvent};
 use crate::auth::user::PrincipalType;

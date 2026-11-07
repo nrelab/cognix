@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
+use cognix_editor::multiline::{MultilineStr, MultilineString};
 use rangemap::RangeMap;
 use unindent::Unindent as _;
-use cognix_editor::multiline::{MultilineStr, MultilineString};
 
 use crate::code::editor::diff::ChangeType;
 

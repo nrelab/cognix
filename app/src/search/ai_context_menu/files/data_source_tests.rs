@@ -9,6 +9,11 @@ use crate::search::{
     mixer::AsyncDataSource,
 };
 use crate::{terminal::model::session::Session, workspace::ActiveSession};
+use cognixui::platform::WindowStyle;
+use cognixui::r#async::block_on;
+use cognixui::windowing::WindowManager;
+use cognixui::SingletonEntity;
+use cognixui::{elements::Empty, App, AppContext, Element, Entity, TypedActionView, View};
 use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::RepoMetadataModel;
 use std::collections::HashMap;
@@ -17,11 +22,6 @@ use std::fs;
 use std::path::PathBuf;
 use std::sync::Arc;
 use tempfile::tempdir;
-use cognixui::platform::WindowStyle;
-use cognixui::r#async::block_on;
-use cognixui::windowing::WindowManager;
-use cognixui::SingletonEntity;
-use cognixui::{elements::Empty, App, AppContext, Element, Entity, TypedActionView, View};
 struct TestView;
 
 impl Entity for TestView {

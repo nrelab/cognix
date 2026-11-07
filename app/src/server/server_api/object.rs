@@ -45,10 +45,6 @@ use anyhow::{anyhow, Context, Result};
 use async_channel::Sender;
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
-use cynic::{MutationBuilder, QueryBuilder, SubscriptionBuilder};
-#[cfg(test)]
-use mockall::{automock, predicate::*};
-use std::collections::HashMap;
 use cognix_core::report_error;
 use cognix_graphql::{
     error::UserFacingErrorInterface,
@@ -154,6 +150,10 @@ use cognix_graphql::{
         get_cognix_drive_updates::GetCognixDriveUpdates, start_graphql_streaming_operation,
     },
 };
+use cynic::{MutationBuilder, QueryBuilder, SubscriptionBuilder};
+#[cfg(test)]
+use mockall::{automock, predicate::*};
+use std::collections::HashMap;
 
 /// Identifies a guest to remove from an object.
 #[derive(Clone, Debug)]

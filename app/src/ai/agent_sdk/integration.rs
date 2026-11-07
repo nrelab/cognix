@@ -1,5 +1,4 @@
 use crate::server::server_api::ServerApiProvider;
-use futures::future;
 use cognix_cli::{
     integration::{CreateIntegrationArgs, IntegrationCommand, UpdateIntegrationArgs},
     provider::ProviderType,
@@ -9,6 +8,7 @@ use cognix_graphql::mutations::create_simple_integration::CreateSimpleIntegratio
 use cognix_graphql::queries::get_oauth_connect_tx_status::OauthConnectTxStatus;
 use cognix_graphql::queries::get_simple_integrations::SimpleIntegrationsOutput;
 use cognixui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
+use futures::future;
 
 use super::common::{EnvironmentChoice, ResolveConfigurationError};
 use super::integration_output;

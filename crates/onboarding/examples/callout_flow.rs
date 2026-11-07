@@ -1,14 +1,6 @@
 use anyhow::Result;
-use onboarding::callout::{
-    OnboardingCalloutView, OnboardingCalloutViewEvent, OnboardingKeybindings,
-};
-use onboarding::OnboardingIntention;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use rust_embed::RustEmbed;
-use std::borrow::Cow;
 use cognix_core::ui::appearance::Appearance;
-use cognix_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, TerminalColors, CognixTheme};
+use cognix_core::ui::theme::{AnsiColor, AnsiColors, CognixTheme, Details, Fill, TerminalColors};
 use cognixui::fonts::{Cache, FamilyId, Weight};
 use cognixui::platform;
 use cognixui::prelude::CrossAxisAlignment;
@@ -22,6 +14,14 @@ use cognixui::{
     AddWindowOptions, AppContext, AssetProvider, Element, Entity, SingletonEntity as _,
     TypedActionView, View, ViewContext, ViewHandle,
 };
+use onboarding::callout::{
+    OnboardingCalloutView, OnboardingCalloutViewEvent, OnboardingKeybindings,
+};
+use onboarding::OnboardingIntention;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use rust_embed::RustEmbed;
+use std::borrow::Cow;
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "../../app/assets"]

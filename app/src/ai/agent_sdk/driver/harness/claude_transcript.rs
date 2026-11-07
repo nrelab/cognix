@@ -19,10 +19,10 @@ use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
+use cognix_core::safe_warn;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
-use cognix_core::safe_warn;
 
 use crate::ai::agent::conversation::AIConversationId;
 

@@ -1,6 +1,5 @@
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
-use pathfinder_geometry::vector::vec2f;
 use cognixui::{
     elements::{Hoverable, MainAxisAlignment, MainAxisSize, MouseStateHandle},
     ui_components::{
@@ -8,6 +7,7 @@ use cognixui::{
         components::{Coords, UiComponent, UiComponentStyles},
     },
 };
+use pathfinder_geometry::vector::vec2f;
 
 use super::{
     settings_page::{MatchData, NAV_ITEM_LEFT_MARGIN},

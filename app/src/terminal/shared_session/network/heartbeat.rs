@@ -1,7 +1,7 @@
-use futures::stream::AbortHandle;
-use std::time::Duration;
 use cognixui::r#async::Timer;
 use cognixui::{Entity, ModelContext};
+use futures::stream::AbortHandle;
+use std::time::Duration;
 
 const DEFAULT_PING_FREQUENCY: Duration = Duration::from_secs(5);
 const DEFAULT_IDLE_TIMEOUT: Duration = Duration::from_secs(30);

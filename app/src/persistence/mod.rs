@@ -27,12 +27,12 @@ use std::thread::JoinHandle;
 use crate::ai::persisted_workspace::EnablementState;
 use ai::project_context::model::ProjectRulePath;
 use chrono::{DateTime, Local, Utc};
-use lsp::supported_servers::LSPServerType;
-use uuid::Uuid;
 use cognix_core::command::ExitCode;
 use cognix_graphql::scalars::time::ServerTimestamp;
 use cognix_multi_agent_api as api;
 use cognixui::{AppContext, Entity, SingletonEntity};
+use lsp::supported_servers::LSPServerType;
+use uuid::Uuid;
 
 use crate::ai::blocklist::PersistedAIInput;
 use crate::ai::mcp::TemplatableMCPServerInstallation;

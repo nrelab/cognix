@@ -5,7 +5,6 @@ use crate::ai::blocklist::inline_action::inline_action_icons::icon_size;
 use crate::code::editor_management::CodeSource;
 use crate::search::files::icon::icon_from_file_path;
 use crate::search::ItemHighlightState;
-use std::iter;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{ChildView, HighlightedRange, MouseStateHandle};
 use cognixui::{
@@ -17,6 +16,7 @@ use cognixui::{
     AppContext, Element, SingletonEntity,
 };
 use cognixui::{EventContext, ViewHandle};
+use std::iter;
 
 use crate::code::editor::view::CodeEditorView;
 use crate::ui_components::blended_colors;

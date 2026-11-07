@@ -1,8 +1,8 @@
-use serde::{Deserialize, Serialize};
 use cognixui::{
     elements::MouseStateHandle, AppContext, EntityId, SingletonEntity, ViewContext, ViewHandle,
     WindowId,
 };
+use serde::{Deserialize, Serialize};
 
 use super::OneTimeModalModel;
 use crate::window_settings::WindowSettings;

@@ -9,7 +9,6 @@ use crate::{
     settings::Settings,
     themes::theme::{Blend, Fill as FillTheme},
 };
-use pathfinder_geometry::vector::vec2f;
 use cognixui::{
     elements::{
         Align, ClippedScrollStateHandle, ClippedScrollable, Container, CornerRadius, Element,
@@ -25,6 +24,7 @@ use cognixui::{
     AppContext, Entity, EntityId, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle, WindowId,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::{appearance::Appearance, workspace::WorkspaceAction};
 

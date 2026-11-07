@@ -2,9 +2,9 @@ use std::marker::PhantomData;
 
 use anyhow::{anyhow, Result};
 use chrono::{Local, TimeDelta};
+use cognixui::{AppContext, SingletonEntity, View, ViewContext};
 use history_model::{BlocklistAIHistoryEvent, BlocklistAIHistoryModel};
 use session_sharing_protocol::common::ParticipantId;
-use cognixui::{AppContext, SingletonEntity, View, ViewContext};
 
 use crate::ai::{
     agent::{

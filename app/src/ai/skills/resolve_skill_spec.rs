@@ -16,11 +16,11 @@ use std::path::{Path, PathBuf};
 use ai::skills::{
     home_skills_path, parse_skill, ParsedSkill, SkillProvider, SKILL_PROVIDER_DEFINITIONS,
 };
-use command::blocking::Command;
-use command::r#async::Command as AsyncCommand;
 use cognix_cli::skill::SkillSpec;
 use cognixui::AppContext;
 use cognixui::SingletonEntity as _;
+use command::blocking::Command;
+use command::r#async::Command as AsyncCommand;
 
 use super::SkillManager;
 use crate::cognix_managed_paths_watcher::cognix_managed_skill_dirs;

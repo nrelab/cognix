@@ -26,18 +26,19 @@ use crate::{
 };
 
 use async_trait::async_trait;
-use itertools::Itertools;
-use ordered_float::OrderedFloat;
-use serde_json::json;
-use std::{any::Any, sync::Arc};
 use cognix_core::ui::builder;
 use cognixui::{
     elements::{ConstrainedBox, Container, Text},
     AppContext, Element, SingletonEntity,
 };
+use itertools::Itertools;
+use ordered_float::OrderedFloat;
+use serde_json::json;
+use std::{any::Any, sync::Arc};
 
 const OPEN_COGNIX_AI_ITEM_BODY_TEXT: &str = "Ask Cognix AI for command suggestions";
-const TRANSLATE_WITH_COGNIX_AI_ITEM_BODY_TEXT: &str = "Translate into shell command using Cognix AI";
+const TRANSLATE_WITH_COGNIX_AI_ITEM_BODY_TEXT: &str =
+    "Translate into shell command using Cognix AI";
 
 #[derive(Clone, Debug)]
 pub enum CognixAISearchItem {

@@ -552,7 +552,8 @@ async fn generate_suggestions_for_argument_value(
     match argument_value {
         ArgumentValue::Suggestion(suggestion) => {
             let cognix_suggestion: Suggestion = suggestion.clone().into();
-            match matcher.get_match_type(parsed_token.as_str(), cognix_suggestion.display.as_str()) {
+            match matcher.get_match_type(parsed_token.as_str(), cognix_suggestion.display.as_str())
+            {
                 Some(match_type) => vec![MatchedSuggestion::new(cognix_suggestion, match_type)],
                 None => vec![],
             }

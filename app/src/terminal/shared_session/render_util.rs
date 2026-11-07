@@ -4,8 +4,6 @@ use crate::{
 };
 use cognixui::{elements::CornerRadius, fonts::Weight};
 
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognixui::{
     elements::{
         ChildAnchor, Fill, Hoverable, MouseStateHandle, OffsetPositioning, ParentAnchor,
@@ -14,6 +12,8 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, SingletonEntity,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use super::presence_manager::{Participant, MUTED_AVATAR_BORDER_COLOR, MUTED_PARTICIPANT_COLOR};
 

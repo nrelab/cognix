@@ -1,7 +1,7 @@
-use itertools::{Either, Itertools};
 use cognix_editor::editor::NavigationKey;
 use cognixui::elements::ConstrainedBox;
 use cognixui::FocusContext;
+use itertools::{Either, Itertools};
 
 use std::collections::HashSet;
 

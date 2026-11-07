@@ -7,12 +7,12 @@ use crate::terminal::shared_session::presence_manager::{PresenceManager, PRESET_
 use std::collections::{HashMap, HashSet};
 use std::iter;
 
+use cognix_core::command::ExitCode;
+use cognixui::App;
 use itertools::Itertools;
 use session_sharing_protocol::common::{
     ParticipantId, ParticipantInfo, ParticipantList, ProfileData, Role, Selection, Sharer, Viewer,
 };
-use cognix_core::command::ExitCode;
-use cognixui::App;
 
 #[test]
 fn test_choosing_preset_colors() {

@@ -1,6 +1,6 @@
+use cognixui_core::platform::CapturedFrame;
 use metal::{MTLPixelFormat, MTLStorageMode};
 use pathfinder_geometry::vector::Vector2F;
-use cognixui_core::platform::CapturedFrame;
 
 #[cfg(test)]
 #[path = "frame_capture_tests.rs"]

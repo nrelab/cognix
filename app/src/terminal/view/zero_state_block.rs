@@ -1,4 +1,3 @@
-use settings::Setting;
 use cognix_core::{report_if_error, ui::Icon};
 use cognixui::{
     elements::{
@@ -15,6 +14,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use settings::Setting;
 
 use crate::{
     ai::blocklist::agent_view::{

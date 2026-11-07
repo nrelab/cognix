@@ -1,12 +1,12 @@
 use crate::server::telemetry::CLIAgentType;
 use crate::view_components::find::FindDirection;
 use crate::{code_review::diff_state::DiffMode, features::FeatureFlag};
+use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 use serde::Serialize;
 use serde_json::json;
 use serde_with::SerializeDisplay;
 use std::fmt::Display;
 use strum_macros::{EnumDiscriminants, EnumIter};
-use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 /// Entry points for opening the code review pane.
 #[derive(Clone, Copy, Debug, SerializeDisplay, Default)]

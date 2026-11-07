@@ -2,9 +2,6 @@ use std::{borrow::Cow, fmt, str::FromStr};
 
 use anyhow::{Result, anyhow};
 use chrono::{DateTime, Utc};
-use derivative::Derivative;
-use pathfinder_geometry::vector::vec2f;
-use serde::{Deserialize, Serialize};
 use cognix_core::{
     features::FeatureFlag,
     ui::{Icon, appearance::Appearance, theme::Fill},
@@ -18,6 +15,9 @@ use cognixui_core::{
     },
     ui_components::components::UiComponent,
 };
+use derivative::Derivative;
+use pathfinder_geometry::vector::vec2f;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     auth::UserUid,
@@ -892,7 +892,9 @@ impl TryFrom<cognix_graphql::object_permissions::ObjectPermissions> for ServerPe
 impl TryFrom<cognix_graphql::object_permissions::ObjectGuest> for ServerObjectGuest {
     type Error = anyhow::Error;
 
-    fn try_from(value: cognix_graphql::object_permissions::ObjectGuest) -> Result<Self, Self::Error> {
+    fn try_from(
+        value: cognix_graphql::object_permissions::ObjectGuest,
+    ) -> Result<Self, Self::Error> {
         let object_guest = ServerObjectGuest {
             subject: value.subject.try_into()?,
             access_level: value.access_level,
@@ -936,7 +938,9 @@ impl TryFrom<cognix_graphql::object_permissions::GuestSubject> for ServerGuestSu
 impl TryFrom<cognix_graphql::object_permissions::LinkSharing> for ServerLinkSharing {
     type Error = anyhow::Error;
 
-    fn try_from(value: cognix_graphql::object_permissions::LinkSharing) -> Result<Self, Self::Error> {
+    fn try_from(
+        value: cognix_graphql::object_permissions::LinkSharing,
+    ) -> Result<Self, Self::Error> {
         Ok(ServerLinkSharing {
             access_level: value.access_level,
             source: value.source.map(TryInto::try_into).transpose()?,

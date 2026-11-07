@@ -1,16 +1,16 @@
 use crate::{
     settings::{
-        AISettings, AISettingsChangedEvent, InputSettings, InputSettingsChangedEvent,
-        CognixPromptSeparator,
+        AISettings, AISettingsChangedEvent, CognixPromptSeparator, InputSettings,
+        InputSettingsChangedEvent,
     },
     terminal::session_settings::{SessionSettings, SessionSettingsChangedEvent},
 };
 
 pub use super::ContextChipKind;
+use cognixui::{Entity, GetSingletonModelHandle, ModelContext, SingletonEntity, UpdateModel};
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use settings::Setting as _;
-use cognixui::{Entity, GetSingletonModelHandle, ModelContext, SingletonEntity, UpdateModel};
 
 #[cfg(test)]
 #[path = "prompt_tests.rs"]

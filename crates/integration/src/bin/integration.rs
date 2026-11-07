@@ -2,11 +2,11 @@ use std::{collections::HashMap, env};
 
 use anyhow::Result;
 use clap::Parser;
+use cognix_cli::WorkerCommand;
+use cognix_core::channel::{Channel, ChannelConfig, ChannelState, CognixServerConfig, OzConfig};
+use cognix_core::AppId;
 use integration::test::*;
 use integration::Builder;
-use cognix_cli::WorkerCommand;
-use cognix_core::channel::{Channel, ChannelConfig, ChannelState, OzConfig, CognixServerConfig};
-use cognix_core::AppId;
 
 /// The Cognix integration test runner.
 #[derive(Debug, Default, Parser, Clone)]

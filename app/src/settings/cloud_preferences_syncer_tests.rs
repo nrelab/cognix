@@ -1274,8 +1274,10 @@ async fn drain_sync_queue(app: &mut App) {
 /// syncer will compare against.
 fn write_settings_file_with_content(path: &std::path::Path, content: &str) -> String {
     std::fs::write(path, content).expect("write temp settings file");
-    cognixui_extras::user_preferences::toml_backed::TomlBackedUserPreferences::file_content_hash(path)
-        .expect("hash should be Some for non-empty file")
+    cognixui_extras::user_preferences::toml_backed::TomlBackedUserPreferences::file_content_hash(
+        path,
+    )
+    .expect("hash should be Some for non-empty file")
 }
 
 fn read_stored_hash(app: &App) -> Option<String> {

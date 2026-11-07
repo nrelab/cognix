@@ -5,8 +5,8 @@ mod resize;
 use std::cmp::min;
 use std::ops::{Index, IndexMut, Range};
 
-use serde::{Deserialize, Serialize};
 pub use cognix_terminal::model::grid::Dimensions;
+use serde::{Deserialize, Serialize};
 
 use crate::features::FeatureFlag;
 use crate::terminal::model::ansi::{CharsetIndex, StandardCharset};

@@ -1,8 +1,8 @@
 use super::*;
 use crate::editor::tests::{sample_text, RandomCharIter};
 use crate::editor::EditOrigin;
-use tests::buffer::RangesWhenEditing;
 use cognixui::App;
+use tests::buffer::RangesWhenEditing;
 
 #[test]
 fn test_basic_folds() -> Result<()> {

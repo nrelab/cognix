@@ -4,8 +4,8 @@
 //! dropdown, the conversation details sidebar, etc. — should source its label,
 //! icon, and brand color from here so the two surfaces cannot drift.
 
-use pathfinder_color::ColorU;
 use cognix_cli::agent::Harness;
+use pathfinder_color::ColorU;
 
 use crate::ai::agent::conversation::AIAgentHarness;
 use crate::ai::blocklist::CLAUDE_ORANGE;

@@ -1,9 +1,9 @@
 mod interaction_mode;
 mod serialized_block;
 
+use cognix_core::features::FeatureFlag;
 pub use interaction_mode::*;
 pub use serialized_block::*;
-use cognix_core::features::FeatureFlag;
 
 use super::grid::grid_handler::{GridHandler, PerformResetGridChecks};
 use super::grid::{Cursor, RespectDisplayedOutput};
@@ -50,15 +50,15 @@ use crate::{
 };
 
 use chrono::{DateTime, Duration, FixedOffset, Local};
-use hex;
-use instant::Instant;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::command::ExitCode;
 use cognix_terminal::model::grid::Dimensions as _;
 use cognix_util::path::user_friendly_path;
 use cognixui::units::{IntoLines, Lines};
 use cognixui::{r#async::executor::Background, record_trace_event};
+use hex;
+use instant::Instant;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::Vector2F;
 
 use enum_iterator::all;
 use lazy_static::lazy_static;
@@ -523,7 +523,9 @@ impl From<&Block> for BlockType {
 
         match block.bootstrap_stage() {
             BootstrapStage::RestoreBlocks => BlockType::Restored,
-            BootstrapStage::CognixInput | BootstrapStage::Bootstrapped => BlockType::BootstrapHidden,
+            BootstrapStage::CognixInput | BootstrapStage::Bootstrapped => {
+                BlockType::BootstrapHidden
+            }
             BootstrapStage::ScriptExecution => {
                 if block.is_empty(&AgentViewState::Inactive) {
                     BlockType::BootstrapHidden

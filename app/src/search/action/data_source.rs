@@ -1,7 +1,7 @@
+use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
 use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 use std::collections::HashMap;
 use std::sync::Arc;
-use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
 
 use crate::search::action::search_item::MatchedBinding;
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
@@ -193,10 +193,10 @@ mod full_text_searcher {
         SimpleFullTextSearcher, DEFAULT_MEMORY_BUDGET, SCORE_CONVERSION_FACTOR,
     };
     use crate::util::bindings::CommandBinding;
+    use cognixui::keymap::{BindingId, DescriptionContext};
     use fuzzy_match::FuzzyMatchResult;
     use std::collections::HashMap;
     use std::sync::Arc;
-    use cognixui::keymap::{BindingId, DescriptionContext};
 
     define_search_schema!(
         schema_name: ACTION_SEARCH_SCHEMA,

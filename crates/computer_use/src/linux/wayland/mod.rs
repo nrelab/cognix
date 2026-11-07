@@ -11,8 +11,8 @@ mod screenshot;
 mod session;
 
 use async_trait::async_trait;
-use pathfinder_geometry::vector::Vector2I;
 use cognixui::r#async::Timer;
+use pathfinder_geometry::vector::Vector2I;
 
 use crate::{Action, ActionResult, Options};
 

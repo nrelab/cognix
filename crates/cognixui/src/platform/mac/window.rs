@@ -12,19 +12,6 @@ use cocoa::{
     base::{id, nil},
     foundation::{NSAutoreleasePool, NSInteger, NSRect, NSSize},
 };
-use foreign_types::ForeignType;
-use itertools::Itertools;
-use num_traits::FromPrimitive;
-use objc::class;
-use objc::{
-    msg_send,
-    runtime::{Object, BOOL, NO, YES},
-    sel, sel_impl,
-};
-use pathfinder_geometry::{
-    rect::RectF,
-    vector::{vec2f, Vector2F},
-};
 use cognixui_core::event::ModifiersState;
 use cognixui_core::platform::{
     file_picker, FilePickerCallback, FilePickerConfiguration, FullscreenState, GraphicsBackend,
@@ -41,6 +28,19 @@ use cognixui_core::{
     Event, OptionalPlatformWindow, Scene, WindowId,
 };
 use cognixui_core::{DisplayId, DisplayIdx};
+use foreign_types::ForeignType;
+use itertools::Itertools;
+use num_traits::FromPrimitive;
+use objc::class;
+use objc::{
+    msg_send,
+    runtime::{Object, BOOL, NO, YES},
+    sel, sel_impl,
+};
+use pathfinder_geometry::{
+    rect::RectF,
+    vector::{vec2f, Vector2F},
+};
 
 use instant::Instant;
 use std::collections::HashMap;
@@ -437,8 +437,8 @@ extern "C" {
     fn get_frontmost_window() -> id;
     fn set_accessibility_contents(
         window: id,
-        value: id,    /* NSString */
-        help: id,     /* NSString */
+        value: id,      /* NSString */
+        help: id,       /* NSString */
         cognixRole: id, /* NSString */
         setFrame: BOOL,
         frame: NSRect,
@@ -1179,7 +1179,10 @@ impl WindowExt for &dyn platform::Window {
 }
 
 #[no_mangle]
-extern "C-unwind" fn cognix_view_did_change_backing_properties(this: &Object, async_callback: bool) {
+extern "C-unwind" fn cognix_view_did_change_backing_properties(
+    this: &Object,
+    async_callback: bool,
+) {
     let window;
     unsafe {
         window = get_window_state(this);
@@ -1342,10 +1345,9 @@ extern "C-unwind" fn cognix_update_layer(this: &Object) {
 
         // SAFETY: cognix_update_layer should only be invoked for windows
         // created via Window::open(), which always sets a non-None device.
-        let device = window
-            .device
-            .as_ref()
-            .expect("cognix_update_layer should not be called for a window that has no real display");
+        let device = window.device.as_ref().expect(
+            "cognix_update_layer should not be called for a window that has no real display",
+        );
         // SAFETY: cognix_update_layer is only invoked by the event loop,
         // which should never attempt to draw a window while it is already
         // being drawn.

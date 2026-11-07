@@ -9,8 +9,8 @@ use cognixui::{
     AppContext, Element, Entity, TypedActionView, View, ViewContext,
 };
 
-use std::sync::{Arc, Mutex};
 use cognixui::color::ColorU;
+use std::sync::{Arc, Mutex};
 
 pub struct RootView {
     font_family: FamilyId,

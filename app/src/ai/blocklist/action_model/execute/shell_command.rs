@@ -3,17 +3,17 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use bytes::Bytes;
+use cognix_core::command::ExitCode;
+use cognix_core::execution_mode::AppExecutionMode;
+use cognix_util::path::ShellFamily;
+use cognixui::r#async::{Spawnable, Timer};
+use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 use futures::channel::oneshot;
 use futures::future::BoxFuture;
 use futures::{select, FutureExt};
 use futures_lite::pin;
 use itertools::Itertools;
 use parking_lot::FairMutex;
-use cognix_core::command::ExitCode;
-use cognix_core::execution_mode::AppExecutionMode;
-use cognix_util::path::ShellFamily;
-use cognixui::r#async::{Spawnable, Timer};
-use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::agent::{
     AIAgentActionId, AIAgentActionType, AIAgentPtyWriteMode, ReadShellCommandOutputResult,

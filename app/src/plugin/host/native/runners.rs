@@ -4,10 +4,10 @@ use std::{
 };
 
 use async_channel::Receiver;
-use futures::channel::oneshot;
-use parking_lot::Mutex;
 use cognix_js::JsFunctionId;
 use cognixui::r#async::executor::Background;
+use futures::channel::oneshot;
+use parking_lot::Mutex;
 
 use super::{
     plugin::{AppServiceCallers, PluginRequest, PluginResponse},

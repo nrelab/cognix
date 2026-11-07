@@ -1,20 +1,20 @@
 use super::MCPProvider;
 use super::{FileMCPWatcher, FileMCPWatcherEvent};
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 use itertools::Itertools as _;
 use repo_metadata::repositories::DetectedRepositories;
 use std::collections::{hash_map::Entry, HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use uuid::Uuid;
-use cognix_core::features::FeatureFlag;
-use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::{
     ai::mcp::{
         templatable_installation::TemplatableMCPServerInstallation,
         ParsedTemplatableMCPServerResult,
     },
-    settings::{ai::AISettings, AISettingsChangedEvent},
     cognix_managed_paths_watcher::cognix_data_dir,
+    settings::{ai::AISettings, AISettingsChangedEvent},
 };
 
 /// Singleton model to manage file-based MCP servers.

@@ -1,7 +1,7 @@
-use comfy_table::Cell;
-use serde::Serialize;
 use cognix_cli::{mcp::MCPCommand, GlobalOptions};
 use cognixui::{AppContext, ModelContext, SingletonEntity};
+use comfy_table::Cell;
+use serde::Serialize;
 
 use crate::ai::agent_sdk::output::{self, TableFormat};
 use crate::ai::mcp::TemplatableMCPServerManager;

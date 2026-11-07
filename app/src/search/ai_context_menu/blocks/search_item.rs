@@ -5,14 +5,14 @@ use crate::search::item::SearchItem;
 use crate::search::result_renderer::ItemHighlightState;
 use crate::terminal::model::block::BlockId;
 use crate::util::truncation::truncate_from_end;
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognixui::elements::Highlight;
 use cognixui::fonts::{Properties, Weight};
 use cognixui::{
     elements::{ConstrainedBox, Container, CrossAxisAlignment, Flex, Icon, ParentElement, Text},
     AppContext, Element, SingletonEntity,
 };
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use chrono::{DateTime, Local};
 use cognix_core::command::ExitCode;

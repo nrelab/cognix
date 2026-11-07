@@ -1,11 +1,11 @@
 use crate::{LogFileWriter, SimpleLogger};
+use cognixui::r#async::executor::Background;
+use cognixui::{Entity, SingletonEntity};
 use std::collections::{HashMap, HashSet};
 use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Weak};
 use thiserror::Error;
-use cognixui::r#async::executor::Background;
-use cognixui::{Entity, SingletonEntity};
 
 #[derive(Error, Debug)]
 pub enum LogManagerError {
@@ -36,7 +36,8 @@ pub fn resolve_log_path(namespace: &str, relative_path: impl AsRef<Path>) -> Pat
 
 /// Returns the base log directory for a given namespace name.
 fn log_directory_path(namespace: &str) -> PathBuf {
-    let base_dir = cognix_core::paths::secure_state_dir().unwrap_or_else(cognix_core::paths::state_dir);
+    let base_dir =
+        cognix_core::paths::secure_state_dir().unwrap_or_else(cognix_core::paths::state_dir);
     if cfg!(windows) {
         base_dir
             .join(cognix_core::paths::COGNIX_LOGS_DIR)

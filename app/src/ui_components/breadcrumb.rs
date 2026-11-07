@@ -1,6 +1,5 @@
 use std::fmt::Debug;
 
-use itertools::{Itertools, Position};
 use cognixui::{
     elements::{
         CrossAxisAlignment, Flex, Hoverable, MainAxisSize, MouseStateHandle, ParentElement,
@@ -9,6 +8,7 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, EventContext,
 };
+use itertools::{Itertools, Position};
 
 use crate::appearance::Appearance;
 

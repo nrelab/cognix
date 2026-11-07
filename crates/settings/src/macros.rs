@@ -824,8 +824,8 @@ macro_rules! generate_settings_event_fn {
                      ),
             ) {
                 use anyhow::anyhow;
-                use serde_json;
                 use cognixui::SingletonEntity;
+                use serde_json;
                 use $crate::Setting as _;
                 use $crate::manager::{SettingsEvent, SettingsManager};
                 SettingsManager::handle(ctx).update(ctx, |manager, ctx| {

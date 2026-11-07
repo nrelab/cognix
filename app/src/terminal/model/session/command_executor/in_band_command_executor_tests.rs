@@ -1,5 +1,5 @@
-use futures_util::future::{AbortHandle, Abortable, Aborted};
 use cognixui::App;
+use futures_util::future::{AbortHandle, Abortable, Aborted};
 
 use crate::terminal::model::session::ExecuteCommandOptions;
 

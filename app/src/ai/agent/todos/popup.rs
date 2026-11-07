@@ -1,5 +1,4 @@
 use crate::ai::blocklist::{BlocklistAIContextEvent, BlocklistAIContextModel};
-use pathfinder_color::ColorU;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
@@ -18,6 +17,7 @@ use cognixui::{
     keymap::FixedBinding,
     AppContext, Element, Entity, EntityId, TypedActionView, View, ViewContext,
 };
+use pathfinder_color::ColorU;
 
 use crate::ai::agent::icons::{in_progress_icon, pending_icon, succeeded_icon};
 use crate::ai::agent::todos::AIAgentTodoList;

@@ -1,8 +1,5 @@
 use std::path::PathBuf;
 
-use markdown_parser::{
-    FormattedText, FormattedTextFragment, FormattedTextLine, FormattedTextStyles, Hyperlink,
-};
 use cognixui::elements::{
     Align, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex,
     FormattedTextElement, MainAxisAlignment, MainAxisSize, MouseStateHandle, ParentElement, Radius,
@@ -18,9 +15,12 @@ use cognixui::{
     AppContext, Element, Entity, EventContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use markdown_parser::{
+    FormattedText, FormattedTextFragment, FormattedTextLine, FormattedTextStyles, Hyperlink,
+};
 
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
+use pathfinder_color::ColorU;
 
 use crate::appearance::Appearance;
 use crate::settings::AISettings;
@@ -472,7 +472,8 @@ impl HoaOnboardingFlow {
             styles: FormattedTextStyles {
                 underline: true,
                 hyperlink: Some(Hyperlink::Url(
-                    "https://docs.cognix.dev/agent-platform/cognix-agents/agent-notifications".into(),
+                    "https://docs.cognix.dev/agent-platform/cognix-agents/agent-notifications"
+                        .into(),
                 )),
                 ..Default::default()
             },

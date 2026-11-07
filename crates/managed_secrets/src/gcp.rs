@@ -6,10 +6,10 @@ use std::{
     time::Duration,
 };
 
+use cognix_core::safe_debug;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use tempfile::NamedTempFile;
-use cognix_core::safe_debug;
 
 use crate::client::TaskIdentityToken;
 

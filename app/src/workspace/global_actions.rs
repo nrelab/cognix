@@ -14,10 +14,10 @@ use crate::root_view::OpenPath;
 use crate::undo_close::UndoCloseStack;
 use crate::workspace::{Workspace, WorkspaceAction};
 use crate::GlobalResourceHandlesProvider;
-use std::path::PathBuf;
 use cognix_graphql::mutations::create_anonymous_user::AnonymousUserType;
 use cognixui::windowing::WindowManager;
 use cognixui::{AppContext, SingletonEntity, TypedActionView};
+use std::path::PathBuf;
 
 /// Specifies where a forked conversation should be opened.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]

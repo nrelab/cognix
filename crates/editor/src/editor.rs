@@ -3,13 +3,13 @@
 
 use std::{any::Any, cell::Ref, ops::Range};
 
-use num_traits::SaturatingSub;
-use pathfinder_color::ColorU;
-use rangemap::{RangeMap, RangeSet};
 use cognixui::{
     Action, AppContext, Element, TypedActionView, View, elements::Border,
     text_layout::PaintStyleOverride,
 };
+use num_traits::SaturatingSub;
+use pathfinder_color::ColorU;
+use rangemap::{RangeMap, RangeSet};
 
 use crate::{content::version::BufferVersion, render::element::RichTextAction};
 use string_offset::CharOffset;

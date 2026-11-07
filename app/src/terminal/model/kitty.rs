@@ -1,5 +1,11 @@
 use anyhow::Result;
 use base64::Engine;
+use cognixui::image_cache::{resize_dimensions, FitType};
+use cognixui::{
+    assets::asset_cache::Asset,
+    image_cache::{CustomHeaderCreationError, CustomImageFormat, CustomImageHeader, ImageType},
+    util::{parse_i32, parse_u32},
+};
 use flate2::read::ZlibDecoder;
 use pathfinder_geometry::vector::Vector2F;
 use rand::Rng;
@@ -7,12 +13,6 @@ use std::cmp::min;
 use std::io::Read;
 #[cfg(feature = "local_fs")]
 use std::{env, fs, str};
-use cognixui::image_cache::{resize_dimensions, FitType};
-use cognixui::{
-    assets::asset_cache::Asset,
-    image_cache::{CustomHeaderCreationError, CustomImageFormat, CustomImageHeader, ImageType},
-    util::{parse_i32, parse_u32},
-};
 
 use super::escape_sequences::C1;
 

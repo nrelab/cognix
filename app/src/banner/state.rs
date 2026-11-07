@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use cognixui::Entity;
+use serde::{Deserialize, Serialize};
 
 #[derive(
     Debug,

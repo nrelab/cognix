@@ -1,6 +1,6 @@
+use cognix_server_client::cloud_object::Owner;
 use serde::{Deserialize, Serialize};
 use std::fmt;
-use cognix_server_client::cloud_object::Owner;
 
 use crate::{
     auth::AuthStateProvider,

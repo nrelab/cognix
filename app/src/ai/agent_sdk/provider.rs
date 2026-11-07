@@ -1,13 +1,13 @@
 //! Provider command for linking third-party services.
 use crate::workspaces::user_workspaces::UserWorkspaces;
-use comfy_table::Cell;
-use serde::Serialize;
 use cognix_cli::{
     provider::{ProviderCommand, ProviderType},
     GlobalOptions,
 };
 use cognix_core::channel::ChannelState;
 use cognixui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
+use comfy_table::Cell;
+use serde::Serialize;
 
 use crate::ai::agent_sdk::output::{self, TableFormat};
 

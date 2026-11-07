@@ -5,9 +5,9 @@ use crate::{
     safe_info,
     server::server_api::referral::{ReferralInfo, ReferralsClient},
 };
-use serde::{Deserialize, Serialize};
 use cognix_core::user_preferences::GetUserPreferences as _;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
 
 // Note: The name of this key is from before this model was created. For consistency, it should
 // remain the same value

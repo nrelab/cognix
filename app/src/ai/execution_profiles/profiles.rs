@@ -3,11 +3,11 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 use cognix_core::channel::ChannelState;
 use cognix_core::user_preferences::GetUserPreferences;
 use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use crate::ai::llms::LLMId;
 use crate::ai::mcp::templatable_manager::TemplatableMCPServerManagerEvent;

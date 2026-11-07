@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognixui::fonts::FamilyId;
 use cognixui::SingletonEntity as _;
 use cognixui::{
@@ -7,6 +6,7 @@ use cognixui::{
     presenter::ChildView,
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 // We could initiate global action and bindings here.
 pub fn init(ctx: &mut AppContext) {

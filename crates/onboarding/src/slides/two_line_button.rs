@@ -1,5 +1,4 @@
 use super::agent_slide::AgentSlideAction;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::{
     appearance::Appearance,
     icons::Icon,
@@ -15,6 +14,7 @@ use cognixui::{
     platform::Cursor,
     Element,
 };
+use pathfinder_geometry::vector::vec2f;
 
 pub(super) struct TwoLineButtonSpec {
     pub(super) is_selected: bool,

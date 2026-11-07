@@ -12,6 +12,7 @@ mod tips;
 mod view_impl;
 
 pub use block::*;
+use cognix_core::features::FeatureFlag;
 pub use first_time_setup::{FirstTimeCloudAgentSetupView, FirstTimeCloudAgentSetupViewEvent};
 pub use footer::{render_error_footer, render_loading_footer};
 pub use harness_selector::{HarnessSelector, HarnessSelectorAction, HarnessSelectorEvent};
@@ -24,7 +25,6 @@ pub use model_selector::{ModelSelector, ModelSelectorAction, ModelSelectorEvent}
 pub use progress::{render_progress, ProgressProps, ProgressStep, ProgressStepState};
 pub use progress_ui_state::AmbientAgentProgressUIState;
 pub use tips::{get_cloud_mode_tips, CloudModeTip};
-use cognix_core::features::FeatureFlag;
 
 use crate::ai::blocklist::agent_view::{AgentViewController, AgentViewState};
 use crate::ai::blocklist::BlocklistAIHistoryModel;

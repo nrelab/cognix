@@ -4,8 +4,8 @@ use crate::ai::agent_conversations_model::{
     ConversationOrTask, CreatedOnFilter, CreatorFilter, OwnerFilter, SessionStatus, SourceFilter,
     StatusFilter,
 };
-use fuzzy_match::match_indices_case_insensitive;
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use fuzzy_match::match_indices_case_insensitive;
 
 pub struct ConversationListViewModelEvent;
 

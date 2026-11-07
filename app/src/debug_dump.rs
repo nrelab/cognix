@@ -3,10 +3,10 @@
 //! This is intended to never be used by a vast majority of users. This is only intended for users
 //! who are unable to run Cognix and want to provide us, the dev team, with useful debugging
 //! information.
-#[cfg(not(windows))]
-use command::blocking::Command;
 use cognix_core::channel::ChannelState;
 use cognixui::windowing;
+#[cfg(not(windows))]
+use command::blocking::Command;
 
 pub(crate) fn run() -> anyhow::Result<()> {
     println!("Cognix version: {:?}", ChannelState::app_version());
@@ -61,8 +61,8 @@ pub(crate) fn run() -> anyhow::Result<()> {
         use crate::settings::{
             init_private_user_preferences, PreferLowPowerGPU, PreferredGraphicsBackend,
         };
-        use settings::Setting as _;
         use cognixui::rendering::GPUPowerPreference;
+        use settings::Setting as _;
 
         let user_preferences = init_private_user_preferences();
 

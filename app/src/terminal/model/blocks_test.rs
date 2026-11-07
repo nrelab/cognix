@@ -1,7 +1,7 @@
-use float_cmp::{approx_eq, assert_approx_eq};
 use cognix_core::features::FeatureFlag;
 use cognixui::units::IntoLines;
 use cognixui::{elements::DEFAULT_UI_LINE_HEIGHT_RATIO, App};
+use float_cmp::{approx_eq, assert_approx_eq};
 
 use super::*;
 use crate::ai::agent::AIAgentActionId;

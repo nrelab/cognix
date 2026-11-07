@@ -5,8 +5,6 @@ use crate::themes::theme_creator_body::{
 };
 use crate::view_components::DismissibleToast;
 use crate::workspace::ToastStack;
-use std::default::Default;
-use std::path::PathBuf;
 use cognixui::fonts::Weight;
 use cognixui::keymap::FixedBinding;
 use cognixui::platform::{FilePickerConfiguration, FileType};
@@ -15,6 +13,8 @@ use cognixui::ui_components::components::{Coords, UiComponentStyles};
 use cognixui::ViewHandle;
 use cognixui::{AppContext, SingletonEntity as _};
 use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
+use std::default::Default;
+use std::path::PathBuf;
 
 const THEME_CREATOR_MODAL_HEADER: &str = "Create new theme from image";
 

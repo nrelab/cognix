@@ -2,9 +2,6 @@ use crate::model::OnboardingStateModel;
 use crate::OnboardingEvent;
 
 use super::OnboardingSlide;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors, Icon};
 use cognixui::{
@@ -20,6 +17,9 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use ui_components::{button, Component as _, Options as _};
 
 #[derive(Clone, Debug)]
 pub enum IntroSlideEvent {

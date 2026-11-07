@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
-use lazy_static::lazy_static;
 use cognixui::keymap::Keystroke;
 use cognixui::platform::OperatingSystem;
+use lazy_static::lazy_static;
 
 use super::{
     mouse::{MouseAction, MouseButton, MouseState},

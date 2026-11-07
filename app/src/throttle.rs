@@ -1,9 +1,9 @@
 use std::{pin, task, time::Duration};
 
+use cognixui::r#async::Timer;
 use futures_lite::{ready, Stream};
 use pin::Pin;
 use task::{Context, Poll};
-use cognixui::r#async::Timer;
 
 pub struct Throttle<S> {
     period: Duration,

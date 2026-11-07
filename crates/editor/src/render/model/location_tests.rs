@@ -15,11 +15,11 @@ use pathfinder_color::ColorU;
 use std::{cell::Cell, sync::Arc};
 use string_offset::CharOffset;
 
-use sum_tree::SumTree;
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::fonts::FamilyId;
 use cognixui::text_layout::{CaretPosition, TextFrame};
 use cognixui::units::IntoPixels;
+use sum_tree::SumTree;
 
 fn test_table_layout() -> LaidOutTable {
     let source = "aaa\tbbb\nccc\tddd\n";

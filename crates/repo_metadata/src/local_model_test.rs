@@ -11,6 +11,9 @@ mod tests {
     };
     use crate::repositories::DetectedRepositories;
     use crate::watcher::DirectoryWatcher;
+    use cognix_util::standardized_path::StandardizedPath;
+    use cognixui::r#async::FutureExt as _;
+    use cognixui::App;
     use futures::channel::oneshot;
     use futures::executor::block_on;
     use ignore::gitignore::Gitignore;
@@ -20,9 +23,6 @@ mod tests {
     use std::rc::Rc;
     use std::time::Duration;
     use virtual_fs::{Stub, VirtualFS};
-    use cognix_util::standardized_path::StandardizedPath;
-    use cognixui::r#async::FutureExt as _;
-    use cognixui::App;
 
     impl LocalRepoMetadataModel {
         fn new_for_test() -> Self {

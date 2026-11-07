@@ -1,6 +1,7 @@
 #![cfg(not(target_family = "wasm"))] // Tantivy is not supported for wasm target as of now.
 
 use anyhow::Context;
+use cognixui::r#async::{block_on, executor::Background, Timer};
 use futures::FutureExt as _;
 use instant::Instant;
 use itertools::Itertools;
@@ -25,7 +26,6 @@ use tantivy::tokenizer::{Token, TokenStream, Tokenizer};
 use tantivy::{
     snippet::SnippetGenerator, Index, IndexReader, IndexWriter, ReloadPolicy, TantivyDocument, Term,
 };
-use cognixui::r#async::{block_on, executor::Background, Timer};
 
 pub type FullTextSearchDocumentEntry = HashMap<String, FullTextSearchFieldValue>;
 

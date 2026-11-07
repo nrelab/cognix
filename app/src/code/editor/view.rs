@@ -30,16 +30,6 @@ use crate::{
     view_components::find::FindDirection,
 };
 use ai::diff_validation::DiffDelta;
-use lazy_static::lazy_static;
-use num_traits::SaturatingSub;
-use pathfinder_geometry::vector::vec2f;
-use std::fmt::Debug;
-use std::rc::Rc;
-use std::{collections::HashMap, ops::Range};
-use std::{collections::HashSet, path::Path};
-use string_offset::CharOffset;
-use vec1::{vec1, Vec1};
-use vim::vim::{Direction, InsertPosition, VimMode, VimModel, VimState, VimSubscriber};
 use cognix_core::platform::SessionPlatform;
 use cognix_editor::{
     content::{
@@ -83,6 +73,16 @@ use cognixui::{
     AppContext, BlurContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, View,
     ViewContext, ViewHandle, WeakViewHandle, WindowId,
 };
+use lazy_static::lazy_static;
+use num_traits::SaturatingSub;
+use pathfinder_geometry::vector::vec2f;
+use std::fmt::Debug;
+use std::rc::Rc;
+use std::{collections::HashMap, ops::Range};
+use std::{collections::HashSet, path::Path};
+use string_offset::CharOffset;
+use vec1::{vec1, Vec1};
+use vim::vim::{Direction, InsertPosition, VimMode, VimModel, VimState, VimSubscriber};
 
 mod actions;
 pub use actions::init;
@@ -997,17 +997,18 @@ impl CodeEditorView {
                 if let Some(results) = self.searcher.as_ref(ctx).results() {
                     if !results.matches.is_empty() {
                         // Convert all match ranges to selection offsets
-                        let selection_offsets: Vec<cognix_editor::content::buffer::SelectionOffsets> =
-                            results
-                                .matches
-                                .iter()
-                                .map(|match_result| {
-                                    cognix_editor::content::buffer::SelectionOffsets {
-                                        head: match_result.end,
-                                        tail: match_result.start,
-                                    }
-                                })
-                                .collect();
+                        let selection_offsets: Vec<
+                            cognix_editor::content::buffer::SelectionOffsets,
+                        > = results
+                            .matches
+                            .iter()
+                            .map(
+                                |match_result| cognix_editor::content::buffer::SelectionOffsets {
+                                    head: match_result.end,
+                                    tail: match_result.start,
+                                },
+                            )
+                            .collect();
 
                         // Set multiple selections on the editor to highlight all matches
                         if let Ok(selections) = vec1::Vec1::try_from_vec(selection_offsets) {

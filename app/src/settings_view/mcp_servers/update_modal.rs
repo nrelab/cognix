@@ -7,7 +7,6 @@ use crate::ui_components::avatar::{Avatar, AvatarContent};
 use crate::ui_components::blended_colors;
 use crate::util::time_format::format_approx_duration_from_now;
 use chrono::{Local, TimeZone};
-use uuid::Uuid;
 use cognix_core::ui::color::coloru_with_opacity;
 use cognix_core::ui::external_product_icon::ExternalProductIcon;
 use cognix_core::ui::icons::Icon;
@@ -25,6 +24,7 @@ use cognixui::{
     platform::Cursor,
     AppContext, Element, Entity, TypedActionView, View, ViewContext,
 };
+use uuid::Uuid;
 
 pub enum UpdateModalBodyEvent {
     Cancel,

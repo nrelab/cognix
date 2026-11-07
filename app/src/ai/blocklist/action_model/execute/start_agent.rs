@@ -1,5 +1,5 @@
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use futures::{future::BoxFuture, FutureExt};
 
 use crate::ai::agent::conversation::{AIConversationId, ConversationStatus};
 use crate::ai::agent::{

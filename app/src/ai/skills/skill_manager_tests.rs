@@ -1,12 +1,12 @@
 use super::*;
 use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use ai::skills::{ParsedSkill, SkillProvider, SkillScope};
+use cognix_core::channel::ChannelState;
+use cognixui::App;
 use repo_metadata::{repositories::DetectedRepositories, DirectoryWatcher, RepoMetadataModel};
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use tempfile::TempDir;
-use cognix_core::channel::ChannelState;
-use cognixui::App;
 use watcher::HomeDirectoryWatcher;
 
 // ============================================================================

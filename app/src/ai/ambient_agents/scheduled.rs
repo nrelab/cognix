@@ -25,10 +25,10 @@ use crate::{
         sync_queue::QueueItem,
     },
 };
-use futures::channel::oneshot;
-use futures::FutureExt;
 use cognix_graphql::queries::get_scheduled_agent_history::ScheduledAgentHistory;
 use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
+use futures::channel::oneshot;
+use futures::FutureExt;
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 /// A ScheduledAmbientAgent represents configuration for ambient agents that run on a cron schedule.

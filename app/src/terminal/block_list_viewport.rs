@@ -1,14 +1,14 @@
 use std::{ops::Range, rc::Rc, sync::MutexGuard};
 
-use pathfinder_geometry::vector::Vector2F;
-use serde::{Deserialize, Serialize};
-use sum_tree::{Cursor, SeekBias};
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     elements::ClippedScrollStateHandle,
     units::{IntoLines, IntoPixels, Lines, Pixels},
     AppContext, ModelHandle,
 };
+use pathfinder_geometry::vector::Vector2F;
+use serde::{Deserialize, Serialize};
+use sum_tree::{Cursor, SeekBias};
 
 use crate::{
     ai::blocklist::agent_view::AgentViewDisplayMode,

@@ -2,7 +2,6 @@ use crate::model::OnboardingStateModel;
 use crate::slides::{bottom_nav, layout, slide_content};
 use crate::telemetry::OnboardingEvent;
 use crate::visuals::project_visual;
-use ui_components::{button, keyboard_shortcut, Component as _, Options as _};
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::{
     appearance::Appearance, color::coloru_with_opacity, theme::color::internal_colors, Icon,
@@ -21,6 +20,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext,
 };
+use ui_components::{button, keyboard_shortcut, Component as _, Options as _};
 
 use super::OnboardingSlide;
 

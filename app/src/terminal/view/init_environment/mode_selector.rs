@@ -1,7 +1,5 @@
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::color::blend::Blend;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::{
@@ -14,6 +12,8 @@ use cognixui::keymap::{FixedBinding, Keystroke};
 use cognixui::platform::Cursor;
 use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 use cognixui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 // Figma node 6583:23542
 const MODAL_WIDTH: f32 = 441.;

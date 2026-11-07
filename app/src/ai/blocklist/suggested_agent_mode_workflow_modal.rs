@@ -11,8 +11,6 @@ use crate::{
     workspaces::user_workspaces::UserWorkspaces,
     TelemetryEvent,
 };
-use pathfinder_geometry::vector::vec2f;
-use std::{collections::HashMap, default::Default, sync::Arc};
 use cognix_core::{send_telemetry_from_ctx, ui::appearance::Appearance};
 use cognixui::{
     elements::{
@@ -25,6 +23,8 @@ use cognixui::{
     ui_components::components::{Coords, UiComponentStyles},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
+use std::{collections::HashMap, default::Default, sync::Arc};
 
 const SUGGESTED_PROMPT_MODAL_HEADER: &str = "Prompt";
 

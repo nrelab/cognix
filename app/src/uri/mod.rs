@@ -28,14 +28,14 @@ use crate::{
     ChannelState, OpenPath,
 };
 use anyhow::{anyhow, ensure, Result};
+use cognixui::notification::UserNotification;
+use cognixui::{platform::TerminationMode, SingletonEntity as _, TypedActionView};
 use itertools::Itertools;
 use session_sharing_protocol::common::SessionId;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;
 use url::Url;
-use cognixui::notification::UserNotification;
-use cognixui::{platform::TerminationMode, SingletonEntity as _, TypedActionView};
 
 use cognixui::{AppContext, EntityId, ViewHandle, WindowId};
 

@@ -4,9 +4,10 @@ use super::{
     cli_controller::{CLISubagentController, CLISubagentEvent, UserTakeOverReason},
     model::{AIBlockModel, AIBlockModelImpl, AIBlockOutputStatus},
     view_impl::common::{
-        render_switch_control_to_user_button, render_cognixing_indicator,
-        render_cognixing_indicator_base, ButtonProps, ForceRefreshButtonProps, MaybeShimmeringText,
-        CognixingIndicatorProps, CognixingProps, LOAD_OUTPUT_MESSAGE, WAITING_FOR_USER_INPUT_MESSAGE,
+        render_cognixing_indicator, render_cognixing_indicator_base,
+        render_switch_control_to_user_button, ButtonProps, CognixingIndicatorProps, CognixingProps,
+        ForceRefreshButtonProps, MaybeShimmeringText, LOAD_OUTPUT_MESSAGE,
+        WAITING_FOR_USER_INPUT_MESSAGE,
     },
 };
 use crate::{
@@ -56,20 +57,17 @@ use crate::{
     settings::{InputModeSettings, InputSettings},
     settings_view::keybindings::KeybindingChangedNotifier,
     terminal::{
+        cognixify::render::LEFT_STRIPE_WIDTH,
         input::SET_INPUT_MODE_TERMINAL_ACTION_NAME,
         model::block::LONG_RUNNING_COMMAND_DURATION_MS,
         model_events::{ModelEvent, ModelEventDispatcher},
         view::ambient_agent::{AmbientAgentViewModel, AmbientAgentViewModelEvent},
-        cognixify::render::LEFT_STRIPE_WIDTH,
         TerminalModel, CANCEL_COMMAND_KEYBINDING, TOGGLE_AUTOEXECUTE_MODE_KEYBINDING,
         TOGGLE_HIDE_CLI_RESPONSES_KEYBINDING, TOGGLE_QUEUE_NEXT_PROMPT_KEYBINDING,
     },
     util::bindings::keybinding_name_to_keystroke,
     BlocklistAIHistoryModel,
 };
-use instant::Instant;
-use parking_lot::FairMutex;
-use pathfinder_color::ColorU;
 use cognix_core::{
     features::FeatureFlag,
     ui::{appearance::Appearance, theme::Fill, Icon as CoreIcon},
@@ -84,6 +82,9 @@ use cognixui::{
     ViewHandle,
 };
 use cognixui::{r#async::Timer, TypedActionView};
+use instant::Instant;
+use parking_lot::FairMutex;
+use pathfinder_color::ColorU;
 
 pub fn init(app: &mut AppContext) {
     summarization_cancel_dialog::init(app);
@@ -989,8 +990,8 @@ fn latest_model_used_before_exchange<V: View>(
 
 fn render_agent_tip(tip: &AgentTip, app: &AppContext) -> Box<dyn Element> {
     use crate::ai::agent_tips::AITip;
-    use markdown_parser::{FormattedTextFragment, FormattedTextLine};
     use cognixui::text_layout::ClipConfig;
+    use markdown_parser::{FormattedTextFragment, FormattedTextLine};
 
     let appearance = Appearance::as_ref(app);
     let theme = appearance.theme();

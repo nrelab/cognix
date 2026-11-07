@@ -21,11 +21,6 @@ use crate::util::links;
 use crate::workspace::sync_inputs::SyncedInputState;
 use crate::{auth, report_if_error};
 use ai::workspace::WorkspaceMetadata;
-use csv::Writer;
-use enclose::enclose;
-use itertools::Itertools;
-use settings::manager::SettingsManager;
-use settings::Setting as _;
 use cognix_core::context_flag::ContextFlag;
 use cognix_util::path::user_friendly_path;
 use cognixui::actions::StandardAction;
@@ -35,6 +30,11 @@ use cognixui::platform::menu::{
 };
 use cognixui::windowing::WindowManager;
 use cognixui::{AppContext, SingletonEntity};
+use csv::Writer;
+use enclose::enclose;
+use itertools::Itertools;
+use settings::manager::SettingsManager;
+use settings::Setting as _;
 
 type CheckmarkStatusGetter = dyn 'static + Fn(&mut AppContext) -> bool;
 

@@ -6,9 +6,9 @@ mod view;
 
 pub use view::{InlineConversationMenuEvent, InlineConversationMenuView};
 
-use pathfinder_color::ColorU;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{keymap::Keystroke, SingletonEntity};
+use pathfinder_color::ColorU;
 
 use crate::ai::active_agent_views_model::{ActiveAgentViewsModel, ConversationOrTaskId};
 use crate::ai::conversation_navigation::ConversationNavigationData;

@@ -3,13 +3,13 @@ mod fold_map;
 use super::buffer::{self, Anchor, Buffer, Edit, StylizedChar, ToCharOffset, ToPoint};
 use crate::editor::soft_wrap::{self, DisplayPointAndClampDirection, SoftWrapPoint, SoftWrapState};
 use anyhow::{Context, Result};
+use cognixui::text::point::Point;
+use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
 pub use fold_map::BufferRows;
 use fold_map::FoldMap;
 use std::cmp;
 use std::ops::Range;
 use string_offset::CharOffset;
-use cognixui::text::point::Point;
-use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
 
 #[derive(Copy, Clone)]
 pub enum Bias {

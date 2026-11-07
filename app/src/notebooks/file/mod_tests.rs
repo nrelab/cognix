@@ -2,13 +2,13 @@ use std::{path::Path, sync::Arc};
 
 use pathfinder_geometry::vector::vec2f;
 
-#[cfg(feature = "local_fs")]
-use repo_metadata::RepoMetadataModel;
-use repo_metadata::{repositories::DetectedRepositories, watcher::DirectoryWatcher};
 use cognix_core::ui::appearance::Appearance;
 #[cfg(feature = "local_fs")]
 use cognix_files::FileModel;
 use cognixui::{platform::WindowStyle, App, SingletonEntity, View};
+#[cfg(feature = "local_fs")]
+use repo_metadata::RepoMetadataModel;
+use repo_metadata::{repositories::DetectedRepositories, watcher::DirectoryWatcher};
 
 use crate::server::server_api::team::MockTeamClient;
 use crate::server::server_api::workspace::MockWorkspaceClient;

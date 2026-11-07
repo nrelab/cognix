@@ -1,8 +1,6 @@
 //! Implementation for the omnibar - a floating menu for editor interactions
 //! like formatting and changing block types.
 
-use itertools::Itertools;
-use pathfinder_geometry::{rect::RectF, vector::Vector2F};
 use cognix_editor::{
     content::text::{
         BlockType as ContentBlockType, BufferBlockStyle, BufferTextStyle, TextStyles,
@@ -23,6 +21,8 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, SizeConstraint, TypedActionView,
     View, ViewContext, ViewHandle,
 };
+use itertools::Itertools;
+use pathfinder_geometry::{rect::RectF, vector::Vector2F};
 
 use crate::{
     appearance::Appearance,

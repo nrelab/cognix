@@ -25,12 +25,12 @@ use ai::{
 };
 use anyhow::Context;
 use chrono::Utc;
-use itertools::Itertools;
-use lsp::supported_servers::LSPServerType;
 use cognix_core::features::FeatureFlag;
 #[cfg(feature = "local_fs")]
 use cognixui::windowing::WindowManager;
 use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
+use itertools::Itertools;
+use lsp::supported_servers::LSPServerType;
 
 #[cfg(feature = "local_fs")]
 use crate::code::language_server_shutdown_manager::LanguageServerShutdownManager;
@@ -43,9 +43,9 @@ use crate::terminal::local_shell::LocalShellState;
 #[cfg(feature = "local_fs")]
 use crate::{view_components::DismissibleToast, workspace::ToastStack};
 #[cfg(feature = "local_fs")]
-use lsp::LspEvent;
-#[cfg(feature = "local_fs")]
 use cognix_core::channel::ChannelState;
+#[cfg(feature = "local_fs")]
+use lsp::LspEvent;
 
 use ai::project_context::model::{ProjectContextModel, ProjectContextModelEvent};
 

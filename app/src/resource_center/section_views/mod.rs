@@ -1,8 +1,8 @@
 pub mod feature_section;
 pub use feature_section::FeatureSectionView;
 pub mod content_section;
-pub use content_section::ContentSectionView;
 use cognix_core::features::FeatureFlag;
+pub use content_section::ContentSectionView;
 pub mod changelog_section;
 use crate::{
     appearance::Appearance,

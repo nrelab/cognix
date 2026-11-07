@@ -1,8 +1,6 @@
 //! This module contains common utilities for rendering Blocklist AI UI.
 use std::sync::LazyLock;
 
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{
@@ -17,9 +15,11 @@ use cognixui::{
     },
     AppContext, Element, EntityId, EventContext, SingletonEntity,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::{
-    themes::theme::{AnsiColorIdentifier, Fill, CognixTheme},
+    themes::theme::{AnsiColorIdentifier, CognixTheme, Fill},
     ui_components::icons::Icon,
 };
 

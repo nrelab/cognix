@@ -3,7 +3,6 @@
 use crate::appearance::Appearance;
 use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
     ChildAnchor, ConstrainedBox, Container, CornerRadius, Element, Hoverable, MouseStateHandle,
@@ -13,6 +12,7 @@ use cognixui::platform::Cursor;
 use cognixui::ui_components::components::UiComponent;
 use cognixui::{Entity, TypedActionView, View};
 use cognixui::{SingletonEntity, ViewContext};
+use pathfinder_geometry::vector::vec2f;
 
 use super::EditorElement;
 

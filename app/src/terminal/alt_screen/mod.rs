@@ -1,5 +1,5 @@
-use settings::Setting as _;
 use cognixui::{AppContext, SingletonEntity};
+use settings::Setting as _;
 
 use super::{
     alt_screen_reporting::AltScreenReporting, model::grid::grid_handler::TermMode, TerminalModel,

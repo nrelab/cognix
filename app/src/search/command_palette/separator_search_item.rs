@@ -1,11 +1,11 @@
 use crate::search::item::SearchItem;
 use crate::search::result_renderer::ItemHighlightState;
 use crate::{appearance::Appearance, search::command_palette::mixer::CommandPaletteItemAction};
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{Empty, Text},
     AppContext, Element, SingletonEntity,
 };
+use ordered_float::OrderedFloat;
 
 /// A simple separator item that displays a title to visually separate sections in search results.
 #[derive(Debug)]

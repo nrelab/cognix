@@ -1,5 +1,5 @@
-use std::ops::Range;
 use cognix_editor::render::model::{LineCount, RenderLineLocation};
+use std::ops::Range;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum EditorLineLocation {

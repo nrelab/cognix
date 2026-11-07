@@ -1,7 +1,7 @@
+use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 use serde_json::{json, Value};
 use strum_macros::EnumDiscriminants;
 use strum_macros::EnumIter;
-use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 #[derive(Debug, EnumDiscriminants)]
 #[strum_discriminants(derive(EnumIter))]

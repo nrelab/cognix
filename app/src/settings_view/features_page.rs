@@ -4,11 +4,11 @@ use crate::terminal::input::OPEN_COMPLETIONS_KEYBINDING_NAME;
 #[cfg(feature = "local_tty")]
 use crate::terminal::session_settings::WorkingDirectoryConfig;
 
-use lazy_static::lazy_static;
 use cognix_core::context_flag::ContextFlag;
 use cognixui::platform::GraphicsBackend;
 use cognixui::rendering::GPUPowerPreference;
 use cognixui::{elements::DispatchEventResult, platform::Cursor};
+use lazy_static::lazy_static;
 #[cfg(target_os = "linux")]
 use {
     crate::settings::ForceX11, crate::settings::LinuxAppConfiguration,
@@ -90,11 +90,6 @@ use crate::{features::FeatureFlag, terminal::settings::TerminalSettingsChangedEv
 use crate::{report_if_error, send_telemetry_from_ctx, themes, GlobalResourceHandles};
 use crate::{root_view::QuakeModePinPosition, workspace::tab_settings::TabSettingsChangedEvent};
 use ::settings::{Setting, ToggleableSetting};
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
-use std::time::Duration;
-use strum::IntoEnumIterator;
 use cognix_core::channel::ChannelState;
 use cognix_core::semantic_selection::{
     SemanticSelection, SemanticSelectionChangedEvent, SmartSelectEnabled,
@@ -112,6 +107,11 @@ use cognixui::{
     Action, AppContext, DisplayIdx, Entity, EventContext, ModelHandle, SingletonEntity, Tracked,
     TypedActionView, View, ViewContext, ViewHandle, WindowId,
 };
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use std::time::Duration;
+use strum::IntoEnumIterator;
 
 cfg_if::cfg_if! {
     if #[cfg(target_os = "macos")] {
@@ -4293,7 +4293,9 @@ impl SettingsWidget for SessionRestorationWidget {
             let link = ui_builder
                 .link(
                     "See docs.".to_owned(),
-                    Some("https://docs.cognix.dev/terminal/sessions/session-restoration".to_owned()),
+                    Some(
+                        "https://docs.cognix.dev/terminal/sessions/session-restoration".to_owned(),
+                    ),
                     None,
                     self.docs_link.clone(),
                 )

@@ -29,10 +29,6 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::NotebookKeybindings;
 use ai::agent::action::InsertReviewComment;
 use chrono::Local;
-use lsp::LspManagerModel;
-use repo_metadata::repositories::DetectedRepositories;
-use std::path::PathBuf;
-use std::sync::Arc;
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::content::buffer::InitialBufferState;
@@ -41,6 +37,10 @@ use cognix_editor::render::model::LineCount;
 use cognixui::elements::{Empty, MouseStateHandle};
 use cognixui::platform::WindowStyle;
 use cognixui::{App, ViewHandle};
+use lsp::LspManagerModel;
+use repo_metadata::repositories::DetectedRepositories;
+use std::path::PathBuf;
+use std::sync::Arc;
 
 #[derive(Default)]
 struct TestView;

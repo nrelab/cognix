@@ -22,12 +22,12 @@ use crate::ai::mcp::mcp_provider_from_file_path;
 use crate::ai::mcp::TemplatableMCPServerManager;
 
 use anyhow::Result;
-use serde::{Deserialize, Serialize};
 use cognix_completer::parsers::simple::decompose_command;
 use cognix_core::user_preferences::GetUserPreferences;
 use cognix_core::{features::FeatureFlag, settings::Setting};
 use cognix_util::path::EscapeChar;
 use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
 
 use super::BlocklistAIHistoryModel;
 

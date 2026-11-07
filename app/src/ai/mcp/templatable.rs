@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
 use chrono::DateTime;
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{AppContext, SingletonEntity as _};
 use handlebars::get_arguments;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use cognix_core::ui::appearance::Appearance;
-use cognixui::{AppContext, SingletonEntity as _};
 
 use crate::{
     cloud_object::{

@@ -10,7 +10,6 @@ use crate::settings_view::mcp_servers::style::{
     INSTALLATION_MODAL_PADDING, INSTALLATION_MODAL_TITLE_VERTICAL_SPACING,
 };
 use crate::view_components::dropdown::{Dropdown, DropdownItem};
-use markdown_parser::parse_markdown;
 use cognixui::elements::Shrinkable;
 use cognixui::fonts::{Properties, Weight};
 use cognixui::ui_components::button::ButtonVariant;
@@ -25,6 +24,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, TypedActionView, View, ViewHandle,
 };
 use cognixui::{SingletonEntity, ViewContext};
+use markdown_parser::parse_markdown;
 
 use crate::ai::mcp::{TemplatableMCPServer, TemplatableMCPServerManager, TemplateVariable};
 

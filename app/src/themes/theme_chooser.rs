@@ -1,5 +1,3 @@
-use pathfinder_color::ColorU;
-use settings::Setting as _;
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
     accessibility::{AccessibilityContent, CognixA11yRole},
@@ -20,9 +18,11 @@ use cognixui::{
     AppContext, Entity, FocusContext, ModelHandle, SingletonEntity, Tracked, TypedActionView,
     UpdateModel, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use settings::Setting as _;
 
 use crate::resource_center::{mark_feature_used_and_write_to_user_defaults, Tip, TipAction};
-use crate::themes::theme::{RespectSystemTheme, ThemeKind, CognixTheme};
+use crate::themes::theme::{CognixTheme, RespectSystemTheme, ThemeKind};
 use crate::util::traffic_lights::traffic_light_data;
 use crate::workspace::PANEL_HEADER_HEIGHT;
 use crate::{
@@ -803,7 +803,9 @@ impl ThemeChooser {
                 cognix_theme
                     .disabled_text_color(cognix_theme.surface_2())
                     .into(),
-                cognix_theme.main_text_color(cognix_theme.surface_2()).into(),
+                cognix_theme
+                    .main_text_color(cognix_theme.surface_2())
+                    .into(),
                 Fill::None,
             )
             .finish()

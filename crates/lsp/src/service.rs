@@ -13,6 +13,7 @@ use crate::{
     LspServerLogLevel,
 };
 use anyhow::Result;
+use cognix_util::on_cancel::OnCancelFutureExt;
 use globset::{Glob, GlobMatcher};
 use jsonrpc::{JsonRpcService, RequestId, ServerNotificationEvent};
 use lsp_types::{
@@ -29,7 +30,6 @@ use lsp_types::{
 use serde_json::Value;
 #[cfg(not(target_arch = "wasm32"))]
 use simple_logger::SimpleLogger;
-use cognix_util::on_cancel::OnCancelFutureExt;
 
 /// Tracks the sync state for an open document.
 #[derive(Debug, Clone)]

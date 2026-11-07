@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use futures::{future::BoxFuture, FutureExt};
 
 use crate::{
     ai::{

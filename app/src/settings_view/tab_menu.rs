@@ -1,5 +1,5 @@
-use std::fmt::Display;
 use cognixui::ui_components::button::ButtonVariant;
+use std::fmt::Display;
 
 use super::teams_page::TeamsPageAction;
 use crate::cloud_object::model::persistence::CloudModel;

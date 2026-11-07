@@ -11,9 +11,9 @@ use crate::cloud_object::{
     CloudObjectMetadata, CloudObjectPermissions, ObjectIdType, ObjectType, Owner,
 };
 use crate::ids::SyncId;
+use cognix_core::features::FeatureFlag;
 use persistence::model::{NewObjectMetadata, NewObjectPermissions, ObjectMetadata};
 use persistence::schema;
-use cognix_core::features::FeatureFlag;
 
 /// The sqlite id of a cloud object.
 pub type CloudObjectId = i32;

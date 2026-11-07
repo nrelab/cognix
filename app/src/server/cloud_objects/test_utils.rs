@@ -6,9 +6,9 @@ use std::{
     },
 };
 
-use settings::manager::SettingsManager;
 use cognix_core::execution_mode::{AppExecutionMode, ExecutionMode};
 use cognixui::{App, ModelHandle, SingletonEntity};
+use settings::manager::SettingsManager;
 
 use crate::{
     auth::{auth_manager::AuthManager, AuthStateProvider},
@@ -26,7 +26,7 @@ use crate::{
         sync_queue::SyncQueue,
         telemetry::context_provider::AppTelemetryContextProvider,
     },
-    settings::{PrivacySettings, CognixDrivePrivacySettings},
+    settings::{CognixDrivePrivacySettings, PrivacySettings},
     workspaces::{
         team_tester::TeamTesterStatus, update_manager::TeamUpdateManager,
         user_profiles::UserProfiles, user_workspaces::UserWorkspaces,

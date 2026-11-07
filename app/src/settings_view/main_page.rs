@@ -22,10 +22,6 @@ use crate::{auth::auth_manager::AuthManager, server::ids::ServerId};
 use crate::{auth::auth_manager::LoginGatedFeature, workspaces::workspace::CustomerType};
 use crate::{workspace::WorkspaceAction, workspaces::update_manager::TeamUpdateManager};
 use ::settings::{Setting, ToggleableSetting};
-use lazy_static::lazy_static;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use std::sync::{Arc, Mutex};
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::icons::Icon;
 use cognix_core::{channel::ChannelState, context_flag::ContextFlag};
@@ -54,6 +50,10 @@ use cognixui::{fonts::Weight, keymap::ContextPredicate};
 use cognixui::{
     Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use lazy_static::lazy_static;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use std::sync::{Arc, Mutex};
 
 const PHOTO_SIZE: f32 = 40.;
 const REFERRAL_CTA: &str = "Earn rewards by sharing Cognix with friends & colleagues";

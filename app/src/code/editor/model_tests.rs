@@ -1,10 +1,10 @@
-use futures::channel::oneshot;
-use std::path::Path;
-use vec1::vec1;
 use cognix_editor::content::buffer::{InitialBufferState, SelectionOffsets};
 use cognix_editor::multiline::MultilineString;
 use cognix_util::content_version::ContentVersion;
 use cognixui::App;
+use futures::channel::oneshot;
+use std::path::Path;
+use vec1::vec1;
 
 use crate::{
     code::editor::line::EditorLineLocation, code::editor::view::code_text_styles,

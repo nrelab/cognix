@@ -3,6 +3,14 @@ use crate::render::model::{
     table_offset_map::{TableCellOffsetMap, TableOffsetMap},
 };
 use arrayvec::ArrayString;
+use cognix_core::features::FeatureFlag;
+use cognixui::elements::ListIndentLevel;
+use cognixui::text::BlockHeaderSize as HeaderSize;
+use cognixui::text::point::Point;
+use cognixui::{
+    AppContext,
+    fonts::{Properties, Style, Weight},
+};
 use enum_iterator::Sequence;
 use lazy_static::lazy_static;
 pub use markdown_parser::markdown_parser::TABLE_BLOCK_MARKDOWN_LANG;
@@ -30,14 +38,6 @@ use std::{
 };
 use string_offset::{ByteOffset, CharOffset, impl_offset};
 use sum_tree::{Cursor, SeekBias, SumTree};
-use cognix_core::features::FeatureFlag;
-use cognixui::elements::ListIndentLevel;
-use cognixui::text::BlockHeaderSize as HeaderSize;
-use cognixui::text::point::Point;
-use cognixui::{
-    AppContext,
-    fonts::{Properties, Style, Weight},
-};
 
 use super::{buffer::Buffer, core::CursorType, markdown::MarkdownStyle};
 

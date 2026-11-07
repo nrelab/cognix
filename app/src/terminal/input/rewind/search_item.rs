@@ -1,8 +1,6 @@
 //! SearchItem implementation for rewind menu items.
 //! Renders two lines: query text and code changes summary.
 
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::color::coloru_with_opacity;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::Icon;
@@ -13,6 +11,8 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::scene::{CornerRadius, Radius};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::ai::agent::AIAgentExchangeId;
 use crate::appearance::Appearance;

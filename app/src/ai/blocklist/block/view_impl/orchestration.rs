@@ -1,15 +1,15 @@
 //! Rendering functions for orchestration-related output items (messaging & agent management).
 
-use pathfinder_color::ColorU;
 use cognixui::elements::{
     ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Empty, Flex, Hoverable,
     MouseStateHandle, ParentElement, Radius, Text,
 };
 use cognixui::platform::Cursor;
 use cognixui::{AppContext, Element, SingletonEntity};
+use pathfinder_color::ColorU;
 
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognixui::elements::FormattedTextElement;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::ai::agent::conversation::{AIConversation, AIConversationId, ConversationStatus};
 use crate::ai::agent::{

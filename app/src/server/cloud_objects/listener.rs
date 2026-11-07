@@ -20,14 +20,14 @@ use crate::{
 use super::update_manager::UpdateManager;
 
 use chrono::{DateTime, Utc};
+use cognixui::r#async::Timer;
 use futures_util::stream::AbortHandle;
 use std::time::Duration;
-use cognixui::r#async::Timer;
 
 use async_channel::Sender;
 
-use std::sync::Arc;
 use cognixui::{Entity, ModelContext, RequestState, SingletonEntity};
+use std::sync::Arc;
 
 use instant::Instant;
 

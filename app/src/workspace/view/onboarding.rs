@@ -6,11 +6,11 @@ use crate::terminal::view::{
 };
 use crate::workspace::Workspace;
 use crate::FeatureFlag;
+use cognixui::{SingletonEntity as _, ViewContext};
 use onboarding::{ProjectOnboardingSettings, SelectedSettings};
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
-use cognixui::{SingletonEntity as _, ViewContext};
 
 /// Configuration for starting the agent onboarding tutorial.
 #[derive(Debug, Clone)]

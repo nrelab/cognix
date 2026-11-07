@@ -2,14 +2,14 @@
 //! command signature struct (`cognix_command_signatures::Signature`).
 use std::{borrow::Cow, collections::HashMap};
 
-use itertools::Itertools;
-use smol_str::SmolStr;
 use cognix_command_signatures::{
     Argument, ArgumentType, DynamicCompletionData, Generator, GeneratorProcess, Signature,
     Template, TemplateFilter, TemplateType,
 };
 use cognix_core::features::FeatureFlag;
 use cognix_util::path::ShellFamily;
+use itertools::Itertools;
+use smol_str::SmolStr;
 
 use crate::completer::{
     context::CompletionContext,
@@ -632,7 +632,8 @@ async fn generate_suggestions_for_argument_type(
     match argument_type {
         ArgumentType::Suggestion(suggestion) => {
             let cognix_suggestion: Suggestion = suggestion.clone().into();
-            match matcher.get_match_type(parsed_token.as_str(), cognix_suggestion.display.as_str()) {
+            match matcher.get_match_type(parsed_token.as_str(), cognix_suggestion.display.as_str())
+            {
                 Some(match_type) => vec![MatchedSuggestion::new(cognix_suggestion, match_type)],
                 None => vec![],
             }

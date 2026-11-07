@@ -14,13 +14,6 @@ use crate::terminal::model::{ObfuscateSecrets, SecretHandle};
 use crate::themes::theme::CognixTheme;
 use crate::util::color::{ContrastingColor, MinimumAllowedContrast};
 
-use core::mem;
-use lazy_static::lazy_static;
-use num_traits::Float as _;
-use std::cmp::Ordering;
-use std::ops::Range;
-use std::{collections::HashMap, ops::RangeInclusive};
-use unicode_width::UnicodeWidthChar;
 use cognix_core::features::FeatureFlag;
 use cognixui::assets::asset_cache::{AssetCache, AssetSource, AssetState};
 use cognixui::color::ColorU;
@@ -33,6 +26,13 @@ use cognixui::platform::LineStyle;
 use cognixui::text_layout::{Line, StyleAndFont, TextStyle, DEFAULT_TOP_BOTTOM_RATIO};
 use cognixui::units::{IntoLines as _, Lines, Pixels};
 use cognixui::{AppContext, Element, EntityId, PaintContext, Scene, SingletonEntity};
+use core::mem;
+use lazy_static::lazy_static;
+use num_traits::Float as _;
+use std::cmp::Ordering;
+use std::ops::Range;
+use std::{collections::HashMap, ops::RangeInclusive};
+use unicode_width::UnicodeWidthChar;
 
 pub use self::cell_glyph_cache::CellGlyphCache;
 use self::cell_type::{CellType, IsFocused, Secret};

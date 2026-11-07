@@ -1,6 +1,4 @@
 use crate::CaptureConfig;
-use image::ImageEncoder;
-use std::sync::{Arc, Mutex};
 use cognixui::color::ColorU;
 use cognixui::elements::{
     ClippedScrollStateHandle, ClippedScrollable, ConstrainedBox, Container, Empty, Fill, Flex,
@@ -16,6 +14,8 @@ use cognixui::SingletonEntity as _;
 use cognixui::{
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle, WindowId,
 };
+use image::ImageEncoder;
+use std::sync::{Arc, Mutex};
 
 const TOTAL_DEMOS: usize = 13;
 
@@ -213,7 +213,8 @@ impl TableSampleView {
             if auto_capture && !is_last_demo {
                 ctx.spawn(
                     async {
-                        cognixui::r#async::Timer::after(std::time::Duration::from_millis(350)).await;
+                        cognixui::r#async::Timer::after(std::time::Duration::from_millis(350))
+                            .await;
                     },
                     |_, _, ctx| {
                         ctx.dispatch_typed_action(&SampleAction::NextDemo);

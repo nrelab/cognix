@@ -1,10 +1,10 @@
-use std::collections::HashMap;
-use uuid::Uuid;
 use cognixui::{
     elements::{ChildView, Container},
     ui_components::components::{Coords, UiComponentStyles},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use std::collections::HashMap;
+use uuid::Uuid;
 
 use crate::{
     ai::mcp::{

@@ -30,13 +30,6 @@ use crate::editor::EditOrigin;
 use crate::settings::AISettings;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use anyhow::Result;
-use parking_lot::FairMutex;
-use pathfinder_geometry::{
-    rect::RectF,
-    vector::{vec2f, Vector2F},
-};
-use serde::Serialize;
-use std::{ops::RangeInclusive, sync::Arc};
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::theme::Fill;
 use cognixui::r#async::SpawnedFutureHandle;
@@ -61,6 +54,13 @@ use cognixui::{
     LayoutContext, PaintContext, SingletonEntity, SizeConstraint, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use parking_lot::FairMutex;
+use pathfinder_geometry::{
+    rect::RectF,
+    vector::{vec2f, Vector2F},
+};
+use serde::Serialize;
+use std::{ops::RangeInclusive, sync::Arc};
 
 const PADDING: f32 = 30.;
 const INNER_MARGIN: f32 = 20.;

@@ -6,13 +6,6 @@ use crate::user_config;
 use crate::{
     send_telemetry_from_ctx, server::telemetry::TelemetryEvent, themes::theme::CustomTheme,
 };
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use std::default::Default;
-use std::fmt;
-use std::path::PathBuf;
-#[cfg(feature = "local_fs")]
-use std::{fs::copy, io::Write};
 #[cfg(feature = "local_fs")]
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::elements::{
@@ -29,6 +22,13 @@ use cognixui::{
     platform::Cursor, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     ViewContext,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use std::default::Default;
+use std::fmt;
+use std::path::PathBuf;
+#[cfg(feature = "local_fs")]
+use std::{fs::copy, io::Write};
 
 const BUTTON_PADDING: f32 = 12.;
 const BUTTON_FONT_SIZE: f32 = 14.;

@@ -4,7 +4,6 @@ use crate::model::{OnboardingStateEvent, OnboardingStateModel};
 use crate::slides::{bottom_nav, layout, slide_content};
 use crate::OnboardingIntention;
 
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::prelude::Align;
@@ -20,6 +19,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity as _, TypedActionView, View,
     ViewContext,
 };
+use ui_components::{button, Component as _, Options as _};
 
 /// Which setting card is currently expanded.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

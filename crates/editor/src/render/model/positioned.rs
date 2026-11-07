@@ -3,12 +3,12 @@
 
 use std::sync::Arc;
 
-use sum_tree::{Cursor, Dimension};
 use cognixui::{
     geometry::vector::Vector2F,
     text_layout::Line,
     units::{IntoPixels, Pixels},
 };
+use sum_tree::{Cursor, Dimension};
 
 use crate::render::layout::line_height;
 use string_offset::CharOffset;

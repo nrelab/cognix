@@ -6,12 +6,12 @@ use std::{
 };
 
 use async_trait::async_trait;
-use itertools::Itertools;
-use parking_lot::Mutex;
-use settings::Setting as _;
 use cognix_core::command::ExitCode;
 use cognixui::{App, SingletonEntity};
 use cognixui_extras::user_preferences;
+use itertools::Itertools;
+use parking_lot::Mutex;
+use settings::Setting as _;
 
 #[cfg(feature = "local_fs")]
 use crate::code_review::diff_state::DiffStats;
@@ -43,9 +43,9 @@ use crate::{
         History,
     },
 };
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
 #[cfg(feature = "local_fs")]
 use repo_metadata::DirectoryWatcher;
-use cognix_completer::completer::{CommandExitStatus, CommandOutput};
 
 use super::{ChipUpdateStatus, CurrentPrompt, PromptContext};
 

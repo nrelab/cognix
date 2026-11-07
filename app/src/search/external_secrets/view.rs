@@ -366,8 +366,8 @@ impl TypedActionView for ExternalSecretsMenu {
 }
 
 pub mod styles {
-    use pathfinder_color::ColorU;
     use cognixui::elements::{Border, DropShadow, ScrollbarWidth};
+    use pathfinder_color::ColorU;
 
     use crate::{appearance::Appearance, themes::theme::Fill};
 

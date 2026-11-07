@@ -1,12 +1,12 @@
+use cognixui::keymap::Keystroke;
+#[cfg(not(test))]
+use cognixui::keymap::Trigger;
+use cognixui::AppContext;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 #[cfg(not(test))]
 use std::env::var_os;
 use vec1::{vec1, Vec1};
-use cognixui::keymap::Keystroke;
-#[cfg(not(test))]
-use cognixui::keymap::Trigger;
-use cognixui::AppContext;
 
 use anyhow::Context;
 

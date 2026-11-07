@@ -6,9 +6,9 @@ use std::{
     pin::Pin,
 };
 
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
 #[cfg(feature = "local_fs")]
 use futures::{future::OptionFuture, FutureExt as _};
-use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
 
 use cognix_util::standardized_path::StandardizedPath;
 

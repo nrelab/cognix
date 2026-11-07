@@ -1,7 +1,7 @@
 use std::ops::Range;
 
-use string_offset::CharOffset;
 use cognixui::text::TextBuffer;
+use string_offset::CharOffset;
 
 use crate::{vim::WordType, word_iterator::CharacterKind};
 

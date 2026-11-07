@@ -26,16 +26,16 @@ use crate::terminal::model::iterm_image::ITermImage;
 use crate::terminal::model::secrets::ObfuscateSecrets;
 use crate::terminal::model::selection::{Selection, SelectionRange};
 use crate::terminal::{SizeInfo, SizeUpdate};
+use cognix_core::semantic_selection::SemanticSelection;
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use cognixui::text::SelectionType;
+use cognixui::units::Lines;
 use itertools::Itertools;
 use num_traits::Float as _;
 use parking_lot::Mutex;
 use pathfinder_color::ColorU;
 use std::sync::Arc;
 use vec1::Vec1;
-use cognix_core::semantic_selection::SemanticSelection;
-use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use cognixui::text::SelectionType;
-use cognixui::units::Lines;
 
 pub struct AltScreen {
     grid_handler: GridHandler,

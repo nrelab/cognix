@@ -1,7 +1,6 @@
 use std::{cmp::Ordering, collections::HashMap};
 
 use anyhow::Error;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::{
     features::FeatureFlag,
     ui::{
@@ -21,6 +20,7 @@ use cognixui::{
     AppContext, Element, Entity, SingletonEntity as _, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, CloudObject},

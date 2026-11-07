@@ -4,9 +4,9 @@
 //! finalized when the button is released. The selection should be cleared
 //! when text is added/removed/scrolled on the screen. The selection should
 //! also be cleared if the user clicks off of the selection.
+use cognix_terminal::model::grid::cell;
 use std::fmt::Debug;
 use vec1::Vec1;
-use cognix_terminal::model::grid::cell;
 
 use crate::terminal::model::ansi::CursorShape;
 use crate::terminal::model::cell::Flags;
@@ -15,13 +15,13 @@ use crate::terminal::model::grid::Dimensions;
 use crate::terminal::model::index::{Point, Side};
 use crate::terminal::model::GridStorage;
 use crate::terminal::Vector2F;
+use cognix_core::semantic_selection::SemanticSelection;
+use cognixui::text::SelectionType;
+use cognixui::units::Lines;
 use std::cmp::{max, min};
 use std::mem;
 use std::ops::RangeInclusive;
 pub use std::ops::{Range, RangeBounds};
-use cognix_core::semantic_selection::SemanticSelection;
-use cognixui::text::SelectionType;
-use cognixui::units::Lines;
 
 use super::index::{Direction, VisibleRow};
 

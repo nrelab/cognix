@@ -12,9 +12,9 @@ use crate::terminal::block_list_viewport::InputMode;
 use std::{collections::HashMap, sync::Arc};
 
 use alt_screen::{run_find_on_alt_screen, AltScreenFindRun};
+use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity, ViewHandle};
 use parking_lot::FairMutex;
 use settings::Setting as _;
-use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity, ViewHandle};
 
 use crate::{
     settings::InputModeSettings,

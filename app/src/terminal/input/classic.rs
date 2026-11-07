@@ -7,6 +7,7 @@ use crate::{
     terminal::{
         block_list_settings::BlockListSettings,
         block_list_viewport::InputMode,
+        cognixify::render::{render_subshell_flag, render_subshell_flag_pole},
         input::{
             common::{
                 add_command_xray_overlay, add_input_suggestions_overlays, add_vim_status_to_stack,
@@ -18,11 +19,8 @@ use crate::{
         },
         settings::{SpacingMode, TerminalSettings},
         view::TerminalAction,
-        cognixify::render::{render_subshell_flag, render_subshell_flag_pole},
     },
 };
-use pathfinder_geometry::vector::vec2f;
-use settings::Setting;
 use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, Clipped, Container, DropTarget, Element, Empty, Flex,
@@ -31,6 +29,8 @@ use cognixui::{
     },
     AppContext, SingletonEntity,
 };
+use pathfinder_geometry::vector::vec2f;
+use settings::Setting;
 
 use super::{should_render_prompt_using_editor_decorator_elements, Input, SubshellRenderState};
 

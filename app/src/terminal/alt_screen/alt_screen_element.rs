@@ -24,20 +24,18 @@ use crate::terminal::view::{
 };
 use crate::terminal::{grid_renderer, SizeInfo};
 use crate::terminal::{heights_approx_eq, TerminalModel};
-use num_traits::Float as _;
-use parking_lot::FairMutex;
-use pathfinder_geometry::vector::vec2f;
-use vec1::Vec1;
 use cognix_core::features::FeatureFlag;
 use cognix_util::user_input::UserInput;
 use cognixui::elements::new_scrollable::{NewScrollableElement, ScrollableAxis};
 use cognixui::event::{KeyState, ModifiersState};
 use cognixui::platform::keyboard::KeyCode;
 use cognixui::text::SelectionType;
+use num_traits::Float as _;
+use parking_lot::FairMutex;
+use pathfinder_geometry::vector::vec2f;
+use vec1::Vec1;
 
 use super::{should_intercept_mouse, should_intercept_scroll};
-use std::ops::{Deref as _, Range};
-use std::sync::Arc;
 use cognixui::elements::{Axis, Fill, Point as UiPoint, ScrollData, ScrollableElement};
 use cognixui::fonts::Properties;
 use cognixui::geometry::rect::RectF;
@@ -50,6 +48,8 @@ use cognixui::{
     LayoutContext, PaintContext, SizeConstraint,
 };
 use cognixui::{ClipBounds, EntityId, ModelHandle};
+use std::ops::{Deref as _, Range};
+use std::sync::Arc;
 
 const CLI_SUBAGENT_HORIZONTAL_MARGIN: f32 = 8.;
 const CLI_SUBAGENT_VERTICAL_MARGIN: f32 = 8.;

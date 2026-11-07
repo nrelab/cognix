@@ -2,10 +2,6 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fmt::Display;
 
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use regex::Regex;
-use settings::{Setting, ToggleableSetting};
-use strum::IntoEnumIterator;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::{FormattedTextElement, HighlightedHyperlink};
 use cognixui::keymap::ContextPredicate;
@@ -19,9 +15,14 @@ use cognixui::{
     Action, AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use regex::Regex;
+use settings::{Setting, ToggleableSetting};
+use strum::IntoEnumIterator;
 
 use crate::terminal::cognixify::settings::{
-    EnableSshCognixification, SshExtensionInstallMode, UseSshTmuxWrapper, CognixifySettingsChangedEvent,
+    CognixifySettingsChangedEvent, EnableSshCognixification, SshExtensionInstallMode,
+    UseSshTmuxWrapper,
 };
 use crate::ui_components::blended_colors;
 use crate::{
@@ -697,7 +698,9 @@ impl SettingsWidget for SSHWidget {
                         .check(enable_ssh_cognixification)
                         .build()
                         .on_click(move |ctx, _, _| {
-                            ctx.dispatch_typed_action(CognixifyPageAction::ToggleSshCognixification);
+                            ctx.dispatch_typed_action(
+                                CognixifyPageAction::ToggleSshCognixification,
+                            );
                         })
                         .finish(),
                     None,
@@ -769,7 +772,9 @@ impl SettingsWidget for SSHWidget {
                                 return;
                             }
 
-                            ctx.dispatch_typed_action(CognixifyPageAction::ToggleTmuxCognixification);
+                            ctx.dispatch_typed_action(
+                                CognixifyPageAction::ToggleTmuxCognixification,
+                            );
                         })
                         .finish(),
                     None,

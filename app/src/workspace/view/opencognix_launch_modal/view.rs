@@ -1,8 +1,3 @@
-use markdown_parser::{
-    FormattedText, FormattedTextFragment, FormattedTextLine, FormattedTextStyles, Hyperlink,
-};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::elements::{
@@ -16,6 +11,11 @@ use cognixui::keymap::FixedBinding;
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use markdown_parser::{
+    FormattedText, FormattedTextFragment, FormattedTextLine, FormattedTextStyles, Hyperlink,
+};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;
@@ -203,10 +203,14 @@ impl OpenCognixLaunchModal {
     }
 
     fn render_title(appearance: &Appearance) -> Box<dyn Element> {
-        Text::new("Cognix is now open-source", appearance.ui_font_family(), 20.)
-            .with_color(PhenomenonStyle::modal_title_text())
-            .with_style(Properties::default().weight(Weight::Semibold))
-            .finish()
+        Text::new(
+            "Cognix is now open-source",
+            appearance.ui_font_family(),
+            20.,
+        )
+        .with_color(PhenomenonStyle::modal_title_text())
+        .with_style(Properties::default().weight(Weight::Semibold))
+        .finish()
     }
 
     fn render_description(appearance: &Appearance) -> Box<dyn Element> {

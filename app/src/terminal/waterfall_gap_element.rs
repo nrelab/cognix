@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::{vec2f, Vector2F};
 use cognixui::elements::ZIndex;
 use cognixui::event::ModifiersState;
 use cognixui::units::{IntoLines, IntoPixels, Pixels};
@@ -7,6 +6,7 @@ use cognixui::{
     elements::{ScrollData, ScrollableElement},
     AppContext, Element, EventContext, SizeConstraint,
 };
+use pathfinder_geometry::vector::{vec2f, Vector2F};
 
 use crate::terminal::input::inline_menu::InlineMenuPositioner;
 

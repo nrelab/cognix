@@ -26,14 +26,14 @@ use crate::settings::{
     AIAutoDetectionEnabled, AICommandDenylist, AISettingsChangedEvent,
     AgentModeCodingPermissionsType, AgentModeCommandExecutionDenylist,
     AgentModeCommandExecutionPredicate, AgentModeQuerySuggestionsEnabled, AwsBedrockAutoLogin,
-    AwsBedrockCredentialsEnabled, CanUseCognixCreditsWithByok, CodeSettings, CodebaseContextEnabled,
-    FileBasedMcpEnabled, GitOperationsAutogenEnabled, IncludeAgentCommandsInHistory,
-    IntelligentAutosuggestionsEnabled, MemoryEnabled, NLDInTerminalEnabled,
-    NaturalLanguageAutosuggestionsEnabled, OrchestrationEnabled, RuleSuggestionsEnabled,
-    SharedBlockTitleGenerationEnabled, ShouldRenderCLIAgentToolbar,
-    ShouldRenderUseAgentToolbarForUserCommands, ShouldShowOzUpdatesInZeroState, ShowAgentTips,
-    ShowConversationHistory, ShowHintText, ThinkingDisplayMode, VoiceInputEnabled,
-    CognixDriveContextEnabled,
+    AwsBedrockCredentialsEnabled, CanUseCognixCreditsWithByok, CodeSettings,
+    CodebaseContextEnabled, CognixDriveContextEnabled, FileBasedMcpEnabled,
+    GitOperationsAutogenEnabled, IncludeAgentCommandsInHistory, IntelligentAutosuggestionsEnabled,
+    MemoryEnabled, NLDInTerminalEnabled, NaturalLanguageAutosuggestionsEnabled,
+    OrchestrationEnabled, RuleSuggestionsEnabled, SharedBlockTitleGenerationEnabled,
+    ShouldRenderCLIAgentToolbar, ShouldRenderUseAgentToolbarForUserCommands,
+    ShouldShowOzUpdatesInZeroState, ShowAgentTips, ShowConversationHistory, ShowHintText,
+    ThinkingDisplayMode, VoiceInputEnabled,
 };
 use crate::terminal::session_settings::{SessionSettings, SessionSettingsChangedEvent};
 use crate::terminal::CLIAgent;
@@ -43,11 +43,6 @@ use crate::view_components::{
 };
 use crate::workspaces::user_workspaces::UserWorkspacesEvent;
 use ::ai::api_keys::{ApiKeyManager, ApiKeys};
-use enum_iterator::all;
-use itertools::Itertools;
-use regex::Regex;
-use settings::{Setting, ToggleableSetting};
-use strum::IntoEnumIterator;
 use cognix_core::channel::ChannelState;
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::features::FeatureFlag;
@@ -71,6 +66,11 @@ use cognixui::{
     Action, AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use enum_iterator::all;
+use itertools::Itertools;
+use regex::Regex;
+use settings::{Setting, ToggleableSetting};
+use strum::IntoEnumIterator;
 
 use super::execution_profile_view::{ExecutionProfileView, ExecutionProfileViewEvent};
 use super::settings_page::{render_custom_size_header, render_settings_info_banner};
@@ -3395,39 +3395,41 @@ impl SettingsWidget for UsageWidget {
         );
 
         let auth_state = AuthStateProvider::as_ref(app).get();
-        let upgrade_cta_text_fragments = if let Some(team) =
-            UserWorkspaces::as_ref(app).current_team()
-        {
-            let current_user_email = auth_state.user_email().unwrap_or_default();
-            let has_admin_permissions = team.has_admin_permissions(&current_user_email);
-            if team.billing_metadata.can_upgrade_to_higher_tier_plan() {
-                let upgrade_url = UserWorkspaces::upgrade_link_for_team(team.uid);
-                if has_admin_permissions {
-                    vec![
-                        FormattedTextFragment::hyperlink("Upgrade", upgrade_url),
-                        FormattedTextFragment::plain_text(" to get more AI usage."),
-                    ]
+        let upgrade_cta_text_fragments =
+            if let Some(team) = UserWorkspaces::as_ref(app).current_team() {
+                let current_user_email = auth_state.user_email().unwrap_or_default();
+                let has_admin_permissions = team.has_admin_permissions(&current_user_email);
+                if team.billing_metadata.can_upgrade_to_higher_tier_plan() {
+                    let upgrade_url = UserWorkspaces::upgrade_link_for_team(team.uid);
+                    if has_admin_permissions {
+                        vec![
+                            FormattedTextFragment::hyperlink("Upgrade", upgrade_url),
+                            FormattedTextFragment::plain_text(" to get more AI usage."),
+                        ]
+                    } else {
+                        // The /upgrade page says to contact their administrator.
+                        vec![
+                            FormattedTextFragment::hyperlink("Compare plans", upgrade_url),
+                            FormattedTextFragment::plain_text(" for more AI usage."),
+                        ]
+                    }
                 } else {
-                    // The /upgrade page says to contact their administrator.
                     vec![
-                        FormattedTextFragment::hyperlink("Compare plans", upgrade_url),
+                        FormattedTextFragment::hyperlink(
+                            "Contact support",
+                            "mailto:support@cognix.dev",
+                        ),
                         FormattedTextFragment::plain_text(" for more AI usage."),
                     ]
                 }
             } else {
+                let user_id = auth_state.user_id().unwrap_or_default();
+                let upgrade_url = UserWorkspaces::upgrade_link(user_id);
                 vec![
-                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@cognix.dev"),
-                    FormattedTextFragment::plain_text(" for more AI usage."),
+                    FormattedTextFragment::hyperlink("Upgrade", upgrade_url),
+                    FormattedTextFragment::plain_text(" to get more AI usage."),
                 ]
-            }
-        } else {
-            let user_id = auth_state.user_id().unwrap_or_default();
-            let upgrade_url = UserWorkspaces::upgrade_link(user_id);
-            vec![
-                FormattedTextFragment::hyperlink("Upgrade", upgrade_url),
-                FormattedTextFragment::plain_text(" to get more AI usage."),
-            ]
-        };
+            };
 
         let mut upgrade_cta = FormattedTextElement::new(
             FormattedText::new([FormattedTextLine::Line(upgrade_cta_text_fragments)]),
@@ -6010,7 +6012,10 @@ impl ApiKeysWidget {
                 // to sales to enable BYOK on their existing plan.
                 if team.billing_metadata.customer_type == CustomerType::Enterprise {
                     vec![
-                        FormattedTextFragment::hyperlink("Contact sales", "mailto:sales@cognix.dev"),
+                        FormattedTextFragment::hyperlink(
+                            "Contact sales",
+                            "mailto:sales@cognix.dev",
+                        ),
                         FormattedTextFragment::plain_text(
                             " to enable bringing your own API keys on your Enterprise plan.",
                         ),

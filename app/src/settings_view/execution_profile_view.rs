@@ -12,8 +12,6 @@ use crate::settings::AISettings;
 use crate::ui_components::icons::Icon;
 use crate::view_components::action_button::{ActionButton, ButtonSize, SecondaryTheme};
 use crate::TemplatableMCPServerManager;
-use std::path::PathBuf;
-use uuid::Uuid;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::ParentElement;
 use cognixui::SingletonEntity;
@@ -25,6 +23,8 @@ use cognixui::{
     fonts::{Properties, Weight},
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use std::path::PathBuf;
+use uuid::Uuid;
 
 #[derive(Debug, Clone)]
 pub enum ExecutionProfileViewAction {
@@ -508,7 +508,9 @@ fn render_allowlist_denylist_row(
             .finish(),
     )
     .with_margin_left(8.)
-    .with_border(cognixui::elements::Border::left(1.).with_border_fill(appearance.theme().outline()))
+    .with_border(
+        cognixui::elements::Border::left(1.).with_border_fill(appearance.theme().outline()),
+    )
     .with_padding_left(8.)
     .finish()
 }

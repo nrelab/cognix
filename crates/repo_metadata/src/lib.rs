@@ -7,8 +7,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use thiserror::Error;
 use cognix_util::standardized_path::StandardizedPath;
+use thiserror::Error;
 
 #[cfg(not(target_family = "wasm"))]
 use cognixui::SingletonEntity;

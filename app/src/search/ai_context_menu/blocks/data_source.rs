@@ -6,9 +6,9 @@ use crate::search::mixer::{DataSourceRunErrorWrapper, SyncDataSource};
 use crate::terminal::model::block::Block;
 use crate::terminal::TerminalView;
 use crate::workspace::ActiveSession;
+use cognixui::{AppContext, Entity, SingletonEntity};
 use fuzzy_match::FuzzyMatchResult;
 use itertools::Itertools;
-use cognixui::{AppContext, Entity, SingletonEntity};
 
 const MAX_RESULTS: usize = 20;
 const ZERO_STATE_BASE_SCORE: i64 = 1000;

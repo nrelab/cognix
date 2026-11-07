@@ -5,13 +5,13 @@ use std::sync::Arc;
 
 use anyhow::{Context, Result};
 use async_trait::async_trait;
+use cognix_cli::agent::Harness;
+use cognixui::{ModelHandle, ModelSpawner};
 use parking_lot::Mutex;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 use tempfile::NamedTempFile;
 use uuid::Uuid;
-use cognix_cli::agent::Harness;
-use cognixui::{ModelHandle, ModelSpawner};
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::ambient_agents::AmbientAgentTaskId;

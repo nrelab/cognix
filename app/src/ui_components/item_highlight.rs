@@ -1,10 +1,10 @@
 use crate::ui_components::blended_colors;
 use crate::{appearance::Appearance, ui_components::icons::Icon};
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{CornerRadius, MouseState, Radius};
 use cognixui::Element;
+use pathfinder_color::ColorU;
 
 /// Shared item highlight state for left-panel style lists (file tree, global search results,
 /// cognix drive rows, etc.).

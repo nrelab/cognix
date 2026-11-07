@@ -10,12 +10,12 @@ use crate::ai::agent::{
     AIAgentExchangeId, AIAgentInput, AIAgentOutputMessageType, LifecycleEventType,
     ReceivedMessageInput,
 };
-use std::collections::{HashMap, HashSet};
-use uuid::Uuid;
 use cognix_core::features::FeatureFlag;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_multi_agent_api as api;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use std::collections::{HashMap, HashSet};
+use uuid::Uuid;
 
 const MAX_RETRY_ATTEMPTS: i32 = 3;
 const MAX_PENDING_LIFECYCLE_EVENTS_PER_TARGET: usize = 200;

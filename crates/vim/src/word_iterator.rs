@@ -1,9 +1,9 @@
 use std::iter::Peekable;
 
 use anyhow::Result;
+use cognixui::text::{words::is_default_word_boundary, TextBuffer};
 use itertools::{peek_nth, Either, PeekNth};
 use string_offset::CharOffset;
-use cognixui::text::{words::is_default_word_boundary, TextBuffer};
 
 use crate::vim::{Direction, WordBound, WordType};
 

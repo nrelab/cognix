@@ -1,7 +1,5 @@
 //! Integration tests for bootstrapping logic.
 
-use settings::Setting as _;
-use version_compare::Cmp;
 use cognix::{
     cmd_or_ctrl_shift,
     integration_testing::{
@@ -27,6 +25,8 @@ use cognix::{
 use cognixui::{
     async_assert, async_assert_eq, clipboard::ClipboardContent, integration::TestStep, ViewHandle,
 };
+use settings::Setting as _;
+use version_compare::Cmp;
 
 use crate::util::{write_all_rc_files_for_test, write_rc_files_for_test, ShellRcType};
 

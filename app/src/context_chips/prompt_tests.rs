@@ -1,5 +1,5 @@
-use serde_json::Value;
 use cognixui::{App, SingletonEntity};
+use serde_json::Value;
 
 use super::Prompt;
 use crate::auth::AuthStateProvider;
@@ -104,7 +104,8 @@ fn test_prompt_settings() {
         session_settings.read(&app, |settings, _| {
             assert_eq!(
                 settings.saved_prompt.to_owned(),
-                PromptConfiguration::from_chips(new_chips, false, CognixPromptSeparator::None).into()
+                PromptConfiguration::from_chips(new_chips, false, CognixPromptSeparator::None)
+                    .into()
             );
         });
 

@@ -1,7 +1,7 @@
 use chrono::Utc;
+use cognixui::{App, ModelHandle};
 use lazy_static::lazy_static;
 use settings::{RespectUserSyncSetting, SyncToCloud};
-use cognixui::{App, ModelHandle};
 
 use crate::auth::auth_manager::AuthManager;
 use crate::auth::user::TEST_USER_UID;

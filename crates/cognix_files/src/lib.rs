@@ -14,26 +14,26 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use remote_server::client::RemoteServerClient;
-use remote_server::manager::RemoteServerManager;
 use cognix_core::HostId;
 use cognix_util::standardized_path::StandardizedPath;
+use remote_server::client::RemoteServerClient;
+use remote_server::manager::RemoteServerManager;
 
 use futures::io::{AsyncBufReadExt, BufReader};
 use futures::StreamExt;
 
 use async_channel::Sender;
+use cognix_util::content_version::ContentVersion;
+use cognix_util::file::FileSaveError;
+use cognix_util::file::{FileId, FileLoadError};
+use cognixui::ModelHandle;
+use cognixui::{r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, SingletonEntity};
 use notify_debouncer_full::notify::{RecursiveMode, WatchFilter};
 use repo_metadata::{
     repositories::DetectedRepositories,
     repository::{RepositorySubscriber, SubscriberId},
     CanonicalizedPath, Repository, RepositoryUpdate,
 };
-use cognix_util::content_version::ContentVersion;
-use cognix_util::file::FileSaveError;
-use cognix_util::file::{FileId, FileLoadError};
-use cognixui::ModelHandle;
-use cognixui::{r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, SingletonEntity};
 use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 
 pub mod text_file_reader;

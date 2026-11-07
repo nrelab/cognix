@@ -1,5 +1,3 @@
-use itertools::Itertools;
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{
         ConstrainedBox, Container, CrossAxisAlignment, Flex, Highlight, Icon, MainAxisAlignment,
@@ -9,6 +7,8 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, SingletonEntity,
 };
+use itertools::Itertools;
+use ordered_float::OrderedFloat;
 
 use crate::{
     appearance::Appearance,

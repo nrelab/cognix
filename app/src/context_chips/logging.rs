@@ -9,9 +9,9 @@ use std::{
 };
 
 use chrono::{Local, SecondsFormat};
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
 #[cfg(test)]
 use parking_lot::Mutex;
-use cognix_completer::completer::{CommandExitStatus, CommandOutput};
 
 #[cfg(test)]
 use std::sync::Arc;

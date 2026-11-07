@@ -19,6 +19,7 @@ mod code;
 mod code_review;
 mod coding_entrypoints;
 mod coding_panel_enablement_state;
+mod cognix_managed_paths_watcher;
 mod command_palette;
 mod completer;
 #[allow(dead_code)]
@@ -91,7 +92,6 @@ mod view_components;
 mod vim_registers;
 mod voice;
 mod voltron;
-mod cognix_managed_paths_watcher;
 #[cfg(target_family = "wasm")]
 mod wasm_nux_dialog;
 mod window_settings;
@@ -152,6 +152,8 @@ use auth::{auth_manager::AuthManager, auth_state::AuthState};
 use code::editor_management::CodeManager;
 use code::opened_files::OpenedFilesModel;
 use code_review::GlobalCodeReviewModel;
+use cognix_cli::GlobalOptions;
+use cognix_cli::{agent::AgentCommand, CliCommand};
 use quit_warning::UnsavedStateSummary;
 use server::network_log_pane_manager::NetworkLogPaneManager;
 use server::network_logging::NetworkLogModel;
@@ -160,8 +162,6 @@ use server::voice_transcriber::ServerVoiceTranscriber;
 #[cfg(feature = "local_fs")]
 use settings::import::model::ImportedConfigModel;
 use voice::transcriber::VoiceTranscriber;
-use cognix_cli::GlobalOptions;
-use cognix_cli::{agent::AgentCommand, CliCommand};
 
 #[cfg(feature = "local_fs")]
 use repo_metadata::{
@@ -185,11 +185,11 @@ pub use persistence::testing as sqlite_testing;
 use ::settings::{Setting, ToggleableSetting};
 pub use cognix_core::errors::{report_error, report_if_error};
 
-#[cfg(feature = "plugin_host")]
-pub use plugin::{run_plugin_host, PLUGIN_HOST_FLAG};
 use cognix_core::user_preferences::GetUserPreferences as _;
 use cognixui::modals::{AlertDialogWithCallbacks, AppModalCallback};
 use cognixui::platform::app::ApproveTerminateResult;
+#[cfg(feature = "plugin_host")]
+pub use plugin::{run_plugin_host, PLUGIN_HOST_FLAG};
 use window_settings::WindowSettings;
 use workflows::manager::WorkflowManager;
 
@@ -210,6 +210,9 @@ use crate::cloud_object::model::view::CloudViewModel;
 use crate::code::global_buffer_model::GlobalBufferModel;
 #[cfg(feature = "local_fs")]
 use crate::code::language_server_shutdown_manager::LanguageServerShutdownManager;
+use crate::cognix_managed_paths_watcher::{
+    ensure_cognix_watch_roots_exist, CognixManagedPathsWatcher,
+};
 use crate::context_chips::prompt::Prompt;
 use crate::default_terminal::DefaultTerminal;
 use crate::drive::export::ExportManager;
@@ -241,7 +244,6 @@ use crate::terminal::{AudibleBell, History};
 use crate::undo_close::UndoCloseStack;
 use crate::user_config::CognixConfig;
 use crate::vim_registers::VimRegisters;
-use crate::cognix_managed_paths_watcher::{ensure_cognix_watch_roots_exist, CognixManagedPathsWatcher};
 use crate::workflows::aliases::WorkflowAliases;
 use crate::workflows::local_workflows::LocalWorkflows;
 use crate::workspace::{ActiveSession, OneTimeModalModel, ToastStack};
@@ -252,6 +254,8 @@ use anyhow::Context;
 use anyhow::{anyhow, Result};
 use appearance::{Appearance, AppearanceManager};
 use channel::ChannelState;
+use cognix_core::execution_mode::{AppExecutionMode, ExecutionMode};
+use cognix_managed_secrets::ManagedSecretManager;
 use interval_timer::IntervalTimer;
 use itertools::Itertools;
 use referral_theme_status::ReferralThemeStatus;
@@ -265,8 +269,6 @@ use std::sync::Arc;
 use terminal::input;
 use terminal::session_settings::SessionSettings;
 use url::Url;
-use cognix_core::execution_mode::{AppExecutionMode, ExecutionMode};
-use cognix_managed_secrets::ManagedSecretManager;
 use workspace::sync_inputs::SyncedInputState;
 
 use cognixui::{integration::TestDriver, App, AssetProvider, Event};
@@ -548,7 +550,9 @@ pub fn run() -> Result<()> {
                 return crate::run_plugin_host();
             }
             #[cfg(feature = "local_tty")]
-            cognix_cli::Command::Worker(cognix_cli::WorkerCommand::MinidumpServer { socket_name }) => {
+            cognix_cli::Command::Worker(cognix_cli::WorkerCommand::MinidumpServer {
+                socket_name,
+            }) => {
                 cfg_if::cfg_if! {
                     if #[cfg(all(linux_or_windows, feature = "crash_reporting"))] {
                         return crate::crash_reporting::run_minidump_server(socket_name);
@@ -602,7 +606,9 @@ pub fn run() -> Result<()> {
             }
             cognix_cli::Command::CommandLine(cmd) => {
                 let (is_sandboxed, computer_use_override) = match cmd.as_ref() {
-                    cognix_cli::CliCommand::Agent(cognix_cli::agent::AgentCommand::Run(run_args)) => (
+                    cognix_cli::CliCommand::Agent(cognix_cli::agent::AgentCommand::Run(
+                        run_args,
+                    )) => (
                         run_args.sandboxed,
                         run_args.computer_use.computer_use_override(),
                     ),
@@ -1311,8 +1317,10 @@ fn initialize_app(
             });
 
             GPUState::handle(ctx).update(ctx, |gpu_state, ctx| {
-                gpu_state
-                    .set_has_lower_power_gpu(cognixui::rendering::is_low_power_gpu_available(), ctx);
+                gpu_state.set_has_lower_power_gpu(
+                    cognixui::rendering::is_low_power_gpu_available(),
+                    ctx,
+                );
             });
 
             for window_id in ctx.window_ids().collect_vec() {

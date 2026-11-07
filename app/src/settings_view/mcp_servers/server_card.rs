@@ -1,5 +1,3 @@
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use pathfinder_color::ColorU;
 use cognix_core::{
     features::FeatureFlag,
     ui::{
@@ -25,6 +23,8 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use pathfinder_color::ColorU;
 
 use crate::{
     ai::mcp::{

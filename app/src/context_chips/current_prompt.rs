@@ -1,6 +1,6 @@
 use crate::features::FeatureFlag;
 use crate::report_if_error;
-use crate::settings::{InputSettings, CognixPromptSeparator};
+use crate::settings::{CognixPromptSeparator, InputSettings};
 use crate::terminal::event::{BlockType, UserBlockCompleted};
 use crate::terminal::model::session::{ExecuteCommandOptions, Session, SessionsEvent};
 use crate::terminal::model_events::{ModelEvent, ModelEventDispatcher};
@@ -20,11 +20,11 @@ use crate::{
         view::{ContextMenuAction, PromptPart, PromptPosition, TerminalAction},
     },
 };
+use cognix_completer::completer::{CommandExitStatus, CommandOutput};
+use cognix_core::user_preferences::GetUserPreferences;
 use futures::{pin_mut, FutureExt as _};
 use itertools::Itertools;
 use settings::Setting as _;
-use cognix_completer::completer::{CommandExitStatus, CommandOutput};
-use cognix_core::user_preferences::GetUserPreferences;
 
 use super::ChipResult;
 use super::{
@@ -42,10 +42,6 @@ use super::{
 use crate::code_review::git_status_update::{GitRepoStatusEvent, GitRepoStatusModel};
 #[cfg(feature = "local_fs")]
 use crate::context_chips::display_chip::GitLineChanges;
-use std::collections::{HashMap, HashSet};
-use std::hash::{Hash as _, Hasher as _};
-use std::sync::Arc;
-use std::time::Duration;
 #[cfg(feature = "local_fs")]
 use cognixui::WeakModelHandle;
 use cognixui::{
@@ -53,6 +49,10 @@ use cognixui::{
     AppContext, ViewHandle,
 };
 use cognixui::{Entity, ModelAsRef, ModelContext, ModelHandle, SingletonEntity};
+use std::collections::{HashMap, HashSet};
+use std::hash::{Hash as _, Hasher as _};
+use std::sync::Arc;
+use std::time::Duration;
 
 #[cfg(test)]
 #[path = "current_prompt_test.rs"]

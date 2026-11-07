@@ -1,4 +1,4 @@
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognix_core::ui::Icon;
 use cognixui::Element;
 

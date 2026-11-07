@@ -128,8 +128,7 @@ static INSTALL_INSTRUCTIONS: LazyLock<PluginInstructions> = LazyLock::new(|| Plu
     subtitle: "Run the following command, then restart Gemini CLI.",
     steps: &[PluginInstructionStep {
         description: "Install the Cognix extension",
-        command:
-            "gemini extensions install https://github.com/nrelab/gemini-cli-cognix --consent",
+        command: "gemini extensions install https://github.com/nrelab/gemini-cli-cognix --consent",
         executable: true,
         link: None,
     }],

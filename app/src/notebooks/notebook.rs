@@ -1,12 +1,12 @@
 use anyhow::Context;
 use async_channel::Sender;
+use cognix_core::context_flag::ContextFlag;
 use futures_util::stream::AbortHandle;
 use lazy_static::lazy_static;
 use regex::Regex;
 use settings::Setting as _;
 use std::{sync::Arc, time::Duration};
 use url::Url;
-use cognix_core::context_flag::ContextFlag;
 
 #[cfg(target_family = "wasm")]
 use crate::uri::web_intent_parser::open_url_on_desktop;
@@ -612,8 +612,10 @@ impl NotebookView {
                     .and_then(SyncId::into_server)
                 {
                     self.pane_configuration.update(ctx, |pane_config, ctx| {
-                        pane_config
-                            .set_shareable_object(Some(ShareableObject::CognixDriveObject(id)), ctx);
+                        pane_config.set_shareable_object(
+                            Some(ShareableObject::CognixDriveObject(id)),
+                            ctx,
+                        );
                     })
                 }
             }

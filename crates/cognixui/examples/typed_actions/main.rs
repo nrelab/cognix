@@ -3,8 +3,8 @@ use std::borrow::Cow;
 pub mod root_view;
 
 extern crate cognixui;
-use rust_embed::RustEmbed;
 use cognixui::{platform, AssetProvider};
+use rust_embed::RustEmbed;
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "examples/assets"]

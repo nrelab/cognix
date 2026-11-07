@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-use vim::vim::MotionType;
 use cognixui::{clipboard::ClipboardContent, AppContext, Entity, ModelContext, SingletonEntity};
+use vim::vim::MotionType;
 
 use crate::settings::AppEditorSettings;
 use settings::Setting as _;

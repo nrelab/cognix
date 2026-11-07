@@ -15,18 +15,18 @@ use crate::terminal::CLIAgent;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use cfg_if::cfg_if;
 use chrono::{DateTime, Utc};
-use lazy_static::lazy_static;
-use regex::Regex;
 use cognixui::platform::OperatingSystem;
 use cognixui::{
     platform::keyboard::KeyCode, AppContext, Entity, ModelContext, SingletonEntity, UpdateModel,
 };
+use lazy_static::lazy_static;
+use regex::Regex;
 
+use cognix_core::execution_mode::AppExecutionMode;
+use cognix_core::features::FeatureFlag;
 use settings::{
     define_settings_group, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
-use cognix_core::execution_mode::AppExecutionMode;
-use cognix_core::features::FeatureFlag;
 
 use serde::{de::Deserializer, Deserialize, Serialize};
 use strum::IntoEnumIterator;

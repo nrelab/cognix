@@ -24,9 +24,6 @@ use crate::util::bindings::keybinding_name_to_display_string;
 use crate::util::truncation::truncate_from_beginning;
 use crate::view_components::action_button::{ActionButtonTheme, NakedTheme};
 use crate::view_components::{FeaturePopup, NewFeaturePopupEvent, NewFeaturePopupLabel};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use std::path::PathBuf;
 use cognix_core::ui::theme::Fill;
 use cognix_core::{features::FeatureFlag, ui::theme::color::internal_colors};
 use cognixui::elements::Empty;
@@ -44,6 +41,9 @@ use cognixui::{
     AppContext, Element, Entity, EntityId, Gradient, ModelHandle, SingletonEntity, TypedActionView,
     View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use std::path::PathBuf;
 
 use crate::appearance::Appearance;
 use crate::completer::SessionContext;

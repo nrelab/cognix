@@ -1,4 +1,3 @@
-use settings::Setting;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::{appearance::Appearance, Icon};
 use cognixui::prelude::Empty;
@@ -15,6 +14,7 @@ use cognixui::{
     Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
     WeakModelHandle,
 };
+use settings::Setting;
 
 use crate::ai::blocklist::agent_view::{render_block_container, AgentViewEntryOrigin};
 use crate::terminal::view::ambient_agent::AmbientAgentViewModel;

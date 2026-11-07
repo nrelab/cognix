@@ -7,10 +7,10 @@ use crate::workspace::view::OnboardingTutorial;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::{AdminEnablementSetting, UgcCollectionEnablementSetting};
 use asset_macro::bundled_or_fetched_asset;
-use markdown_parser::{FormattedTextFragment, FormattedTextLine};
 use cognix_core::send_telemetry_from_ctx;
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::{AppContext, SingletonEntity};
+use markdown_parser::{FormattedTextFragment, FormattedTextLine};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum OzLaunchSlide {

@@ -11,6 +11,7 @@ use std::{
 use parking_lot::Mutex;
 
 use arborium::tree_sitter::{InputEdit, Parser, Tree};
+use cognixui::{color::ColorU, AppContext, Entity, ModelContext, WeakModelHandle};
 use futures::stream::AbortHandle;
 use queries::{
     highlight_query::HighlightQuery,
@@ -18,7 +19,6 @@ use queries::{
 };
 use rangemap::{RangeMap, RangeSet};
 use string_offset::{ByteOffset, CharOffset};
-use cognixui::{color::ColorU, AppContext, Entity, ModelContext, WeakModelHandle};
 
 use cognix_editor::{
     content::{

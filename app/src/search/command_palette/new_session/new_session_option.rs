@@ -2,9 +2,9 @@ use crate::server::telemetry::AddTabWithShellSource;
 use crate::terminal::available_shells::AvailableShell;
 use crate::terminal::view::TerminalAction;
 use crate::WorkspaceAction;
+use cognixui::Action;
 use std::borrow::Cow;
 use std::fmt;
-use cognixui::Action;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct NewSessionOptionId(pub(crate) String);

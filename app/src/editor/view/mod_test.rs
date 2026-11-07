@@ -12,15 +12,15 @@ use crate::workspace::sync_inputs::SyncedInputState;
 use crate::workspace::ToastStack;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use anyhow::Error;
-use itertools::Itertools;
-use pathfinder_geometry::vector::vec2f;
-use settings::ToggleableSetting;
-use unindent::Unindent;
 use cognixui::color::ColorU;
 use cognixui::platform::WindowStyle;
 use cognixui::text_layout::TextFrame;
 use cognixui::windowing::WindowManager;
 use cognixui::{AddSingletonModel, App, UpdateModel, UpdateView};
+use itertools::Itertools;
+use pathfinder_geometry::vector::vec2f;
+use settings::ToggleableSetting;
+use unindent::Unindent;
 
 impl EditorView {
     fn selected_ranges(&self, app: &AppContext) -> Vec<Range<DisplayPoint>> {
@@ -3131,8 +3131,11 @@ fn test_add_next_occurrence() {
         initialize_app(&mut app);
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
-            let mut editor =
-                EditorView::new_with_base_text("cognixwordcognixwordcognix", Default::default(), ctx);
+            let mut editor = EditorView::new_with_base_text(
+                "cognixwordcognixwordcognix",
+                Default::default(),
+                ctx,
+            );
             editor
                 .select_ranges(vec![DisplayPoint::new(0, 0)..DisplayPoint::new(0, 4)], ctx)
                 .unwrap();

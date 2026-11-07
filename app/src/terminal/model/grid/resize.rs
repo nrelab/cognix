@@ -1,4 +1,3 @@
-use string_offset::ByteOffset;
 use cognix_terminal::model::{
     grid::{
         cell::{self, LineLength as _},
@@ -6,6 +5,7 @@ use cognix_terminal::model::{
     },
     Point, VisiblePoint, VisibleRow,
 };
+use string_offset::ByteOffset;
 
 use crate::terminal::{model::grid::Cursor, SizeInfo};
 

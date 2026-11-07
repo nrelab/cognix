@@ -1,4 +1,11 @@
 use anyhow::{anyhow, Result};
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::{AnsiColor, AnsiColors, CognixTheme, Details, Fill, TerminalColors};
+use cognixui::color::ColorU;
+use cognixui::elements::{Rect, Stack};
+use cognixui::fonts::{Cache, FamilyId, Weight};
+use cognixui::platform;
+use cognixui::{prelude::*, AddWindowOptions, AssetProvider, ModelContext};
 use onboarding::components::onboarding_callout::{
     Button as CalloutButton, OnboardingCallout, Options as CalloutOptions, Params as CalloutParams,
     StepStatus,
@@ -6,13 +13,6 @@ use onboarding::components::onboarding_callout::{
 use rust_embed::RustEmbed;
 use std::borrow::Cow;
 use ui_components::Component as _;
-use cognix_core::ui::appearance::Appearance;
-use cognix_core::ui::theme::{AnsiColor, AnsiColors, Details, Fill, TerminalColors, CognixTheme};
-use cognixui::color::ColorU;
-use cognixui::elements::{Rect, Stack};
-use cognixui::fonts::{Cache, FamilyId, Weight};
-use cognixui::platform;
-use cognixui::{prelude::*, AddWindowOptions, AssetProvider, ModelContext};
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "../../app/assets"]

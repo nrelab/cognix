@@ -1,4 +1,3 @@
-use std::sync::Arc;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::render::element::VerticalExpansionBehavior;
 use cognixui::{
@@ -6,6 +5,7 @@ use cognixui::{
     platform::WindowStyle,
     App, TypedActionView, ViewHandle, WindowId,
 };
+use std::sync::Arc;
 
 use crate::{
     cloud_object::model::persistence::CloudModel,

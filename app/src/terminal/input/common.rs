@@ -16,8 +16,6 @@ use crate::{
     ui_components::icons::Icon,
     workspaces::user_workspaces::UserWorkspaces,
 };
-use pathfinder_geometry::vector::vec2f;
-use vim::vim::{VimMode, VimState};
 use cognix_completer::completer::Description;
 use cognix_core::features::FeatureFlag;
 use cognixui::{
@@ -32,6 +30,8 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, EntityId, SingletonEntity, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
+use vim::vim::{VimMode, VimState};
 
 /// Whether the terminal input message bar should be shown.
 ///

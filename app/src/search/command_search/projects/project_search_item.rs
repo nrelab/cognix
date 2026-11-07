@@ -1,13 +1,13 @@
 use chrono::NaiveDateTime;
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
-use std::{cmp::Ordering, path::PathBuf};
 use cognix_core::ui::theme::Fill;
 use cognixui::{
     elements::{Align, ConstrainedBox, Flex, Highlight, ParentElement, Shrinkable, Text},
     fonts::{Properties, Weight},
     AppContext, Element, SingletonEntity,
 };
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
+use std::{cmp::Ordering, path::PathBuf};
 
 use crate::search::action::search_item::styles;
 use crate::search::command_palette::render_util::render_search_item_icon;

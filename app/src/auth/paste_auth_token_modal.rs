@@ -17,8 +17,6 @@ use crate::server::server_api::auth::UserAuthenticationError;
 use crate::themes::theme::Fill as ThemeFill;
 use crate::util::bindings::CustomAction;
 
-use pathfinder_color::ColorU;
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::{
     Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Dismiss, Fill,
@@ -33,6 +31,8 @@ use cognixui::{
     actions::StandardAction, AppContext, Element, Entity, FocusContext, SingletonEntity,
     TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use ui_components::{button, Component as _, Options as _};
 
 const MODAL_WIDTH: f32 = 460.;
 const AUTH_TOKEN_INPUT_BORDER_RADIUS: Radius = Radius::Pixels(4.);

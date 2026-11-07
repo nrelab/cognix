@@ -2,12 +2,12 @@ use crate::appearance::Appearance;
 use crate::search::ai_context_menu::mixer::AIContextMenuSearchableAction;
 use crate::search::item::SearchItem;
 use crate::search::result_renderer::ItemHighlightState;
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{ConstrainedBox, Container, Icon, Text},
     AppContext, Element, SingletonEntity,
 };
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 #[derive(Clone, Debug)]
 pub struct CommandSearchItem {

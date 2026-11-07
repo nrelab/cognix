@@ -1,5 +1,3 @@
-use enum_iterator::{all, Sequence};
-use itertools::{Either, Itertools};
 use cognixui::elements::CornerRadius;
 use cognixui::presenter::ChildView;
 use cognixui::units::Pixels;
@@ -14,6 +12,8 @@ use cognixui::{
     ui_components::components::{Coords, UiComponent, UiComponentStyles},
     AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use enum_iterator::{all, Sequence};
+use itertools::{Either, Itertools};
 
 use crate::settings_view;
 use crate::workspace::tab_settings::TabSettings;

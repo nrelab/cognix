@@ -16,6 +16,9 @@ use std::{
 use ai::project_context::model::ProjectRulePath;
 use anyhow::{anyhow, bail, Context, Result};
 use chrono::{DateTime, Utc};
+use cognix_graphql::scalars::time::ServerTimestamp;
+use cognixui::platform::FullscreenState;
+use cognixui::{AppContext, SingletonEntity};
 use diesel::{
     connection::{DefaultLoadingMode, SimpleConnection},
     result::Error,
@@ -30,9 +33,6 @@ use num_traits::FromPrimitive;
 use pathfinder_geometry::{rect::RectF, vector::Vector2F};
 use persistence::model::AMBIENT_AGENT_PANE_KIND;
 use uuid::Uuid;
-use cognix_graphql::scalars::time::ServerTimestamp;
-use cognixui::platform::FullscreenState;
-use cognixui::{AppContext, SingletonEntity};
 
 use super::agent::{delete_agent_conversations, upsert_agent_conversation};
 use super::block_list::{

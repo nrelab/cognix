@@ -32,8 +32,8 @@ impl TerminalView {
         restored_blocks: Option<&[SerializedBlockListItem]>,
         ctx: &mut ViewContext<Self>,
     ) -> Self {
-        use pathfinder_geometry::vector::vec2f;
         use cognixui::units::{IntoPixels as _, Pixels};
+        use pathfinder_geometry::vector::vec2f;
 
         use crate::{
             server::server_api::ServerApiProvider,

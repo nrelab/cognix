@@ -1,5 +1,5 @@
-use settings::Setting;
 use cognixui::{async_assert, integration::TestStep, windowing::WindowManager, SingletonEntity};
+use settings::Setting;
 
 use crate::{
     integration_testing::{

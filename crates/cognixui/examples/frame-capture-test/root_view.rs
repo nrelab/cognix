@@ -1,7 +1,3 @@
-use image::ImageEncoder;
-use pathfinder_color::ColorU;
-use std::sync::{Arc, Mutex};
-use std::time::{SystemTime, UNIX_EPOCH};
 use cognixui::SingletonEntity as _;
 use cognixui::{
     elements::{
@@ -12,6 +8,10 @@ use cognixui::{
     platform::CapturedFrame,
     AppContext, Element, Entity, TypedActionView, View, ViewContext,
 };
+use image::ImageEncoder;
+use pathfinder_color::ColorU;
+use std::sync::{Arc, Mutex};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 #[derive(Clone, Debug)]
 pub enum RootViewAction {

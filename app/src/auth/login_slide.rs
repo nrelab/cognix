@@ -12,10 +12,6 @@ use crate::themes::theme::Fill as ThemeFill;
 use crate::util::bindings::CustomAction;
 use crate::{send_telemetry_from_ctx, send_telemetry_sync_from_ctx};
 
-use onboarding::slides::{layout, slide_content};
-use onboarding::{OnboardingIntention, AI_FEATURES, COGNIX_DRIVE_FEATURES};
-use pathfinder_color::ColorU;
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_core::ui::Icon;
@@ -34,11 +30,15 @@ use cognixui::{
     actions::StandardAction, AppContext, Element, Entity, FocusContext, SingletonEntity,
     TypedActionView, UpdateModel, View, ViewContext, ViewHandle,
 };
+use onboarding::slides::{layout, slide_content};
+use onboarding::{OnboardingIntention, AI_FEATURES, COGNIX_DRIVE_FEATURES};
+use pathfinder_color::ColorU;
+use ui_components::{button, Component as _, Options as _};
 
 use std::cell::Cell;
 
-use pathfinder_geometry::vector::vec2f;
 use cognixui::elements::{ChildAnchor, ParentAnchor, ParentOffsetBounds};
+use pathfinder_geometry::vector::vec2f;
 
 const TOS_URL: &str = "https://www.cognix.dev/terms-of-service";
 

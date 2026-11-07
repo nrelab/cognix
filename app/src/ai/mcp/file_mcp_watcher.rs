@@ -1,4 +1,6 @@
 use async_channel::Sender;
+use cognix_core::safe_warn;
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 use futures::Future;
 use regex::Regex;
 use repo_metadata::{
@@ -11,8 +13,6 @@ use std::io::ErrorKind;
 use std::path::{Path, PathBuf};
 use std::pin::Pin;
 use std::sync::LazyLock;
-use cognix_core::safe_warn;
-use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 use watcher::HomeDirectoryWatcherEvent;
 
 use crate::ai::mcp::{

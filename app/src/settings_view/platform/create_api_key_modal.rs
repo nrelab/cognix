@@ -9,7 +9,6 @@ use crate::{
     view_components::{Dropdown as DropdownView, DropdownItem},
 };
 use chrono::Utc;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::{
     Border, ChildView, ConstrainedBox, Container, CornerRadius, Empty, Fill, Flex,
@@ -24,6 +23,7 @@ use cognixui::ui_components::segmented_control::{
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 const LABEL_FONT_SIZE: f32 = 14.;
 const INPUT_WIDTH: f32 = 428.; // 460px - (2 * 16px) padding

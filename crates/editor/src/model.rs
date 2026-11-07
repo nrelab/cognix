@@ -1,11 +1,11 @@
 use std::ops::Range;
 
-use itertools::{Either, Itertools};
-use line_ending::LineEnding;
-use vec1::{Vec1, vec1};
 use cognixui::{
     AppContext, Entity, ModelAsRef, ModelContext, ModelHandle, clipboard::ClipboardContent,
 };
+use itertools::{Either, Itertools};
+use line_ending::LineEnding;
+use vec1::{Vec1, vec1};
 
 use crate::{
     content::{
@@ -21,8 +21,8 @@ use crate::{
     render::model::RenderState,
     selection::{SelectionMode, SelectionModel, TextDirection, TextUnit},
 };
-use string_offset::{ByteOffset, CharOffset};
 use cognixui::elements::ListIndentLevel;
+use string_offset::{ByteOffset, CharOffset};
 
 /// A wrapper for a buffer that provides access to its internal update_content method.
 /// It's important this is only returned from `CoreEditorModel::update_content` method

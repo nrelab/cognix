@@ -2,7 +2,6 @@
 //! a filtered list of label-only rows with a left check slot.
 use std::cmp;
 
-use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 use cognix_core::ui::theme::Fill;
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
@@ -20,6 +19,7 @@ use cognixui::{
     AppContext, Entity, FocusContext, SingletonEntity as _, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 
 use crate::{
     appearance::Appearance,
@@ -334,7 +334,9 @@ impl CodeReviewDiffMenu {
 
                         let check_slot: Box<dyn Element> = if target.is_selected {
                             ConstrainedBox::new(
-                                Icon::Check.to_cognixui_icon(Fill::Solid(text_color)).finish(),
+                                Icon::Check
+                                    .to_cognixui_icon(Fill::Solid(text_color))
+                                    .finish(),
                             )
                             .with_width(CHECK_SLOT_SIZE)
                             .with_height(CHECK_SLOT_SIZE)

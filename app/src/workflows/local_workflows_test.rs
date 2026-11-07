@@ -1,5 +1,5 @@
-use std::sync::Arc;
 use cognixui::App;
+use std::sync::Arc;
 
 use super::*;
 

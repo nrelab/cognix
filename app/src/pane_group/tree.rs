@@ -1,8 +1,4 @@
 use crate::app_state;
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::Vector2F;
-use std::collections::HashSet;
-use std::{fmt, iter, mem};
 use cognixui::elements::{
     ChildAnchor, Container, DispatchEventResult, Empty, OffsetPositioning, ParentAnchor,
     ParentOffsetBounds, PositionedElementAnchor, PositionedElementOffsetBounds, SavePosition,
@@ -17,6 +13,10 @@ use cognixui::{
     platform::Cursor,
     EntityId, ViewContext,
 };
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::Vector2F;
+use std::collections::HashSet;
+use std::{fmt, iter, mem};
 
 use super::{ActivationReason, PaneGroup, PaneId};
 use crate::pane_group::{get_minimum_pane_size, DraggedBorder, PaneGroupAction};

@@ -5,12 +5,12 @@ use std::future::Future;
 use std::sync::Arc;
 use std::time::Duration;
 
-use futures::TryFutureExt;
-use inquire::{InquireError, Select};
 use cognix_cli::agent::Harness;
 use cognix_cli::environment::{EnvironmentCreateArgs, EnvironmentUpdateArgs};
 use cognixui::r#async::FutureExt;
 use cognixui::{AppContext, GetSingletonModelHandle, SingletonEntity as _, UpdateModel};
+use futures::TryFutureExt;
+use inquire::{InquireError, Select};
 
 use crate::ai::agent::conversation::ServerAIConversationMetadata;
 use crate::ai::agent_sdk::driver::{AgentDriverError, COGNIX_DRIVE_SYNC_TIMEOUT};

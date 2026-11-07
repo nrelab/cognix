@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::vec2f;
 use cognixui::elements::{
     Align, ChildAnchor, ClippedScrollStateHandle, ClippedScrollable, DispatchEventResult,
     EventHandler, Hoverable, Icon, MouseStateHandle, OffsetPositioning, PositionedElementAnchor,
@@ -18,6 +17,7 @@ use cognixui::{
 };
 use cognixui::{keymap::FixedBinding, ViewContext};
 use cognixui::{Action, BlurContext, EntityId, ModelHandle, SingletonEntity, WindowId};
+use pathfinder_geometry::vector::vec2f;
 
 use crate::appearance::Appearance;
 use crate::resource_center::{Tip, TipAction, TipsCompleted};

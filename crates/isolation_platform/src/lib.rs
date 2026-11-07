@@ -1,8 +1,8 @@
 use std::{io, process::ExitStatus, sync::OnceLock, time::Duration};
 
 use chrono::{DateTime, Utc};
-use serde::Serialize;
 use cognix_core::channel::{Channel, ChannelState};
+use serde::Serialize;
 
 #[cfg(not(target_family = "wasm"))]
 mod docker;

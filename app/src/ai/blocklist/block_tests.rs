@@ -1,8 +1,8 @@
 use super::{CollapsibleElementState, CollapsibleExpansionState};
 use crate::settings::AISettings;
 use crate::test_util::settings::initialize_settings_for_tests;
-use settings::Setting;
 use cognixui::{App, SingletonEntity};
+use settings::Setting;
 
 #[test]
 fn reasoning_auto_collapses_when_user_has_not_manually_toggled() {

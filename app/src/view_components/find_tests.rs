@@ -1,6 +1,6 @@
-use std::sync::Arc;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{platform::WindowStyle, App};
+use std::sync::Arc;
 
 use crate::auth::AuthStateProvider;
 use crate::server::server_api::{team::MockTeamClient, workspace::MockWorkspaceClient};

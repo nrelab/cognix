@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use cognix_core::context_flag::ContextFlag;
 use cognixui::{
     elements::{Clipped, Container, Flex, MouseStateHandle, ParentElement},
@@ -6,6 +5,7 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, SingletonEntity,
 };
+use itertools::Itertools;
 
 use crate::{
     appearance::Appearance,

@@ -4,8 +4,6 @@
 //! filesystem watcher and pushed into the in-memory setting models, on every
 //! platform where Cognix watches `config_local_dir()`.
 
-use settings::Setting as _;
-use std::time::Duration;
 use cognix::{
     features::FeatureFlag,
     integration_testing::{
@@ -15,6 +13,8 @@ use cognix::{
     settings::FontSettings,
 };
 use cognixui::{async_assert_eq, integration::TestStep, SingletonEntity};
+use settings::Setting as _;
+use std::time::Duration;
 
 use super::{new_builder, Builder};
 

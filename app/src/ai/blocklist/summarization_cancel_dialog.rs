@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::Fill;
 use cognixui::{
     elements::{Align, Container, CrossAxisAlignment, Dismiss, Flex, ParentElement, Stack},
@@ -10,6 +9,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::appearance::Appearance;
 use crate::ui_components::{

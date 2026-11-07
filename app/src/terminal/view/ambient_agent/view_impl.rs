@@ -1,9 +1,9 @@
 //! [`TerminalView`]-specific implementation for ambient agent functionality.
 
-use std::cell::Cell;
-use std::rc::Rc;
 use cognix_cli::agent::Harness;
 use cognix_terminal::model::BlockId;
+use std::cell::Cell;
+use std::rc::Rc;
 
 use crate::ai::agent::conversation::{AIConversationId, ConversationStatus};
 use crate::ai::AIRequestUsageModel;

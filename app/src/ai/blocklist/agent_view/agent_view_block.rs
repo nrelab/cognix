@@ -1,5 +1,3 @@
-use pathfinder_color::ColorU;
-use settings::Setting;
 use cognix_core::ui::{appearance::Appearance, Icon};
 use cognixui::{
     elements::{
@@ -12,6 +10,8 @@ use cognixui::{
     text_layout::ClipConfig,
     Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use pathfinder_color::ColorU;
+use settings::Setting;
 
 use crate::{
     ai::{

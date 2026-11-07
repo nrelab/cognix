@@ -1,6 +1,6 @@
+use cognixui::platform::OperatingSystem;
 use itertools::Itertools;
 use string_offset::ByteOffset;
-use cognixui::platform::OperatingSystem;
 
 use crate::{
     completer::suggest::MatchRequirement,

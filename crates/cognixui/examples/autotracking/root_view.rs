@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognixui::elements::DispatchEventResult;
 use cognixui::fonts::FamilyId;
 use cognixui::{
@@ -9,6 +8,7 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, Tracked, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 pub fn init(ctx: &mut AppContext) {
     ctx.add_singleton_model(|_| Settings {

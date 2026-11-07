@@ -154,7 +154,9 @@ impl RenderableBlock for RenderableBrokenEmbedding {
             );
         }
 
-        ctx.paint.scene.start_layer(cognixui::ClipBounds::ActiveLayer);
+        ctx.paint
+            .scene
+            .start_layer(cognixui::ClipBounds::ActiveLayer);
         self.row
             .paint(ctx.content_to_screen(content_origin), ctx.paint, app);
         ctx.paint.scene.stop_layer();

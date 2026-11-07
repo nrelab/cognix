@@ -1,12 +1,4 @@
 use chrono::Local;
-use itertools::Itertools;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::sync::Arc;
-use thousands::Separable;
 use cognix_core::ui::theme::Fill;
 use cognix_core::{features::FeatureFlag, ui::appearance::Appearance};
 use cognix_graphql::billing::AddonCreditsOption;
@@ -28,6 +20,14 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, UpdateView, View,
     ViewContext, ViewHandle,
 };
+use itertools::Itertools;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::sync::Arc;
+use thousands::Separable;
 
 use settings::Setting;
 
@@ -3197,7 +3197,10 @@ impl UsageWidget {
                 ]
             } else if !team.billing_metadata.is_usage_based_pricing_toggleable() {
                 vec![
-                    FormattedTextFragment::hyperlink("Contact support", "mailto:support@cognix.dev"),
+                    FormattedTextFragment::hyperlink(
+                        "Contact support",
+                        "mailto:support@cognix.dev",
+                    ),
                     FormattedTextFragment::plain_text(" for more AI usage."),
                 ]
             } else {

@@ -2,7 +2,6 @@
 //! Tests the ability to restore closed panes using cmd+shift+t.
 
 use super::{new_builder, Builder};
-use std::{collections::HashMap, time::Duration};
 use cognix::{
     cmd_or_ctrl_shift,
     features::FeatureFlag,
@@ -16,6 +15,7 @@ use cognix::{
         workspace::{assert_tab_count, trigger_undo_close},
     },
 };
+use std::{collections::HashMap, time::Duration};
 
 /// Tests the basic pane restoration workflow:
 /// 1. Split off a pane

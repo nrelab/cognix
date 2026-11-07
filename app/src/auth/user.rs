@@ -1,8 +1,8 @@
 use crate::server::datetime_ext::DateTimeExt;
 use anyhow::{anyhow, Result};
 use chrono::{DateTime, FixedOffset};
-use serde::{Deserialize, Serialize};
 use cognix_graphql::{queries::get_user::FirebaseProfile, scalars::time::ServerTimestamp};
+use serde::{Deserialize, Serialize};
 
 use super::UserUid;
 

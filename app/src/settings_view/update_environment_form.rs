@@ -25,11 +25,6 @@ use crate::{
     workspaces::user_workspaces::UserWorkspaces,
     ChannelState,
 };
-use instant::{Duration, Instant};
-use log::debug;
-#[cfg(not(target_family = "wasm"))]
-use std::collections::HashMap;
-use url::Url;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_editor::editor::NavigationKey;
 use cognix_graphql::queries::user_github_info::UserGithubInfoResult;
@@ -52,6 +47,11 @@ use cognixui::{
     AppContext, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use instant::{Duration, Instant};
+use log::debug;
+#[cfg(not(target_family = "wasm"))]
+use std::collections::HashMap;
+use url::Url;
 
 const SUBMIT_BUTTON_FOCUSED: &str = "SubmitButtonFocused";
 
@@ -3063,7 +3063,8 @@ impl UpdateEnvironmentForm {
             "Suggest image"
         };
 
-        let tooltip_text = "Cognix will suggest a Docker image based on your selected repositories.";
+        let tooltip_text =
+            "Cognix will suggest a Docker image based on your selected repositories.";
 
         let button = Hoverable::new(
             self.suggest_image_button_mouse_state.clone(),
@@ -3085,10 +3086,11 @@ impl UpdateEnvironmentForm {
                 };
 
                 let icon_size = appearance.ui_font_size();
-                let icon = ConstrainedBox::new(Icon::Lightbulb.to_cognixui_icon(text_fill).finish())
-                    .with_width(icon_size)
-                    .with_height(icon_size)
-                    .finish();
+                let icon =
+                    ConstrainedBox::new(Icon::Lightbulb.to_cognixui_icon(text_fill).finish())
+                        .with_width(icon_size)
+                        .with_height(icon_size)
+                        .finish();
 
                 let text = Text::new(
                     button_text,

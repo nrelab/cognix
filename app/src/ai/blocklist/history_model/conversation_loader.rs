@@ -5,11 +5,11 @@ use std::collections::{HashMap, HashSet};
 use std::future::Future;
 use std::sync::Arc;
 
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, SingletonEntity};
 use futures::FutureExt;
 use itertools::Itertools as _;
 use persistence::model::AgentConversationRecord;
-use cognix_core::features::FeatureFlag;
-use cognixui::{AppContext, SingletonEntity};
 
 use crate::ai::agent::api::convert_conversation::{
     convert_conversation_data_to_ai_conversation, RestorationMode,

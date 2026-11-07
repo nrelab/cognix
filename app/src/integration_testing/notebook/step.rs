@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
-use string_offset::CharOffset;
 use cognix_editor::model::CoreEditorModel;
 use cognixui::{
     async_assert, integration::TestStep, windowing::WindowManager, App, SingletonEntity,
     ViewHandle, WindowId,
 };
+use string_offset::CharOffset;
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, CloudObjectEventEntrypoint, Space},

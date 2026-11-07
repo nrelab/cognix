@@ -14,22 +14,22 @@ use super::{
 };
 use watcher::{BulkFilesystemWatcherEvent, HomeDirectoryWatcher, HomeDirectoryWatcherEvent};
 
-use crate::server::datetime_ext::DateTimeExt;
 use crate::cognix_managed_paths_watcher::{
-    filter_repository_update_by_prefix, cognix_managed_skill_dirs, CognixManagedPathsWatcher,
+    cognix_managed_skill_dirs, filter_repository_update_by_prefix, CognixManagedPathsWatcher,
     CognixManagedPathsWatcherEvent,
 };
+use crate::server::datetime_ext::DateTimeExt;
 use ai::skills::{
     home_skills_path, parse_skill, ParsedSkill, SkillProvider, SKILL_PROVIDER_DEFINITIONS,
 };
 use async_channel::Sender;
 use chrono::{DateTime, Duration, Utc};
+use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 use repo_metadata::{
     repositories::{DetectedRepositories, RepoDetectionSource},
     repository::{Repository, SubscriberId},
     DirectoryWatcher, RepoMetadataModel, RepositoryUpdate,
 };
-use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
 #[derive(Debug, PartialEq)]
 pub enum SkillWatcherEvent {

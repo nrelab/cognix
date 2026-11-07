@@ -1,9 +1,9 @@
-use typed_path::{TypedPath, TypedPathBuf, WindowsPath};
 use cognix_terminal::shell::ShellLaunchData;
 use cognix_util::path::{
     convert_msys2_to_windows_native_path, convert_wsl_to_windows_host_path, msys2_exe_to_root,
 };
 use cognixui::platform::OperatingSystem;
+use typed_path::{TypedPath, TypedPathBuf, WindowsPath};
 
 fn use_unix_paths(shell: Option<&ShellLaunchData>) -> bool {
     OperatingSystem::get().is_linux()

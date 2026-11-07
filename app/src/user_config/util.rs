@@ -11,7 +11,7 @@ use walkdir::{DirEntry, WalkDir};
 
 use crate::launch_configs::launch_config::LaunchConfig;
 use crate::tab_configs::{TabConfig, TabConfigError};
-use crate::themes::theme::{ThemeKind, CognixTheme, CognixThemeConfig};
+use crate::themes::theme::{CognixTheme, CognixThemeConfig, ThemeKind};
 use crate::workflows::workflow::Workflow;
 
 const CONFIG_FILE_SUFFIXES: &[&str] = &[".yaml", ".yml"];

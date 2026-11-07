@@ -10,11 +10,11 @@ use crate::search::env_var_collections::fuzzy_match::FuzzyMatchEnvVarCollectionR
 use crate::search::item::{IconLocation, SearchItem};
 use crate::search::result_renderer::ItemHighlightState;
 use crate::ui_components::icons::Icon;
-use itertools::Itertools;
-use ordered_float::OrderedFloat;
 use cognixui::elements::{Container, Flex, Highlight, ParentElement, Text};
 use cognixui::fonts::{Properties, Weight};
 use cognixui::{AppContext, Element, SingletonEntity};
+use itertools::Itertools;
+use ordered_float::OrderedFloat;
 
 pub const ENV_VAR_NAME_SEPARATOR: &str = ", ";
 

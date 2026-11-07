@@ -1,5 +1,3 @@
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::ui::{appearance::Appearance, Icon};
 use cognixui::{
     elements::{
@@ -11,6 +9,8 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity as _, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::Vector2F;
 
 use crate::editor::{EditorOptions, EditorView, Event as EditorEvent, TextOptions};
 

@@ -5,7 +5,6 @@
 //! or individual setting values are invalid — and that the banner clears
 //! when the file is fixed.
 
-use std::time::Duration;
 use cognix::{
     features::FeatureFlag,
     integration_testing::{
@@ -14,6 +13,7 @@ use cognix::{
     },
 };
 use cognixui::{async_assert, integration::TestStep};
+use std::time::Duration;
 
 use super::{new_builder, Builder};
 

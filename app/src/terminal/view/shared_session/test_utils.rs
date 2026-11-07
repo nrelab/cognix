@@ -1,7 +1,7 @@
-use session_sharing_protocol::common::{ParticipantId, ParticipantList, SessionId};
-use session_sharing_protocol::sharer::SessionSourceType;
 use cognixui::platform::WindowStyle;
 use cognixui::{App, SingletonEntity, ViewHandle};
+use session_sharing_protocol::common::{ParticipantId, ParticipantList, SessionId};
+use session_sharing_protocol::sharer::SessionSourceType;
 
 use crate::auth::UserUid;
 use crate::editor::ReplicaId;

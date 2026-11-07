@@ -1,18 +1,16 @@
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
+use cognix_core::send_telemetry_from_ctx;
 use lsp::supported_servers::LSPServerType;
 use lsp::{
     LanguageId, LanguageServerId, LspManagerModel, LspManagerModelEvent, LspServerModel,
     LspState as LspModelState,
 };
-use cognix_core::send_telemetry_from_ctx;
 
 use crate::code::lsp_telemetry::{LspControlActionType, LspEnablementSource, LspTelemetryEvent};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::color::internal_colors;
-use cognix_core::ui::theme::{Fill as ThemeFill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill as ThemeFill};
 use cognix_core::ui::{appearance::Appearance, Icon};
 use cognixui::elements::{
     ChildAnchor, ChildView, Dismiss, Empty, Hoverable, MainAxisSize, MouseStateHandle,
@@ -28,6 +26,8 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, View, WeakModelHandle,
 };
 use cognixui::{TypedActionView, ViewContext, ViewHandle};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use cognix_core::ui::theme::AnsiColorIdentifier;
 

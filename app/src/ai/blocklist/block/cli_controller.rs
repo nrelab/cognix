@@ -1,11 +1,11 @@
 use std::{collections::HashMap, sync::Arc};
 
 use crate::server::telemetry::{CLISubagentControlState, TelemetryEvent};
+use cognix_core::send_telemetry_from_ctx;
+use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 use instant::Instant;
 use parking_lot::FairMutex;
 use serde::{Deserialize, Serialize};
-use cognix_core::send_telemetry_from_ctx;
-use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::blocklist::context_model::block_context_from_terminal_model;
 use crate::{

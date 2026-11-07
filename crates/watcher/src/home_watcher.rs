@@ -1,7 +1,7 @@
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 use notify_debouncer_full::notify::{RecursiveMode, WatchFilter};
 use std::path::PathBuf;
 use std::time::Duration;
-use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 

@@ -3,10 +3,10 @@
 
 use std::{collections::HashMap, ops::Range};
 
-use settings::Setting as _;
-use string_offset::{ByteOffset, CharOffset};
 use cognix_core::features::FeatureFlag;
 use cognixui::{AppContext, SingletonEntity, ViewContext};
+use settings::Setting as _;
+use string_offset::{ByteOffset, CharOffset};
 
 use crate::{
     appearance::Appearance,

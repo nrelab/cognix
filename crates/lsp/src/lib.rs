@@ -53,11 +53,11 @@ impl std::fmt::Display for LspServerLogLevel {
 }
 
 use anyhow::Result;
+use cognixui::r#async::executor::Background;
+use cognixui::AppContext;
 #[cfg(not(target_arch = "wasm32"))]
 use simple_logger::SimpleLogger;
 use std::sync::Arc;
-use cognixui::r#async::executor::Background;
-use cognixui::AppContext;
 
 pub struct LspServiceInitializationResult {
     pub service: LspService,

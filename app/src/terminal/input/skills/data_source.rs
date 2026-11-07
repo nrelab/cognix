@@ -1,8 +1,6 @@
 use std::path::PathBuf;
 
 use ai::skills::{SkillProvider, SkillReference, SkillScope};
-use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
-use ordered_float::OrderedFloat;
 use cognix_core::ui::icons::Icon;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
@@ -15,6 +13,8 @@ use cognixui::text_layout::ClipConfig;
 use cognixui::{
     AppContext, Element, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity as _,
 };
+use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
+use ordered_float::OrderedFloat;
 
 use crate::ai::skills::SkillManager;
 use crate::appearance::Appearance;

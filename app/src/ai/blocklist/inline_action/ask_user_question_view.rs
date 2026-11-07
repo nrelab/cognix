@@ -4,7 +4,6 @@ use ai::agent::{
     action::{AskUserQuestionItem, AskUserQuestionOption, AskUserQuestionType},
     action_result::{AskUserQuestionAnswerItem, AskUserQuestionResult},
 };
-use itertools::Itertools;
 use cognix_core::ui::theme::{color::internal_colors, CognixTheme};
 use cognixui::{
     elements::{
@@ -19,6 +18,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use itertools::Itertools;
 
 use crate::{
     ai::{

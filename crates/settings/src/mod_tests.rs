@@ -540,8 +540,8 @@ mod write_to_preferences_tests {
     /// Option fields — reproduces the exact QuakeModeSettings scenario.
     #[test]
     fn test_no_spurious_write_with_hashmap_and_missing_options() {
-        use std::collections::HashMap;
         use cognixui_extras::user_preferences::toml_backed::TomlBackedUserPreferences;
+        use std::collections::HashMap;
 
         #[derive(
             Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, schemars::JsonSchema,

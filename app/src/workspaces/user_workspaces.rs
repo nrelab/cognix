@@ -27,14 +27,14 @@ use crate::{
     },
 };
 use anyhow::Result;
-use regex::Regex;
-use std::sync::Arc;
 use cognix_core::{
     features::FeatureFlag,
     settings::{ChangeEventReason, Setting},
 };
 use cognix_graphql::workspace::FeatureModelChoice;
 use cognixui::{AppContext, Entity, ModelContext, SingletonEntity, Tracked};
+use regex::Regex;
+use std::sync::Arc;
 
 #[cfg(test)]
 use crate::server::server_api::{team::MockTeamClient, workspace::MockWorkspaceClient};

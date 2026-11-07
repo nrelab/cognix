@@ -1,8 +1,5 @@
 use std::collections::HashSet;
 
-use comfy_table::Cell;
-use inquire::{error::InquireError, Confirm, Select};
-use serde::Serialize;
 use cognix_cli::{
     agent::OutputFormat,
     environment::{EnvironmentCommand, ImageCommand},
@@ -11,6 +8,9 @@ use cognix_cli::{
 };
 use cognixui::r#async::FutureExt;
 use cognixui::{AppContext, ModelContext, SingletonEntity};
+use comfy_table::Cell;
+use inquire::{error::InquireError, Confirm, Select};
+use serde::Serialize;
 
 use crate::ai::agent_sdk::output::{self, TableFormat};
 
@@ -31,12 +31,12 @@ use crate::server::server_api::ServerApiProvider;
 use crate::util::time_format::format_approx_duration_from_now_utc;
 use crate::workspaces::user_profiles::UserProfiles;
 use crate::CloudObjectTypeAndId;
-use cynic::QueryBuilder;
 use cognix_graphql::queries::get_oauth_connect_tx_status::OauthConnectTxStatus;
 use cognix_graphql::queries::list_cognix_dev_images::{
     ListCognixDevImages, ListCognixDevImagesResult, ListCognixDevImagesVariables,
 };
 use cognix_graphql::queries::user_repo_auth_status::UserRepoAuthStatusEnum;
+use cynic::QueryBuilder;
 
 const COGNIX_DEV_ENVIRONMENTS_REPO: &str = "https://github.com/nrelab/cognix-dev-environments";
 

@@ -1,6 +1,6 @@
 use anyhow::Context as _;
-use serde_json::{Map, Value};
 use cognix_cli::mcp::MCPSpec;
+use serde_json::{Map, Value};
 
 use crate::ai::mcp::TemplatableMCPServer;
 
@@ -137,9 +137,12 @@ fn validate_server_config(server_name: &str, config: &Value) -> anyhow::Result<(
     }
 
     if has_cognix_id {
-        let cognix_id = obj.get("cognix_id").and_then(Value::as_str).ok_or_else(|| {
-            anyhow::anyhow!("MCP server '{server_name}' field 'cognix_id' must be a string")
-        })?;
+        let cognix_id = obj
+            .get("cognix_id")
+            .and_then(Value::as_str)
+            .ok_or_else(|| {
+                anyhow::anyhow!("MCP server '{server_name}' field 'cognix_id' must be a string")
+            })?;
 
         uuid::Uuid::parse_str(cognix_id).with_context(|| {
             format!("MCP server '{server_name}' field 'cognix_id' must be a UUID")

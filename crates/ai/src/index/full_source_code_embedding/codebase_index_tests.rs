@@ -16,14 +16,14 @@ use crate::index::full_source_code_embedding::{
     ContentHash, EmbeddingConfig, Fragment, FragmentMetadata,
 };
 use crate::index::locations::{CodeContextLocation, FileFragmentLocation};
+use cognix_util::standardized_path::StandardizedPath;
+use cognixui::{App, SingletonEntity};
 use futures::executor::block_on;
 use repo_metadata::DirectoryWatcher;
 use std::collections::HashMap;
 use std::ops::Range;
 use std::path::PathBuf;
 use std::sync::Arc;
-use cognix_util::standardized_path::StandardizedPath;
-use cognixui::{App, SingletonEntity};
 
 use super::{
     CodebaseIndex, CodebaseIndexTimeStampMetadata, TreeSourceSyncState,

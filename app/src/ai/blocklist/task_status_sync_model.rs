@@ -7,10 +7,10 @@ use crate::server::server_api::ServerApiProvider;
 use crate::terminal::cli_agent_sessions::{
     CLIAgentSessionStatus, CLIAgentSessionsModel, CLIAgentSessionsModelEvent,
 };
-use std::collections::HashMap;
-use std::sync::Arc;
 use cognix_graphql::ai::{AgentTaskState, PlatformErrorCode};
 use cognixui::{Entity, EntityId, ModelContext, SingletonEntity};
+use std::collections::HashMap;
+use std::sync::Arc;
 
 /// Listens for conversation status changes and CLI agent session status
 /// changes, then reports the corresponding task state to the server via

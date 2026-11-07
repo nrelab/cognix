@@ -4,9 +4,7 @@ use crate::util::traffic_lights::windows::RendererState;
 use crate::util::traffic_lights::windows_only::WINDOWS_BRIGHT_RED;
 use crate::util::traffic_lights::{TrafficLightData, TrafficLightMouseStates};
 use crate::workspace::TOTAL_TAB_BAR_HEIGHT;
-use pathfinder_color::ColorU;
-use std::sync::Arc;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognixui::elements::{
     Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, Hoverable, MainAxisAlignment,
     MainAxisSize, MouseStateHandle, ParentElement, Text,
@@ -14,6 +12,8 @@ use cognixui::elements::{
 use cognixui::fonts::FamilyId;
 use cognixui::platform::FullscreenState;
 use cognixui::{AppContext, Element, SingletonEntity};
+use pathfinder_color::ColorU;
+use std::sync::Arc;
 
 /// Possible window traffic light icons.
 #[derive(Copy, Clone)]

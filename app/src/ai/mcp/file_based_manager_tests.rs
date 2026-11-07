@@ -2,9 +2,11 @@ use super::{FileBasedMCPManager, FileBasedMCPManagerEvent, MCPProvider};
 use crate::ai::mcp::FileMCPWatcher;
 use crate::ai::mcp::ParsedTemplatableMCPServerResult;
 use crate::auth::AuthStateProvider;
-use crate::settings::{AISettings, FocusedTerminalInfo};
 use crate::cognix_managed_paths_watcher::{cognix_data_dir, CognixManagedPathsWatcher};
+use crate::settings::{AISettings, FocusedTerminalInfo};
 use crate::workspaces::user_workspaces::UserWorkspaces;
+use cognix_core::features::FeatureFlag;
+use cognixui::{App, Entity, ModelHandle, SingletonEntity as _};
 use repo_metadata::{
     repositories::DetectedRepositories, watcher::DirectoryWatcher, RepoMetadataModel,
 };
@@ -12,8 +14,6 @@ use settings::Setting as _;
 use std::collections::HashSet;
 use std::path::PathBuf;
 use uuid::Uuid;
-use cognix_core::features::FeatureFlag;
-use cognixui::{App, Entity, ModelHandle, SingletonEntity as _};
 use watcher::HomeDirectoryWatcher;
 
 // Helper to initialize dependencies and return FileBasedMCPManager handle
@@ -357,7 +357,8 @@ fn test_project_scoped_servers_never_auto_spawn() {
     let repo_path = PathBuf::from("/tmp/cognix-test-repo");
     let claude_parsed =
         parse_mcp_json(r#"{"proj-claude": {"command": "npx", "args": ["proj-claude"]}}"#);
-    let cognix_parsed = parse_mcp_json(r#"{"proj-cognix": {"command": "npx", "args": ["proj-cognix"]}}"#);
+    let cognix_parsed =
+        parse_mcp_json(r#"{"proj-cognix": {"command": "npx", "args": ["proj-cognix"]}}"#);
 
     App::test((), |mut app| async move {
         let manager = setup_app(&mut app);

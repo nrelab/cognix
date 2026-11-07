@@ -6,8 +6,6 @@ use crate::view_components::FilterableDropdown;
 use crate::view_components::{Dropdown, SubmittableTextInput};
 use crate::Appearance;
 use crate::TemplatableMCPServerManager;
-use pathfinder_geometry::vector::vec2f;
-use uuid::Uuid;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::Hoverable;
 use cognixui::elements::MouseStateHandle;
@@ -20,6 +18,8 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::ui_components::components::UiComponent;
 use cognixui::AppContext;
 use cognixui::{Element, SingletonEntity, ViewHandle};
+use pathfinder_geometry::vector::vec2f;
+use uuid::Uuid;
 
 use super::ExecutionProfileEditorView;
 use super::ExecutionProfileEditorViewAction;

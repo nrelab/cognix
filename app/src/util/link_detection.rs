@@ -1,7 +1,7 @@
+use cognixui::elements::PartialClickableElement;
 use std::collections::HashMap;
 use std::ops::Range;
 use urlocator::{UrlLocation, UrlLocator};
-use cognixui::elements::PartialClickableElement;
 
 use cognixui::platform::Cursor;
 
@@ -373,9 +373,9 @@ pub(crate) fn detect_file_paths(
     file_paths
 }
 
-use string_offset::CharOffset;
 use cognix_editor::content::buffer::Buffer;
 use cognixui::text::word_boundaries::WordBoundariesPolicy;
+use string_offset::CharOffset;
 
 /// Returns the range of the word surrounding the given offset.
 pub(crate) fn get_word_range_at_offset(

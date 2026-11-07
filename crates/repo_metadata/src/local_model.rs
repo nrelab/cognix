@@ -49,8 +49,8 @@ use crate::file_tree_update::{
     flatten_entry_metadata, DirectoryNodeMetadata, FileNodeMetadata, FileTreeEntryUpdate,
     RepoMetadataUpdate, RepoNodeMetadata,
 };
-use ignore::gitignore::Gitignore;
 use cognixui::ModelContext;
+use ignore::gitignore::Gitignore;
 
 /// Maximum depth to traverse when building file trees
 const MAX_TREE_DEPTH: usize = 200;

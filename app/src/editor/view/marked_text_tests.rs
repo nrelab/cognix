@@ -1,6 +1,6 @@
-use vim::vim::VimMode;
 use cognix_core::features::FeatureFlag;
 use cognixui::{keymap::Keystroke, platform::WindowStyle, App};
+use vim::vim::VimMode;
 
 use crate::editor::{DisplayPoint, EditorOptions, EditorView};
 

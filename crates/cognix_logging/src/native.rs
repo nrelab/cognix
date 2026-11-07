@@ -7,9 +7,9 @@ use std::{
 
 use anyhow::Result;
 use chrono::Local;
+use cognix_core::features::FeatureFlag;
 use log::LevelFilter;
 use std::sync::OnceLock;
-use cognix_core::features::FeatureFlag;
 use zip::{CompressionMethod, ZipWriter, write::SimpleFileOptions};
 
 use crate::{LogConfig, LogDestination};

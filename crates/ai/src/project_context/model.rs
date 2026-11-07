@@ -1,9 +1,9 @@
 use anyhow::Result;
+use cognixui::{Entity, ModelContext, SingletonEntity};
 #[cfg(feature = "local_fs")]
 use repo_metadata::repositories::RepoDetectionSource;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
-use cognixui::{Entity, ModelContext, SingletonEntity};
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {

@@ -27,14 +27,14 @@ use std::{
 #[cfg(not(target_arch = "wasm32"))]
 use crate::{spawn_lsp_service, LspServiceInitializationResult};
 use anyhow::{Error, Result};
-use jsonrpc::ServerNotificationEvent;
-#[cfg(not(target_arch = "wasm32"))]
-use simple_logger::manager::LogManager;
 #[cfg(not(target_arch = "wasm32"))]
 use cognix_core::features::FeatureFlag;
 #[cfg(not(target_arch = "wasm32"))]
 use cognixui::SingletonEntity;
 use cognixui::{r#async::executor::Background, Entity, ModelContext};
+use jsonrpc::ServerNotificationEvent;
+#[cfg(not(target_arch = "wasm32"))]
+use simple_logger::manager::LogManager;
 
 static NEXT_LANGUAGE_SERVER_ID: AtomicUsize = AtomicUsize::new(0);
 

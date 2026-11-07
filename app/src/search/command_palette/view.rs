@@ -15,17 +15,17 @@ use crate::terminal::keys_settings::KeysSettings;
 use crate::themes::theme::CognixTheme;
 use crate::view_components::DismissibleToast;
 use crate::ToastStack;
-use lazy_static::lazy_static;
 use cognix_core::send_telemetry_from_app_ctx;
 use cognix_util::path::LineAndColumnArg;
+use lazy_static::lazy_static;
 
 use crate::search::action::search_item::MatchedBinding;
-use itertools::Itertools;
 use cognixui::elements::DispatchEventResult;
 use cognixui::elements::EventHandler;
 use cognixui::event::KeyState;
 use cognixui::platform::keyboard::KeyCode;
 use cognixui::FocusContext;
+use itertools::Itertools;
 
 use crate::search::command_palette::zero_state::{self, Event as ZeroStateEvent, ZeroState};
 use crate::search::data_source::QueryResult;

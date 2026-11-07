@@ -1,5 +1,5 @@
-use settings::Setting;
 use cognixui::{App, SingletonEntity};
+use settings::Setting;
 
 use crate::{
     terminal::{

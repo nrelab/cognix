@@ -3,9 +3,6 @@ use std::collections::{HashMap, HashSet};
 
 use anyhow::anyhow;
 use chrono::{DateTime, Local, NaiveDateTime};
-use itertools::Itertools as _;
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 use cognix_core::features::FeatureFlag;
 use cognix_multi_agent_api::response_event::stream_finished::ConversationUsageMetadata;
 use cognix_multi_agent_api::{
@@ -13,6 +10,9 @@ use cognix_multi_agent_api::{
     response_event::stream_finished::TokenUsage,
 };
 use cognixui::{AppContext, Entity, EntityId, ModelContext, SingletonEntity};
+use itertools::Itertools as _;
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 #[cfg(feature = "local_fs")]
 use std::sync::{Arc, Mutex};

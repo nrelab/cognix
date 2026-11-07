@@ -4,10 +4,12 @@ use crate::ai::execution_profiles::{
 use crate::ai::llms::LLMModelHost;
 use crate::{auth::UserUid, server::ids::ServerId, settings::AgentModeCommandExecutionPredicate};
 use chrono::Utc;
+use cognix_graphql::billing::{
+    AddonCreditAutoReloadStatus, ServiceAgreement, ServiceAgreementType,
+};
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::{cmp::Ordering, path::PathBuf};
-use cognix_graphql::billing::{AddonCreditAutoReloadStatus, ServiceAgreement, ServiceAgreementType};
 
 use super::team::{MembershipRole, Team};
 

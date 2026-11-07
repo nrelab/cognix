@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
+use cognixui::r#async::executor::Background;
 use futures::channel::oneshot;
 use futures::StreamExt;
-use cognixui::r#async::executor::Background;
 
 use super::*;
 

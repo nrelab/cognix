@@ -45,7 +45,9 @@ use crate::terminal::settings::{
 };
 use crate::terminal::{BlockListSettings, ShowBlockDividers};
 use crate::terminal::{ShowJumpToBottomOfBlockButton, SizeInfo};
-use crate::themes::theme::{self, RespectSystemTheme, SelectedSystemThemes, ThemeKind, CognixTheme};
+use crate::themes::theme::{
+    self, CognixTheme, RespectSystemTheme, SelectedSystemThemes, ThemeKind,
+};
 use crate::user_config::CognixConfig;
 use crate::util::bindings;
 use crate::window_settings::{
@@ -68,12 +70,6 @@ use crate::{
 use crate::{report_error, report_if_error, themes};
 use crate::{send_telemetry_from_ctx, server::telemetry::TelemetryEvent};
 use ::settings::{Setting, SettingSection, ToggleableSetting};
-use enum_iterator::all;
-use std::borrow::Cow;
-use std::cell::RefCell;
-use std::collections::HashMap;
-use std::path::PathBuf;
-use std::rc::Rc;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_util::path::user_friendly_path;
 use cognixui::elements::{
@@ -90,6 +86,12 @@ use cognixui::ui_components::radio_buttons::{
 use cognixui::ui_components::slider::SliderStateHandle;
 use cognixui::ui_components::switch::SwitchStateHandle;
 use cognixui::units::IntoPixels;
+use enum_iterator::all;
+use std::borrow::Cow;
+use std::cell::RefCell;
+use std::collections::HashMap;
+use std::path::PathBuf;
+use std::rc::Rc;
 
 use cognixui::id;
 use cognixui::{
@@ -4950,7 +4952,8 @@ impl SettingsWidget for AltScreenPaddingWidget {
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_mouse_state.clone(),
                 on_click_action: Some(AppearancePageAction::OpenUrl(
-                    "https://docs.cognix.dev/terminal/more-features/full-screen-apps#padding".into(),
+                    "https://docs.cognix.dev/terminal/more-features/full-screen-apps#padding"
+                        .into(),
                 )),
                 secondary_text: None,
                 tooltip_override_text: None,

@@ -1,5 +1,5 @@
-use std::path::PathBuf;
 use cognix_cli::agent::OutputFormat;
+use std::path::PathBuf;
 
 use super::*;
 

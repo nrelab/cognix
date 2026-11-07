@@ -1,11 +1,11 @@
 use std::fs;
 
-use criterion::{Criterion, criterion_group, criterion_main};
-use rand::{SeedableRng, rngs::StdRng};
 use cognix_editor::content::{
     buffer::Buffer, selection_model::BufferSelectionModel, text::IndentBehavior,
 };
 use cognixui::{App, ModelHandle};
+use criterion::{Criterion, criterion_group, criterion_main};
+use rand::{SeedableRng, rngs::StdRng};
 
 const EDIT_SAMPLE_SIZE: usize = 10;
 const MAX_EDIT_REPLACEMENT_LENGTH: usize = 20;

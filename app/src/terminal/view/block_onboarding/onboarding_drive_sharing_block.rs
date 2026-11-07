@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{
@@ -13,6 +12,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, View, ViewContext,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::{
     cloud_object::model::persistence::{CloudModel, CloudModelEvent},

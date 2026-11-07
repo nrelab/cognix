@@ -1,3 +1,4 @@
+pub mod cognix_drive;
 pub mod conversations;
 mod data_sources;
 mod files;
@@ -12,7 +13,6 @@ pub mod repos;
 mod selected_items;
 pub mod separator_search_item;
 pub mod view;
-pub mod cognix_drive;
 mod zero_state;
 
 use filter_chip_renderer::FilterChipRenderer;

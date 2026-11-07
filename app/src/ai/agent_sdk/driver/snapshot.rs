@@ -31,11 +31,11 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::Result;
+use cognix_core::report_error;
+use cognixui::r#async::FutureExt as _;
 use command::r#async::Command;
 use command::Stdio;
 use futures::future::join_all;
-use cognix_core::report_error;
-use cognixui::r#async::FutureExt as _;
 
 use crate::ai::agent_sdk::retry::with_bounded_retry;
 use crate::ai::ambient_agents::AmbientAgentTaskId;

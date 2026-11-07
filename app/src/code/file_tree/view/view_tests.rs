@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use cognix_core::ui::appearance::Appearance;
+use cognixui::{platform::WindowStyle, App, ModelHandle};
 use repo_metadata::entry::{DirectoryEntry, Entry, FileMetadata};
 use repo_metadata::file_tree_store::FileTreeState;
 use repo_metadata::local_model::IndexedRepoState;
@@ -7,8 +9,6 @@ use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::watcher::DirectoryWatcher;
 use repo_metadata::RepoMetadataModel;
 use virtual_fs::{Stub, VirtualFS};
-use cognix_core::ui::appearance::Appearance;
-use cognixui::{platform::WindowStyle, App, ModelHandle};
 
 use crate::auth::AuthStateProvider;
 use crate::server::server_api::{team::MockTeamClient, workspace::MockWorkspaceClient};
@@ -151,8 +151,10 @@ fn repo_transition_unregisters_lazy_loaded_path() {
                     .unwrap()
                 ));
                 let displayed_std =
-                    cognix_util::standardized_path::StandardizedPath::try_from_local(&displayed_root)
-                        .unwrap();
+                    cognix_util::standardized_path::StandardizedPath::try_from_local(
+                        &displayed_root,
+                    )
+                    .unwrap();
                 assert_eq!(
                     view.root_directories
                         .get(&displayed_std)
@@ -180,8 +182,10 @@ fn repo_transition_unregisters_lazy_loaded_path() {
 
             file_tree_view.read(&app, |view, _ctx| {
                 let displayed_std =
-                    cognix_util::standardized_path::StandardizedPath::try_from_local(&displayed_root)
-                        .unwrap();
+                    cognix_util::standardized_path::StandardizedPath::try_from_local(
+                        &displayed_root,
+                    )
+                    .unwrap();
                 let repo_std =
                     cognix_util::standardized_path::StandardizedPath::try_from_local(&repo_root)
                         .unwrap();
@@ -259,8 +263,10 @@ fn repo_backed_unloaded_directory_loads_through_model() {
                 assert!(!view
                     .root_directories
                     .get(
-                        &cognix_util::standardized_path::StandardizedPath::try_from_local(&repo_root)
-                            .unwrap()
+                        &cognix_util::standardized_path::StandardizedPath::try_from_local(
+                            &repo_root
+                        )
+                        .unwrap()
                     )
                     .is_some_and(|root_dir| root_dir.entry.contains(
                         &cognix_util::standardized_path::StandardizedPath::try_from_local(
@@ -284,8 +290,10 @@ fn repo_backed_unloaded_directory_loads_through_model() {
                 assert!(view
                     .root_directories
                     .get(
-                        &cognix_util::standardized_path::StandardizedPath::try_from_local(&repo_root)
-                            .unwrap()
+                        &cognix_util::standardized_path::StandardizedPath::try_from_local(
+                            &repo_root
+                        )
+                        .unwrap()
                     )
                     .is_some_and(|root_dir| root_dir.entry.contains(
                         &cognix_util::standardized_path::StandardizedPath::try_from_local(
@@ -309,8 +317,10 @@ fn repo_backed_unloaded_directory_loads_through_model() {
                 assert!(view
                     .root_directories
                     .get(
-                        &cognix_util::standardized_path::StandardizedPath::try_from_local(&repo_root)
-                            .unwrap()
+                        &cognix_util::standardized_path::StandardizedPath::try_from_local(
+                            &repo_root
+                        )
+                        .unwrap()
                     )
                     .is_some_and(|root_dir| root_dir.entry.contains(
                         &cognix_util::standardized_path::StandardizedPath::try_from_local(

@@ -1,7 +1,5 @@
 use std::sync::Arc;
 
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use rand::{distributions::Alphanumeric, thread_rng, Rng as _};
 use cognix_core::{settings::ToggleableSetting, ui::appearance::Appearance};
 use cognixui::{
     elements::{
@@ -13,6 +11,8 @@ use cognixui::{
     ui_components::components::{Coords, UiComponent, UiComponentStyles},
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use rand::{distributions::Alphanumeric, thread_rng, Rng as _};
 
 use crate::{
     ai::{

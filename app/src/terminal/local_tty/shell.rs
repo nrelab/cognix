@@ -1,3 +1,5 @@
+use cognix_core::channel::{Channel, ChannelState};
+use cognix_util::path::{canonicalize_git_bash_path, cognix_shell_path, is_msys2_path};
 use itertools::Itertools as _;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -7,8 +9,6 @@ use std::{
     process,
 };
 use typed_path::UnixPathBuf;
-use cognix_core::channel::{Channel, ChannelState};
-use cognix_util::path::{canonicalize_git_bash_path, is_msys2_path, cognix_shell_path};
 
 use crate::{
     terminal::{
@@ -157,9 +157,11 @@ impl ShellStarter {
         }
 
         if let Some(cognix_shell_env_var) = cognix_shell_path() {
-            let (cognix_shell_path, shell_type) = supported_shell_path_and_type(&cognix_shell_env_var)
-                .unwrap_or_else(|| {
-                    panic!("Cannot spawn shell; $COGNIX_SHELL_PATH is invalid: {cognix_shell_env_var}")
+            let (cognix_shell_path, shell_type) =
+                supported_shell_path_and_type(&cognix_shell_env_var).unwrap_or_else(|| {
+                    panic!(
+                        "Cannot spawn shell; $COGNIX_SHELL_PATH is invalid: {cognix_shell_env_var}"
+                    )
                 });
             return Some(
                 ShellStarterSource::Environment(DirectShellStarter {

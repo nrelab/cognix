@@ -4,12 +4,12 @@
 #[path = "editing_tests.rs"]
 mod tests;
 
+use cognix_util::standardized_path::StandardizedPath;
+use cognixui::{elements::MouseStateHandle, ViewContext};
 use repo_metadata::file_tree_store::FileTreeEntryState;
 use repo_metadata::{FileMetadata, FileTreeEntry};
 use std::cmp::Ordering;
 use std::sync::Arc;
-use cognix_util::standardized_path::StandardizedPath;
-use cognixui::{elements::MouseStateHandle, ViewContext};
 
 use super::{FileTreeIdentifier, FileTreeItem, FileTreeView};
 use crate::{

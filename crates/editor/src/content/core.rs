@@ -18,12 +18,12 @@ use crate::content::{
         StyleSummary,
     },
 };
+use cognixui::elements::ListIndentLevel;
 use enum_iterator::all;
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use std::ops::Range;
 use string_offset::CharOffset;
 use sum_tree::SumTree;
-use cognixui::elements::ListIndentLevel;
 
 #[derive(Debug, Clone)]
 pub struct CoreEditorAction {

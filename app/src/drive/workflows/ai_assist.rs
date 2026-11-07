@@ -1,9 +1,9 @@
-use itertools::Itertools;
-use serde::{Deserialize, Serialize};
 use cognix_graphql::mutations::generate_metadata_for_command::{
     GenerateMetadataForCommandFailureType, GenerateMetadataForCommandSuccess,
 };
 use cognixui::{SingletonEntity, ViewContext};
+use itertools::Itertools;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     ai::AIRequestUsageModel,

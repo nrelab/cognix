@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::Fill;
 use cognixui::{
     elements::{
@@ -11,6 +10,7 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::{
     appearance::Appearance,

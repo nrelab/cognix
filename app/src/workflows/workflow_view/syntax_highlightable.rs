@@ -3,13 +3,13 @@ use std::ops::Range;
 use std::time::Duration;
 
 use async_channel::Sender;
-use string_offset::ByteOffset;
 use cognix_completer::completer::SuggestionTypeName;
 use cognix_completer::signatures::CommandRegistry;
 use cognix_core::ui::theme::AnsiColorIdentifier;
 use cognixui::r#async::SpawnedFutureHandle;
 use cognixui::ViewHandle;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use string_offset::ByteOffset;
 
 use crate::appearance::Appearance;
 use crate::completer::SessionAgnosticContext;

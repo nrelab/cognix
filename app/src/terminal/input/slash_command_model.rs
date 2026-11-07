@@ -1,7 +1,7 @@
 use ai::skills::SkillReference;
-use input_classifier::InputType;
 use cognix_core::features::FeatureFlag;
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use input_classifier::InputType;
 
 use crate::ai::blocklist::{BlocklistAIInputEvent, BlocklistAIInputModel};
 use crate::ai::skills::SkillManager;

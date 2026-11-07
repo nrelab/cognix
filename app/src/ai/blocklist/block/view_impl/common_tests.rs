@@ -22,8 +22,8 @@ use crate::{
     features::FeatureFlag,
     search::slash_command_menu::static_commands::commands,
 };
-use ui_components::lightbox::{LightboxImage, LightboxImageSource};
 use cognixui::{elements::Empty, Element};
+use ui_components::lightbox::{LightboxImage, LightboxImageSource};
 
 #[test]
 fn query_prefix_highlight_len_highlights_invoke_skill_inputs() {

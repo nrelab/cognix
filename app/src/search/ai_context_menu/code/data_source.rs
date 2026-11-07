@@ -12,6 +12,9 @@ use crate::search::mixer::{
     AsyncDataSource, BoxFuture, DataSourceRunError, DataSourceRunErrorWrapper,
 };
 use ai::index::Symbol;
+use cognixui::AppContext;
+#[cfg(not(target_family = "wasm"))]
+use cognixui::ModelSpawner;
 use fuzzy_match::FuzzyMatchResult;
 #[cfg(not(target_family = "wasm"))]
 use instant::Instant;
@@ -23,20 +26,17 @@ use std::collections::HashSet;
 use std::path::PathBuf;
 #[cfg(not(target_family = "wasm"))]
 use std::time::Duration;
-use cognixui::AppContext;
-#[cfg(not(target_family = "wasm"))]
-use cognixui::ModelSpawner;
 
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::outline::{OutlineStatus, RepoOutlines, RepoOutlinesEvent};
 #[cfg(not(target_family = "wasm"))]
 use crate::workspace::ActiveSession;
 #[cfg(not(target_family = "wasm"))]
+use cognixui::SingletonEntity;
+#[cfg(not(target_family = "wasm"))]
 use repo_metadata::repositories::DetectedRepositories;
 #[cfg(not(target_family = "wasm"))]
 use std::path::Path;
-#[cfg(not(target_family = "wasm"))]
-use cognixui::SingletonEntity;
 
 const MAX_RESULTS: usize = 200;
 

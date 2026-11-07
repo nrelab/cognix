@@ -12,10 +12,10 @@ use crate::setup::RemoteServerSetupState;
 use crate::transport::Connection;
 use crate::transport::RemoteTransport;
 use crate::HostId;
-use repo_metadata::RepoMetadataUpdate;
-use serde::Serialize;
 use cognix_core::SessionId;
 use cognixui::{Entity, ModelContext, ModelSpawner, SingletonEntity};
+use repo_metadata::RepoMetadataUpdate;
+use serde::Serialize;
 
 /// Which phase of the remote server connection flow failed.
 #[derive(Clone, Copy, Debug, Serialize)]

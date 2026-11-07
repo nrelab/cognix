@@ -30,12 +30,6 @@ use crate::{
     terminal::resizable_data::{ModalType, ResizableData},
 };
 use crate::{code_review::diff_state::DiffStateModel, terminal::view::TerminalView};
-use dunce::canonicalize;
-use itertools::Itertools;
-use std::{
-    path::{Path, PathBuf},
-    sync::Arc,
-};
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::Icon;
 use cognix_util::path::LineAndColumnArg;
@@ -58,6 +52,12 @@ use cognixui::{
     fonts::{Properties, Weight},
     platform::Cursor,
     ui_components::components::UiComponent,
+};
+use dunce::canonicalize;
+use itertools::Itertools;
+use std::{
+    path::{Path, PathBuf},
+    sync::Arc,
 };
 
 /// Describes which agent destination is available for sending review comments.

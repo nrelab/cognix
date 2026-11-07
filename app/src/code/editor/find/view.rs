@@ -13,7 +13,6 @@ use crate::ui_components::{blended_colors, icons::Icon};
 use crate::view_components::action_button::{ActionButton, DisabledSecondaryTheme, SecondaryTheme};
 use crate::view_components::find::FindDirection;
 use crate::{features::FeatureFlag, settings::AppEditorSettings};
-use pathfinder_color::ColorU;
 use cognix_editor::editor::NavigationKey;
 use cognix_editor::search::{SearchEvent, Searcher};
 use cognixui::elements::MainAxisAlignment;
@@ -36,6 +35,7 @@ use cognixui::{
 };
 use cognixui::{presenter::ChildView, ViewContext, ViewHandle};
 use cognixui::{FocusContext, ModelHandle};
+use pathfinder_color::ColorU;
 
 pub const FIND_BAR_WIDTH: f32 = 500.;
 const ICON_PADDING: f32 = 4.;

@@ -1,4 +1,3 @@
-use vec1::{vec1, Vec1};
 use cognix_core::{features::FeatureFlag, ui::builder::AnimatedButtonOptions};
 use cognixui::{
     elements::{
@@ -16,6 +15,7 @@ use cognixui::{
     AppContext, Entity, EntityId, FocusContext, ModelHandle, SingletonEntity, TypedActionView,
     View, ViewContext, ViewHandle, WindowId,
 };
+use vec1::{vec1, Vec1};
 
 use super::{
     keybindings_page::KeybindingsEvent,

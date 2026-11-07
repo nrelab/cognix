@@ -3,6 +3,8 @@ use super::buffer::StylizedChar;
 use super::{buffer, Anchor, Buffer, DisplayPoint, Edit, Point, ToCharOffset};
 use crate::util::extensions::SliceExt as _;
 use anyhow::{anyhow, Result};
+use cognixui::text_layout::TextStyle;
+use cognixui::{AppContext, ModelHandle};
 use std::{
     cmp::{self, Ordering},
     iter::Take,
@@ -10,8 +12,6 @@ use std::{
 };
 use string_offset::CharOffset;
 use sum_tree::{self, Cursor, Dimension, SeekBias, SumTree};
-use cognixui::text_layout::TextStyle;
-use cognixui::{AppContext, ModelHandle};
 
 pub struct FoldMap {
     buffer: ModelHandle<Buffer>,

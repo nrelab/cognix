@@ -28,15 +28,6 @@ use crate::workspace::ActiveSession;
 use crate::UserWorkspaces;
 use crate::{GlobalResourceHandles, GlobalResourceHandlesProvider};
 use chrono::Utc;
-use futures::prelude::*;
-use itertools::Itertools;
-use markdown_parser::markdown_parser::RUNNABLE_BLOCK_MARKDOWN_LANG;
-use markdown_parser::{
-    parse_markdown, CodeBlockText, FormattedText, FormattedTextFragment, FormattedTextLine,
-};
-use pathfinder_geometry::vector::Vector2F;
-use string_offset::CharOffset;
-use vec1::vec1;
 use cognix_core::features::FeatureFlag;
 use cognix_editor::content::buffer::{AutoScrollBehavior, BufferSelectAction, SelectionOffsets};
 use cognix_editor::content::text::{BlockType, BufferBlockStyle, CodeBlockType, TextStyles};
@@ -52,6 +43,15 @@ use cognixui::r#async::{block_on, FutureId};
 use cognixui::text::word_boundaries::WordBoundariesPolicy;
 use cognixui::{r#async::Timer, App, Entity, ModelHandle, SingletonEntity, TypedActionView};
 use cognixui::{AddSingletonModel, AppContext, Element, View, ViewHandle};
+use futures::prelude::*;
+use itertools::Itertools;
+use markdown_parser::markdown_parser::RUNNABLE_BLOCK_MARKDOWN_LANG;
+use markdown_parser::{
+    parse_markdown, CodeBlockText, FormattedText, FormattedTextFragment, FormattedTextLine,
+};
+use pathfinder_geometry::vector::Vector2F;
+use string_offset::CharOffset;
+use vec1::vec1;
 
 /// Container for a [`RichTextEditorView`] in unit tests.
 struct TestView {

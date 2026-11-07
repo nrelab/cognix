@@ -1,6 +1,3 @@
-use itertools::Itertools;
-use std::{collections::HashMap, rc::Rc};
-use strum::IntoEnumIterator;
 use cognix_core::ui::{appearance::Appearance, theme::Fill};
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
@@ -19,6 +16,9 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use itertools::Itertools;
+use std::{collections::HashMap, rc::Rc};
+use strum::IntoEnumIterator;
 
 use crate::{
     editor::{

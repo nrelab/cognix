@@ -8,11 +8,11 @@ use crate::ui_components::icons::Icon;
 use std::default::Default;
 use std::sync::Arc;
 
-use parking_lot::FairMutex;
-use style::{DENIED_MODAL_WIDTH, MODAL_HEIGHT, MODAL_WIDTH};
 use cognix_core::ui::appearance::Appearance;
 use cognixui::keymap::FixedBinding;
 use cognixui::EntityId;
+use parking_lot::FairMutex;
+use style::{DENIED_MODAL_WIDTH, MODAL_HEIGHT, MODAL_WIDTH};
 
 use cognixui::presenter::ChildView;
 use cognixui::ui_components::components::UiComponentStyles;

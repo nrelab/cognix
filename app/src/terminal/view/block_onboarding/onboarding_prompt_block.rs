@@ -10,8 +10,6 @@ use crate::terminal::model::ObfuscateSecrets;
 use crate::terminal::session_settings::SessionSettings;
 use crate::terminal::view::block_onboarding::util;
 use crate::terminal::SizeInfo;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use settings::Setting as _;
 use cognixui::{
     elements::{
         Align, Border, Clipped, ConstrainedBox, Container, CornerRadius, Flex,
@@ -23,6 +21,8 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use settings::Setting as _;
 
 const CONFIRM_MARGIN_TOP: f32 = 16.;
 

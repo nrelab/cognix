@@ -1,4 +1,5 @@
 use anyhow::{Result, ensure};
+use cognix_completer::ParsedTokensSnapshot;
 use itertools::Itertools as _;
 use ort::{
     execution_providers::CPUExecutionProvider, session::Session, tensor::ArrayExtensions as _,
@@ -6,7 +7,6 @@ use ort::{
 };
 use parking_lot::Mutex;
 use tokenizers::Tokenizer;
-use cognix_completer::ParsedTokensSnapshot;
 
 use super::ClassificationResult;
 

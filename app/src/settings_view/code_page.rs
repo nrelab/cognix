@@ -42,12 +42,6 @@ use ai::index::full_source_code_embedding::manager::{
 use ai::index::full_source_code_embedding::SyncProgress;
 use ai::project_context::model::{ProjectContextModel, ProjectContextModelEvent};
 use ai::workspace::WorkspaceMetadata;
-use lsp::supported_servers::LSPServerType;
-use lsp::{LspManagerModel, LspManagerModelEvent, LspServerModel, LspState};
-use pathfinder_color::ColorU;
-use std::borrow::Cow;
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
 use cognix_core::{
     features::FeatureFlag,
     report_if_error,
@@ -73,6 +67,12 @@ use cognixui::{
     Action, AppContext, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use lsp::supported_servers::LSPServerType;
+use lsp::{LspManagerModel, LspManagerModelEvent, LspServerModel, LspState};
+use pathfinder_color::ColorU;
+use std::borrow::Cow;
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
 
 const MAIN_SECTION_MARGIN: f32 = 12.;
 const SUB_SECTION_MARGIN: f32 = 8.;
@@ -1541,7 +1541,9 @@ impl CodePageWidget {
             label_row.add_child(
                 Container::new(
                     ConstrainedBox::new(
-                        status_icon.to_cognixui_icon(ThemeFill::Solid(color)).finish(),
+                        status_icon
+                            .to_cognixui_icon(ThemeFill::Solid(color))
+                            .finish(),
                     )
                     .with_width(STATUS_ICON_SIZE)
                     .with_height(STATUS_ICON_SIZE)

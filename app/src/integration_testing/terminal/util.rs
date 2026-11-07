@@ -1,11 +1,11 @@
 use async_io::block_on;
+use cognix_core::command::ExitCode;
+#[cfg(windows)]
+use cognix_core::paths::base_config_dir;
 use command::blocking::Command;
 use std::borrow::Cow;
 use std::iter;
 use std::path::{Path, PathBuf};
-use cognix_core::command::ExitCode;
-#[cfg(windows)]
-use cognix_core::paths::base_config_dir;
 
 use rand::Rng;
 use rand::{distributions::Alphanumeric, thread_rng};

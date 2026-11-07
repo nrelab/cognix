@@ -9,10 +9,10 @@ use std::sync::LazyLock;
 
 use serde::{Deserialize, Serialize};
 
-use strum_macros::{Display, EnumString, VariantNames};
 use cognix_core::ui::color::CLAUDE_ORANGE;
 use cognix_core::ui::icons::Icon;
 use cognix_core::ui::theme::Fill;
+use strum_macros::{Display, EnumString, VariantNames};
 
 /// Represents a skill provider/origin (Agents, Claude, Codex, or Cognix).
 #[derive(

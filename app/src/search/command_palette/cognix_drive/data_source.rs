@@ -18,8 +18,8 @@ use crate::search::QueryFilter;
 use crate::server::ids::{ObjectUid, SyncId};
 use crate::settings::AISettings;
 use crate::workflows::CloudWorkflow;
-use std::collections::HashMap;
 use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
+use std::collections::HashMap;
 
 /// Datasource that searches against all Cognix Drive objects
 pub struct DataSource {
@@ -562,10 +562,10 @@ mod full_text_searcher {
     use crate::search::workflows::fuzzy_match::FuzzyMatchWorkflowResult;
     use crate::server::ids::ObjectUid;
     use crate::workflows::CloudWorkflow;
-    use fuzzy_match::FuzzyMatchResult;
-    use itertools::Itertools;
     use cognixui::r#async::executor::Background;
     use cognixui::{AppContext, SingletonEntity};
+    use fuzzy_match::FuzzyMatchResult;
+    use itertools::Itertools;
 
     /// Memory budget for the search index of cognix drive.
     /// Cognix could potentially have a lot of objects, so we increase it from the default of 50MB to 100MB

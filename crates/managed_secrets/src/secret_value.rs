@@ -1,7 +1,7 @@
 use std::fmt;
 
-use serde::Serialize;
 use cognix_graphql::managed_secrets::ManagedSecretType;
+use serde::Serialize;
 
 #[derive(Serialize)]
 #[serde(untagged)]

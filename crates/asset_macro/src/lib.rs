@@ -22,6 +22,7 @@
 extern crate quote;
 extern crate proc_macro;
 
+use cognix_util::assets::{ASSETS_DIR, ASYNC_ASSETS_DIR, BUNDLED_ASSETS_DIR, REMOTE_ASSETS_DIR};
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use sha2::Digest;
@@ -31,7 +32,6 @@ use std::{
 };
 use syn::{parse::Parse, Token};
 use syn::{parse_macro_input, LitStr};
-use cognix_util::assets::{ASSETS_DIR, ASYNC_ASSETS_DIR, BUNDLED_ASSETS_DIR, REMOTE_ASSETS_DIR};
 
 struct MacroArgs {
     /// The name of the asset. E.g. `jpg/jellyfish_bg.jpg`

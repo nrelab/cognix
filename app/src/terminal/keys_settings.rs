@@ -1,7 +1,7 @@
+use cognixui::{keymap::Keystroke, AppContext, DisplayIdx, ModelContext};
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud,
 };
-use cognixui::{keymap::Keystroke, AppContext, DisplayIdx, ModelContext};
 
 use crate::{
     report_if_error,

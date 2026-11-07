@@ -5,6 +5,8 @@ use crate::send_telemetry_from_ctx;
 use crate::server::telemetry::TelemetryEvent;
 use async_channel::Sender;
 use async_trait::async_trait;
+use cognixui::r#async::Timer;
+use cognixui::{Action, AppContext, Entity, ModelContext};
 use futures_util::stream::AbortHandle;
 use itertools::Itertools;
 use std::any::Any;
@@ -12,8 +14,6 @@ use std::collections::{HashMap, HashSet};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::time::Duration;
-use cognixui::r#async::Timer;
-use cognixui::{Action, AppContext, Entity, ModelContext};
 
 /// Maximum time to wait for matching data sources to return results before showing
 /// partial results.

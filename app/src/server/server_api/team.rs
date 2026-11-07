@@ -5,7 +5,6 @@ use crate::workspaces::team::{DiscoverableTeam, MembershipRole};
 use crate::workspaces::workspace::Workspace;
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
-use cynic::{MutationBuilder, QueryBuilder};
 use cognix_graphql::mutations::add_invite_link_domain_restriction::{
     AddInviteLinkDomainRestriction, AddInviteLinkDomainRestrictionInput,
     AddInviteLinkDomainRestrictionResult, AddInviteLinkDomainRestrictionVariables,
@@ -59,6 +58,7 @@ use cognix_graphql::queries::get_discoverable_teams::{
 use cognix_graphql::queries::get_workspaces_metadata_for_user::{
     GetWorkspacesMetadataForUser, GetWorkspacesMetadataForUserVariables, PricingInfoResult,
 };
+use cynic::{MutationBuilder, QueryBuilder};
 
 use crate::server::graphql::{get_request_context, get_user_facing_error_message};
 use crate::server::ids::ServerId;
@@ -502,14 +502,14 @@ impl TeamClient for ServerApi {
         let result = self.send_graphql_request(operation, None).await?;
 
         match result.user {
-            cognix_graphql::queries::get_discoverable_teams::UserResult::UserOutput(user_output) => {
-                Ok(user_output
-                    .user
-                    .discoverable_teams
-                    .into_iter()
-                    .map(|gql_team_data| Ok(gql_team_data.into()))
-                    .collect::<Result<Vec<DiscoverableTeam>>>()?)
-            }
+            cognix_graphql::queries::get_discoverable_teams::UserResult::UserOutput(
+                user_output,
+            ) => Ok(user_output
+                .user
+                .discoverable_teams
+                .into_iter()
+                .map(|gql_team_data| Ok(gql_team_data.into()))
+                .collect::<Result<Vec<DiscoverableTeam>>>()?),
             cognix_graphql::queries::get_discoverable_teams::UserResult::UserFacingError(
                 user_facing_error,
             ) => Err(anyhow!(get_user_facing_error_message(user_facing_error))),

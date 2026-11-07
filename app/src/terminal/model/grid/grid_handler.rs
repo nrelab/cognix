@@ -20,10 +20,6 @@ use std::{
 };
 
 use bounded_vec_deque::BoundedVecDeque;
-use itertools::Itertools;
-use lazy_static::lazy_static;
-use unicode_width::UnicodeWidthChar;
-use urlocator::{UrlLocation, UrlLocator};
 use cognix_core::features::FeatureFlag;
 use cognix_core::semantic_selection::{SemanticSelection, SMART_SELECT_MATCH_WINDOW_LIMIT};
 use cognix_core::{safe_assert, safe_assert_eq};
@@ -33,6 +29,10 @@ pub use cognix_terminal::model::TermMode;
 use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 use cognix_util::path::CleanPathResult;
 use cognixui::color::ColorU;
+use itertools::Itertools;
+use lazy_static::lazy_static;
+use unicode_width::UnicodeWidthChar;
+use urlocator::{UrlLocation, UrlLocator};
 
 use crate::terminal::event_listener::ChannelEventListener;
 use crate::terminal::model::ansi::{self, Color, CursorStyle, Handler, NamedColor};

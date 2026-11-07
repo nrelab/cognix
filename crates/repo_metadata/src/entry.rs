@@ -1,11 +1,11 @@
 #![cfg_attr(not(feature = "local_fs"), allow(dead_code))]
 
+use cognix_util::standardized_path::StandardizedPath;
 use ignore::gitignore::Gitignore;
 use std::io;
 use std::path::{Component, Path, PathBuf};
 use std::sync::atomic::{AtomicUsize, Ordering};
 use thiserror::Error;
-use cognix_util::standardized_path::StandardizedPath;
 
 /// Maximum file size allowed for treesitter parsing (3MB).
 const MAX_FILE_SIZE: usize = 3 * 1000 * 1000;

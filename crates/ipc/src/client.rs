@@ -1,7 +1,7 @@
 use std::{collections::HashMap, sync::Arc};
 
-use futures::{channel::oneshot, future::FutureExt, io::BufReader, AsyncRead, AsyncWrite};
 use cognixui::r#async::executor::Background;
+use futures::{channel::oneshot, future::FutureExt, io::BufReader, AsyncRead, AsyncWrite};
 
 use crate::{platform::client::connect_client, protocol::Request};
 

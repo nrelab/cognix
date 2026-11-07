@@ -4,12 +4,6 @@ use crate::{
         CompactibleActionButton, RenderCompactibleActionButton, SMALL_SIZE_SWITCH_THRESHOLD,
     },
 };
-use lazy_static::lazy_static;
-use parking_lot::RwLock;
-use settings::Setting as _;
-use std::borrow::Cow;
-use std::rc::Rc;
-use std::sync::Arc;
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_core::{features::FeatureFlag, ui::Icon};
 use cognixui::{
@@ -22,6 +16,12 @@ use cognixui::{
     AppContext, Element, Entity, EntityId, FocusContext, SingletonEntity, TypedActionView, View,
     ViewContext,
 };
+use lazy_static::lazy_static;
+use parking_lot::RwLock;
+use settings::Setting as _;
+use std::borrow::Cow;
+use std::rc::Rc;
+use std::sync::Arc;
 
 use crate::{
     ai::blocklist::block::view_impl::{CONTENT_HORIZONTAL_PADDING, CONTENT_ITEM_VERTICAL_MARGIN},

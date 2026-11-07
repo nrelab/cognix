@@ -3,12 +3,12 @@
 use std::ffi::CStr;
 
 use cocoa::base::{id, nil};
+use cognix_core::channel::{Channel, ChannelState};
 use core_foundation::{
     base::TCFType,
     string::{CFString, CFStringRef},
 };
 use objc::{class, msg_send, sel, sel_impl};
-use cognix_core::channel::{Channel, ChannelState};
 
 // Launch Services constants
 type LSRolesMask = u32;

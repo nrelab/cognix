@@ -30,10 +30,10 @@ use ::settings::{Setting, SettingsManager, ToggleableSetting};
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 pub use auth_manager::AuthManager;
 pub use auth_state::AuthStateProvider;
+use cognixui::modals::{AlertDialogWithCallbacks, ModalButton};
 use itertools::Itertools;
 pub use login_failure_notification::LoginFailureReason;
 pub use user_uid::UserUid;
-use cognixui::modals::{AlertDialogWithCallbacks, ModalButton};
 
 use cognix_core::user_preferences::GetUserPreferences as _;
 use cognixui::{AppContext, SingletonEntity};

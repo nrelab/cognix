@@ -1,8 +1,8 @@
-use itertools::Itertools as _;
 use cognixui::{
     elements::ChildView, Element as _, Entity, SingletonEntity as _, TypedActionView, View,
     ViewAsRef, ViewContext, ViewHandle,
 };
+use itertools::Itertools as _;
 
 use crate::{
     cloud_object::{

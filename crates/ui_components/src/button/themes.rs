@@ -1,7 +1,7 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::{
     appearance::Appearance, color::coloru_with_opacity, theme::Fill, theme::color::internal_colors,
 };
+use pathfinder_color::ColorU;
 
 /// Theming delegate for a button.
 pub trait Theme {

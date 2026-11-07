@@ -10,13 +10,13 @@ pub mod windows;
 #[cfg(target_os = "linux")]
 mod linux_only {
     pub(super) use crate::workspace::TOTAL_TAB_BAR_HEIGHT;
-    pub(super) use pathfinder_color::ColorU;
-    pub(super) use pathfinder_geometry::vector::vec2f;
-    pub(super) use std::sync::Arc;
     pub(super) use cognixui::elements::{
         Align, Border, ChildAnchor, ConstrainedBox, Container, CornerRadius, Flex, Hoverable, Icon,
         OffsetPositioning, ParentAnchor, ParentElement, ParentOffsetBounds, Radius, Rect, Stack,
     };
+    pub(super) use pathfinder_color::ColorU;
+    pub(super) use pathfinder_geometry::vector::vec2f;
+    pub(super) use std::sync::Arc;
 }
 
 #[cfg(target_os = "linux")]
@@ -25,13 +25,13 @@ use linux_only::*;
 #[cfg(target_os = "windows")]
 mod windows_only {
     pub(super) use crate::ui_components::icons::Icon as IconComponent;
-    pub(super) use pathfinder_color::ColorU;
-    pub(super) use pathfinder_geometry::vector::vec2f;
     pub(super) use cognix_core::ui::theme;
     pub(super) use cognixui::elements::{
         Align, Border, ChildAnchor, ConstrainedBox, Container, CornerRadius, Hoverable,
         OffsetPositioning, ParentAnchor, ParentOffsetBounds, Radius, Rect, Stack,
     };
+    pub(super) use pathfinder_color::ColorU;
+    pub(super) use pathfinder_geometry::vector::vec2f;
     pub(super) const WINDOWS_BRIGHT_RED: ColorU = ColorU {
         r: 232,
         g: 17,

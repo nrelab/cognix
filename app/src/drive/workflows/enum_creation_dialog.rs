@@ -1,7 +1,5 @@
 use std::rc::Rc;
 
-use strum::IntoEnumIterator;
-use strum_macros::{EnumIter, IntoStaticStr};
 use cognix_core::{features::FeatureFlag, ui::appearance::Appearance};
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
@@ -18,6 +16,8 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use strum::IntoEnumIterator;
+use strum_macros::{EnumIter, IntoStaticStr};
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, Revision},

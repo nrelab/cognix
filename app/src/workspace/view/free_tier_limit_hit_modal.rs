@@ -6,13 +6,9 @@ use crate::ui_components::icons::Icon;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::TelemetryEvent;
 use asset_macro::bundled_or_fetched_asset;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use thousands::Separable;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::appearance::Appearance;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognix_graphql::billing::{PlanPricing, StripeSubscriptionPlan};
 use cognixui::elements::{
     Align, Border, CacheOption, ChildAnchor, ConstrainedBox, Container, CornerRadius,
@@ -26,6 +22,10 @@ use cognixui::platform::Cursor;
 use cognixui::ui_components::button::ButtonVariant;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::{AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext};
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use thousands::Separable;
 
 const BUTTON_DIAMETER: f32 = 20.;
 const MODAL_HEIGHT: f32 = 440.;

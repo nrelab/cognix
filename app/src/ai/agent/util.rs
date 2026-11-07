@@ -5,6 +5,7 @@ use super::{
 use crate::code::editor_management::CodeSource;
 use crate::features::FeatureFlag;
 use ai::gfm_table::{format_gfm_table, maybe_collect_gfm_table_lines};
+use cognix_util::path::LineAndColumnArg;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use markdown_parser::{
@@ -13,7 +14,6 @@ use markdown_parser::{
 use mermaid_to_svg::is_mermaid_diagram;
 use regex::Regex;
 use std::{collections::HashMap, path::PathBuf};
-use cognix_util::path::LineAndColumnArg;
 
 lazy_static! {
     /// Markdown prefix for code blocks. Matches on triple backticks followed by a language.

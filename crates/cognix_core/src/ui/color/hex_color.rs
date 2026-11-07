@@ -1,6 +1,6 @@
+use cognixui::color::ColorU;
 use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 use std::{borrow::Cow, fmt};
-use cognixui::color::ColorU;
 
 use super::OPAQUE;
 

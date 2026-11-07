@@ -1,17 +1,17 @@
 use std::path::Path;
 use std::{collections::HashSet, future::Future, path::PathBuf};
 
-#[cfg(test)]
-use virtual_fs::{Stub, VirtualFS};
 use cognix_util::standardized_path::StandardizedPath;
 #[cfg(test)]
 use cognixui::r#async::FutureId;
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle};
+#[cfg(test)]
+use virtual_fs::{Stub, VirtualFS};
 
 use crate::DirectoryWatcher;
 use crate::Repository;
-use futures::future::{ready, Either};
 use cognixui::SingletonEntity;
+use futures::future::{ready, Either};
 
 /// Indicates why a repository detection event was emitted.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

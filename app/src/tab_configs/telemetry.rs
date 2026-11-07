@@ -1,7 +1,7 @@
+use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 use serde::Serialize;
 use serde_json::{json, Value};
 use strum_macros::{EnumDiscriminants, EnumIter};
-use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 use crate::tab_configs::session_config::SessionType;
 

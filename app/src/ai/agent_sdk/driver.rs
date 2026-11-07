@@ -69,13 +69,6 @@ use crate::{
 };
 use ai::skills::ParsedSkill;
 use anyhow::{anyhow, Context as _};
-use futures::{
-    channel::oneshot,
-    future::{self, Either},
-    FutureExt as _,
-};
-use oneshot::{Canceled, Receiver, Sender};
-use uuid::Uuid;
 use cognix_cli::agent::{Harness, OutputFormat};
 use cognix_cli::mcp::MCPSpec;
 use cognix_cli::share::ShareRequest;
@@ -86,6 +79,13 @@ use cognixui::{
     r#async::{FutureExt, TimeoutError},
     AppContext, Entity, ModelContext, ModelHandle, ModelSpawner, SingletonEntity,
 };
+use futures::{
+    channel::oneshot,
+    future::{self, Either},
+    FutureExt as _,
+};
+use oneshot::{Canceled, Receiver, Sender};
+use uuid::Uuid;
 
 pub(crate) mod attachments;
 pub(crate) mod cloud_provider;

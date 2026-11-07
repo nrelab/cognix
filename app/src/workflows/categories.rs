@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
     elements::{
@@ -9,6 +8,7 @@ use cognixui::{
     fonts::{Properties, Weight},
     AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, WeakViewHandle,
 };
+use itertools::Itertools;
 
 use crate::appearance::Appearance;
 use crate::util::bindings::CustomAction;
@@ -23,12 +23,6 @@ use crate::{
     themes::theme::{self, Blend, CognixTheme},
     user_config::CognixConfigUpdateEvent,
 };
-use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
-use std::collections::HashMap;
-use std::ops::Deref;
-#[cfg(feature = "local_fs")]
-use std::path::PathBuf;
-use std::sync::Arc;
 use cognix_core::ui::builder::UiBuilder;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_workflows::workflows as global_workflows;
@@ -40,6 +34,12 @@ use cognixui::elements::{
 use cognixui::keymap::FixedBinding;
 use cognixui::text_layout::TextStyle;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
+use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
+use std::collections::HashMap;
+use std::ops::Deref;
+#[cfg(feature = "local_fs")]
+use std::path::PathBuf;
+use std::sync::Arc;
 
 use super::{workflow::Workflow, WorkflowSource};
 

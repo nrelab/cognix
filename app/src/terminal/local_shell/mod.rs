@@ -8,9 +8,9 @@ use super::model::session::LocalCommandExecutor;
 use super::{local_tty::shell::ShellStarter, shell::ShellType};
 use crate::terminal::available_shells::AvailableShells;
 use crate::terminal::local_tty::shell::ShellStarterSourceOrWslName;
+use cognixui::{Entity, ModelContext, SingletonEntity};
 #[cfg(feature = "local_tty")]
 use command::r#async::Command;
-use cognixui::{Entity, ModelContext, SingletonEntity};
 
 #[derive(Debug)]
 pub enum LocalShellState {

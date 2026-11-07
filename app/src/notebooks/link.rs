@@ -8,13 +8,13 @@ use std::{
     sync::Arc,
 };
 
-use futures_util::future::Either;
-use url::Url;
 use cognix_util::path::{CleanPathResult, LineAndColumnArg};
 use cognixui::{
     r#async::SpawnedFutureHandle, AppContext, Entity, ModelContext, ModelHandle, SingletonEntity,
     WindowId,
 };
+use futures_util::future::Either;
+use url::Url;
 
 #[cfg(feature = "local_fs")]
 use crate::util::file::external_editor::EditorSettings;
@@ -265,7 +265,8 @@ impl NotebookLinks {
     pub fn open(&self, link: LinkTarget, ctx: &mut ModelContext<Self>) {
         match link {
             LinkTarget::Url(url) => {
-                if let Some(CognixWebLink::DriveObject(args)) = get_item_data_from_cognix_link(&url) {
+                if let Some(CognixWebLink::DriveObject(args)) = get_item_data_from_cognix_link(&url)
+                {
                     return ctx.emit(LinkEvent::OpenCognixDriveLink {
                         open_cognix_drive_args: *args,
                     });

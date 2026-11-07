@@ -1,15 +1,15 @@
-use instant::Instant;
-use settings::Setting;
 use cognix_core::SessionId;
 use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity, WeakModelHandle};
+use instant::Instant;
+use settings::Setting;
 
 use crate::terminal::cognixify::settings::SshExtensionInstallMode;
 
 use crate::remote_server::manager::{RemoteServerManager, RemoteServerManagerEvent};
 use crate::remote_server::ssh_transport::SshTransport;
+use crate::terminal::cognixify::settings::CognixifySettings;
 use crate::terminal::model::session::{IsLegacySSHSession, SessionInfo};
 use crate::terminal::model_events::{ModelEvent, ModelEventDispatcher};
-use crate::terminal::cognixify::settings::CognixifySettings;
 use crate::{send_telemetry_from_ctx, TelemetryEvent};
 use remote_server::setup::RemotePlatform;
 

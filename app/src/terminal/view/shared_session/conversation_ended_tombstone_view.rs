@@ -12,10 +12,10 @@ use crate::ui_components::blended_colors;
 use crate::util::time_format::human_readable_precise_duration;
 use crate::view_components::action_button::{ActionButton, PrimaryTheme};
 use crate::workspace::WorkspaceAction;
-use std::path::Path;
 #[cfg(not(target_family = "wasm"))]
 use cognix_cli::agent::Harness;
 use cognix_core::paths::home_relative_path;
+use std::path::Path;
 
 #[cfg(not(target_family = "wasm"))]
 use crate::ai::ambient_agents::AmbientAgentTask;

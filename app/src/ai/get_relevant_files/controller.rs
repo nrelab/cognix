@@ -6,6 +6,7 @@ use ai::index::{
     locations::CodeContextLocation,
 };
 use anyhow::anyhow;
+use cognix_core::features::FeatureFlag;
 use futures_util::stream::AbortHandle;
 use instant::Instant;
 use std::{
@@ -13,7 +14,6 @@ use std::{
     path::{Path, PathBuf},
     sync::Arc,
 };
-use cognix_core::features::FeatureFlag;
 
 use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 

@@ -8,16 +8,16 @@ use std::{
 };
 
 use chrono::DateTime;
+use cognix_multi_agent_api::{
+    self as api,
+    message::{tool_call::subagent::Metadata, Message},
+};
 use field_mask::{FieldMaskError, FieldMaskOperation};
 use helper::{MessageExt, SubagentExt, ToolCallExt};
 use itertools::Itertools;
 use prost_types::FieldMask;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use cognix_multi_agent_api::{
-    self as api,
-    message::{tool_call::subagent::Metadata, Message},
-};
 
 use crate::{
     ai::{

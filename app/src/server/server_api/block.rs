@@ -8,10 +8,6 @@ use crate::server::{
 use anyhow::anyhow;
 use async_trait::async_trait;
 use chrono::Utc;
-use cynic::{MutationBuilder, QueryBuilder};
-#[cfg(test)]
-use mockall::automock;
-use std::convert::TryFrom;
 use cognix_core::channel::{Channel, ChannelState};
 use cognix_graphql::{
     mutations::{
@@ -24,6 +20,10 @@ use cognix_graphql::{
         Block as GqlBlock, GetBlocksForUser, GetBlocksForUserVariables,
     },
 };
+use cynic::{MutationBuilder, QueryBuilder};
+#[cfg(test)]
+use mockall::automock;
+use std::convert::TryFrom;
 
 #[cfg_attr(test, automock)]
 #[cfg_attr(not(target_family = "wasm"), async_trait)]

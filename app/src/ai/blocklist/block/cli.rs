@@ -1,9 +1,3 @@
-use parking_lot::{FairMutex, RwLock};
-use pathfinder_color::ColorU;
-use settings::Setting as _;
-use std::sync::Arc;
-use std::time::Duration;
-use std::{cmp::Ordering, rc::Rc};
 use cognix_core::features::FeatureFlag;
 use cognix_core::report_error;
 use cognix_core::ui::theme::color::internal_colors;
@@ -16,11 +10,16 @@ use cognixui::elements::{
 use cognixui::fonts::Weight;
 use cognixui::platform::{Cursor, OperatingSystem};
 use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use parking_lot::{FairMutex, RwLock};
+use pathfinder_color::ColorU;
+use settings::Setting as _;
+use std::sync::Arc;
+use std::time::Duration;
+use std::{cmp::Ordering, rc::Rc};
 
 use lazy_static::lazy_static;
 use pathfinder_geometry::vector::vec2f;
 
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::{
@@ -41,6 +40,7 @@ use cognixui::{
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::ai::agent::{AIAgentPtyWriteMode, CancellationReason};
 use crate::ai::blocklist::block::view_impl::common::{

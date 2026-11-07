@@ -31,12 +31,12 @@ use crate::workflows::{WorkflowSelectionSource, WorkflowSource, WorkflowType};
 use crate::workspace::PaneViewLocator;
 use session_sharing_protocol::common::SessionId;
 
-use ui_components::lightbox;
 use cognixui::accessibility::AccessibilityVerbosity;
 use cognixui::geometry::rect::RectF;
 use cognixui::geometry::vector::Vector2F;
 use cognixui::platform::Cursor;
 use cognixui::{EntityId, WeakViewHandle, WindowId};
+use ui_components::lightbox;
 
 use super::global_actions::{ForkFromExchange, ForkedConversationDestination};
 use super::tab_settings::{

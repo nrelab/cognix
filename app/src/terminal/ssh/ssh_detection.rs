@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize};
 use cognix_core::{features::FeatureFlag, settings::Setting};
 use cognix_util::path::ShellFamily;
+use serde::{Deserialize, Serialize};
 
 use crate::terminal::cognixify::settings::CognixifySettings;
 

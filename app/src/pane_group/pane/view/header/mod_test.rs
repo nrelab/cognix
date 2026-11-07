@@ -1,9 +1,9 @@
-use std::sync::Arc;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::Empty, platform::WindowStyle, App, AppContext, Element, Entity, TypedActionView,
     View, ViewContext,
 };
+use std::sync::Arc;
 
 use crate::{
     ai::blocklist::BlocklistAIHistoryModel,

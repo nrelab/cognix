@@ -14,12 +14,12 @@ use crate::{
     test_util::{Stub, VirtualFS},
 };
 use chrono::Local;
+use cognix_core::command::ExitCode;
+use cognixui::{App, ModelHandle};
 use futures::future::join_all;
 use futures::Future;
 use futures_lite::StreamExt;
 use itertools::Itertools;
-use cognix_core::command::ExitCode;
-use cognixui::{App, ModelHandle};
 
 use std::path::PathBuf;
 use std::pin::pin;

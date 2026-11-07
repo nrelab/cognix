@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
+use cognix_core::features::FeatureFlag;
+use cognixui::{App, ModelAsRef, units::IntoPixels};
 use serde_yaml::Value;
 use sum_tree::SumTree;
 use vec1::vec1;
-use cognix_core::features::FeatureFlag;
-use cognixui::{App, ModelAsRef, units::IntoPixels};
 
 use crate::{
     content::{
@@ -21,9 +21,9 @@ use crate::{
     },
     selection::SelectionMode,
 };
-use string_offset::CharOffset;
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::text::word_boundaries::WordBoundariesPolicy;
+use string_offset::CharOffset;
 
 use super::{SelectionModel, TextDirection, TextUnit};
 

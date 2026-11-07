@@ -2,8 +2,6 @@
 
 use std::sync::Arc;
 
-use markdown_parser::markdown_parser::CODE_BLOCK_DEFAULT_MARKDOWN_LANG;
-use pathfinder_color::ColorU;
 use cognix_core::ui::{builder::CHECK_SVG_PATH, theme::color::internal_colors};
 use cognix_editor::{
     content::text::{
@@ -15,7 +13,11 @@ use cognix_editor::{
     },
 };
 use cognix_util::user_input::UserInput;
-use cognixui::{elements::Border, fonts::FamilyId, ui_components::checkbox::HOVER_BACKGROUND_COLOR};
+use cognixui::{
+    elements::Border, fonts::FamilyId, ui_components::checkbox::HOVER_BACKGROUND_COLOR,
+};
+use markdown_parser::markdown_parser::CODE_BLOCK_DEFAULT_MARKDOWN_LANG;
+use pathfinder_color::ColorU;
 
 use crate::{
     appearance::Appearance,

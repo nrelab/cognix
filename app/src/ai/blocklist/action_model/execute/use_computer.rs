@@ -1,6 +1,6 @@
 use ai::agent::action_result::AIAgentActionResultType;
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, ModelContext};
+use futures::{future::BoxFuture, FutureExt};
 
 use crate::ai::agent::{AIAgentActionType, UseComputerResult};
 

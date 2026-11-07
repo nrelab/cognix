@@ -12,7 +12,9 @@ use cognixui::keymap::macros::id;
 use cognixui::keymap::FixedBinding;
 use cognixui::platform::Cursor;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
-use cognixui::{AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle};
+use cognixui::{
+    AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
+};
 
 use crate::ai::agent_management::notifications::item::NotificationFilter;
 use crate::ai::agent_management::notifications::item_rendering::{
@@ -56,7 +58,9 @@ impl Entity for NotificationMailboxView {
 
 #[derive(Debug, Clone)]
 pub enum NotificationMailboxViewEvent {
-    NavigateToTerminal { terminal_view_id: cognixui::EntityId },
+    NavigateToTerminal {
+        terminal_view_id: cognixui::EntityId,
+    },
     Dismissed,
 }
 

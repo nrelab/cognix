@@ -4,8 +4,8 @@ use std::collections::HashSet;
 use std::fs;
 use std::path::PathBuf;
 
-use repo_metadata::repositories::DetectedRepositories;
 use cognixui::{App, EntityId};
+use repo_metadata::repositories::DetectedRepositories;
 
 use crate::pane_group::WorkingDirectoriesModel;
 

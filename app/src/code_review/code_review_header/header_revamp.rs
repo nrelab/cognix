@@ -11,7 +11,6 @@ use crate::code_review::code_review_view::{
 use crate::code_review::diff_selector::DiffSelector;
 use crate::menu::Menu;
 use crate::view_components::action_button::ActionButton;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::{
     ChildAnchor, ChildView, Clipped, ConstrainedBox, Container, CrossAxisAlignment, Flex,
@@ -19,6 +18,7 @@ use cognixui::elements::{
     ParentOffsetBounds, Shrinkable, Stack,
 };
 use cognixui::{Element, ViewHandle};
+use pathfinder_geometry::vector::vec2f;
 
 use crate::appearance::Appearance;
 

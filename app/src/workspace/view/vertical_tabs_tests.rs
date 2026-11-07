@@ -4,11 +4,11 @@ use crate::pane_group::{PaneId, TerminalPaneId};
 use crate::safe_triangle::SafeTriangle;
 use crate::terminal::CLIAgent;
 use crate::workspace::tab_settings::VerticalTabsDisplayGranularity;
+use cognixui::elements::PositionedElementOffsetBounds;
+use cognixui::EntityId;
 use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::Vector2F;
 use std::path::PathBuf;
-use cognixui::elements::PositionedElementOffsetBounds;
-use cognixui::EntityId;
 
 use super::{
     branch_label_display, coalesce_summary_branch_entries, code_detail_kind_label,
@@ -946,7 +946,10 @@ fn summary_search_fragments_include_hidden_overflow_values() {
             "code review".to_string(),
             "hidden work".to_string(),
         ],
-        working_directories: vec!["~/cognix-internal".to_string(), "~/cognix-server".to_string()],
+        working_directories: vec![
+            "~/cognix-internal".to_string(),
+            "~/cognix-server".to_string(),
+        ],
         branch_entries: vec![
             VerticalTabsSummaryBranchEntry {
                 repo_path: PathBuf::from("/tmp/repo-a"),

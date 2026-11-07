@@ -29,22 +29,22 @@ use crate::terminal::{
 use crate::terminal::{BlockPadding, ShellHost, SizeInfo, SizeUpdate};
 use anyhow::anyhow;
 use chrono::{DateTime, Local};
+use cognix_core::features::FeatureFlag;
+use cognixui::color::ColorU;
+use cognixui::r#async::executor::Background;
+use cognixui::record_trace_event;
 use instant::SystemTime;
 use std::io;
 use std::ops::{AddAssign, Range, RangeInclusive};
 use std::sync::Arc;
 use std::time::Duration;
 use sum_tree::{Dimension, Item, SeekBias, SumTree};
-use cognix_core::features::FeatureFlag;
-use cognixui::color::ColorU;
-use cognixui::r#async::executor::Background;
-use cognixui::record_trace_event;
 
-use std::collections::{HashMap, HashSet};
 use cognixui::{
     units::{IntoLines, IntoPixels, Lines},
     AppContext, EntityId, ViewHandle,
 };
+use std::collections::{HashMap, HashSet};
 
 use super::block::{BlockId, BlockSize, BlockState};
 use super::early_output::EarlyOutput;

@@ -3,13 +3,13 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use std::sync::Arc;
 
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use serde_yaml::Mapping;
-use uuid::Uuid;
 use cognix_editor::content::markdown::MarkdownStyle;
 use cognix_editor::editor::EmbeddedItemModel;
 use cognix_editor::render::element::{RenderContext, RenderableBlock};
 use cognix_editor::render::layout::TextLayout;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use serde_yaml::Mapping;
+use uuid::Uuid;
 
 use cognix_editor::render::model::{
     viewport::ViewportItem, BlockSpacing, EmbeddedItem, EmbeddedItemHTMLRepresentation,

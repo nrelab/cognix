@@ -11,8 +11,8 @@ use crate::ai::blocklist::agent_view::agent_input_footer::{
 use crate::terminal::cli_agent_sessions::{CLIAgentInputEntrypoint, CLIAgentSessionsModel};
 use crate::terminal::shared_session::{SharedSessionActionSource, SharedSessionScrollbackType};
 use base64::Engine;
-use session_sharing_protocol::sharer::SessionSourceType;
 use cognixui::clipboard::{ClipboardContent, ImageData};
+use session_sharing_protocol::sharer::SessionSourceType;
 mod cognixify_footer;
 
 pub use crate::terminal::CLIAgent;
@@ -26,8 +26,6 @@ use cognixui::r#async::Timer;
 use crate::code_review::diff_state::GitDeltaPreference;
 use crate::code_review::telemetry_event::CodeReviewPaneEntrypoint;
 use anyhow::anyhow;
-use parking_lot::FairMutex;
-use pathfinder_color::ColorU;
 use cognix_core::{
     features::FeatureFlag,
     report_error, send_telemetry_from_ctx,
@@ -40,6 +38,8 @@ use cognix_core::{
         theme::{color::internal_colors, Fill as ThemeFill},
     },
 };
+use parking_lot::FairMutex;
+use pathfinder_color::ColorU;
 
 use cognixui::{
     elements::{
@@ -1117,7 +1117,8 @@ impl UseAgentToolbar {
     pub(in crate::terminal) fn notify_and_notify_children(&mut self, ctx: &mut ViewContext<Self>) {
         ctx.notify();
         self.agent_input_footer.update(ctx, |_, ctx| ctx.notify());
-        self.cognixify_footer_view.update(ctx, |_, ctx| ctx.notify());
+        self.cognixify_footer_view
+            .update(ctx, |_, ctx| ctx.notify());
         self.button.update(ctx, |_, ctx| ctx.notify());
         self.give_control_back_button
             .update(ctx, |_, ctx| ctx.notify());
@@ -1159,7 +1160,10 @@ impl UseAgentToolbar {
     }
 
     /// Returns the current cognixification mode, if set.
-    pub(in crate::terminal) fn cognixify_mode(&self, app: &AppContext) -> Option<CognixificationMode> {
+    pub(in crate::terminal) fn cognixify_mode(
+        &self,
+        app: &AppContext,
+    ) -> Option<CognixificationMode> {
         self.cognixify_footer_view.as_ref(app).mode().cloned()
     }
 

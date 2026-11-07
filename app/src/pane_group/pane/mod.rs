@@ -53,8 +53,6 @@ use crate::{
     terminal::{available_shells::AvailableShell, TerminalView},
     workflows::workflow_view::WorkflowView,
 };
-use serde::{Deserialize, Serialize};
-use url::Url;
 use cognix_core::HostId;
 use cognixui::{
     elements::{DispatchEventResult, EventHandler, MouseInBehavior},
@@ -62,6 +60,8 @@ use cognixui::{
     Action, AppContext, Element, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity,
     View, ViewContext, ViewHandle, WeakModelHandle,
 };
+use serde::{Deserialize, Serialize};
+use url::Url;
 
 pub use self::view::PaneHeaderAction;
 pub use self::view::PaneHeaderCustomAction;

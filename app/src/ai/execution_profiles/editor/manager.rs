@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use cognixui::{Entity, EntityId, ModelContext, SingletonEntity, WindowId};
+use std::collections::HashMap;
 
 use crate::{
     ai::execution_profiles::profiles::ClientProfileId,

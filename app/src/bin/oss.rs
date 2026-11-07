@@ -4,7 +4,7 @@
 
 use anyhow::Result;
 use cognix_core::{
-    channel::{Channel, ChannelConfig, ChannelState, OzConfig, CognixServerConfig},
+    channel::{Channel, ChannelConfig, ChannelState, CognixServerConfig, OzConfig},
     AppId,
 };
 

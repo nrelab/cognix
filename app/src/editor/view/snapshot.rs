@@ -15,6 +15,8 @@ use parking_lot::Mutex;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 
 use anyhow::Result;
+use cognix_completer::completer::Description;
+use cognixui::text::point::Point;
 use core::f32;
 use instant::Instant;
 use rayon::prelude::*;
@@ -26,8 +28,6 @@ use std::{
     ops::Range,
     sync::Arc,
 };
-use cognix_completer::completer::Description;
-use cognixui::text::point::Point;
 
 use string_offset::ByteOffset;
 

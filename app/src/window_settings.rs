@@ -1,7 +1,7 @@
+use cognixui::{AppContext, WindowId};
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, SupportedPlatforms, SyncToCloud,
 };
-use cognixui::{AppContext, WindowId};
 
 define_settings_group!(WindowSettings, settings: [
     background_blur_radius: BackgroundBlurRadius {

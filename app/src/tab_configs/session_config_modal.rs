@@ -1,6 +1,5 @@
 use std::path::PathBuf;
 
-use pathfinder_geometry::vector::vec2f;
 use cognixui::elements::{
     ChildAnchor, ChildView, ConstrainedBox, Container, CrossAxisAlignment, Flex,
     FormattedTextElement, MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement,
@@ -15,6 +14,7 @@ use cognixui::FocusContext;
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use crate::appearance::Appearance;
 use crate::ui_components::blended_colors;

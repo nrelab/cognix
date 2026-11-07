@@ -3,10 +3,10 @@ use std::{collections::HashMap, fmt::Display};
 use crate::{
     send_telemetry_from_app_ctx, server::telemetry::TelemetryEvent, terminal::shell::ShellType,
 };
-use regex::Regex;
-use url::Url;
 use cognix_util::path::{is_posix_portable_pathname, ShellFamily};
 use cognixui::AppContext;
+use regex::Regex;
+use url::Url;
 
 use crate::root_view::SubshellCommandArg;
 

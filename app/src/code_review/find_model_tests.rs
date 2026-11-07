@@ -16,16 +16,16 @@ use crate::workspace::sync_inputs::SyncedInputState;
 use crate::workspace::ActiveSession;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::NotebookKeybindings;
-use repo_metadata::repositories::DetectedRepositories;
-use std::path::PathBuf;
-use std::sync::Arc;
-use string_offset::CharOffset;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::content::buffer::InitialBufferState;
 use cognix_editor::render::element::VerticalExpansionBehavior;
 use cognixui::elements::Empty;
 use cognixui::platform::WindowStyle;
 use cognixui::{App, Element as _, ModelHandle, ViewHandle};
+use repo_metadata::repositories::DetectedRepositories;
+use std::path::PathBuf;
+use std::sync::Arc;
+use string_offset::CharOffset;
 
 #[derive(Default)]
 struct TestView;

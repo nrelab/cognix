@@ -3,12 +3,6 @@
 
 use std::{collections::HashMap, ops::Range, rc::Rc, sync::Arc};
 
-use futures::stream::AbortHandle;
-use itertools::Itertools;
-use pathfinder_color::ColorU;
-use rangemap::RangeMap;
-use similar::{ChangeTag, DiffOp, TextDiff};
-use string_offset::CharOffset;
 use cognix_core::ui::theme::Fill;
 use cognix_editor::{
     content::{edit::TemporaryBlock, version::BufferVersion},
@@ -16,6 +10,12 @@ use cognix_editor::{
     render::model::{Decoration, LineCount, LineDecoration},
 };
 use cognixui::{Entity, ModelContext};
+use futures::stream::AbortHandle;
+use itertools::Itertools;
+use pathfinder_color::ColorU;
+use rangemap::RangeMap;
+use similar::{ChangeTag, DiffOp, TextDiff};
+use string_offset::CharOffset;
 
 use super::super::DiffResult;
 

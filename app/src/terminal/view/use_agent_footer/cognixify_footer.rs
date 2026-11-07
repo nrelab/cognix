@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use parking_lot::FairMutex;
 use cognixui::prelude::Empty;
 use cognixui::{
     elements::{
@@ -8,6 +7,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use parking_lot::FairMutex;
 
 use crate::{
     terminal::view::{TerminalModel, PADDING_LEFT},
@@ -78,7 +78,9 @@ impl CognixifyFooterView {
             CognixificationMode::Ssh { .. } => {
                 ("Cognixify SSH session", "terminal:cognixify_ssh_session")
             }
-            CognixificationMode::Subshell { .. } => ("Cognixify subshell", "terminal:cognixify_subshell"),
+            CognixificationMode::Subshell { .. } => {
+                ("Cognixify subshell", "terminal:cognixify_subshell")
+            }
         };
         self.cognixify_button.update(ctx, |button, ctx| {
             button.set_label(label, ctx);

@@ -4,9 +4,9 @@
 
 use anyhow::bail;
 use async_channel::Receiver;
+use cognixui::r#async::{SpawnedFutureHandle, Timer};
 use instant::Instant;
 use std::{pin::pin, sync::Arc};
-use cognixui::r#async::{SpawnedFutureHandle, Timer};
 
 use futures_util::{stream::AbortHandle, SinkExt, StreamExt};
 
@@ -31,11 +31,11 @@ use session_sharing_protocol::{
     },
 };
 
-use std::time::Duration;
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     Entity, ModelContext, ModelHandle, RequestState, RetryOption, SingletonEntity, WeakViewHandle,
 };
+use std::time::Duration;
 use websocket::{Message, Sink, Stream, WebsocketMessage as _};
 
 use crate::{

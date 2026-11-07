@@ -5,9 +5,9 @@ use crate::ai::conversation_navigation::ConversationNavigationData;
 use crate::search::ai_context_menu::mixer::AIContextMenuSearchableAction;
 use crate::search::data_source::{Query, QueryResult};
 use crate::search::mixer::{DataSourceRunErrorWrapper, SyncDataSource};
+use cognixui::{AppContext, Entity, SingletonEntity};
 use fuzzy_match::FuzzyMatchResult;
 use std::collections::HashSet;
-use cognixui::{AppContext, Entity, SingletonEntity};
 
 const MAX_RESULTS: usize = 50;
 /// Minimum fuzzy match score to include a conversation in filtered results.

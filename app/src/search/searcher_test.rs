@@ -1,9 +1,9 @@
 use crate::define_search_schema;
 use crate::search::searcher::{CustomTokenizer, MIN_MEMORY_BUDGET};
+use cognixui::r#async::executor::Background;
 use itertools::Itertools;
 use std::sync::Arc;
 use tantivy::tokenizer::{TextAnalyzer, Token};
-use cognixui::r#async::executor::Background;
 
 fn token_stream_helper(text: &str) -> Vec<Token> {
     let mut a = TextAnalyzer::from(CustomTokenizer::default());

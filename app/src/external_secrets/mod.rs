@@ -3,13 +3,13 @@
 #![cfg_attr(target_family = "wasm", allow(dead_code, unused_variables))]
 
 use anyhow::anyhow;
+use cognix_util::path::ShellFamily;
 use core::fmt;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::path::PathBuf;
-use cognix_util::path::ShellFamily;
 
 #[cfg(all(not(target_family = "wasm"), feature = "local_tty"))]
 use crate::terminal::local_shell::execute_command;

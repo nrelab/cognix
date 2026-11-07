@@ -1,7 +1,3 @@
-use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
-use itertools::Itertools;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use ordered_float::OrderedFloat;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::icons::Icon;
 use cognix_core::ui::theme::color::internal_colors;
@@ -16,6 +12,10 @@ use cognixui::text_layout::ClipConfig;
 use cognixui::ui_components::button::ButtonVariant;
 use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 use cognixui::{AppContext, Element, Entity, EntityId, SingletonEntity as _};
+use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
+use itertools::Itertools;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use ordered_float::OrderedFloat;
 
 use crate::ai::llms::{
     is_using_api_key_for_provider, DisableReason, LLMId, LLMInfo, LLMPreferences, LLMProvider,

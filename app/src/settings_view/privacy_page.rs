@@ -9,8 +9,6 @@ use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::r#async::{SpawnedFutureHandle, Timer};
 
-use regex::Regex;
-use settings::Setting as _;
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::theme::CognixTheme;
@@ -31,6 +29,8 @@ use cognixui::{
     Action, AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView,
     UpdateModel, View, ViewContext, ViewHandle,
 };
+use regex::Regex;
+use settings::Setting as _;
 
 use crate::settings::{CustomSecretRegex, RegexDisplayInfo};
 use crate::settings_view::privacy::AddRegexModalViewState;

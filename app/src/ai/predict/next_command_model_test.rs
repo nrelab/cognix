@@ -3,10 +3,10 @@ use crate::terminal::model::session::Session;
 use crate::terminal::model::session::{
     command_executor::testing::TestCommandExecutor, SessionInfo,
 };
-use typed_path::TypedPathBuf;
 use cognix_completer::signatures::CommandRegistry;
 use cognix_completer::{meta::SpannedItem, parsers::ParsedToken};
 use cognixui::App;
+use typed_path::TypedPathBuf;
 
 use super::*;
 

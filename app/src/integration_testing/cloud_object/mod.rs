@@ -1,11 +1,11 @@
 mod assertion;
 
 pub use assertion::*;
+use cognixui::{App, SingletonEntity};
 use futures::{future::join_all, FutureExt};
 use itertools::Itertools;
 use std::future::Future;
 use std::pin::Pin;
-use cognixui::{App, SingletonEntity};
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, Space},

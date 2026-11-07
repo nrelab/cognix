@@ -29,10 +29,6 @@ pub mod output;
 pub mod query;
 mod todos;
 
-use common::get_highlight_ranges_for_find_matches;
-use pathfinder_color::ColorU;
-use settings::Setting as _;
-use std::collections::{HashMap, HashSet};
 use cognix_core::features::FeatureFlag;
 use cognix_core::semantic_selection::SemanticSelection;
 use cognixui::elements::{
@@ -45,6 +41,10 @@ use cognixui::{
     AppContext, Element, SingletonEntity,
 };
 use cognixui::{View, ViewContext};
+use common::get_highlight_ranges_for_find_matches;
+use pathfinder_color::ColorU;
+use settings::Setting as _;
+use std::collections::{HashMap, HashSet};
 
 use crate::ai::agent::AIAgentCitation;
 use crate::ai::agent::AIAgentInput;
@@ -82,17 +82,17 @@ use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon;
 use crate::util::link_detection::DetectedLinkType;
 use crate::workspace::WorkspaceAction;
-use itertools::Itertools;
 use cognix_core::ui::color::contrast::{
     foreground_color_with_minimum_contrast, MinimumAllowedContrast,
 };
 use cognix_core::ui::color::Rgb;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognixui::elements::{Highlight, HighlightedRange, Text};
 use cognixui::fonts::Properties;
 use cognixui::platform::Cursor;
 use cognixui::text_layout::TextStyle;
 use cognixui::ui_components::components::UiComponent;
+use itertools::Itertools;
 
 /// Helper function to create gray strikethrough highlight for secrets
 fn create_secret_gray_highlight() -> Highlight {

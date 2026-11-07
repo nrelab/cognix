@@ -14,7 +14,6 @@ use crate::{
     server::{cloud_objects::update_manager::UpdateManager, ids::ClientId},
     ui_components::{blended_colors, icons::Icon},
 };
-use pathfinder_color::ColorU;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::Fill;
@@ -22,6 +21,7 @@ use cognixui::{
     elements::{Align, ChildView, Container, ParentElement, SavePosition, Stack},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 use super::suggested_agent_mode_workflow_modal::SuggestedAgentModeWorkflowAndId;
 use super::suggested_rule_modal::SuggestedRuleAndId;

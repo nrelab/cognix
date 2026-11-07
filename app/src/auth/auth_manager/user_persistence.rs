@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
 use cognix_graphql::scalars::time::ServerTimestamp;
 use cognixui::AppContext;
 use cognixui_extras::secure_storage::{self, AppContextExt};
+use serde::{Deserialize, Serialize};
 
 use crate::auth::{
     user::{AnonymousUserType, FirebaseAuthTokens, PersonalObjectLimits, UserMetadata},

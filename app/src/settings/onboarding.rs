@@ -6,11 +6,11 @@ use crate::settings::ai::DefaultSessionMode;
 use crate::settings::{AISettings, CodeSettings};
 use crate::workspace::tab_settings::TabSettings;
 use crate::workspaces::user_workspaces::UserWorkspaces;
+use cognix_core::features::FeatureFlag;
+use cognixui::{AppContext, SingletonEntity as _};
 use onboarding::slides::{AgentAutonomy, AgentDevelopmentSettings};
 use onboarding::{SelectedSettings, SessionDefault, UICustomizationSettings};
 use settings::Setting as _;
-use cognix_core::features::FeatureFlag;
-use cognixui::{AppContext, SingletonEntity as _};
 
 /// Applies onboarding settings based on the user's selected mode.
 pub fn apply_onboarding_settings(selected_settings: &SelectedSettings, app: &mut AppContext) {

@@ -11,8 +11,8 @@ use crate::{
     },
     PaneViewLocator, WindowId,
 };
-use std::collections::{hash_map::Entry, HashMap};
 use cognixui::{Entity, EntityId, ModelContext, SingletonEntity, WeakViewHandle};
+use std::collections::{hash_map::Entry, HashMap};
 
 pub struct EnvVarCollectionManager {
     panes_by_hashed_id: HashMap<String, EnvVarCollectionPaneData>,

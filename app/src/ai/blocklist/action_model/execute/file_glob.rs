@@ -2,11 +2,11 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Duration;
 
+use cognixui::r#async::FutureExt as AsyncFutureExt;
+use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 use futures::future::BoxFuture;
 use futures::FutureExt;
 use itertools::Itertools;
-use cognixui::r#async::FutureExt as AsyncFutureExt;
-use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::ai::agent::{
     conversation::AIConversationId, AIAgentAction, AIAgentActionType, FileGlobResult,

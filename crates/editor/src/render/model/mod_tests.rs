@@ -1,7 +1,3 @@
-use rangemap::RangeSet;
-use std::{cell::Cell, sync::Arc};
-use sum_tree::SumTree;
-use vec1::{Vec1, vec1};
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::{
     color::ColorU,
@@ -10,6 +6,10 @@ use cognixui::{
     text_layout::TextFrame,
     units::{IntoPixels, Pixels},
 };
+use rangemap::RangeSet;
+use std::{cell::Cell, sync::Arc};
+use sum_tree::SumTree;
+use vec1::{Vec1, vec1};
 
 use super::{
     BlockItem, BlockLocation, COMMAND_SPACING, CellLayout, DEFAULT_BLOCK_SPACINGS,
@@ -32,9 +32,9 @@ use crate::{
         test_utils::{TEST_STYLES, laid_out_paragraph, mock_paragraph},
     },
 };
+use cognixui::elements::ListIndentLevel;
 use markdown_parser::{FormattedTextStyles, Hyperlink};
 use string_offset::CharOffset;
-use cognixui::elements::ListIndentLevel;
 
 #[test]
 fn test_height() {

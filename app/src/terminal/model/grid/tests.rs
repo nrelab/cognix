@@ -1,7 +1,7 @@
 //! Tests for the Grid.
 
-use grid_handler::GridHandler;
 use cognix_terminal::model::grid::cell;
+use grid_handler::GridHandler;
 
 use crate::features::FeatureFlag;
 use crate::terminal::model::ansi::Handler;

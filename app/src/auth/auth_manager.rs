@@ -5,14 +5,14 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::{anyhow, Result};
-use settings::Setting as _;
-use uuid::Uuid;
 use cognix_core::channel::ChannelState;
 use cognix_core::features::FeatureFlag;
 use cognix_graphql::mutations::create_anonymous_user::{
     AnonymousUserType, CreateAnonymousUserResult,
 };
 use cognixui::{clipboard::ClipboardContent, Entity, ModelContext, SingletonEntity, UpdateModel};
+use settings::Setting as _;
+use uuid::Uuid;
 
 use super::auth_state::{AuthState, PersistAction};
 use super::auth_view_modal::{AuthRedirectPayload, AuthViewVariant};

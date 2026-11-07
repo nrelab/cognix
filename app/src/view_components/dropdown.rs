@@ -1,6 +1,5 @@
 use std::fmt::Debug;
 
-use pathfinder_color::ColorU;
 use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, ConstrainedBox, Container, Element, Icon,
@@ -17,6 +16,7 @@ use cognixui::{
     Action, AppContext, BlurContext, Entity, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle, WeakViewHandle,
 };
+use pathfinder_color::ColorU;
 
 use crate::{
     appearance::Appearance,

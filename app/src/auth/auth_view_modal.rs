@@ -4,9 +4,6 @@ use crate::root_view::unthemed_window_border;
 use crate::server::server_api::auth::UserAuthenticationError;
 use crate::util::bindings::CustomAction;
 use anyhow::{anyhow, Result};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use url::Url;
 use cognix_core::errors::ErrorExt;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::ChildAnchor;
@@ -24,13 +21,16 @@ use cognixui::AppContext;
 use cognixui::FocusContext;
 use cognixui::SingletonEntity;
 use cognixui::TypedActionView;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use url::Url;
 
 use crate::auth::auth_view_body::AuthViewBody;
 use crate::modal::Modal;
-use std::collections::HashMap;
 use cognixui::elements::ChildView;
 use cognixui::ui_components::components::{Coords, UiComponentStyles};
 use cognixui::{Element, Entity, View, ViewContext, ViewHandle};
+use std::collections::HashMap;
 
 use super::auth_manager::AuthManager;
 use super::auth_manager::AuthManagerEvent;

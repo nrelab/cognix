@@ -5,8 +5,6 @@ use pathfinder_color::ColorU;
 use pathfinder_geometry::vector::Vector2F;
 
 use crate::search::mixer::AddAsyncSourceOptions;
-use lazy_static::lazy_static;
-use std::{collections::HashSet, ops::Range, sync::Arc, time::Duration};
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     accessibility::{AccessibilityContent, CognixA11yRole},
@@ -23,6 +21,8 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle, WeakViewHandle,
 };
+use lazy_static::lazy_static;
+use std::{collections::HashSet, ops::Range, sync::Arc, time::Duration};
 
 use crate::{
     ai_assistant::{
@@ -55,10 +55,10 @@ use crate::{
 
 use super::{
     ai_queries::AIQueriesDataSource,
+    cognix_ai::CognixAIDataSource,
     env_var_collections::EnvVarCollectionDataSource,
     history::history_data_source_for_session,
     notebooks::notebooks_data_source,
-    cognix_ai::CognixAIDataSource,
     workflows::{cloud_workflows_data_source, WorkflowsDataSource},
     zero_state::{CommandSearchZeroStateEvent, CommandSearchZeroStateView},
 };
@@ -1120,9 +1120,9 @@ impl CommandSearchView {
 }
 
 pub mod styles {
+    use cognixui::elements::{Border, DropShadow, ScrollbarWidth};
     use lazy_static::lazy_static;
     use pathfinder_color::ColorU;
-    use cognixui::elements::{Border, DropShadow, ScrollbarWidth};
 
     use crate::{appearance::Appearance, themes::theme::Fill};
 

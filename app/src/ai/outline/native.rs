@@ -6,6 +6,7 @@ use std::{
 
 use ai::index::build_outline;
 use async_channel::Sender;
+use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 use futures::stream::AbortHandle;
 use instant::Instant;
 use repo_metadata::CanonicalizedPath;
@@ -15,7 +16,6 @@ use repo_metadata::{
     DirectoryWatcher, Repository, RepositoryUpdate,
 };
 use settings::Setting as _;
-use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{
     ai::persisted_workspace::all_working_directories,

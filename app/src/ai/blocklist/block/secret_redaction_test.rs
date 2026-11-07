@@ -1,7 +1,7 @@
-use regex::Regex;
-use serial_test::serial;
 use cognixui::elements::Text;
 use cognixui::fonts::FamilyId;
+use regex::Regex;
+use serial_test::serial;
 
 use crate::terminal::model::secrets::{self, SecretLevel};
 

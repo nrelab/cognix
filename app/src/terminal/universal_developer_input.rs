@@ -11,13 +11,6 @@ use crate::{
     },
     terminal::view::ambient_agent::AmbientAgentViewModel,
 };
-use pathfinder_color::ColorU;
-#[cfg(not(target_family = "wasm"))]
-use settings::Setting as _;
-use std::borrow::Cow;
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::sync::Arc;
 use cognixui::{
     elements::{
         ChildView, Clipped, Container, CornerRadius, CrossAxisAlignment, Fill, Flex,
@@ -28,6 +21,13 @@ use cognixui::{
     AppContext, Element, Entity, EntityId, SingletonEntity as _, TypedActionView, View, ViewAsRef,
     ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+#[cfg(not(target_family = "wasm"))]
+use settings::Setting as _;
+use std::borrow::Cow;
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::sync::Arc;
 
 use cognix_core::ui::{
     color::{
@@ -38,11 +38,11 @@ use cognix_core::ui::{
     theme,
 };
 
-use std::boxed::Box;
 use cognixui::{
     ui_components::segmented_control::{SegmentedControl, SegmentedControlEvent},
     ModelHandle,
 };
+use std::boxed::Box;
 
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::color::internal_colors;
@@ -138,7 +138,10 @@ impl AtContextMenuDisabledReason {
             .and_then(|session_id| sessions.get(session_id))
             .map(|session| {
                 let is_ssh_session = session.is_legacy_ssh_session()
-                    || matches!(session.session_type(), SessionType::CognixifiedRemote { .. });
+                    || matches!(
+                        session.session_type(),
+                        SessionType::CognixifiedRemote { .. }
+                    );
                 let is_subshell = session.subshell_info().is_some();
                 (is_ssh_session, is_subshell)
             })

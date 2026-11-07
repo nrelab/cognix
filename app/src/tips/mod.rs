@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use cognixui::{keymap::Keystroke, AppContext};
+use serde::{Deserialize, Serialize};
 
 pub mod tip_view;
 pub use tip_view::{TipsEvent, TipsView};

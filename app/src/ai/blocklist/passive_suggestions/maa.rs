@@ -26,10 +26,10 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use ai::agent::action::{AIAgentActionType, FileEdit};
 use ai::diff_validation::ParsedDiff;
 use chrono::{DateTime, Utc};
-use parking_lot::FairMutex;
 use cognix_core::features::FeatureFlag;
 use cognixui::r#async::SpawnedFutureHandle;
 use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use parking_lot::FairMutex;
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {
@@ -593,8 +593,8 @@ async fn extract_suggestion_from_stream(
     >,
 ) -> Option<StreamExtractionResult> {
     use crate::ai::agent::task::helper::MessageExt;
-    use futures_util::StreamExt;
     use cognix_multi_agent_api as api;
+    use futures_util::StreamExt;
 
     let Ok(mut stream) = stream_result else {
         return None;
@@ -674,10 +674,10 @@ async fn extract_suggestion_from_stream(
 fn coalesce_messages_from_client_actions(
     client_actions: &[cognix_multi_agent_api::ClientAction],
 ) -> Vec<cognix_multi_agent_api::Message> {
-    use field_mask::FieldMaskOperation;
-    use std::collections::HashMap;
     use cognix_multi_agent_api as api;
     use cognix_multi_agent_api::client_action::Action;
+    use field_mask::FieldMaskOperation;
+    use std::collections::HashMap;
 
     let mut messages_by_id: HashMap<String, api::Message> = HashMap::new();
     let mut message_order: Vec<String> = Vec::new();

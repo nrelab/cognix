@@ -20,7 +20,6 @@ use crate::{
         COPY_FEEDBACK_DURATION,
     },
 };
-use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_core::ui::{appearance::Appearance, builder::MIN_FONT_SIZE, theme::Fill};
 use cognix_editor::editor::NavigationKey;
@@ -46,6 +45,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity as _, TypedActionView, View,
     ViewContext, ViewHandle, WindowId,
 };
+use fuzzy_match::{match_indices_case_insensitive, FuzzyMatchResult};
 
 use cognixui::clipboard::ClipboardContent;
 use cognixui::r#async::Timer;
@@ -702,10 +702,13 @@ impl DisplayChipMenu {
         let image_key = format!("env-sidecar:{}:image", data.id);
 
         let icon = |icon: Icon| {
-            ConstrainedBox::new(icon.to_cognixui_icon(Fill::Solid(label_text_color)).finish())
-                .with_width(ENV_SIDE_CAR_ICON_SIZE)
-                .with_height(ENV_SIDE_CAR_ICON_SIZE)
-                .finish()
+            ConstrainedBox::new(
+                icon.to_cognixui_icon(Fill::Solid(label_text_color))
+                    .finish(),
+            )
+            .with_width(ENV_SIDE_CAR_ICON_SIZE)
+            .with_height(ENV_SIDE_CAR_ICON_SIZE)
+            .finish()
         };
 
         let label_text = |text: &str| {

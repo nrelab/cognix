@@ -1,9 +1,9 @@
 use super::{CharOffset, Point};
-use itertools::Either;
-use std::iter::Peekable;
 use cognixui::text::{
     word_boundaries::WordBoundariesApproach, words::is_subword_boundary_char, TextBuffer,
 };
+use itertools::Either;
+use std::iter::Peekable;
 
 pub struct SubwordBoundaries<'a, T: TextBuffer + ?Sized> {
     offset: CharOffset,

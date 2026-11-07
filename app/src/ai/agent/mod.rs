@@ -35,6 +35,7 @@ pub use telemetry::AIIdentifiers;
 
 use cognix_editor::render::model::LineCount;
 
+use cognix_multi_agent_api::{diff_hunk as diff_hunk_api, AgentEvent, AgentType};
 use parking_lot::RwLock;
 use std::collections::{HashMap, HashSet};
 use std::fmt::Display;
@@ -42,7 +43,6 @@ use std::ops::{AddAssign, Deref, DerefMut, Range};
 use std::sync::Arc;
 use std::time::Duration;
 use uuid::Uuid;
-use cognix_multi_agent_api::{diff_hunk as diff_hunk_api, AgentEvent, AgentType};
 
 pub use self::api::{MaybeAIAgentOutputMessage, MessageToAIAgentOutputMessageError};
 use crate::ai_assistant::execution_context::CognixAiExecutionContext;
@@ -2152,7 +2152,9 @@ impl From<DiffBase> for cognix_multi_agent_api::BaseRef {
     fn from(value: DiffBase) -> Self {
         Self {
             r#ref: Some(match value {
-                DiffBase::BranchName(name) => cognix_multi_agent_api::base_ref::Ref::BranchName(name),
+                DiffBase::BranchName(name) => {
+                    cognix_multi_agent_api::base_ref::Ref::BranchName(name)
+                }
                 DiffBase::HeadlessCommitSha(sha) => {
                     cognix_multi_agent_api::base_ref::Ref::HeadlessCommitSha(sha)
                 }

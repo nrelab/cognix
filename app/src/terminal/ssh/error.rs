@@ -1,13 +1,10 @@
 use crate::appearance::Appearance;
-use crate::terminal::model::ansi::CognixificationUnavailableReason;
 use crate::terminal::cognixify;
 use crate::terminal::cognixify::render::apply_spacing_styles;
 use crate::terminal::cognixify::render::build_description_row;
 use crate::terminal::cognixify::settings::CognixifySettings;
+use crate::terminal::model::ansi::CognixificationUnavailableReason;
 use crate::ui_components::icons::Icon as UiIcon;
-use markdown_parser::FormattedText;
-use markdown_parser::FormattedTextFragment;
-use markdown_parser::FormattedTextLine;
 use cognix_core::channel::ChannelState;
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::elements::HighlightedHyperlink;
@@ -28,6 +25,9 @@ use cognixui::{
     elements::{Border, Container, CrossAxisAlignment, Flex, ParentElement},
     Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use markdown_parser::FormattedText;
+use markdown_parser::FormattedTextFragment;
+use markdown_parser::FormattedTextLine;
 
 const TMUX_NOT_INSTALLED_ERROR: &str =
     "tmux is not installed on the remote machine. Please install tmux and try again.";
@@ -287,7 +287,9 @@ impl View for SshErrorBlock {
                     .build()
                     .with_cursor(Cursor::PointingHand)
                     .on_click(move |ctx, _, _| {
-                        ctx.dispatch_typed_action(SshErrorBlockAction::ContinueWithoutCognixification)
+                        ctx.dispatch_typed_action(
+                            SshErrorBlockAction::ContinueWithoutCognixification,
+                        )
                     })
                     .finish(),
             );

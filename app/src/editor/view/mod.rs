@@ -24,6 +24,12 @@ use super::Point;
 #[cfg(feature = "voice_input")]
 use crate::view_components::FeaturePopup;
 use base64::{engine::general_purpose, Engine as _};
+use cognix_core::{safe_error, send_telemetry_from_ctx};
+use cognix_util::{path::ShellFamily, user_input::UserInput};
+use cognixui::platform::keyboard::KeyCode;
+use cognixui::ui_components::button::ButtonTooltipPosition;
+use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
+use cognixui::{elements, ViewHandle};
 use element::CommandXRayMouseStateHandle;
 use figma_utils::is_figma_png;
 use itertools::{Either, Itertools};
@@ -38,12 +44,6 @@ use pathfinder_color::ColorU;
 use settings::Setting as _;
 use snapshot::{EditorHeightShrinkDelay, ViewSnapshot};
 use vec1::{vec1, Vec1};
-use cognix_core::{safe_error, send_telemetry_from_ctx};
-use cognix_util::{path::ShellFamily, user_input::UserInput};
-use cognixui::platform::keyboard::KeyCode;
-use cognixui::ui_components::button::ButtonTooltipPosition;
-use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
-use cognixui::{elements, ViewHandle};
 
 use crate::ai::agent::ImageContext;
 use crate::ai::blocklist::{BlocklistAIContextModel, PendingAttachment, PendingFile};
@@ -85,6 +85,7 @@ use crate::util::image::{resize_image, MAX_IMAGE_COUNT_FOR_QUERY, MAX_IMAGE_SIZE
 use crate::util::merge_ranges;
 use crate::{workspace::Workspace, BlocklistAIHistoryModel};
 use anyhow::Result;
+use cognix_core::semantic_selection::SemanticSelection;
 use core::f32;
 use std::path::Path;
 use vim::vim::{
@@ -97,23 +98,12 @@ use vim::{
     vim_a_block, vim_a_paragraph, vim_a_quote, vim_a_word, vim_inner_block, vim_inner_paragraph,
     vim_inner_quote, vim_inner_word, vim_word_iterator_from_offset,
 };
-use cognix_core::semantic_selection::SemanticSelection;
 
 use num_traits::SaturatingSub;
 use parking_lot::Mutex;
 use pathfinder_geometry::vector::Vector2F;
 
 use async_fs;
-use std::collections::HashMap;
-use std::{borrow::Cow, rc::Rc};
-use std::{
-    cmp::{self, Ordering},
-    fmt,
-    ops::Range,
-    sync::Arc,
-    time::Duration,
-};
-use string_offset::{ByteOffset, CharOffset};
 use cognix_completer::completer::Description;
 use cognix_editor::editor::NavigationKey;
 use cognixui::actions::StandardAction;
@@ -139,6 +129,16 @@ use cognixui::{
 };
 use cognixui::{windowing, BlurContext, EntityId, FocusContext};
 use cognixui::{CursorInfo, ModelContext, SingletonEntity, TypedActionView};
+use std::collections::HashMap;
+use std::{borrow::Cow, rc::Rc};
+use std::{
+    cmp::{self, Ordering},
+    fmt,
+    ops::Range,
+    sync::Arc,
+    time::Duration,
+};
+use string_offset::{ByteOffset, CharOffset};
 
 const CURSOR_BLINK_INTERVAL: Duration = Duration::from_millis(500);
 const DEFAULT_TAB_SIZE: usize = 4;
@@ -8367,9 +8367,12 @@ impl TypedActionView for EditorView {
         ctx: &mut ViewContext<Self>,
     ) -> ActionAccessibilityContent {
         match action {
-            EditorAction::UserInsert(text) => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help(text.to_string(), CognixA11yRole::UserAction),
-            ),
+            EditorAction::UserInsert(text) => {
+                ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
+                    text.to_string(),
+                    CognixA11yRole::UserAction,
+                ))
+            }
             EditorAction::SelectLeft
             | EditorAction::SelectToLineEnd
             | EditorAction::SelectLine(_)

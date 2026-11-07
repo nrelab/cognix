@@ -7,6 +7,12 @@ use crate::ai::blocklist::BlocklistAIHistoryModel;
 use ai::skills::{
     home_skills_path, provider_rank, ParsedSkill, SkillProvider, SKILL_PROVIDER_DEFINITIONS,
 };
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::theme::color::internal_colors;
+use cognix_core::ui::Icon;
+use cognixui::prelude::MouseStateHandle;
+use cognixui::EventContext;
+use cognixui::{AppContext, Element, SingletonEntity};
 use lazy_static::lazy_static;
 use siphasher::sip::SipHasher;
 use std::collections::hash_map::Entry;
@@ -14,12 +20,6 @@ use std::collections::{HashMap, HashSet};
 use std::hash::{Hash, Hasher};
 use std::path::Path;
 use std::path::PathBuf;
-use cognix_core::ui::appearance::Appearance;
-use cognix_core::ui::theme::color::internal_colors;
-use cognix_core::ui::Icon;
-use cognixui::prelude::MouseStateHandle;
-use cognixui::EventContext;
-use cognixui::{AppContext, Element, SingletonEntity};
 
 use crate::cognix_managed_paths_watcher::cognix_managed_skill_dirs;
 

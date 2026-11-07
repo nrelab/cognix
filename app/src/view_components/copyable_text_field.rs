@@ -1,8 +1,6 @@
 //! A reusable component for displaying text with a copy button that shows
 //! checkmark feedback when clicked.
 
-use instant::Instant;
-use std::time::Duration;
 use cognixui::elements::{
     ConstrainedBox, Container, CrossAxisAlignment, Element, Expanded, Flex, MouseStateHandle,
     ParentElement, Shrinkable, Text,
@@ -10,6 +8,8 @@ use cognixui::elements::{
 use cognixui::text_layout::ClipConfig;
 use cognixui::ui_components::components::UiComponent;
 use cognixui::{AppContext, SingletonEntity};
+use instant::Instant;
+use std::time::Duration;
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;

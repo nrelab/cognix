@@ -5,7 +5,6 @@ use std::{mem, sync::Arc};
 use vec1::{Vec1, vec1};
 
 use crate::content::text::BufferBlockStyle;
-use ordered_float::OrderedFloat;
 use cognixui::elements::ListIndentLevel;
 use cognixui::{
     color::ColorU,
@@ -15,6 +14,7 @@ use cognixui::{
     text_layout::{CaretPosition, Glyph, Line, Run, TextFrame},
     units::{IntoPixels, Pixels},
 };
+use ordered_float::OrderedFloat;
 
 use super::{
     BlockItem, BrokenLinkStyle, CheckBoxStyle, DEFAULT_BLOCK_SPACINGS, HorizontalRuleStyle,

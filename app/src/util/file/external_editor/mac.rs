@@ -8,8 +8,8 @@ use cocoa::{
     base::{id, nil},
     foundation::{NSAutoreleasePool, NSString},
 };
-use command::r#async::Command;
 use cognixui::{platform::mac::make_nsstring, ApplicationBundleInfo};
+use command::r#async::Command;
 
 use super::*;
 

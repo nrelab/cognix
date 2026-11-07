@@ -5,9 +5,6 @@ use std::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
-use markdown_parser::{parse_html, parse_markdown, FormattedText};
-use pathfinder_geometry::vector::vec2f;
-use string_offset::CharOffset;
 use cognix_editor::{
     content::{
         anchor::Anchor,
@@ -25,6 +22,9 @@ use cognix_editor::{
     },
     selection::{TextDirection, TextUnit},
 };
+use markdown_parser::{parse_html, parse_markdown, FormattedText};
+use pathfinder_geometry::vector::vec2f;
+use string_offset::CharOffset;
 
 use cognix_util::{path::LineAndColumnArg, user_input::UserInput};
 use cognixui::{
@@ -71,7 +71,9 @@ use crate::{
     ui_components::icons::ICON_DIMENSIONS,
     util::{
         bindings::CustomAction,
-        tooltips::{render_tooltip, should_show_open_in_cognix_link, TooltipLink, TooltipRedaction},
+        tooltips::{
+            render_tooltip, should_show_open_in_cognix_link, TooltipLink, TooltipRedaction,
+        },
     },
     view_components::DismissibleToast,
 };
@@ -3089,15 +3091,21 @@ impl TypedActionView for RichTextEditorView {
             EditorViewAction::CutLineLeft => ActionAccessibilityContent::Custom(
                 AccessibilityContent::new_without_help("Cut line left", CognixA11yRole::UserAction),
             ),
-            EditorViewAction::CutLineRight => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Cut line right", CognixA11yRole::UserAction),
-            ),
+            EditorViewAction::CutLineRight => {
+                ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
+                    "Cut line right",
+                    CognixA11yRole::UserAction,
+                ))
+            }
             EditorViewAction::CutWordLeft => ActionAccessibilityContent::Custom(
                 AccessibilityContent::new_without_help("Cut word left", CognixA11yRole::UserAction),
             ),
-            EditorViewAction::CutWordRight => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Cut word right", CognixA11yRole::UserAction),
-            ),
+            EditorViewAction::CutWordRight => {
+                ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
+                    "Cut word right",
+                    CognixA11yRole::UserAction,
+                ))
+            }
 
             EditorViewAction::ShowCharacterPalette => {
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
@@ -3159,9 +3167,12 @@ impl TypedActionView for RichTextEditorView {
                 format!("Change code block language to {code_block_type}"),
                 CognixA11yRole::UserAction,
             )),
-            EditorViewAction::CopyTextToClipboard { .. } => ActionAccessibilityContent::Custom(
-                AccessibilityContent::new_without_help("Copy code block", CognixA11yRole::UserAction),
-            ),
+            EditorViewAction::CopyTextToClipboard { .. } => {
+                ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(
+                    "Copy code block",
+                    CognixA11yRole::UserAction,
+                ))
+            }
             EditorViewAction::ToggleTaskList(_) => {
                 // TODO(ben): Is it useful to include the text and/or on/off state here?
                 ActionAccessibilityContent::Custom(AccessibilityContent::new_without_help(

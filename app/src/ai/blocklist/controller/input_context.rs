@@ -2,10 +2,10 @@ use std::{collections::HashMap, path::Path, sync::Arc};
 
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use chrono::Local;
-use lazy_static::lazy_static;
-use regex::Regex;
 use cognix_core::features::FeatureFlag;
 use cognixui::{AppContext, SingletonEntity};
+use lazy_static::lazy_static;
+use regex::Regex;
 
 use crate::{
     ai::{

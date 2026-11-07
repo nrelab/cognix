@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 
-use sum_tree::SumTree;
 use cognixui::App;
+use sum_tree::SumTree;
 
 use super::{AnchorSide, Anchors};
 

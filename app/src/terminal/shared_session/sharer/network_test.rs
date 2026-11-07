@@ -4,6 +4,7 @@ use async_channel::Sender;
 use futures_util::stream::AbortHandle;
 use instant::Instant;
 
+use cognixui::{App, ModelHandle};
 use parking_lot::FairMutex;
 use session_sharing_protocol::{
     common::{
@@ -12,7 +13,6 @@ use session_sharing_protocol::{
     },
     sharer::{DownstreamMessage, ReconnectToken, UpstreamMessage},
 };
-use cognixui::{App, ModelHandle};
 use websocket::{Message, WebsocketMessage as _};
 
 use crate::{

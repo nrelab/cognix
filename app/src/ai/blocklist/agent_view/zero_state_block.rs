@@ -1,8 +1,3 @@
-use itertools::Itertools as _;
-use markdown_parser::{parse_markdown, FormattedText, FormattedTextFragment, FormattedTextLine};
-use parking_lot::FairMutex;
-use settings::Setting;
-use std::{borrow::Cow, cmp::Reverse, path::Path, sync::Arc};
 use cognix_core::{features::FeatureFlag, report_if_error, ui::Icon};
 use cognixui::{
     elements::{
@@ -16,6 +11,11 @@ use cognixui::{
     scene::Border,
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use itertools::Itertools as _;
+use markdown_parser::{parse_markdown, FormattedText, FormattedTextFragment, FormattedTextLine};
+use parking_lot::FairMutex;
+use settings::Setting;
+use std::{borrow::Cow, cmp::Reverse, path::Path, sync::Arc};
 
 use crate::{
     ai::{

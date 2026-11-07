@@ -1,13 +1,13 @@
 use std::collections::{HashMap, HashSet};
 
 use anyhow::Error;
-use serde::{Deserialize, Serialize};
-use settings_value::SettingsValue;
 use cognix_core::{
     define_settings_group,
     settings::{RespectUserSyncSetting, Setting, SupportedPlatforms, SyncToCloud},
 };
 use cognixui::{AppContext, ModelContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
+use settings_value::SettingsValue;
 
 use crate::{
     cloud_object::{

@@ -1,7 +1,7 @@
 use ai::diff_validation::DiffDelta;
+use cognixui::{Entity, ModelContext, SingletonEntity};
 use futures::{future::BoxFuture, FutureExt};
 use std::collections::HashMap;
-use cognixui::{Entity, ModelContext, SingletonEntity};
 
 use crate::ai::{
     agent::{

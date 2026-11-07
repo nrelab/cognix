@@ -4,11 +4,11 @@ use crate::auth::AuthStateProvider;
 use crate::search::item::SearchItem;
 use crate::server::server_api::ServerApiProvider;
 use crate::server::telemetry::context_provider::AppTelemetryContextProvider;
+use cognixui::r#async::Timer;
+use cognixui::{App, AppContext, Element};
 use ordered_float::OrderedFloat;
 use std::collections::HashSet;
 use std::time::Duration;
-use cognixui::r#async::Timer;
-use cognixui::{App, AppContext, Element};
 
 #[derive(Clone, Debug, PartialEq)]
 struct TestAction {

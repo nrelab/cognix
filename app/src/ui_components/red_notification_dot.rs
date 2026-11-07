@@ -1,5 +1,4 @@
 use crate::appearance::Appearance;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::AnsiColorIdentifier;
 use cognixui::{
     elements::{
@@ -9,6 +8,7 @@ use cognixui::{
     ui_components::components::UiComponentStyles,
     Element,
 };
+use pathfinder_geometry::vector::vec2f;
 
 pub struct RedNotificationDot {}
 

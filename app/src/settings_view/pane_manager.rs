@@ -3,8 +3,8 @@ use crate::{
     pane_group::{PaneContent, PaneId},
     PaneViewLocator,
 };
-use std::collections::HashMap;
 use cognixui::{Entity, EntityId, ModelContext, SingletonEntity, ViewHandle, WindowId};
+use std::collections::HashMap;
 
 use super::SettingsView;
 struct SettingsPaneData {

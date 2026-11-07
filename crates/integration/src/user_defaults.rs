@@ -1,6 +1,6 @@
-use std::collections::HashMap;
 use cognix::settings::INPUT_MODE;
 use cognix::terminal::block_list_viewport::InputMode;
+use std::collections::HashMap;
 
 /// Returns a user defaults map with the `InputMode` set to `input_mode`.
 #[allow(dead_code)]

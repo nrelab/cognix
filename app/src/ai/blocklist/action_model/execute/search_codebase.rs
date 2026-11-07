@@ -3,9 +3,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 use futures::{channel::oneshot, future::BoxFuture, FutureExt};
 use itertools::Itertools;
-use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
 
 use crate::{
     ai::{

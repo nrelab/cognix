@@ -22,11 +22,11 @@ use crate::workspaces::workspace::{
     Workspace,
 };
 
+use cognixui::{AddSingletonModel, App};
+use cognixui_extras::user_preferences;
 use mockall::Sequence;
 use settings::{PrivatePreferences, PublicPreferences};
 use std::time::Duration;
-use cognixui::{AddSingletonModel, App};
-use cognixui_extras::user_preferences;
 
 use super::*;
 

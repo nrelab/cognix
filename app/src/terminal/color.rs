@@ -1,8 +1,8 @@
 use crate::terminal::model::ansi::color_index;
 use crate::themes::theme::{AnsiColors, CognixTheme};
+use cognixui::color::ColorU;
 use std::fmt;
 use std::ops::{Index, IndexMut};
-use cognixui::color::ColorU;
 
 pub const COUNT: usize = 269;
 

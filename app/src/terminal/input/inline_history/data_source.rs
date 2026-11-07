@@ -22,9 +22,9 @@ use crate::terminal::input::inline_menu::{
 use crate::terminal::model::session::active_session::ActiveSession;
 use crate::terminal::model::session::SessionId;
 use chrono::{DateTime, Local};
+use cognixui::{AppContext, Entity, EntityId, ModelHandle, SingletonEntity};
 use fuzzy_match::FuzzyMatchResult;
 use ordered_float::OrderedFloat;
-use cognixui::{AppContext, Entity, EntityId, ModelHandle, SingletonEntity};
 
 #[derive(Clone, Debug)]
 pub enum AcceptHistoryItem {

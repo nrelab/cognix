@@ -1,9 +1,9 @@
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{ConstrainedBox, Container, Highlight, Text},
     fonts::{Properties, Weight},
     AppContext, Element, SingletonEntity,
 };
+use ordered_float::OrderedFloat;
 
 use crate::search::item::SearchItem;
 use crate::search::result_renderer::ItemHighlightState;

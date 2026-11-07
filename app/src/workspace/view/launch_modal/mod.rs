@@ -10,9 +10,6 @@ use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon;
 use crate::view_components::action_button::{ActionButton, PrimaryTheme, SecondaryTheme};
 use crate::workspace::view::launch_modal::cta_button::{CTAButton, CTAButtonAction};
-use markdown_parser::{parse_markdown, FormattedText, FormattedTextLine};
-use pathfinder_color::ColorU;
-use std::collections::HashMap;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::Fill;
 use cognixui::assets::asset_cache::AssetSource;
@@ -31,6 +28,9 @@ use cognixui::ui_components::components::UiComponent;
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use markdown_parser::{parse_markdown, FormattedText, FormattedTextLine};
+use pathfinder_color::ColorU;
+use std::collections::HashMap;
 
 pub fn init<S: Slide>(app: &mut AppContext) {
     use cognixui::keymap::macros::*;

@@ -1,6 +1,3 @@
-use pathfinder_color::ColorU;
-use std::borrow::Cow;
-use std::rc::Rc;
 use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors};
 use cognixui::{
     elements::{
@@ -13,6 +10,9 @@ use cognixui::{
     platform::Cursor,
     AppContext, Element, EventContext, SingletonEntity,
 };
+use pathfinder_color::ColorU;
+use std::borrow::Cow;
+use std::rc::Rc;
 
 use crate::{
     ai::blocklist::inline_action::inline_action_icons::icon_size,

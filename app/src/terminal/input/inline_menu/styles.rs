@@ -5,7 +5,7 @@
 //! visual design matching the Figma specifications.
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::color::blend::Blend;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognixui::color::ColorU;
 use cognixui::{AppContext, SingletonEntity};
 

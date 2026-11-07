@@ -1,4 +1,3 @@
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognixui::{
     elements::{
         Border, ConstrainedBox, Container, CrossAxisAlignment, Flex, FormattedTextElement,
@@ -7,6 +6,7 @@ use cognixui::{
     ui_components::components::UiComponent,
     Action, AppContext, Element, SingletonEntity,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::appearance::Appearance;
 

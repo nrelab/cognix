@@ -1,10 +1,10 @@
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::icons::Icon;
 use cognixui::elements::{ConstrainedBox, Container, Highlight, Text};
 use cognixui::fonts::{Properties, Weight};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, Entity, ModelContext, ModelHandle, SingletonEntity as _};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::appearance::Appearance;
 use crate::cloud_object::model::persistence::CloudModel;

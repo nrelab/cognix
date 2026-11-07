@@ -2,9 +2,9 @@ use std::fs;
 
 use crate::repositories::{stub_git_repository, RepoDetectionSource};
 use crate::{repositories::DetectedRepositories, watcher::DirectoryWatcher};
-use virtual_fs::{Stub, VirtualFS};
 use cognix_util::standardized_path::StandardizedPath;
 use cognixui::App;
+use virtual_fs::{Stub, VirtualFS};
 
 #[test]
 fn test_detect_possible_git_repo_non_existent_directory() {

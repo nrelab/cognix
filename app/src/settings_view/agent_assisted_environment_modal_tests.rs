@@ -4,11 +4,11 @@ use crate::server::server_api::ServerApiProvider;
 use crate::test_util::settings::initialize_settings_for_tests;
 use crate::workspace::ToastStack;
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
-use std::path::PathBuf;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::elements::{ChildView, Empty};
 use cognixui::platform::WindowStyle;
 use cognixui::{App, AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle};
+use std::path::PathBuf;
 
 fn init_modal_test_models(app: &mut App) {
     initialize_settings_for_tests(app);

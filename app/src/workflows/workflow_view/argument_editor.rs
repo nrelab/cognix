@@ -1,7 +1,5 @@
 use std::cmp::Ordering;
 
-use itertools::Itertools;
-use pathfinder_color::ColorU;
 use cognix_core::{features::FeatureFlag, ui::appearance::Appearance};
 use cognix_editor::editor::NavigationKey;
 use cognixui::{
@@ -16,6 +14,8 @@ use cognixui::{
     },
     AppContext, Element, SingletonEntity as _, ViewContext, ViewHandle,
 };
+use itertools::Itertools;
+use pathfinder_color::ColorU;
 
 use crate::{
     drive::workflows::{

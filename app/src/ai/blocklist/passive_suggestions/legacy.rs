@@ -32,11 +32,11 @@ use crate::terminal::model_events::{ModelEvent, ModelEventDispatcher};
 use crate::terminal::view::{AgentModePromptSuggestion, PromptSuggestion};
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use chrono::Utc;
-use parking_lot::FairMutex;
-use serde_json::json;
 use cognix_core::features::FeatureFlag;
 use cognixui::r#async::{FutureExt as AsyncFutureExt, SpawnedFutureHandle, Timer};
 use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use parking_lot::FairMutex;
+use serde_json::json;
 
 const NUM_TOP_BLOCK_LINES: usize = 100;
 const NUM_BOTTOM_BLOCK_LINES: usize = 200;

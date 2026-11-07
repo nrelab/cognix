@@ -1,9 +1,9 @@
-use enum_iterator::Sequence;
-use serde::{Deserialize, Serialize};
 use cognix_core::{
     channel::{Channel, ChannelState},
     settings::{macros::define_settings_group, SupportedPlatforms, SyncToCloud},
 };
+use enum_iterator::Sequence;
+use serde::{Deserialize, Serialize};
 
 /// The app icon to use (mac-only).
 ///

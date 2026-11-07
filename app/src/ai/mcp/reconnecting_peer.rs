@@ -2,8 +2,8 @@
 
 use std::future::Future;
 
-use uuid::Uuid;
 use cognixui::ModelSpawner;
+use uuid::Uuid;
 
 use super::TemplatableMCPServerManager;
 

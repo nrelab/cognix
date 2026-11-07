@@ -1,9 +1,9 @@
-use parking_lot::FairMutex;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     r#async::SpawnedFutureHandle, AppContext, EntityId, SingletonEntity as _, ViewContext,
     ViewHandle,
 };
+use parking_lot::FairMutex;
 
 use crate::terminal::{
     model::{
@@ -14,7 +14,7 @@ use crate::terminal::{
     },
     settings::TerminalSettings,
     shell::ShellType,
-    ssh::{error::SshErrorBlock, install_tmux::SshInstallTmuxBlock, cognixify::SshCognixifyBlock},
+    ssh::{cognixify::SshCognixifyBlock, error::SshErrorBlock, install_tmux::SshInstallTmuxBlock},
     TerminalModel, TerminalView,
 };
 use std::{collections::HashMap, sync::Arc};

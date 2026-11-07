@@ -17,7 +17,6 @@ use crate::code_review::comments::{
 use crate::editor::InteractionState;
 use crate::notebooks::editor::view::RichTextEditorView;
 use crate::util::time_format::human_readable_approx_duration;
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::color::internal_colors::{neutral_1, neutral_2, text_sub};
 use cognix_core::ui::theme::Fill;
 use cognix_editor::content::buffer::InitialBufferState;
@@ -32,6 +31,7 @@ use cognixui::platform::Cursor;
 use cognixui::text_layout::ClipConfig;
 use cognixui::units::Pixels;
 use cognixui::{AppContext, Element, EventContext, SingletonEntity, View, ViewContext, ViewHandle};
+use pathfinder_color::ColorU;
 
 /// Configuration for making the comment header clickable.
 pub(crate) struct HeaderClickHandler {

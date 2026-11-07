@@ -1,15 +1,15 @@
 use crate::workspace::view::global_search::view::GlobalSearchEvent;
 use crate::workspace::view::global_search::SearchConfig;
 use anyhow::Result;
+use cognix_ripgrep::search::{Match as RipgrepMatch, Submatch};
+use cognixui::r#async::SpawnedFutureHandle;
+use cognixui::{Entity, ModelContext, ModelSpawner};
 use futures::StreamExt as _;
 use instant::Instant;
 use num_traits::SaturatingSub;
 use regex::escape;
 use std::path::PathBuf;
 use string_offset::ByteOffset;
-use cognix_ripgrep::search::{Match as RipgrepMatch, Submatch};
-use cognixui::r#async::SpawnedFutureHandle;
-use cognixui::{Entity, ModelContext, ModelSpawner};
 
 const START_BATCH_AFTER_COUNT: usize = 50;
 const MAX_BATCH_SIZE: usize = 512;

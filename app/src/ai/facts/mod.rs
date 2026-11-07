@@ -12,8 +12,8 @@ use crate::{
     },
     drive::CloudObjectTypeAndId,
 };
-use serde::{Deserialize, Serialize};
 use cognix_core::ui::appearance::Appearance;
+use serde::{Deserialize, Serialize};
 
 pub mod manager;
 pub mod view;

@@ -11,8 +11,6 @@ use crate::util::bindings::{
     keybinding_name_to_keystroke, reset_keybinding_to_default, set_custom_keybinding,
 };
 use crate::workspace::WorkspaceAction;
-use lazy_static::lazy_static;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{Border, ChildView, Flex, ParentElement};
 use cognixui::elements::{
@@ -31,6 +29,8 @@ use cognixui::{
     AppContext, SingletonEntity,
 };
 use cognixui::{Entity, TypedActionView, View, ViewHandle};
+use lazy_static::lazy_static;
+use pathfinder_geometry::vector::vec2f;
 
 use super::EditorElement;
 

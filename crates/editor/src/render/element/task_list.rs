@@ -4,7 +4,6 @@ use crate::{
     extract_block,
     render::model::{BlockItem, RenderState, RichTextStyles, bounds, viewport::ViewportItem},
 };
-use pathfinder_color::ColorU;
 use cognixui::elements::ListIndentLevel;
 use cognixui::{
     AppContext, Element, SizeConstraint, WeakViewHandle,
@@ -15,6 +14,7 @@ use cognixui::{
     geometry::vector::vec2f,
     platform::Cursor,
 };
+use pathfinder_color::ColorU;
 
 use super::{
     RenderableBlock, RichTextAction,

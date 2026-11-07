@@ -11,8 +11,6 @@ use crate::ui_components::icons;
 use crate::view_components::{FeaturePopup, NewFeaturePopupLabel};
 use crate::workspace::ToastStack;
 use crate::workspaces::user_workspaces::UserWorkspaces;
-use settings::Setting as _;
-use voice_input::{StartListeningError, VoiceInput, VoiceSessionResult};
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_core::ui::theme::AnsiColorIdentifier;
@@ -24,6 +22,8 @@ use cognixui::ui_components::button::ButtonTooltipPosition;
 use cognixui::ui_components::components::{Coords, UiComponent, UiComponentStyles};
 use cognixui::ViewHandle;
 use cognixui::{AppContext, Element, SingletonEntity, ViewContext};
+use settings::Setting as _;
+use voice_input::{StartListeningError, VoiceInput, VoiceSessionResult};
 
 use super::VoiceTranscriber;
 

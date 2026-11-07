@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::Icon;
 use cognixui::assets::asset_cache::{AssetCache, AssetSource, AssetState};
 use cognixui::geometry::rect::RectF;
@@ -10,6 +9,7 @@ use cognixui::{
     AfterLayoutContext, AppContext, Element, EventContext, LayoutContext, PaintContext,
     SingletonEntity as _, SizeConstraint,
 };
+use pathfinder_color::ColorU;
 
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct RectPct {

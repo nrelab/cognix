@@ -3,8 +3,8 @@ use std::borrow::Cow;
 pub mod root_view;
 
 extern crate cognixui;
-use rust_embed::RustEmbed;
 use cognixui::{platform, AssetProvider};
+use rust_embed::RustEmbed;
 
 #[derive(Clone, Copy, RustEmbed)]
 #[folder = "examples/assets"]
@@ -26,7 +26,9 @@ fn main() -> Result<()> {
     let app_builder =
         platform::AppBuilder::new(platform::AppCallbacks::default(), Box::new(ASSETS), None);
     let _ = app_builder.run(move |ctx| {
-        ctx.add_window(cognixui::AddWindowOptions::default(), |_| root_view::RootView);
+        ctx.add_window(cognixui::AddWindowOptions::default(), |_| {
+            root_view::RootView
+        });
     });
 
     Ok(())

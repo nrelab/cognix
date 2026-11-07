@@ -3,12 +3,12 @@ use std::path::Path;
 use std::path::PathBuf;
 
 use anyhow::anyhow;
-use ui_components::lightbox::{LightboxImage, LightboxImageSource};
 use cognix_core::report_error;
 use cognix_multi_agent_api as api;
 #[cfg(feature = "local_fs")]
 use cognixui::platform::SaveFilePickerConfiguration;
 use cognixui::SingletonEntity;
+use ui_components::lightbox::{LightboxImage, LightboxImageSource};
 
 #[cfg(feature = "local_fs")]
 use crate::ai::artifact_download::default_download_filename;

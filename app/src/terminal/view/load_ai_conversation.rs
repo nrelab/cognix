@@ -1,9 +1,9 @@
+use cognix_core::features::FeatureFlag;
+use cognixui::{EntityId, ViewContext};
 use std::path::Path;
 use std::rc::Rc;
 use std::sync::Arc;
 use vec1::Vec1;
-use cognix_core::features::FeatureFlag;
-use cognixui::{EntityId, ViewContext};
 
 use super::blocklist_filter::exchanges_for_blocklist;
 use crate::ai::blocklist::agent_view::{

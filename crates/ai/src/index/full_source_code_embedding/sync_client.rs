@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Result};
+use cognix_core::sync_queue::{IsTransientError, SyncQueue, SyncQueueTaskTrait};
 use itertools::Itertools;
 use std::future::Future;
 use std::ops::AddAssign;
@@ -8,7 +9,6 @@ use std::{
     mem,
     sync::Arc,
 };
-use cognix_core::sync_queue::{IsTransientError, SyncQueue, SyncQueueTaskTrait};
 
 use super::{CodebaseContextConfig, NodeHash};
 

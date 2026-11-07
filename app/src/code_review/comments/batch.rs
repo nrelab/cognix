@@ -2,10 +2,10 @@ use super::{
     AttachedReviewComment, AttachedReviewCommentTarget, CommentId, PendingImportedReviewComment,
 };
 use crate::{code::editor::EditorReviewComment, code_review::diff_state::DiffMode};
-use std::{collections::HashMap, path::Path};
 use cognix_core::features::FeatureFlag;
 use cognix_editor::render::model::LineCount;
 use cognixui::{Entity, ModelContext};
+use std::{collections::HashMap, path::Path};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ReviewCommentBatchEvent {

@@ -5,11 +5,6 @@ use crate::{
     appearance::Appearance,
     ui_components::{buttons::icon_button, icons::Icon},
 };
-use instant::Duration;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use session_sharing_protocol::common::{ParticipantId, ParticipantInfo, Role};
-use session_sharing_protocol::sharer::RoleUpdateReason;
 use cognixui::r#async::{SpawnedFutureHandle, Timer};
 use cognixui::{
     accessibility::AccessibilityContent,
@@ -23,6 +18,11 @@ use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
 use cognixui::{FocusContext, ViewHandle};
+use instant::Duration;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use session_sharing_protocol::common::{ParticipantId, ParticipantInfo, Role};
+use session_sharing_protocol::sharer::RoleUpdateReason;
 
 use super::render_util::non_hoverable_participant_avatar;
 

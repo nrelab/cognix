@@ -1,7 +1,5 @@
 use std::{cmp::max, fmt::Debug, mem, ops::RangeInclusive};
 
-use sum_tree::SeekBias;
-use vec1::{vec1, Vec1};
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_terminal::model::grid::CellType;
 use cognixui::{
@@ -9,11 +7,14 @@ use cognixui::{
     units::{IntoLines as _, Lines},
     AppContext, EntityId, ViewAsRef as _,
 };
+use sum_tree::SeekBias;
+use vec1::{vec1, Vec1};
 
 use crate::{
     ai::blocklist::AIBlock,
     env_vars::env_var_collection_block::EnvVarCollectionBlock,
     terminal::{
+        cognixify::success_block::CognixifySuccessBlock,
         event::Event as TerminalEvent,
         model::{
             block::BlockSection,
@@ -21,7 +22,6 @@ use crate::{
             selection::{ExpandedSelectionRange, Selection, SelectionDirection},
             terminal_model::{BlockIndex, WithinBlock},
         },
-        cognixify::success_block::CognixifySuccessBlock,
         GridType,
     },
 };
@@ -954,9 +954,10 @@ impl BlockList {
                             }
 
                             if let Some(active_window_id) = app.windows().active_window() {
-                                if let Some(ssh_block) = app
-                                    .view_with_id::<CognixifySuccessBlock>(active_window_id, *view_id)
-                                {
+                                if let Some(ssh_block) = app.view_with_id::<CognixifySuccessBlock>(
+                                    active_window_id,
+                                    *view_id,
+                                ) {
                                     let cognixify_success_block = app.view(&ssh_block);
                                     if let Some(selected_text) =
                                         cognixify_success_block.selected_text()

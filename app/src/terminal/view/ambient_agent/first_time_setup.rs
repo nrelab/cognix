@@ -16,7 +16,6 @@ use crate::{
     },
     ui_components::blended_colors,
 };
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::ui::theme::{AnsiColorIdentifier, Fill};
 use cognixui::{
     elements::{
@@ -27,6 +26,7 @@ use cognixui::{
     fonts::{Properties, Weight},
     AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 /// Max width for the content area (matches Figma: 592px)
 const CONTENT_MAX_WIDTH: f32 = 592.;

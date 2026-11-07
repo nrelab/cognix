@@ -22,12 +22,6 @@ use crate::terminal::view::CliAgentRouting;
 use crate::workspace::util::get_context_target_terminal_view;
 use crate::workspace::TabBarDropTargetData;
 use crate::{code::EditorTabBarDropTargetData, pane_group::pane::ActionOrigin};
-use lsp::LspManagerModel;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::vec2f;
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
 use cognix_core::channel::{Channel, ChannelState};
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::appearance::Appearance;
@@ -38,6 +32,12 @@ use cognixui::elements::Rect;
 use cognixui::fonts::Style;
 use cognixui::text::point::Point;
 use cognixui::text_layout::ClipConfig;
+use lsp::LspManagerModel;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::vec2f;
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
 
 #[cfg(feature = "local_fs")]
 use cognixui::clipboard::ClipboardContent;

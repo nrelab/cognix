@@ -15,11 +15,11 @@ pub mod workflows;
 
 use std::{cmp::Ordering, fmt};
 
+use cognix_core::user_preferences::GetUserPreferences as _;
+use cognixui::AppContext;
 pub use index::DriveIndexVariant;
 pub use panel::{DrivePanel, DrivePanelEvent};
 use serde::{Deserialize, Serialize};
-use cognix_core::user_preferences::GetUserPreferences as _;
-use cognixui::AppContext;
 
 use crate::{
     cloud_object::{

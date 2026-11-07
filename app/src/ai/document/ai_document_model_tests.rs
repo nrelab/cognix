@@ -1,7 +1,7 @@
 use ai::diff_validation::DiffDelta;
 use chrono::Local;
-use std::ops::Range;
 use cognixui::App;
+use std::ops::Range;
 
 use super::*;
 use crate::ai::agent::conversation::AIConversationId;

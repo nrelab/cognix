@@ -10,7 +10,6 @@ use crate::ui_components::menu_button::{icon_button_with_context_menu, MenuDirec
 use crate::util::time_format::format_approx_duration_from_now_utc;
 use crate::util::truncation::truncate_from_end;
 use crate::workspace::view::conversation_list::view::ConversationListViewAction;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::color::coloru_with_opacity;
 use cognix_core::ui::theme::color::internal_colors;
 use cognix_util::path::user_friendly_path;
@@ -26,6 +25,7 @@ use cognixui::platform::Cursor;
 use cognixui::text_layout::TextStyle;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::{AppContext, SingletonEntity, ViewHandle};
+use pathfinder_geometry::vector::vec2f;
 
 /// Maximum length for tooltip text before truncation
 const MAX_TOOLTIP_LENGTH: usize = 80;

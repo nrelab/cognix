@@ -1,8 +1,8 @@
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
+use cognix_core::ui::appearance::Appearance;
 use repo_metadata::repositories::DetectedRepositories;
 #[cfg(feature = "local_fs")]
 use repo_metadata::RepoMetadataModel;
-use cognix_core::ui::appearance::Appearance;
 
 use crate::ai::active_agent_views_model::ActiveAgentViewsModel;
 use crate::ai::agent_conversations_model::AgentConversationsModel;
@@ -14,8 +14,8 @@ use crate::ai::mcp::{
 use crate::ai::persisted_workspace::PersistedWorkspace;
 use crate::ai::skills::SkillManager;
 use crate::code_review::git_status_update::GitStatusUpdateModel;
-use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
+use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use cognixui::SingletonEntity;
 use cognixui::{platform::WindowStyle, App, ViewHandle, WindowId};
 use watcher::HomeDirectoryWatcher;

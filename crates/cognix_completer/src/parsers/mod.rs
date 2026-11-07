@@ -11,11 +11,11 @@ pub use errors::{ArgumentError, ParseError, ParseErrorReason};
 pub mod hir;
 pub mod simple;
 
+use cognix_command_signatures::Argument;
 use derive_new::new;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use regex::Regex;
-use cognix_command_signatures::Argument;
 
 use crate::signatures::CommandRegistry;
 use crate::{

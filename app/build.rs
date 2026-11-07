@@ -6,15 +6,15 @@
 use cfg_aliases::cfg_aliases;
 
 use anyhow::Result;
-use sha2::Digest;
-use std::path::{Path, PathBuf};
-use std::{env, fs, process::Command};
-use walkdir::WalkDir;
 use cognix_util::assets::{
     ASSETS_DIR, ASYNC_ASSETS_DIR, CONPTY_DLL_FILE, DXCOMPILER_DLL_FILE, DXIL_DLL_FILE,
     OPEN_CONSOLE_EXE_FILE, REMOTE_ASSETS_DIR, WINDOWS_ASSETS_DIR,
 };
 use cognix_util::path::app_target_dir;
+use sha2::Digest;
+use std::path::{Path, PathBuf};
+use std::{env, fs, process::Command};
+use walkdir::WalkDir;
 
 fn main() -> Result<()> {
     cfg_aliases! {

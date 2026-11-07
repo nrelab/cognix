@@ -1,5 +1,3 @@
-use instant::Instant;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     elements::{
@@ -12,6 +10,8 @@ use cognixui::{
     AppContext, Entity, ModelAsRef, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext,
 };
+use instant::Instant;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::{
     appearance::Appearance,

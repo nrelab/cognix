@@ -2,6 +2,7 @@ use std::ops::Range;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicU8, Ordering};
 
+use cognixui::{App, AppContext, ModelContext, ModelHandle, ReadModel};
 use line_ending::LineEnding;
 use markdown_parser::{
     FormattedIndentTextInline, FormattedText, FormattedTextFragment, FormattedTextLine, parse_html,
@@ -12,7 +13,6 @@ use rand::SeedableRng;
 use rand::rngs::StdRng;
 use serde_yaml::{Mapping, Value};
 use vec1::{Vec1, vec1};
-use cognixui::{App, AppContext, ModelContext, ModelHandle, ReadModel};
 
 use crate::content::buffer::{
     AutoScrollBehavior, BufferEditAction, BufferSelectAction, EditOrigin, EmbeddedItemConversion,
@@ -37,10 +37,10 @@ use crate::render::model::{
     EmbeddedItem, EmbeddedItemHTMLRepresentation, EmbeddedItemRichFormat, LaidOutEmbeddedItem,
     RenderedSelectionSet,
 };
-use string_offset::ByteOffset;
-use string_offset::CharOffset;
 use cognixui::elements::ListIndentLevel;
 use cognixui::text::point::Point;
+use string_offset::ByteOffset;
+use string_offset::CharOffset;
 
 use crate::content::buffer::{Buffer, StyledBufferRun};
 
@@ -3431,8 +3431,7 @@ fn test_markdown_escapes() {
 #[test]
 fn test_import_markdown() {
     App::test((), |mut app| async move {
-        let markdown_string =
-            "test\n```cognix-runnable-command\nparagragh\n```\nSome text\nSome ***bold and italic***";
+        let markdown_string = "test\n```cognix-runnable-command\nparagragh\n```\nSome text\nSome ***bold and italic***";
         let (buffer, _selection) = Buffer::mock_from_markdown(
             markdown_string,
             None,

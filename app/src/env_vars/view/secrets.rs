@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::{features::FeatureFlag, ui::appearance::Appearance};
 #[cfg(not(target_family = "wasm"))]
 use cognixui::SingletonEntity;
@@ -15,6 +14,7 @@ use cognixui::{
     },
     Element, ViewContext,
 };
+use pathfinder_geometry::vector::vec2f;
 
 use super::env_var_collection::{
     EnvVarCollectionAction, EnvVarCollectionView, VariableRowIndex, CORE_MAX_WIDTH, ROW_SPACING,

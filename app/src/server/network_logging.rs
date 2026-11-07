@@ -2,8 +2,8 @@ use std::fmt;
 
 use bounded_vec_deque::BoundedVecDeque;
 use chrono::{DateTime, FixedOffset};
-use enclose::enclose;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use enclose::enclose;
 
 use crate::server::datetime_ext::DateTimeExt;
 use crate::server::server_api::ServerApiProvider;

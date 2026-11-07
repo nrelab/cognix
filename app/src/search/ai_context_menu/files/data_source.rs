@@ -8,6 +8,7 @@ use crate::search::files::model::FileSearchModel;
 use crate::search::files::search_item::FileSearchResult;
 use crate::search::mixer::{BoxFuture, DataSourceRunErrorWrapper};
 use crate::workspace::ActiveSession;
+use cognixui::{AppContext, SingletonEntity};
 use futures_lite::future::yield_now;
 use fuzzy_match::FuzzyMatchResult;
 use itertools::Itertools;
@@ -16,7 +17,6 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use cognixui::{AppContext, SingletonEntity};
 
 const MAX_RESULTS: usize = 200;
 

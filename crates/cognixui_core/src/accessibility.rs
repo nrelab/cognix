@@ -257,7 +257,10 @@ pub enum ActionAccessibilityContent {
 impl ActionAccessibilityContent {
     pub fn from_debug() -> Self {
         Self::CustomFn(|action| {
-            AccessibilityContent::new_without_help(format!("{action:?}."), CognixA11yRole::UserAction)
+            AccessibilityContent::new_without_help(
+                format!("{action:?}."),
+                CognixA11yRole::UserAction,
+            )
         })
     }
 }

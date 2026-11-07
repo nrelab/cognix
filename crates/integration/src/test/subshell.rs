@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use settings::Setting as _;
 use cognix::integration_testing::terminal::util::current_shell_starter_and_version;
 use cognix::integration_testing::view_getters::single_input_view_for_tab;
 use cognix::root_view::SubshellCommandArg;
@@ -22,6 +21,7 @@ use cognixui::integration::{AssertionOutcome, TestStep};
 use cognixui::windowing::state::ApplicationStage;
 use cognixui::windowing::WindowManager;
 use cognixui::{async_assert, UpdateModel};
+use settings::Setting as _;
 
 use crate::util::skip_if_powershell_core_2303;
 

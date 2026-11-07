@@ -1,10 +1,10 @@
 use std::{collections::HashMap, os::unix::prelude::*, process::Child, sync::Arc};
 
+use cognix_cli::TerminalServerArgs;
 use itertools::Itertools;
 use mio::Interest;
 use parking_lot::Mutex;
 use signal_hook_mio::v1_0::Signals;
-use cognix_cli::TerminalServerArgs;
 
 use crate::terminal::{
     local_tty::{self, server::protocol::NonblockingSocketFd},

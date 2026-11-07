@@ -11,9 +11,9 @@ use ai::diff_validation::{
     fuzzy_match_diffs, fuzzy_match_v4a_diffs, AIRequestedCodeDiff, DiffDelta, DiffMatchFailures,
     DiffType, ParsedDiff, SearchAndReplace, V4AHunk,
 };
+use cognixui::r#async::executor::Background;
 use itertools::Itertools;
 use vec1::Vec1;
-use cognixui::r#async::executor::Background;
 
 use crate::{
     ai::{

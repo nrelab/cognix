@@ -67,6 +67,9 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::{send_telemetry_from_ctx, server::telemetry::TelemetryEvent};
 use anyhow::anyhow;
 use chrono::{DateTime, Local};
+use cognix_core::assertions::safe_assert;
+use cognix_multi_agent_api::{message, Task, ToolType};
+use cognixui::r#async::{SpawnedFutureHandle, Timer};
 use itertools::Itertools;
 use parking_lot::FairMutex;
 use pending_response_streams::PendingResponseStreams;
@@ -74,9 +77,6 @@ use session_sharing_protocol::common::ParticipantId;
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use std::time::Duration;
-use cognix_core::assertions::safe_assert;
-use cognix_multi_agent_api::{message, Task, ToolType};
-use cognixui::r#async::{SpawnedFutureHandle, Timer};
 
 use super::orchestration_events::{OrchestrationEventService, OrchestrationEventServiceEvent};
 use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
@@ -121,7 +121,10 @@ impl SessionContext {
     /// Returns `true` if this is a remote session (regardless of whether
     /// the remote server client is connected).
     pub fn is_remote(&self) -> bool {
-        matches!(self.session_type, Some(SessionType::CognixifiedRemote { .. }))
+        matches!(
+            self.session_type,
+            Some(SessionType::CognixifiedRemote { .. })
+        )
     }
 
     #[cfg(test)]
@@ -2276,7 +2279,9 @@ impl BlocklistAIController {
                                     ctx,
                                 );
                             }
-                            cognix_multi_agent_api::response_event::Type::ClientActions(actions) => {
+                            cognix_multi_agent_api::response_event::Type::ClientActions(
+                                actions,
+                            ) => {
                                 let client_actions = actions.actions;
                                 let apply_result =
                                     history_model.update(ctx, |history_model, ctx| {

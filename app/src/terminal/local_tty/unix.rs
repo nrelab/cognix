@@ -30,6 +30,8 @@ use nix::{
 use serde::{Deserialize, Serialize};
 use signal_hook_mio::v1_0::Signals;
 
+use cognix_core::channel::ChannelState;
+use cognixui::{AppContext, SingletonEntity};
 use command::blocking::Command;
 use std::{
     collections::HashMap,
@@ -44,8 +46,6 @@ use std::{
     path::{Path, PathBuf},
     ptr,
 };
-use cognix_core::channel::ChannelState;
-use cognixui::{AppContext, SingletonEntity};
 
 /// Get raw fds for leader/follower ends of a new PTY.
 fn make_pty(size: winsize) -> Result<(RawFd, RawFd)> {

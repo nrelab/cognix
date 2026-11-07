@@ -1,10 +1,5 @@
 use std::sync::Arc;
 
-use enclose::enclose;
-use itertools::Itertools as _;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::Icon;
 use cognix_graphql::billing::AddonCreditsOption;
@@ -19,6 +14,11 @@ use cognixui::fonts::Weight;
 use cognixui::ui_components::button::ButtonVariant;
 use cognixui::ui_components::components::{Coords, UiComponent as _, UiComponentStyles};
 use cognixui::{AppContext, Element, Entity, SingletonEntity as _, View, ViewContext, ViewHandle};
+use enclose::enclose;
+use itertools::Itertools as _;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::ai::request_usage_model::{
     AIRequestUsageModel, AIRequestUsageModelEvent, BuyCreditsBannerDisplayState,

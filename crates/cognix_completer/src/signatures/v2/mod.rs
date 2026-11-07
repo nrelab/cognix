@@ -14,8 +14,8 @@ use std::cmp::Ordering;
 pub use lookup::*;
 pub use registry::*;
 
-use serde::{Deserialize, Serialize};
 use cognix_js::TypedJsFunctionRef;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[cfg_attr(feature = "test-util", derive(Default))]

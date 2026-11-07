@@ -11,12 +11,12 @@ use crate::terminal::model::ObfuscateSecrets;
 use crate::terminal::TerminalModel;
 use crate::terminal::{event_listener::ChannelEventListener, model::block::SerializedBlock};
 use crate::themes::default_themes::dark_theme;
+use cognixui::r#async::executor::Background;
+use cognixui::units::Lines;
 use serde_json::Value;
 use session_sharing_protocol::common::{Scrollback, ScrollbackBlock};
 use std::sync::Arc;
 use url::Url;
-use cognixui::r#async::executor::Background;
-use cognixui::units::Lines;
 
 pub const MAX_BYTES_SHAREABLE: usize = 5000;
 

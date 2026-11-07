@@ -1,7 +1,7 @@
+use cognix_core::features::FeatureFlag;
 use settings::{
     macros::define_settings_group, RespectUserSyncSetting, SupportedPlatforms, SyncToCloud,
 };
-use cognix_core::features::FeatureFlag;
 
 use super::DriveSortOrder;
 

@@ -9,6 +9,7 @@ use crate::terminal::shared_session::network::heartbeat::{Event as HeartbeatEven
 use crate::terminal::shared_session::{connect_endpoint, max_session_size};
 use async_channel::Receiver;
 use byte_unit::{Byte, UnitType};
+use cognix_core::features::FeatureFlag;
 use futures_util::stream::AbortHandle;
 use futures_util::{SinkExt, StreamExt};
 use instant::Instant;
@@ -31,7 +32,6 @@ use session_sharing_protocol::sharer::{
 };
 use session_sharing_protocol::sharer::{FailedToInitializeSessionReason, SessionEndedReason};
 use std::collections::HashMap;
-use cognix_core::features::FeatureFlag;
 
 use std::pin::pin;
 use std::sync::Arc;

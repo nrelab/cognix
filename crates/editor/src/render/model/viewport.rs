@@ -1,5 +1,3 @@
-use float_cmp::ApproxEq;
-use sum_tree::{SeekBias, SumTree};
 use cognixui::{
     SizeConstraint,
     geometry::{
@@ -8,6 +6,8 @@ use cognixui::{
     },
     units::{IntoPixels, Pixels},
 };
+use float_cmp::ApproxEq;
+use sum_tree::{SeekBias, SumTree};
 
 use crate::render::element::RenderContext;
 use string_offset::CharOffset;

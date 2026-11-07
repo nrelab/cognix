@@ -2,11 +2,11 @@
 
 use anyhow::anyhow;
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use cognix_cli::agent::Harness;
 use cognix_core::report_error;
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::color::ColorU;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
 use crate::ai::artifacts::{deserialize_artifacts, Artifact};
 use crate::server::server_api::ServerApiProvider;

@@ -2,8 +2,8 @@ use std::collections::{HashMap, HashSet};
 use std::time::Duration;
 
 use chrono::{DateTime, Local, Utc};
-use itertools::Itertools;
 use cognixui::{App, EntityId};
+use itertools::Itertools;
 
 use crate::{
     ai::{

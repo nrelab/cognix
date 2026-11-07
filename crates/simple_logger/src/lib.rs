@@ -5,8 +5,8 @@ use std::{
 
 use async_channel::Sender;
 use async_fs::OpenOptions;
-use futures::AsyncWriteExt as _;
 use cognixui::r#async::executor::{Background, BackgroundTask};
+use futures::AsyncWriteExt as _;
 
 pub mod manager;
 

@@ -1,8 +1,6 @@
 use std::collections::HashMap;
 
 use crate::Builder;
-use regex::Regex;
-use settings::Setting as _;
 use cognix::{
     features::FeatureFlag,
     integration_testing::{
@@ -32,6 +30,8 @@ use cognixui::{
     async_assert, async_assert_eq,
     integration::{AssertionCallback, AssertionOutcome, TestStep},
 };
+use regex::Regex;
+use settings::Setting as _;
 
 use super::new_builder;
 

@@ -137,7 +137,9 @@ impl NodeDistribution {
 pub fn node_installation_dir() -> Result<PathBuf> {
     let dist = NodeDistribution::current()?;
     let folder_name = dist.folder_name(NODE_VERSION);
-    Ok(cognix_core::paths::data_dir().join("node").join(folder_name))
+    Ok(cognix_core::paths::data_dir()
+        .join("node")
+        .join(folder_name))
 }
 
 /// Returns the path to the installed node binary.

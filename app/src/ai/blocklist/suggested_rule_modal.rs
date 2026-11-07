@@ -23,7 +23,6 @@ use crate::{
     server::cloud_objects::update_manager::UpdateManager,
     ui_components::blended_colors,
 };
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::editor::NavigationKey;
 use cognixui::elements::{
@@ -44,6 +43,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 const HEADER_TEXT: &str = "Suggested rule";
 const MAX_EDITOR_HEIGHT: f32 = 240.;

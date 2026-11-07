@@ -1,11 +1,11 @@
 use super::{
     run_jq_filter, write_filter_output, write_json, write_json_line, write_list, TableFormat,
 };
+use cognix_cli::agent::OutputFormat;
+use cognix_cli::json_filter::parse_jq_filter;
 use comfy_table::Cell;
 use serde::Serialize;
 use serde_json::json;
-use cognix_cli::agent::OutputFormat;
-use cognix_cli::json_filter::parse_jq_filter;
 
 #[derive(Serialize)]
 struct TestItem {

@@ -10,12 +10,12 @@
 //! bulk of the sandbox-specific surface lives here so `shell.rs` can stay
 //! focused on the cross-shell abstraction.
 
+use cognixui::{AppContext, SingletonEntity as _};
 use futures::future::BoxFuture;
 use futures::FutureExt as _;
 use serde::{Deserialize, Serialize};
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
-use cognixui::{AppContext, SingletonEntity as _};
 
 use super::shell::DirectShellStarter;
 use crate::{

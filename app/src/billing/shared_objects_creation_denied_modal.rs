@@ -6,7 +6,6 @@ use crate::themes::theme::Fill;
 use crate::ui_components::icons::Icon;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::CustomerType;
-use std::default::Default;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::fonts::Weight;
 use cognixui::keymap::FixedBinding;
@@ -16,6 +15,7 @@ use cognixui::AppContext;
 use cognixui::SingletonEntity;
 use cognixui::ViewHandle;
 use cognixui::{Element, Entity, TypedActionView, View, ViewContext};
+use std::default::Default;
 
 use super::shared_objects_creation_denied_body::{
     SharedObjectsCreationDeniedBody, SharedObjectsCreationDeniedBodyEvent,

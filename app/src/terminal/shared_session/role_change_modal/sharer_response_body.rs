@@ -4,7 +4,6 @@ use crate::terminal::shared_session::render_util::{
     non_hoverable_participant_avatar, ParticipantAvatarParams,
 };
 use crate::{appearance::Appearance, ui_components::blended_colors};
-use session_sharing_protocol::common::{ParticipantId, Role, RoleRequestId};
 use cognixui::elements::{
     ConstrainedBox, Container, Flex, MainAxisAlignment, MouseStateHandle, ParentElement, Text,
 };
@@ -19,6 +18,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use session_sharing_protocol::common::{ParticipantId, Role, RoleRequestId};
 
 use cognix_core::features::FeatureFlag;
 

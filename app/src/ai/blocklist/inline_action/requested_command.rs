@@ -1,12 +1,3 @@
-use lazy_static::lazy_static;
-use parking_lot::FairMutex;
-use pathfinder_geometry::vector::vec2f;
-use settings::Setting as _;
-use std::borrow::Cow;
-use std::cmp::{Ordering, PartialEq};
-use std::collections::HashMap;
-use std::rc::Rc;
-use std::sync::Arc;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::Icon;
 use cognix_editor::render::element::VerticalExpansionBehavior;
@@ -22,6 +13,15 @@ use cognixui::{
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, UpdateView, View,
     ViewContext, ViewHandle,
 };
+use lazy_static::lazy_static;
+use parking_lot::FairMutex;
+use pathfinder_geometry::vector::vec2f;
+use settings::Setting as _;
+use std::borrow::Cow;
+use std::cmp::{Ordering, PartialEq};
+use std::collections::HashMap;
+use std::rc::Rc;
+use std::sync::Arc;
 
 use crate::ai::agent::{AIAgentActionResult, AIAgentActionType};
 use cognixui::{EntityId, EventContext};

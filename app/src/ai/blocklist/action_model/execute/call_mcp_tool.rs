@@ -1,7 +1,7 @@
 use super::{ActionExecution, AnyActionExecution, ExecuteActionInput, PreprocessActionInput};
 use crate::terminal::model::session::active_session::ActiveSession;
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, EntityId, ModelContext, ModelHandle};
+use futures::{future::BoxFuture, FutureExt};
 
 #[cfg(not(target_family = "wasm"))]
 use super::get_server_output_id;
@@ -15,9 +15,9 @@ use crate::{
     send_telemetry_from_app_ctx, TelemetryEvent,
 };
 #[cfg(not(target_family = "wasm"))]
-use itertools::Itertools;
-#[cfg(not(target_family = "wasm"))]
 use cognixui::SingletonEntity;
+#[cfg(not(target_family = "wasm"))]
+use itertools::Itertools;
 
 pub struct CallMCPToolExecutor {
     _active_session: ModelHandle<ActiveSession>,

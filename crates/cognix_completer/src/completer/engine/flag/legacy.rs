@@ -1,7 +1,7 @@
 //! Contains the legacy implementation of flag suggestion generation that depends on the legacy
 //! command signature struct (`cognix_command_signatures::Signature`).
-use itertools::Itertools;
 use cognix_command_signatures::{FlagStyle, Signature as SpecSignature};
+use itertools::Itertools;
 
 use crate::completer::{
     describe::OptionCaseSensitivity,

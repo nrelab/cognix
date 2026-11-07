@@ -1,6 +1,6 @@
 use chrono::Utc;
-use itertools::Itertools;
 use cognixui::{AddSingletonModel, App};
+use itertools::Itertools;
 
 use crate::{
     auth::AuthManager,

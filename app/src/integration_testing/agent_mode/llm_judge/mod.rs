@@ -1,12 +1,12 @@
 pub mod llm_generate;
 
 use anyhow::Result;
-use llm_generate::LLMGenerateRequest;
-use reqwest::blocking::Client;
-use serde::Deserialize;
 use cognix_multi_agent_api::{
     apply_file_diffs_result::success::UpdatedFileContent, message, Message,
 };
+use llm_generate::LLMGenerateRequest;
+use reqwest::blocking::Client;
+use serde::Deserialize;
 
 use crate::ai::agent::conversation::AIConversation;
 
@@ -70,8 +70,8 @@ impl LLMJudge {
 
 /// Filter out tool call result contents while preserving structure and success/error status
 pub fn filter_tool_call_result(result: &message::ToolCallResult) -> message::ToolCallResult {
-    use message::tool_call_result::Result as ToolResult;
     use cognix_multi_agent_api::*;
+    use message::tool_call_result::Result as ToolResult;
 
     let filtered_result = match &result.result {
         Some(ToolResult::RunShellCommand(cmd_result)) =>

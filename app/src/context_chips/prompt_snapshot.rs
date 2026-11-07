@@ -1,6 +1,6 @@
+use cognixui::{AppContext, SingletonEntity};
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use cognixui::{AppContext, SingletonEntity};
 
 use crate::context_chips::ContextChipKind;
 

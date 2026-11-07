@@ -8,9 +8,9 @@ use ai::skills::{
     home_skills_path, read_skills, ParsedSkill, SkillProvider, SKILL_PROVIDER_DEFINITIONS,
 };
 use anyhow::Error;
+use cognixui::AppContext;
 use regex::Regex;
 use repo_metadata::{local_model::GetContentsArgs, RepoContent, RepoMetadataModel};
-use cognixui::AppContext;
 
 use crate::cognix_managed_paths_watcher::cognix_managed_skill_dirs;
 

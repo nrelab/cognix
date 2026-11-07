@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors};
 use cognixui::prelude::Align;
@@ -14,6 +13,7 @@ use cognixui::{
     text_layout::TextAlignment,
     AppContext, Element,
 };
+use pathfinder_geometry::vector::Vector2F;
 
 pub(super) type ClickCallback = Box<dyn FnMut(&mut EventContext, &AppContext, Vector2F) + 'static>;
 pub(super) type HoverCallback =

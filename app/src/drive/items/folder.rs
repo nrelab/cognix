@@ -5,8 +5,8 @@ use crate::{
     appearance::Appearance,
     cloud_object::CloudObjectMetadata,
     drive::{
-        cloud_object_styling::cognix_drive_icon_color, folders::CloudFolder, index::DriveIndexAction,
-        CloudObjectTypeAndId, DriveObjectType,
+        cloud_object_styling::cognix_drive_icon_color, folders::CloudFolder,
+        index::DriveIndexAction, CloudObjectTypeAndId, DriveObjectType,
     },
     themes::theme::Fill,
     ui_components::icons::Icon,

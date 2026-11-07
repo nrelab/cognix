@@ -12,12 +12,6 @@ use crate::{
     features::FeatureFlag, notebooks::editor::model::word_unit, send_telemetry_from_ctx,
     util::bindings::CustomAction,
 };
-use lazy_static::lazy_static;
-use rangemap::RangeSet;
-use std::collections::{HashMap, HashSet};
-use std::fmt::Debug;
-use std::ops::Range;
-use string_offset::CharOffset;
 use cognix_editor::{
     content::version::BufferVersion,
     editor::{EmbeddedItemModel, RunnableCommandModel, TextDecoration},
@@ -37,6 +31,12 @@ use cognixui::{
     units::Pixels,
     AppContext, TypedActionView, ViewContext, WeakViewHandle,
 };
+use lazy_static::lazy_static;
+use rangemap::RangeSet;
+use std::collections::{HashMap, HashSet};
+use std::fmt::Debug;
+use std::ops::Range;
+use string_offset::CharOffset;
 
 /// Limit the keybindings that conflict with the Agent Mode embedded editor.
 const NON_EDITABLE_KEYMAP_CONTEXT: &str = "NonEditableKeymapContext";

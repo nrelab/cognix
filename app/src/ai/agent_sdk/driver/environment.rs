@@ -12,11 +12,11 @@ use crate::terminal::shell::ShellType;
 use ai::index::full_source_code_embedding::manager::{
     CodebaseIndexManager, CodebaseIndexManagerEvent,
 };
-use futures::{channel::oneshot, future::join_all};
-use repo_metadata::repositories::{DetectedRepositories, RepoDetectionSource};
 use cognix_completer::completer::CommandExitStatus;
 use cognix_core::{command::ExitCode, safe_info, safe_warn};
 use cognixui::{r#async::FutureExt, ModelContext, ModelSpawner, SingletonEntity};
+use futures::{channel::oneshot, future::join_all};
+use repo_metadata::repositories::{DetectedRepositories, RepoDetectionSource};
 
 use super::{terminal::TerminalDriver, AgentDriverError};
 use cognix_cli::agent::Harness;

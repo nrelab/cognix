@@ -18,13 +18,13 @@ use crate::server::server_api::team::TeamClient;
 use crate::server::server_api::ServerApiProvider;
 use crate::{report_error, report_if_error};
 use anyhow::{Context, Result};
+use cognixui::r#async::Timer;
+use cognixui::{duration_with_jitter, RequestState};
+use cognixui::{Entity, ModelContext, SingletonEntity};
 use futures::channel::oneshot::{self, Receiver};
 use futures::stream::AbortHandle;
 use std::sync::mpsc::SyncSender;
 use std::sync::Arc;
-use cognixui::r#async::Timer;
-use cognixui::{duration_with_jitter, RequestState};
-use cognixui::{Entity, ModelContext, SingletonEntity};
 
 pub enum TeamUpdateManagerEvent {
     LeaveSuccess,

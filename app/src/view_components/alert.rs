@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::{
     elements::{
@@ -8,6 +7,7 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     Element,
 };
+use pathfinder_color::ColorU;
 
 use crate::{appearance::Appearance, themes::theme::Fill};
 

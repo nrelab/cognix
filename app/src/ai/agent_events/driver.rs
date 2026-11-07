@@ -3,10 +3,10 @@ use std::time::Duration;
 
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
+use cognixui::r#async::Timer;
 use futures::future::Either;
 use futures::StreamExt;
 use instant::Instant;
-use cognixui::r#async::Timer;
 
 use crate::server::server_api::ai::AgentRunEvent;
 use crate::server::server_api::ServerApi;

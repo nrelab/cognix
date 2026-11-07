@@ -3,9 +3,9 @@ use std::os::unix::fs::symlink;
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Context, Result};
-use command::blocking::Command;
 use cognix_core::channel::ChannelState;
 use cognix_util::path::ShellFamily;
+use command::blocking::Command;
 
 /// Compute the target path where the symlink should be installed, based on channel
 fn cli_install_target_path() -> PathBuf {

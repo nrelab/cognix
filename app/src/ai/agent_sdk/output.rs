@@ -8,11 +8,11 @@ use jaq_all::data::Runner;
 use jaq_all::fmts::write::Writer;
 use jaq_all::fmts::Format;
 // Use jaq_json directly to ensure serde support is included.
+use cognix_cli::agent::OutputFormat;
+use cognix_cli::json_filter::{JqFilter, JsonOutput};
 use jaq_json::{write as jaq_write, Val};
 use serde::Serialize;
 use tabwriter::TabWriter;
-use cognix_cli::agent::OutputFormat;
-use cognix_cli::json_filter::{JqFilter, JsonOutput};
 
 pub fn standard_table() -> Table {
     let mut table = Table::new();

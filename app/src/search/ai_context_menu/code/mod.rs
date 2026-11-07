@@ -6,11 +6,11 @@ pub mod search_item;
 use crate::ai::outline::{OutlineStatus, RepoOutlines};
 #[cfg(not(target_family = "wasm"))]
 use crate::workspace::ActiveSession;
-#[cfg(not(target_family = "wasm"))]
-use std::path::Path;
 use cognixui::AppContext;
 #[cfg(not(target_family = "wasm"))]
 use cognixui::SingletonEntity;
+#[cfg(not(target_family = "wasm"))]
+use std::path::Path;
 
 /// Checks if the code symbols (outline) are currently being indexed for the active directory.
 /// Returns true if the outline is in a pending state, false otherwise.

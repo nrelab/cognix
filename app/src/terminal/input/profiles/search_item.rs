@@ -1,5 +1,3 @@
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::Icon;
 use cognixui::elements::{ConstrainedBox, Container, Flex, Highlight, ParentElement as _, Text};
@@ -7,6 +5,8 @@ use cognixui::fonts::{Properties, Style, Weight};
 use cognixui::prelude::CrossAxisAlignment;
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, SingletonEntity as _};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::ai::execution_profiles::profiles::ClientProfileId;
 use crate::appearance::Appearance;

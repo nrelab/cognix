@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
+use cognixui::{r#async::executor::BackgroundTask, AppContext, SingletonEntity};
 use futures_util::FutureExt as _;
 use itertools::Itertools as _;
-use cognixui::{r#async::executor::BackgroundTask, AppContext, SingletonEntity};
 use zbus::{interface, proxy, zvariant};
 
 use crate::channel::ChannelState;

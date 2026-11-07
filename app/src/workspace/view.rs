@@ -135,10 +135,10 @@ use crate::workspace::view::opencognix_launch_modal::{
 use crate::workspace::{ForkFromExchange, ForkedConversationDestination};
 use crate::BlocklistAIHistoryModel;
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
+use cognixui::notification::NotificationSendError;
 #[cfg(all(target_os = "macos", feature = "crash_reporting"))]
 use sentry::protocol::{Attachment, AttachmentType};
 use serde_json;
-use cognixui::notification::NotificationSendError;
 
 use super::hoa_onboarding::{
     mark_hoa_onboarding_completed, HoaOnboardingFlow, HoaOnboardingFlowEvent, HoaOnboardingStep,
@@ -184,8 +184,8 @@ use crate::terminal::available_shells::AvailableShell;
 #[cfg(target_os = "windows")]
 use crate::terminal::available_shells::AvailableShells;
 use crate::terminal::block_list_viewport::InputMode;
-use crate::terminal::ligature_settings::should_use_ligature_rendering;
 use crate::terminal::cognixify::settings::CognixifySettings;
+use crate::terminal::ligature_settings::should_use_ligature_rendering;
 use crate::ui_components::avatar::{Avatar, AvatarContent, StatusElementTypes};
 
 #[cfg(target_family = "wasm")]
@@ -233,7 +233,8 @@ use crate::drive::import::modal::{ImportModal, ImportModalEvent};
 use crate::drive::workflows::arguments::ArgumentsState;
 use crate::drive::workflows::modal::{WorkflowModal, WorkflowModalEvent};
 use crate::drive::{
-    CloudObjectTypeAndId, DriveObjectType, DrivePanel, DrivePanelEvent, OpenCognixDriveObjectSettings,
+    CloudObjectTypeAndId, DriveObjectType, DrivePanel, DrivePanelEvent,
+    OpenCognixDriveObjectSettings,
 };
 use crate::experiments::{BlockOnboarding, Experiment};
 use crate::menu::{
@@ -277,10 +278,10 @@ use crate::server::cloud_objects::update_manager::{
 use crate::server::ids::{ObjectUid, ServerId, SyncId};
 use crate::server::server_api::{ServerApi, ServerApiEvent, ServerApiProvider, ServerTime};
 use crate::server::telemetry::{
-    AddTabWithShellSource, AnonymousUserSignupEntrypoint, CloseTarget, EnvVarTelemetryMetadata,
-    FileTreeSource, KnowledgePaneEntrypoint, LaunchConfigUiLocation,
-    MCPServerCollectionPaneEntrypoint, OpenedCognixAISource, SharingDialogSource, TierLimitHitEvent,
-    CognixDriveSource,
+    AddTabWithShellSource, AnonymousUserSignupEntrypoint, CloseTarget, CognixDriveSource,
+    EnvVarTelemetryMetadata, FileTreeSource, KnowledgePaneEntrypoint, LaunchConfigUiLocation,
+    MCPServerCollectionPaneEntrypoint, OpenedCognixAISource, SharingDialogSource,
+    TierLimitHitEvent,
 };
 use crate::session_management::{SessionNavigationData, SessionSource};
 use crate::settings::{
@@ -374,6 +375,12 @@ use crate::{
 };
 use crate::{send_telemetry_from_ctx, GlobalResourceHandles};
 
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::semantic_selection::SemanticSelection;
+use cognix_util::path::{user_friendly_path, LineAndColumnArg};
+use cognixui::fonts::Weight;
+use cognixui::modals::{AlertDialogWithCallbacks, AppModalCallback};
+use cognixui::windowing::{StateEvent, WindowManager};
 use futures::Future;
 use itertools::Itertools;
 use parking_lot::FairMutex;
@@ -386,12 +393,6 @@ use std::convert::TryFrom;
 use std::time::Duration;
 #[cfg(target_os = "macos")]
 use std::time::{SystemTime, UNIX_EPOCH};
-use cognix_core::context_flag::ContextFlag;
-use cognix_core::semantic_selection::SemanticSelection;
-use cognix_util::path::{user_friendly_path, LineAndColumnArg};
-use cognixui::fonts::Weight;
-use cognixui::modals::{AlertDialogWithCallbacks, AppModalCallback};
-use cognixui::windowing::{StateEvent, WindowManager};
 
 use cognix_core::user_preferences::GetUserPreferences as _;
 use cognixui::clipboard::ClipboardContent;
@@ -466,21 +467,6 @@ use crate::terminal::view::ssh_file_upload::FileUploadId;
 use crate::ui_components::icons;
 use crate::TelemetryEvent;
 use autoupdate::AutoupdateStage;
-#[cfg(target_os = "macos")]
-use command::blocking::Command;
-use lazy_static::lazy_static;
-use pathfinder_color::ColorU;
-#[cfg(target_os = "macos")]
-use std::env;
-use std::fmt::Write;
-#[cfg(all(target_os = "macos", feature = "crash_reporting"))]
-use std::fs;
-use std::path::Path;
-use std::path::PathBuf;
-#[cfg(target_os = "macos")]
-use std::process;
-use std::sync::{mpsc, Mutex};
-use std::{cmp::Ordering, sync::Arc};
 use cognix_core::ui::theme::{color::internal_colors, phenomenon::PhenomenonStyle, Fill};
 use cognix_core::ui::{color::coloru_with_opacity, Icon};
 use cognix_editor::editor::NavigationKey;
@@ -510,6 +496,21 @@ use cognixui::{
     EntityId, FocusContext, ModelHandle, SingletonEntity, UpdateModel, ViewAsRef, WeakViewHandle,
     WindowId,
 };
+#[cfg(target_os = "macos")]
+use command::blocking::Command;
+use lazy_static::lazy_static;
+use pathfinder_color::ColorU;
+#[cfg(target_os = "macos")]
+use std::env;
+use std::fmt::Write;
+#[cfg(all(target_os = "macos", feature = "crash_reporting"))]
+use std::fs;
+use std::path::Path;
+use std::path::PathBuf;
+#[cfg(target_os = "macos")]
+use std::process;
+use std::sync::{mpsc, Mutex};
+use std::{cmp::Ordering, sync::Arc};
 
 use crate::terminal::view::LeftPanelTargetView;
 
@@ -2468,19 +2469,22 @@ impl Workspace {
     /// `SettingsErrorsCleared` to update the workspace settings-error banner
     /// and mirror the state into the settings pane for its nav-rail footer.
     fn subscribe_to_settings_errors(ctx: &mut ViewContext<Self>) {
-        ctx.subscribe_to_model(&CognixConfig::handle(ctx), |me, _, event, ctx| match event {
-            CognixConfigUpdateEvent::SettingsErrors(error) => {
-                me.settings_file_error = Some(error.clone());
-                me.sync_settings_error_state_into_settings_pane(ctx);
-                ctx.notify();
-            }
-            CognixConfigUpdateEvent::SettingsErrorsCleared => {
-                me.settings_file_error = None;
-                me.sync_settings_error_state_into_settings_pane(ctx);
-                ctx.notify();
-            }
-            _ => {}
-        });
+        ctx.subscribe_to_model(
+            &CognixConfig::handle(ctx),
+            |me, _, event, ctx| match event {
+                CognixConfigUpdateEvent::SettingsErrors(error) => {
+                    me.settings_file_error = Some(error.clone());
+                    me.sync_settings_error_state_into_settings_pane(ctx);
+                    ctx.notify();
+                }
+                CognixConfigUpdateEvent::SettingsErrorsCleared => {
+                    me.settings_file_error = None;
+                    me.sync_settings_error_state_into_settings_pane(ctx);
+                    ctx.notify();
+                }
+                _ => {}
+            },
+        );
     }
 
     /// Pushes the current settings-file error + banner-dismissal state into
@@ -6778,7 +6782,11 @@ impl Workspace {
 
     /// Opens the Cognix Drive object identified by `uid` in a new pane
     /// if it has a pane representation.
-    fn open_cognix_drive_object_in_new_pane(&mut self, uid: &ObjectUid, ctx: &mut ViewContext<Self>) {
+    fn open_cognix_drive_object_in_new_pane(
+        &mut self,
+        uid: &ObjectUid,
+        ctx: &mut ViewContext<Self>,
+    ) {
         let Some(object) = CloudModel::as_ref(ctx).get_by_uid(uid) else {
             return;
         };
@@ -12539,9 +12547,11 @@ impl Workspace {
         F: FnOnce(&mut DrivePanel, &mut ViewContext<DrivePanel>),
     {
         self.left_panel_view.update(ctx, |left_panel, ctx| {
-            left_panel.cognix_drive_view().update(ctx, |cognix_drive, ctx| {
-                update_fn(cognix_drive, ctx);
-            });
+            left_panel
+                .cognix_drive_view()
+                .update(ctx, |cognix_drive, ctx| {
+                    update_fn(cognix_drive, ctx);
+                });
         });
     }
 
@@ -13129,18 +13139,20 @@ impl Workspace {
                         true,
                     ),
                     ObjectType::Workflow => self.view_in_and_focus_cognix_drive(
-                        CognixDriveItemId::Object(CloudObjectTypeAndId::Workflow(SyncId::ServerId(
-                            server_id,
-                        ))),
+                        CognixDriveItemId::Object(CloudObjectTypeAndId::Workflow(
+                            SyncId::ServerId(server_id),
+                        )),
                         ctx,
                     ),
                     ObjectType::GenericStringObject(GenericStringObjectFormat::Json(
                         JsonObjectType::EnvVarCollection,
                     )) => self.view_in_and_focus_cognix_drive(
-                        CognixDriveItemId::Object(CloudObjectTypeAndId::from_generic_string_object(
-                            GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
-                            SyncId::ServerId(server_id),
-                        )),
+                        CognixDriveItemId::Object(
+                            CloudObjectTypeAndId::from_generic_string_object(
+                                GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
+                                SyncId::ServerId(server_id),
+                            ),
+                        ),
                         ctx,
                     ),
                     ObjectType::Folder => self.view_in_and_focus_cognix_drive(
@@ -14534,7 +14546,9 @@ impl Workspace {
         ctx.focus_self();
         ctx.notify();
         self.set_selected_object(
-            Some(CognixDriveItemId::Object(workflow.cloud_object_type_and_id())),
+            Some(CognixDriveItemId::Object(
+                workflow.cloud_object_type_and_id(),
+            )),
             ctx,
         );
     }
@@ -16421,8 +16435,11 @@ impl Workspace {
             .with_child(
                 Container::new(
                     ConstrainedBox::new(
-                        CognixUiIcon::new(icons::Icon::AiAssistant.into(), *AI_ASSISTANT_LOGO_COLOR)
-                            .finish(),
+                        CognixUiIcon::new(
+                            icons::Icon::AiAssistant.into(),
+                            *AI_ASSISTANT_LOGO_COLOR,
+                        )
+                        .finish(),
                     )
                     .with_width(16.)
                     .with_height(16.)
@@ -16955,7 +16972,9 @@ impl Workspace {
                 .finish()
             })
             .on_click(|ctx, _, _| {
-                ctx.dispatch_typed_action(WorkspaceAction::OpenLink("https://cognix.dev".to_owned()));
+                ctx.dispatch_typed_action(WorkspaceAction::OpenLink(
+                    "https://cognix.dev".to_owned(),
+                ));
             })
             .with_cursor(Cursor::PointingHand)
             .finish();
@@ -17936,7 +17955,10 @@ impl Workspace {
         Align::new(hoverable.finish()).finish()
     }
 
-    fn render_legacy_cognix_ai_entrypoint_button(&self, appearance: &Appearance) -> Box<dyn Element> {
+    fn render_legacy_cognix_ai_entrypoint_button(
+        &self,
+        appearance: &Appearance,
+    ) -> Box<dyn Element> {
         let (icon, action, label) = (
             icons::Icon::AiAssistant,
             WorkspaceAction::ClickedAIAssistantIcon,
@@ -18421,11 +18443,14 @@ impl Workspace {
         let text_color = theme.main_text_color(Fill::Solid(bg_color)).into_solid();
 
         // Left side: alert icon + bold heading + regular description, all inline.
-        let icon =
-            ConstrainedBox::new(Icon::AlertCircle.to_cognixui_icon(text_color.into()).finish())
-                .with_width(16.)
-                .with_height(16.)
-                .finish();
+        let icon = ConstrainedBox::new(
+            Icon::AlertCircle
+                .to_cognixui_icon(text_color.into())
+                .finish(),
+        )
+        .with_width(16.)
+        .with_height(16.)
+        .finish();
 
         let ui_font_family = appearance.ui_font_family();
         const BANNER_FONT_SIZE: f32 = 12.;
@@ -21294,7 +21319,9 @@ impl TypedActionView for Workspace {
                         .did_check_to_trigger_opencognix_launch_modal
                         .set_value(false, ctx)
                     {
-                        log::warn!("Failed to reset OpenCognix launch modal dismissed setting: {e}");
+                        log::warn!(
+                            "Failed to reset OpenCognix launch modal dismissed setting: {e}"
+                        );
                     }
                 });
                 let new_value = *GeneralSettings::as_ref(ctx)
@@ -21434,8 +21461,8 @@ impl TypedActionView for Workspace {
             }
             ToggleCognixDrive => {
                 if CognixDriveSettings::is_cognix_drive_enabled(ctx) {
-                    let is_showing =
-                        self.left_panel_view.as_ref(ctx).active_view() == ToolPanelView::CognixDrive;
+                    let is_showing = self.left_panel_view.as_ref(ctx).active_view()
+                        == ToolPanelView::CognixDrive;
                     self.toggle_left_panel_view(&LeftPanelAction::CognixDrive, is_showing, ctx);
                 }
             }

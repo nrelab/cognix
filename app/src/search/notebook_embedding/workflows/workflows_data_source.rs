@@ -1,5 +1,5 @@
-use itertools::Itertools;
 use cognixui::{AppContext, SingletonEntity};
+use itertools::Itertools;
 
 use crate::cloud_object::{CloudObject, Space};
 use crate::search::notebook_embedding::embedded_fuzzy_match::FuzzyMatchEmbeddedObjectResult;

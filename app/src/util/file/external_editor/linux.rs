@@ -5,10 +5,10 @@ use std::{
     sync::OnceLock,
 };
 
-use command::blocking::Command;
-use freedesktop_desktop_entry::DesktopEntry;
 use cognix_util::path::LineAndColumnArg;
 use cognixui::AppContext;
+use command::blocking::Command;
+use freedesktop_desktop_entry::DesktopEntry;
 
 use super::Editor;
 

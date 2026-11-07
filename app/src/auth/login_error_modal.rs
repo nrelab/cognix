@@ -1,6 +1,5 @@
 use std::borrow::Cow;
 
-use pathfinder_color::ColorU;
 use cognixui::{
     elements::{
         Align, Border, ConstrainedBox, Container, CornerRadius, Flex, ParentElement, Shrinkable,
@@ -11,6 +10,7 @@ use cognixui::{
     },
     AppContext, Element, SingletonEntity as _,
 };
+use pathfinder_color::ColorU;
 
 use crate::{
     appearance::Appearance,

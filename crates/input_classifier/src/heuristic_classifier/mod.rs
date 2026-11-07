@@ -1,9 +1,9 @@
 use std::borrow::Cow;
 
 use async_trait::async_trait;
+use cognix_completer::ParsedTokensSnapshot;
 use itertools::Itertools as _;
 use natural_language_detection::natural_language_words_score;
-use cognix_completer::ParsedTokensSnapshot;
 
 use crate::{
     ClassificationResult, Context, InputClassifier, InputType,

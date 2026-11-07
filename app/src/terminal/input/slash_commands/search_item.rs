@@ -1,10 +1,10 @@
-use ordered_float::OrderedFloat;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{Expanded, Highlight, Icon, ParentElement, Shrinkable};
 use cognixui::fonts::{Properties, Weight};
 use cognixui::prelude::{ConstrainedBox, Container, CrossAxisAlignment, Empty, Flex, Text};
 use cognixui::{AppContext, Element, SingletonEntity};
+use ordered_float::OrderedFloat;
 
 use crate::ai::blocklist::agent_view::shortcuts::render_keystroke_with_color_overrides;
 use crate::search::slash_command_menu::static_commands::commands::COMMAND_REGISTRY;

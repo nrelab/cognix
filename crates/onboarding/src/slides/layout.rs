@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::{vec2f, Vector2F};
 use cognixui::{
     assets::asset_cache::AssetSource,
     elements::{
@@ -10,6 +9,7 @@ use cognixui::{
     AfterLayoutContext, AppContext, Element, EventContext, LayoutContext, PaintContext,
     SizeConstraint,
 };
+use pathfinder_geometry::vector::{vec2f, Vector2F};
 
 // Onboarding images live under `app/assets/async/` so they are excluded from the WASM
 // binary (RustEmbed excludes `async/**` on wasm targets). They are still bundled normally

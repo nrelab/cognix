@@ -1,5 +1,4 @@
 use crate::appearance::Appearance;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
 use cognixui::elements::{
     ChildAnchor, ChildView, MouseStateHandle, OffsetPositioning, ParentAnchor, ParentElement,
     ParentOffsetBounds, Stack,
@@ -7,6 +6,7 @@ use cognixui::elements::{
 use cognixui::platform::Cursor;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::{AppContext, Element, EventContext, View, ViewHandle};
+use pathfinder_geometry::vector::{vec2f, Vector2F};
 
 use super::buttons::{highlight, icon_button};
 use super::icons::Icon;

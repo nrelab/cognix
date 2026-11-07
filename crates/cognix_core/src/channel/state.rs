@@ -6,7 +6,7 @@ use url::{Origin, ParseError, Url};
 use crate::AppId;
 use crate::{
     channel::config::{
-        ChannelConfig, McpOAuthProviderConfig, OzConfig, RudderStackDestination, CognixServerConfig,
+        ChannelConfig, CognixServerConfig, McpOAuthProviderConfig, OzConfig, RudderStackDestination,
     },
     features::FeatureFlag,
 };
@@ -428,8 +428,8 @@ fn app_id_from_bundle() -> Option<AppId> {
             base::{id, nil},
             foundation::NSBundle,
         };
-        use objc::{msg_send, sel, sel_impl};
         use cognixui::platform::mac::utils::nsstring_as_str;
+        use objc::{msg_send, sel, sel_impl};
 
         let bundle = id::mainBundle();
         if bundle != nil {

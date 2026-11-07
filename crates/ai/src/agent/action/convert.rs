@@ -1,9 +1,9 @@
 use std::{path::PathBuf, time::Duration};
 
-use itertools::Itertools as _;
-use uuid::Uuid;
 use cognix_core::features::FeatureFlag;
 use cognix_multi_agent_api as api;
+use itertools::Itertools as _;
+use uuid::Uuid;
 
 use crate::{
     agent::{

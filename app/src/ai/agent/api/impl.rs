@@ -1,9 +1,9 @@
 use std::{collections::HashMap, sync::Arc};
 
 use crate::{ai::agent::redaction, terminal::model::session::SessionType};
-use futures_util::StreamExt;
 use cognix_core::features::FeatureFlag;
 use cognix_multi_agent_api as api;
+use futures_util::StreamExt;
 
 use crate::server::server_api::ServerApi;
 

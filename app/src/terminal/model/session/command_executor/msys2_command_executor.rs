@@ -5,12 +5,12 @@ use crate::{
 };
 use anyhow::{anyhow, Result};
 use async_trait::async_trait;
+use cognix_completer::completer::CommandOutput;
+use cognix_util::path::{convert_msys2_to_windows_native_path, msys2_exe_to_root};
 use command::r#async::Command;
 use itertools::Itertools;
 use std::{any::Any, collections::HashMap, ffi::OsString, path::PathBuf};
 use typed_path::{TypedPath, WindowsPath};
-use cognix_completer::completer::CommandOutput;
-use cognix_util::path::{convert_msys2_to_windows_native_path, msys2_exe_to_root};
 
 const BASH_CONFIG_FLAG: &str = "--norc";
 const POWERSHELL_CONFIG_FLAG: &str = "-NoProfile";

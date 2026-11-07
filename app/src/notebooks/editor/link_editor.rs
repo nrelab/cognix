@@ -1,4 +1,6 @@
-use cognix_editor::{editor::NavigationKey, model::RichTextEditorModel, render::model::RenderState};
+use cognix_editor::{
+    editor::NavigationKey, model::RichTextEditorModel, render::model::RenderState,
+};
 use cognixui::{
     elements::{
         AnchorPair, Container, Flex, MouseStateHandle, OffsetPositioning, OffsetType,

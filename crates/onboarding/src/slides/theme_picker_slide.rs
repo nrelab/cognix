@@ -4,8 +4,6 @@ use crate::slides::{bottom_nav, layout, slide_content};
 use crate::telemetry::OnboardingEvent;
 use crate::visuals::theme_picker_visual;
 use crate::OnboardingIntention;
-use pathfinder_color::ColorU;
-use ui_components::{button, Component as _, Options as _};
 use cognix_core::features::FeatureFlag;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::{appearance::Appearance, theme::color::internal_colors, theme::CognixTheme};
@@ -22,6 +20,8 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use pathfinder_color::ColorU;
+use ui_components::{button, Component as _, Options as _};
 
 #[derive(Debug, Clone)]
 pub enum ThemePickerSlideEvent {
@@ -172,7 +172,9 @@ impl ThemePickerSlide {
         let state = self.onboarding_state.as_ref(app);
         let is_terminal = matches!(state.intention(), OnboardingIntention::Terminal);
         let cognix_drive_enabled = state.ui_customization().show_cognix_drive;
-        if is_terminal && !cognix_drive_enabled && FeatureFlag::OpenCognixNewSettingsModes.is_enabled()
+        if is_terminal
+            && !cognix_drive_enabled
+            && FeatureFlag::OpenCognixNewSettingsModes.is_enabled()
         {
             content.push(self.render_disclaimer_section(appearance));
         }

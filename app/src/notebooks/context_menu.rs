@@ -1,6 +1,5 @@
 //! Shared context menu implementation for notebooks.
 
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::context_flag::ContextFlag;
 use cognixui::{
     elements::{ChildAnchor, OffsetPositioning, ParentAnchor, ParentOffsetBounds, Stack},
@@ -8,6 +7,7 @@ use cognixui::{
     presenter::ChildView,
     Action, Element, EventContext, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::Vector2F;
 
 use crate::{
     editor::EditorView,

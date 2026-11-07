@@ -12,14 +12,14 @@ use std::{
 use aho_corasick::{AhoCorasick, MatchKind};
 #[cfg(feature = "local_fs")]
 use anyhow::{anyhow, Context};
-#[cfg(feature = "local_fs")]
-use futures::AsyncWriteExt;
 use cognix_util::path::ShellFamily;
 use cognixui::{
     platform::{file_picker::FilePickerError, FilePickerConfiguration, OperatingSystem},
     r#async::SpawnedFutureHandle,
     AppContext, Entity, ModelContext, SingletonEntity, WindowId,
 };
+#[cfg(feature = "local_fs")]
+use futures::AsyncWriteExt;
 
 use crate::{
     cloud_object::{model::persistence::CloudModel, Space},

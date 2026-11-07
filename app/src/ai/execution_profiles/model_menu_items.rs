@@ -1,7 +1,5 @@
 use crate::ai::llms::{is_using_api_key_for_provider, DisableReason, LLMId, LLMInfo};
 use crate::menu::{MenuItem, MenuItemFields, MenuTooltipPosition};
-use itertools::Itertools;
-use std::sync::Arc;
 use cognix_core::ui::Icon;
 use cognixui::{
     elements::{
@@ -11,6 +9,8 @@ use cognixui::{
     fonts::{Properties, Style},
     Action, AppContext, Element,
 };
+use itertools::Itertools;
+use std::sync::Arc;
 
 pub fn is_auto(llm: &LLMInfo) -> bool {
     llm.display_name.to_lowercase().contains("auto")

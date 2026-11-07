@@ -8,14 +8,14 @@ use pathfinder_geometry::vector::vec2f;
 use serde::{Deserialize, Serialize};
 use std::cmp::max;
 mod package_installers;
-pub(crate) use history::UpArrowHistoryConfig;
-pub use view::Event;
-pub use view::TerminalView;
 pub use cognix_terminal::shell::{self, ShellLaunchData};
 use cognixui::geometry::vector::Vector2F;
 use cognixui::units::{IntoPixels, Lines, Pixels};
 use cognixui::AppContext;
 use cognixui::WindowId;
+pub(crate) use history::UpArrowHistoryConfig;
+pub use view::Event;
+pub use view::TerminalView;
 pub use {history::History, history::HistoryEntry, history::HistoryEvent, history::ShellHost};
 mod block_list_settings;
 
@@ -75,11 +75,11 @@ pub mod shared_session;
 mod shell_launch_state;
 pub mod universal_developer_input;
 
+pub mod cognixify;
 pub mod ssh;
 pub mod terminal_manager;
 mod terminal_size_element;
 pub mod view;
-pub mod cognixify;
 mod waterfall_gap_element;
 mod writeable_pty;
 #[cfg(windows)]

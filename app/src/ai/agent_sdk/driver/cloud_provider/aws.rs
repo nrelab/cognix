@@ -1,11 +1,11 @@
 use std::{collections::HashMap, ffi::OsString, future::Future, pin::Pin, time::Duration};
 
 use anyhow::Context;
-use tempfile::{Builder, NamedTempFile};
-use vec1::Vec1;
 use cognix_core::safe_info;
 use cognix_managed_secrets::ManagedSecretManager;
 use cognixui::{ModelSpawner, SingletonEntity};
+use tempfile::{Builder, NamedTempFile};
+use vec1::Vec1;
 
 use crate::ai::aws_credentials::aws_role_session_name;
 use crate::ai::cloud_environments::AwsProviderConfig;

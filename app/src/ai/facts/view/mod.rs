@@ -7,7 +7,6 @@ use crate::pane_group::focus_state::PaneFocusHandle;
 use crate::pane_group::{pane::view, BackingView, PaneConfiguration, PaneEvent};
 use crate::server::ids::SyncId;
 use crate::server::sync_queue::SyncQueue;
-use std::path::PathBuf;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{
@@ -18,6 +17,7 @@ use cognixui::{
     ui_components::components::UiComponent,
     AppContext, Element, Entity, FocusContext, ModelHandle, TypedActionView, View, ViewContext,
 };
+use std::path::PathBuf;
 
 use crate::ui_components::icons::Icon;
 use cognixui::elements::ChildView;

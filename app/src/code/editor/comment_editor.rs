@@ -14,9 +14,6 @@ use crate::ui_components::icons::Icon;
 use crate::view_components::action_button::{
     ActionButton, ButtonSize, DangerNakedTheme, KeystrokeSource, NakedTheme, PrimaryTheme,
 };
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::Vector2F;
-use std::cell::RefCell;
 use cognix_core::ui::{appearance::Appearance, theme::Fill};
 use cognix_editor::render::element::VerticalExpansionBehavior;
 use cognixui::{
@@ -30,6 +27,9 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::Vector2F;
+use std::cell::RefCell;
 
 /// Default width of the comment editor, in pixels.
 pub(crate) const DEFAULT_COMMENT_MAX_WIDTH: f32 = 750.0;

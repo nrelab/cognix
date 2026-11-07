@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
 use cognixui::elements::{
     Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, MainAxisSize,
@@ -7,6 +6,7 @@ use cognixui::elements::{
 use cognixui::ui_components::checkbox::Checkbox;
 use cognixui::ui_components::components::UiComponentStyles;
 use cognixui::Element;
+use pathfinder_color::ColorU;
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;

@@ -62,7 +62,7 @@ use super::{
     folders::CloudFolder,
     items::{
         ai_fact_collection::CognixDriveAIFactCollection,
-        item::{tools_panel_menu_direction, ItemStates, CognixDriveRow},
+        item::{tools_panel_menu_direction, CognixDriveRow, ItemStates},
         mcp_server_collection::CognixDriveMCPServerCollection,
         CognixDriveItemId,
     },
@@ -75,13 +75,9 @@ use super::{
 };
 use crate::drive::panel::DrivePanelAction;
 use crate::server::cloud_objects::update_manager::InitiatedBy;
-use futures::Future;
-use itertools::Itertools;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use std::{any::Any, collections::HashMap, sync::Arc};
-use url::Url;
-use cognix_core::{context_flag::ContextFlag, settings::Setting, ui::theme::color::internal_colors};
+use cognix_core::{
+    context_flag::ContextFlag, settings::Setting, ui::theme::color::internal_colors,
+};
 use cognixui::{
     clipboard::ClipboardContent,
     elements::{
@@ -104,6 +100,12 @@ use cognixui::{
     AppContext, BlurContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView,
     UpdateView, View, ViewContext, ViewHandle, WindowId,
 };
+use futures::Future;
+use itertools::Itertools;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use std::{any::Any, collections::HashMap, sync::Arc};
+use url::Url;
 
 const COGNIX_DRIVE_TITLE: &str = "Cognix Drive";
 
@@ -1064,7 +1066,11 @@ impl DriveIndex {
         NetworkStatus::as_ref(app).is_online()
     }
 
-    pub fn scroll_item_into_view(&mut self, item_id: CognixDriveItemId, ctx: &mut ViewContext<Self>) {
+    pub fn scroll_item_into_view(
+        &mut self,
+        item_id: CognixDriveItemId,
+        ctx: &mut ViewContext<Self>,
+    ) {
         self.clipped_scroll_state.scroll_to_position(ScrollTarget {
             position_id: item_id.drive_row_position_id(),
             mode: ScrollToPositionMode::FullyIntoView,
@@ -1799,7 +1805,8 @@ impl DriveIndex {
     }
 
     fn render_trash_row(&self, appearance: &Appearance, _: &AppContext) -> Box<dyn Element> {
-        let font_color = self.font_color_based_on_focused_state(appearance, CognixDriveItemId::Trash);
+        let font_color =
+            self.font_color_based_on_focused_state(appearance, CognixDriveItemId::Trash);
         let icon = Container::new(
             ConstrainedBox::new(Icon::Trash.to_cognixui_icon(font_color.into()).finish())
                 .with_width(SECTION_HEADER_FONT_SIZE)
@@ -1850,7 +1857,9 @@ impl DriveIndex {
         if let Some(focused_index) = self.focused_index {
             if Some(&CognixDriveItemId::Trash) == self.ordered_items.get(focused_index) {
                 container = container.with_background(
-                    cognix_core::ui::theme::color::internal_colors::fg_overlay_4(appearance.theme()),
+                    cognix_core::ui::theme::color::internal_colors::fg_overlay_4(
+                        appearance.theme(),
+                    ),
                 );
                 is_focused = true;
             }
@@ -1898,7 +1907,8 @@ impl DriveIndex {
         let is_selected = self.selected == Some(cognix_drive_item_id);
         let mut is_focused = false;
         if let Some(focused_index) = self.focused_index {
-            if let Some(&CognixDriveItemId::AIFactCollection) = self.ordered_items.get(focused_index)
+            if let Some(&CognixDriveItemId::AIFactCollection) =
+                self.ordered_items.get(focused_index)
             {
                 is_focused = true;
             }
@@ -1911,7 +1921,9 @@ impl DriveIndex {
             0,
             self.menu.clone(),
             false, /* can_move */
-            !self.menu_items(&space, &cognix_drive_item_id, app).is_empty(),
+            !self
+                .menu_items(&space, &cognix_drive_item_id, app)
+                .is_empty(),
             false,
             false, /* share_dialog_open */
             is_selected,
@@ -1948,7 +1960,9 @@ impl DriveIndex {
             0,
             self.menu.clone(),
             false, /* can_move */
-            !self.menu_items(&space, &cognix_drive_item_id, app).is_empty(),
+            !self
+                .menu_items(&space, &cognix_drive_item_id, app)
+                .is_empty(),
             false,
             false, /* share_dialog_open */
             is_selected,
@@ -2698,7 +2712,9 @@ impl DriveIndex {
             folder_depth,
             self.menu.clone(),
             can_move,
-            !self.menu_items(&space, &cognix_drive_item_id, app).is_empty(),
+            !self
+                .menu_items(&space, &cognix_drive_item_id, app)
+                .is_empty(),
             menu_open,
             share_dialog_open,
             is_selected,
@@ -2946,7 +2962,10 @@ impl DriveIndex {
         .finish()
     }
 
-    fn render_cognix_drive_loading_icon(&self, appearance: &Appearance) -> Box<dyn cognixui::Element> {
+    fn render_cognix_drive_loading_icon(
+        &self,
+        appearance: &Appearance,
+    ) -> Box<dyn cognixui::Element> {
         // Use same padding as icon_button (4px) to center the icon within ICON_DIMENSIONS
         let icon_button_padding = (ICON_DIMENSIONS - LOADING_ICON_WIDTH) / 2.;
         let loading_icon = Container::new(
@@ -5612,7 +5631,9 @@ impl TypedActionView for DriveIndex {
                     user_workspaces.generate_stripe_billing_portal_link(*team_uid, ctx);
                 });
             }
-            DriveIndexAction::ToggleShareDialog { cognix_drive_item_id } => {
+            DriveIndexAction::ToggleShareDialog {
+                cognix_drive_item_id,
+            } => {
                 self.toggle_share_dialog(
                     cognix_drive_item_id,
                     None,

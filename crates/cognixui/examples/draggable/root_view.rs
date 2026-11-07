@@ -1,10 +1,5 @@
 use std::any::Any;
 
-use pathfinder_color::ColorU;
-use pathfinder_geometry::{
-    rect::RectF,
-    vector::{vec2f, Vector2F},
-};
 use cognixui::elements::{AcceptedByDropTarget, DropTarget, DropTargetData};
 use cognixui::{
     elements::{
@@ -12,6 +7,11 @@ use cognixui::{
         Stack,
     },
     AppContext, Element, Entity, TypedActionView, View,
+};
+use pathfinder_color::ColorU;
+use pathfinder_geometry::{
+    rect::RectF,
+    vector::{vec2f, Vector2F},
 };
 
 #[derive(Default)]

@@ -8,16 +8,16 @@ use self::internal_colors::{
     neutral_4,
 };
 
-use super::{AnsiColor, AnsiColorIdentifier, Fill, TerminalColors, CognixTheme};
+use super::{AnsiColor, AnsiColorIdentifier, CognixTheme, Fill, TerminalColors};
 
 use crate::ui::color::{
     blend::Blend,
     contrast::{pick_best_foreground_color, MinimumAllowedContrast},
     Opacity,
 };
+use cognixui::color::ColorU;
 use getset::Getters;
 use serde::{Deserialize, Serialize};
-use cognixui::color::ColorU;
 
 const BLOCK_SELECTION_OPACITY: Opacity = 10;
 
@@ -423,7 +423,7 @@ impl CognixTheme {
 pub mod internal_colors {
     use cognixui::color::ColorU;
 
-    use super::{Fill, CognixTheme};
+    use super::{CognixTheme, Fill};
     use crate::ui::color::blend::Blend;
     use crate::ui::color::coloru_with_opacity;
 

@@ -4,13 +4,13 @@ use std::path::{Path, PathBuf};
 use std::{fs, sync::Arc, time::Duration};
 
 #[cfg(not(target_family = "wasm"))]
+use cognixui::ModelHandle;
+use cognixui::{Entity, ModelContext, SingletonEntity};
+#[cfg(not(target_family = "wasm"))]
 use notify_debouncer_full::notify::{RecursiveMode, WatchFilter};
 use repo_metadata::RepositoryUpdate;
 #[cfg(any(not(target_family = "wasm"), test))]
 use repo_metadata::TargetFile;
-#[cfg(not(target_family = "wasm"))]
-use cognixui::ModelHandle;
-use cognixui::{Entity, ModelContext, SingletonEntity};
 #[cfg(not(target_family = "wasm"))]
 use watcher::{BulkFilesystemWatcher, BulkFilesystemWatcherEvent};
 
@@ -365,8 +365,8 @@ mod tests {
     use repo_metadata::{RepositoryUpdate, TargetFile};
 
     use super::{
-        filter_repository_update_by_prefix, cognix_home_mcp_config_file_path, cognix_home_skills_dir,
-        cognix_managed_mcp_config_path, cognix_managed_skill_dirs,
+        cognix_home_mcp_config_file_path, cognix_home_skills_dir, cognix_managed_mcp_config_path,
+        cognix_managed_skill_dirs, filter_repository_update_by_prefix,
     };
 
     #[test]

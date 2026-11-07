@@ -9,10 +9,10 @@
 //! - **Remote**: calls [`apply_edits`] with a [`RemoteServerClient`]-backed closure.
 
 use ai::diff_validation::AIRequestedCodeDiff;
-use futures::FutureExt;
-use vec1::Vec1;
 use cognixui::r#async::BoxFuture;
 use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity as _};
+use futures::FutureExt;
+use vec1::Vec1;
 
 use crate::ai::agent::{AIIdentifiers, FileEdit};
 use crate::ai::blocklist::SessionContext;

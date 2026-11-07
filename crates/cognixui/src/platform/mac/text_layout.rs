@@ -1,4 +1,10 @@
 use block::{Block, ConcreteBlock};
+use cognixui_core::fonts::GlyphId;
+use cognixui_core::platform::LineStyle;
+use cognixui_core::text_layout::{
+    CaretPosition, ClipConfig, Glyph, Line, Run, StyleAndFont, TextAlignment, TextBorder,
+    TextFrame, TextStyle,
+};
 use core_foundation::array::CFArray;
 use core_foundation::attributed_string::CFMutableAttributedStringRef;
 use core_foundation::base::CFType;
@@ -37,12 +43,6 @@ use std::ops::Range;
 use std::rc::Rc;
 use std::slice;
 use vec1::Vec1;
-use cognixui_core::fonts::GlyphId;
-use cognixui_core::platform::LineStyle;
-use cognixui_core::text_layout::{
-    CaretPosition, ClipConfig, Glyph, Line, Run, StyleAndFont, TextAlignment, TextBorder,
-    TextFrame, TextStyle,
-};
 
 use super::fonts::FontDB;
 use super::utils::{cg_color_to_color_u, color_u_to_cg_color};

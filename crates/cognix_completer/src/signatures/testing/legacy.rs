@@ -9,13 +9,13 @@
 //! provide coverage for both flag states of "v2".
 use std::borrow::Cow;
 
-use itertools::Itertools;
 use cognix_command_signatures::{
     Alias, AliasGeneratorName, Argument, ArgumentType, CommandBuilder, CommandSignatureGenerators,
     Generator, GeneratorName, GeneratorResults, Importance, IsArgumentOptional, Opt, Order,
     ParserDirectives, Priority, Signature, Suggestion as MetadataSuggestion, Template,
 };
 use cognix_util::path::ShellFamily;
+use itertools::Itertools;
 
 use super::{TEST_ALIAS_COMMAND, TEST_GENERATOR_1_COMMAND, TEST_GENERATOR_2_COMMAND};
 
@@ -811,7 +811,9 @@ pub fn cd_signature() -> Signature {
             argument_types: vec![
                 create_hidden_argument_suggestion('-'),
                 ArgumentType::Template(Template {
-                    type_name: cognix_command_signatures::TemplateType::Folders { must_exist: true },
+                    type_name: cognix_command_signatures::TemplateType::Folders {
+                        must_exist: true,
+                    },
                     filter_name: None,
                 }),
             ],

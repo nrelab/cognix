@@ -4,8 +4,8 @@ use crate::content::{
         BlockHeaderSize, BufferBlockItem, BufferBlockStyle, BufferText, BufferTextStyle, MarkerDir,
     },
 };
-use sum_tree::SumTree;
 use cognixui::elements::ListIndentLevel;
+use sum_tree::SumTree;
 
 #[test]
 #[should_panic(

@@ -5,13 +5,13 @@ use std::{
 
 use crate::ai::skills::skill_manager::SkillWatcherEvent;
 use ai::skills::{ParsedSkill, SkillProvider, SkillScope};
+use cognix_util::standardized_path::StandardizedPath;
+use cognixui::App;
 use repo_metadata::{
     repositories::DetectedRepositories, DirectoryWatcher, RepoMetadataModel, RepositoryUpdate,
     TargetFile,
 };
 use tempfile::TempDir;
-use cognix_util::standardized_path::StandardizedPath;
-use cognixui::App;
 
 use super::SkillWatcher;
 

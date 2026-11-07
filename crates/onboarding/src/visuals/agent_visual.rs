@@ -1,6 +1,6 @@
-use pathfinder_color::ColorU;
 use cognixui::elements::Align;
 use cognixui::Element;
+use pathfinder_color::ColorU;
 
 use super::onboarding_visual::{OnboardingVisual, Pill, RectPct};
 

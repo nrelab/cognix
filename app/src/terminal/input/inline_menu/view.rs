@@ -1,8 +1,6 @@
 //! Generic inline menu view for rendering search results with selection and navigation.
 use std::sync::LazyLock;
 
-use itertools::Itertools;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::color::blend::Blend;
@@ -30,6 +28,8 @@ use cognixui::{
     Action, AppContext, Element, Entity, SingletonEntity, TypedActionView, ViewContext, ViewHandle,
     WeakViewHandle,
 };
+use itertools::Itertools;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::ai::blocklist::agent_view::{
     agent_view_bg_color, AgentViewController, AgentViewControllerEvent,

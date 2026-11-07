@@ -1,8 +1,6 @@
 use std::sync::Arc;
 
 use chrono::{Duration, Utc};
-use futures_util::future::BoxFuture;
-use itertools::Itertools;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::editor::EditorView;
 use cognixui::{
@@ -10,6 +8,8 @@ use cognixui::{
     AddSingletonModel, App, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     ViewHandle, WindowId,
 };
+use futures_util::future::BoxFuture;
+use itertools::Itertools;
 
 use crate::{
     auth::{

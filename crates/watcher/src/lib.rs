@@ -11,6 +11,7 @@ pub mod home_watcher;
 pub use home_watcher::{HomeDirectoryWatcher, HomeDirectoryWatcherEvent};
 
 use anyhow::Result;
+use cognixui::{Entity, ModelContext};
 use futures::channel::oneshot;
 use notify_debouncer_full::{
     new_debouncer_opt,
@@ -21,7 +22,6 @@ use notify_debouncer_full::{
     },
     DebounceEventHandler, DebounceEventResult, DebouncedEvent, Debouncer, NoCache,
 };
-use cognixui::{Entity, ModelContext};
 
 #[derive(Debug)]
 enum BackgroundFileWatcherCommand {

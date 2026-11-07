@@ -14,9 +14,9 @@ use crate::{
     workspaces::user_workspaces::UserWorkspaces,
 };
 use anyhow::Context;
+use cognixui::{AppContext, ModelHandle, SingletonEntity, ViewContext, ViewHandle};
 use std::{collections::HashMap, sync::Arc};
 use url::Url;
-use cognixui::{AppContext, ModelHandle, SingletonEntity, ViewContext, ViewHandle};
 
 pub struct WorkflowPane {
     view: ViewHandle<PaneView<WorkflowView>>,

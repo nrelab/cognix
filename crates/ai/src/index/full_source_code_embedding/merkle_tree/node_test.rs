@@ -19,8 +19,10 @@ fn test_node_hash_for_directory_is_sorted() {
             sandbox.with_files(vec![Stub::FileWithContent("bar", "bar")]);
 
             let mut directory_entry = DirectoryEntry {
-                path: cognix_util::standardized_path::StandardizedPath::try_from_local(dirs.tests())
-                    .unwrap(),
+                path: cognix_util::standardized_path::StandardizedPath::try_from_local(
+                    dirs.tests(),
+                )
+                .unwrap(),
                 children: vec![],
                 ignored: false,
                 loaded: false,
@@ -461,8 +463,10 @@ fn test_merkle_node_multiple_operations() {
             ]);
 
             let mut directory_entry = DirectoryEntry {
-                path: cognix_util::standardized_path::StandardizedPath::try_from_local(dirs.tests())
-                    .unwrap(),
+                path: cognix_util::standardized_path::StandardizedPath::try_from_local(
+                    dirs.tests(),
+                )
+                .unwrap(),
                 children: vec![],
                 ignored: false,
                 loaded: true,
@@ -570,8 +574,10 @@ fn test_merkle_node_multiple_operations() {
             );
 
             let mut directory_entry = DirectoryEntry {
-                path: cognix_util::standardized_path::StandardizedPath::try_from_local(dirs.tests())
-                    .unwrap(),
+                path: cognix_util::standardized_path::StandardizedPath::try_from_local(
+                    dirs.tests(),
+                )
+                .unwrap(),
                 children: vec![],
                 ignored: false,
                 loaded: true,
@@ -772,8 +778,10 @@ fn test_merkle_node_multiple_operations() {
 
             // Create a new MerkleTree with the expected final structure manually
             let mut expected_directory_entry = DirectoryEntry {
-                path: cognix_util::standardized_path::StandardizedPath::try_from_local(dirs.tests())
-                    .unwrap(),
+                path: cognix_util::standardized_path::StandardizedPath::try_from_local(
+                    dirs.tests(),
+                )
+                .unwrap(),
                 children: vec![],
                 ignored: false,
                 loaded: true,

@@ -19,11 +19,11 @@ use std::sync::Arc;
 use crate::ai::mcp::templatable::CloudTemplatableMCPServer;
 use crate::ai::mcp::FileBasedMCPManager;
 use crate::ai::mcp::{templatable_installation::TemplatableMCPServerInstallation, MCPServerState};
-use futures_util::stream::AbortHandle;
-use uuid::Uuid;
 #[cfg(not(target_family = "wasm"))]
 use cognixui::ModelSpawner;
 use cognixui::{Entity, SingletonEntity};
+use futures_util::stream::AbortHandle;
+use uuid::Uuid;
 
 #[cfg(not(target_family = "wasm"))]
 type ReconnectResultSender =

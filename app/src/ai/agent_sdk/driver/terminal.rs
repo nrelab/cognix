@@ -9,9 +9,6 @@ use std::{
     time::Duration,
 };
 
-use futures::channel::oneshot;
-use session_sharing_protocol::common::{Role, SessionId};
-use session_sharing_protocol::sharer::SessionSourceType;
 use cognix_cli::share::{ShareAccessLevel, ShareRequest, ShareSubject};
 use cognix_completer::completer::CommandOutput;
 use cognix_core::command::ExitCode;
@@ -21,6 +18,9 @@ use cognixui::{
     r#async::FutureExt, AppContext, Entity, ModelContext, ModelHandle, SingletonEntity as _,
     ViewHandle,
 };
+use futures::channel::oneshot;
+use session_sharing_protocol::common::{Role, SessionId};
+use session_sharing_protocol::sharer::SessionSourceType;
 
 use crate::terminal::model::session::ExecuteCommandOptions;
 
@@ -197,8 +197,8 @@ impl TerminalDriver {
         // Create a oneshot channel for session sharing when sharing is expected.
         // When sharing is disabled (or running against ngrok), leave both halves
         // as None so that `wait_for_session_shared` returns immediately.
-        let sharing_expected =
-            should_share && !cognix_core::channel::ChannelState::server_root_url().contains("ngrok");
+        let sharing_expected = should_share
+            && !cognix_core::channel::ChannelState::server_root_url().contains("ngrok");
         let (mut session_share_tx, session_share_rx) = if sharing_expected {
             if !FeatureFlag::CreatingSharedSessions.is_enabled() {
                 // Session sharing was requested but the feature is not enabled for this

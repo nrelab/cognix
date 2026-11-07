@@ -11,9 +11,9 @@ use crate::test_util::terminal::{
 };
 use crate::workspace::ActiveSession;
 
-use fuzzy_match::FuzzyMatchResult;
 use cognix_core::command::ExitCode;
 use cognixui::{App, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
 
 /// Helper to create a `BlockSearchItem` with the given parameters.
 fn make_block_search_item(

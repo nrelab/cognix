@@ -1,6 +1,3 @@
-use futures_util::stream::AbortHandle;
-use pathfinder_geometry::vector::vec2f;
-use std::path::PathBuf;
 use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex,
@@ -13,6 +10,9 @@ use cognixui::{
     },
     AppContext, Element, Entity, ModelHandle, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use futures_util::stream::AbortHandle;
+use pathfinder_geometry::vector::vec2f;
+use std::path::PathBuf;
 
 use crate::{
     appearance::Appearance,

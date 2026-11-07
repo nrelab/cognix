@@ -1,16 +1,3 @@
-use float_cmp::ApproxEq;
-use instant::Instant;
-use parking_lot::Mutex;
-use std::{
-    fmt,
-    sync::{
-        Arc,
-        atomic::{AtomicBool, Ordering},
-    },
-    time::Duration,
-};
-use temporary_block::RenderableTemporaryBlock;
-use vim::vim::VimMode;
 use cognix_core::ui::theme::Fill as ThemeFill;
 use cognixui::{
     AfterLayoutContext, AppContext, Element, Event, EventContext, LayoutContext, ModelHandle,
@@ -28,6 +15,19 @@ use cognixui::{
     platform::Cursor,
     units::{IntoPixels, Pixels},
 };
+use float_cmp::ApproxEq;
+use instant::Instant;
+use parking_lot::Mutex;
+use std::{
+    fmt,
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering},
+    },
+    time::Duration,
+};
+use temporary_block::RenderableTemporaryBlock;
+use vim::vim::VimMode;
 
 use super::model::{
     BlockItem, ElementUpdate, HitTestOptions, Location, RenderState, RichTextStyles, UNIT_MARGIN,

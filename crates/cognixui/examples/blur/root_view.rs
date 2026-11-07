@@ -1,5 +1,5 @@
-use pathfinder_color::ColorU;
 use cognixui::{elements::Rect, AppContext, Element, Entity, TypedActionView, View};
+use pathfinder_color::ColorU;
 
 pub struct BlurredView {}
 

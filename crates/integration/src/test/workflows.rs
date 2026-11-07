@@ -1,4 +1,3 @@
-use std::time::Duration;
 use cognix::integration_testing::workflow::{
     assert_no_team_workflow_pane_open, assert_open_team_workflow_pane_count_equals,
 };
@@ -22,6 +21,7 @@ use cognix::{
     workflows::CategoriesView,
 };
 use cognixui::{async_assert_eq, integration::TestStep, ViewHandle};
+use std::time::Duration;
 
 use crate::Builder;
 

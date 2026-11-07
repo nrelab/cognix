@@ -4,9 +4,9 @@ use cognix_core::channel::Channel;
 
 pub mod registry;
 
-pub use registry::CommandRegistry;
 #[cfg(feature = "test-util")]
 use cognix_command_signatures::Signature;
+pub use registry::CommandRegistry;
 
 static GLOBAL_REGISTRY: OnceLock<Arc<CommandRegistry>> = OnceLock::new();
 

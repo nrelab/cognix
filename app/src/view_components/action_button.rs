@@ -1,6 +1,3 @@
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use std::{borrow::Cow, sync::Arc};
 use cognix_core::ui::{
     appearance::Appearance,
     color::{coloru_with_opacity, contrast::MinimumAllowedContrast, ContrastingColor},
@@ -21,6 +18,9 @@ use cognixui::{
     AppContext, BlurContext, Element, Entity, EventContext, FocusContext, SingletonEntity as _,
     TypedActionView, View, ViewContext,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use std::{borrow::Cow, sync::Arc};
 
 use crate::{
     settings_view::keybindings::{KeybindingChangedEvent, KeybindingChangedNotifier},
@@ -820,7 +820,9 @@ impl View for ActionButton {
                 row.add_child(
                     Container::new(
                         ConstrainedBox::new(
-                            Icon::ChevronDown.to_cognixui_icon(text_color.into()).finish(),
+                            Icon::ChevronDown
+                                .to_cognixui_icon(text_color.into())
+                                .finish(),
                         )
                         .with_width(icon_size)
                         .with_height(icon_size)

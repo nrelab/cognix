@@ -1,8 +1,7 @@
 use std::sync::Arc;
 
-use pathfinder_color::ColorU;
 use cognix_core::ui::icons::Icon;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognixui::clipboard::ClipboardContent;
 use cognixui::elements::{
     ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, DispatchEventResult,
@@ -12,6 +11,7 @@ use cognixui::elements::{
 use cognixui::fonts::Weight;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::{View, ViewContext, ViewHandle};
+use pathfinder_color::ColorU;
 
 use cognix_core::ui::appearance::Appearance as CoreAppearance;
 use cognix_core::ui::theme::color::internal_colors;

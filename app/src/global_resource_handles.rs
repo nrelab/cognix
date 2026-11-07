@@ -2,8 +2,8 @@ use crate::{
     banner::BannerState, persistence::ModelEvent, referral_theme_status::ReferralThemeStatus,
     resource_center::TipsCompleted, settings::SettingsFileError,
 };
-use std::sync::mpsc::SyncSender;
 use cognixui::{Entity, ModelHandle, SingletonEntity};
+use std::sync::mpsc::SyncSender;
 
 /// Interfaces that allow us to interact with global resources owned by the main
 /// thread that exist throughout the app including Model handles, channel senders,

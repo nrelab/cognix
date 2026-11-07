@@ -48,6 +48,12 @@ use crate::{
 };
 use async_compat::CompatExt as _;
 use cfg_if::cfg_if;
+use cognix_core::safe_error;
+use cognix_core::{
+    execution_mode::AppExecutionMode, features::FeatureFlag, settings::Setting as _,
+};
+use cognixui::AppContext;
+use cognixui::{windowing::WindowManager, ModelContext, SingletonEntity};
 use futures::FutureExt as _;
 use parking_lot::Mutex;
 use rmcp::{transport::ConfigureCommandExt as _, ServiceExt as _};
@@ -55,10 +61,6 @@ use simple_logger::manager::LogManager;
 use simple_logger::SimpleLogger;
 use tokio::io::AsyncBufReadExt as _;
 use uuid::Uuid;
-use cognix_core::safe_error;
-use cognix_core::{execution_mode::AppExecutionMode, features::FeatureFlag, settings::Setting as _};
-use cognixui::AppContext;
-use cognixui::{windowing::WindowManager, ModelContext, SingletonEntity};
 
 use super::{
     oauth::{self, AuthContext, FileBasedPersistedCredentialsMap, PersistedCredentialsMap},

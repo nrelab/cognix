@@ -11,7 +11,6 @@ use crate::appearance::Appearance;
 use crate::settings::SettingsFileError;
 use crate::ui_components::icons::Icon;
 use crate::WorkspaceAction;
-use pathfinder_color::ColorU;
 use cognix_core::ui::color::coloru_with_opacity;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
@@ -22,6 +21,7 @@ use cognixui::elements::{
 };
 use cognixui::fonts::{FamilyId, Properties, Weight};
 use cognixui::platform::Cursor;
+use pathfinder_color::ColorU;
 
 /// Horizontal + vertical padding applied to the footer inside the sidebar.
 const FOOTER_PADDING: f32 = 12.;

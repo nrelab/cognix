@@ -3,8 +3,8 @@
 //! [`TextBuffer`] API.
 
 use anyhow::anyhow;
-use string_offset::CharOffset;
 use cognixui::text::{TextBuffer, point::Point, word_boundaries::WordBoundariesPolicy};
+use string_offset::CharOffset;
 
 use super::{
     buffer::{Buffer, ToBufferCharOffset, ToBufferPoint},

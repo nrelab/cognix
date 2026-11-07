@@ -2,9 +2,6 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::{cmp::Ordering, sync::Arc};
 
-use itertools::Itertools;
-use pathfinder_geometry::vector::vec2f;
-use string_offset::CharOffset;
 use cognix_core::ui::theme::Fill;
 use cognix_editor::editor::NavigationKey;
 use cognixui::elements::Clipped;
@@ -27,6 +24,9 @@ use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, UpdateView, View, ViewContext,
     ViewHandle,
 };
+use itertools::Itertools;
+use pathfinder_geometry::vector::vec2f;
+use string_offset::CharOffset;
 
 use crate::auth::UserUid;
 use crate::{
@@ -37,8 +37,8 @@ use crate::{
         CloudObject, CloudObjectEventEntrypoint, ObjectType, Owner, Revision,
     },
     drive::{
-        cloud_object_styling::cognix_drive_icon_color, items::CognixDriveItemId, CloudObjectTypeAndId,
-        DriveObjectType,
+        cloud_object_styling::cognix_drive_icon_color, items::CognixDriveItemId,
+        CloudObjectTypeAndId, DriveObjectType,
     },
     editor::{
         EditorOptions, EditorView, EnterAction, EnterSettings, Event as EditorEvent,

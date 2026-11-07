@@ -2,18 +2,18 @@ mod saved_prompts;
 mod zero_state;
 
 use ai::skills::SkillProvider;
-pub(crate) use saved_prompts::*;
 use cognix_core::features::FeatureFlag;
+pub(crate) use saved_prompts::*;
 pub use zero_state::*;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::fonts::FamilyId;
 use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::ai::blocklist::BlocklistAIHistoryModel;
 use crate::ai::skills::{SkillDescriptor, SkillManager};

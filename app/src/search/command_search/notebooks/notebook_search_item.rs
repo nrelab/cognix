@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use ordered_float::OrderedFloat;
 use cognixui::{
     elements::{
         ConstrainedBox, Container, Flex, Highlight, Icon, MainAxisAlignment, MainAxisSize,
@@ -9,6 +8,7 @@ use cognixui::{
     fonts::{Properties, Weight},
     AppContext, Element, SingletonEntity,
 };
+use ordered_float::OrderedFloat;
 
 use crate::appearance::Appearance;
 use crate::notebooks::CloudNotebookModel;

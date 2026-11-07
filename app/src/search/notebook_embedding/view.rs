@@ -10,8 +10,6 @@ use crate::{
         search_bar::{SearchBar, SearchBarEvent, SearchBarState, SearchResultOrdering},
     },
 };
-use itertools::Itertools;
-use lazy_static::lazy_static;
 use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CornerRadius, Dismiss, Empty, Fill, Flex, ParentElement,
@@ -23,6 +21,8 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle, WeakViewHandle,
 };
+use itertools::Itertools;
+use lazy_static::lazy_static;
 
 use super::searcher::{EmbeddingSearchItemAction, EmbeddingSearchMixer};
 
@@ -376,8 +376,8 @@ impl View for EmbeddingSearchMenu {
 }
 
 pub mod styles {
-    use pathfinder_color::ColorU;
     use cognixui::elements::{Border, DropShadow, ScrollbarWidth};
+    use pathfinder_color::ColorU;
 
     use crate::{appearance::Appearance, themes::theme::Fill};
 

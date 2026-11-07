@@ -3,8 +3,8 @@ use crate::{
     pane_group::{AIFactPane, PaneContent},
     PaneViewLocator,
 };
-use std::collections::HashMap;
 use cognixui::{Entity, EntityId, ModelContext, SingletonEntity, ViewHandle, WindowId};
+use std::collections::HashMap;
 
 /// Singleton model to manage state of AI fact panes across multiple windows
 /// (where only one AI fact pane can exist per window). Specifically:

@@ -21,8 +21,8 @@ use cognix_core::features::FeatureFlag;
 use cognixui::keymap::BindingId;
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
 
-use super::conversations;
 use super::cognix_drive;
+use super::conversations;
 
 /// Store of all of the [`crate::search::DataSource`]s for the command palette.
 pub struct DataSourceStore {

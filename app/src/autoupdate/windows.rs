@@ -2,6 +2,8 @@ use crate::server::telemetry::TelemetryEvent;
 use anyhow::anyhow;
 use anyhow::{bail, Result};
 use channel_versions::VersionInfo;
+use cognix_core::channel::{Channel, ChannelState};
+use cognixui::AppContext;
 use command::blocking::Command;
 use lazy_static::lazy_static;
 use parking_lot::Mutex;
@@ -11,8 +13,6 @@ use std::sync::Arc;
 use std::{fs, io};
 use std::{io::Write as _, time::Duration};
 use tempfile::TempPath;
-use cognix_core::channel::{Channel, ChannelState};
-use cognixui::AppContext;
 
 use super::{release_assets_directory_url, DownloadReady};
 use crate::util::windows::install_dir;
@@ -127,8 +127,11 @@ pub(super) fn check_and_report_update_errors(ctx: &mut AppContext) {
     }
 
     // Fired when the mutex polling loop timed out and a force-kill was attempted.
-    let has_mutex_timeout =
-        memchr::memmem::find(&contents_lowercase, b"cognix mutex still held after timeout").is_some();
+    let has_mutex_timeout = memchr::memmem::find(
+        &contents_lowercase,
+        b"cognix mutex still held after timeout",
+    )
+    .is_some();
     if has_mutex_timeout {
         crate::send_telemetry_sync_from_app_ctx!(TelemetryEvent::AutoupdateMutexTimeout, ctx);
     }

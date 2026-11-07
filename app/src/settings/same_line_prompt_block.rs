@@ -1,5 +1,5 @@
-use settings::{RespectUserSyncSetting, SupportedPlatforms, SyncToCloud};
 use cognix_core::define_settings_group;
+use settings::{RespectUserSyncSetting, SupportedPlatforms, SyncToCloud};
 
 use serde::{Deserialize, Serialize};
 

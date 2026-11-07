@@ -3,8 +3,8 @@ mod tests {
     use std::sync::Arc;
 
     use chrono::{Duration, Utc};
-    use settings::manager::SettingsManager;
     use cognixui::{App, SingletonEntity};
+    use settings::manager::SettingsManager;
 
     use crate::auth::AuthStateProvider;
     use crate::cloud_object::model::persistence::CloudModel;

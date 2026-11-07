@@ -14,13 +14,13 @@ use std::{
 };
 
 use chrono::Utc;
+use cognixui::r#async::{executor::Background, Timer};
 use log::LevelFilter;
 use lsp::{
     spawn_lsp_service, supported_servers::LSPServerType, LspServerConfig, LspService,
     LspServiceInitializationResult,
 };
 use lsp_types::Position;
-use cognixui::r#async::{executor::Background, Timer};
 
 fn init_logging() {
     let mut base_logger = env_logger::builder();

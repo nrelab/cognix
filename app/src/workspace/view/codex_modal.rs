@@ -2,8 +2,6 @@ use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon;
 use crate::view_components::action_button::{ActionButton, ActionButtonTheme};
 use asset_macro::bundled_or_fetched_asset;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::Fill;
 use cognixui::elements::{
@@ -19,6 +17,8 @@ use cognixui::ui_components::components::UiComponent;
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 /// White button theme for the Codex modal CTA.
 struct WhiteButtonTheme;

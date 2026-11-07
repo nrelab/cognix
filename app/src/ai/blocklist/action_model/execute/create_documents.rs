@@ -1,5 +1,5 @@
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use futures::{future::BoxFuture, FutureExt};
 
 use crate::{
     ai::{

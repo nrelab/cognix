@@ -1,7 +1,7 @@
 use crate::ai::agent::api::convert_conversation::*;
 use crate::ai::agent::{AIAgentInput, UserQueryMode};
-use std::collections::HashMap;
 use cognix_multi_agent_api as api;
+use std::collections::HashMap;
 fn test_skill() -> api::Skill {
     api::Skill {
         descriptor: Some(api::SkillDescriptor {

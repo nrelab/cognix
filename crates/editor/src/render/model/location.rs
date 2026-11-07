@@ -1,8 +1,8 @@
 //! Hit-testing implementation for the rendering model.
 
+use cognixui::units::{IntoPixels, Pixels};
 use num_traits::SaturatingSub;
 use sum_tree::SeekBias;
-use cognixui::units::{IntoPixels, Pixels};
 
 use string_offset::CharOffset;
 

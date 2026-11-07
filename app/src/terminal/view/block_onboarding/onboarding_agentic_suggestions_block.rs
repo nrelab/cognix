@@ -11,13 +11,6 @@ use crate::terminal::History;
 use crate::terminal::TerminalView;
 use crate::ui_components::icons as UIIcon;
 use crate::user_config::themes_dir;
-use lazy_static::lazy_static;
-use markdown_parser::weight::CustomWeight;
-use markdown_parser::FormattedText;
-use markdown_parser::FormattedTextFragment;
-use markdown_parser::FormattedTextLine;
-use regex::Regex;
-use serde::{Deserialize, Serialize};
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::elements::CornerRadius;
@@ -37,6 +30,13 @@ use cognixui::{
     platform::Cursor,
     AppContext, Element, Entity, ModelHandle, SingletonEntity, View, ViewContext,
 };
+use lazy_static::lazy_static;
+use markdown_parser::weight::CustomWeight;
+use markdown_parser::FormattedText;
+use markdown_parser::FormattedTextFragment;
+use markdown_parser::FormattedTextLine;
+use regex::Regex;
+use serde::{Deserialize, Serialize};
 
 const ONBOARDING_BOX_WIDTH: f32 = 210.;
 const ONBOARDING_BOX_HEIGHT: f32 = 140.;

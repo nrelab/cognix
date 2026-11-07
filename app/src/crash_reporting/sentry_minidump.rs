@@ -22,6 +22,7 @@ use std::{
 };
 
 use anyhow::Context as _;
+use cognix_core::report_error;
 use command::blocking::Command;
 use crash_handler::{CrashContext, CrashHandler};
 use lazy_static::lazy_static;
@@ -32,7 +33,6 @@ use sentry::{
 };
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use cognix_core::report_error;
 
 use super::ToSentryTags;
 

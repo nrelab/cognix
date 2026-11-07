@@ -9,9 +9,9 @@
 use crate::report_if_error;
 use crate::terminal::general_settings::GeneralSettings;
 use ::settings::Setting;
-use std::path::{Path, PathBuf};
 use cognix_core::channel::ChannelState;
 use cognixui::{AppContext, SingletonEntity};
+use std::path::{Path, PathBuf};
 use winreg::enums::{HKEY_CURRENT_USER, KEY_SET_VALUE};
 use winreg::RegKey;
 

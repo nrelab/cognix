@@ -4,9 +4,9 @@ use cocoa::{
     base::{id, nil, BOOL},
     foundation::{NSArray, NSString, NSUInteger},
 };
-use objc::{msg_send, sel, sel_impl};
 use cognixui_core::keymap::Keystroke;
 use cognixui_core::platform::keyboard::{KeyCode, NativeKeyCode, PhysicalKey};
+use objc::{msg_send, sel, sel_impl};
 
 use super::make_nsstring;
 

@@ -1,7 +1,7 @@
 use crate::features::FeatureFlag;
+use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 use serde_json::{json, Value};
 use strum_macros::{EnumDiscriminants, EnumIter};
-use cognix_core::telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc};
 
 #[derive(Debug, EnumDiscriminants)]
 #[strum_discriminants(derive(EnumIter))]
@@ -332,7 +332,9 @@ impl TelemetryEventDesc for CliTelemetryEventDiscriminants {
             }
             CliTelemetryEventDiscriminants::Login => "Logged in via the Cognix CLI",
             CliTelemetryEventDiscriminants::Logout => "Logged out via the Cognix CLI",
-            CliTelemetryEventDiscriminants::Whoami => "Printed current user info from the Cognix CLI",
+            CliTelemetryEventDiscriminants::Whoami => {
+                "Printed current user info from the Cognix CLI"
+            }
             CliTelemetryEventDiscriminants::ProviderSetup => "Set up a provider via the Cognix CLI",
             CliTelemetryEventDiscriminants::ProviderList => "Listed providers from the Cognix CLI",
             CliTelemetryEventDiscriminants::IntegrationCreate => {

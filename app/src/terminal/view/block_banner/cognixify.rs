@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CrossAxisAlignment, Flex, HighlightedHyperlink,
@@ -12,6 +11,7 @@ use cognixui::{
     },
     AppContext, Element,
 };
+use pathfinder_color::ColorU;
 
 use crate::{
     appearance::Appearance,
@@ -79,7 +79,10 @@ pub struct CognixifyBannerState {
 }
 
 impl CognixifyBannerState {
-    pub fn new(mode: CognixificationMode, initialize_cognixify_keybinding: Option<Keystroke>) -> Self {
+    pub fn new(
+        mode: CognixificationMode,
+        initialize_cognixify_keybinding: Option<Keystroke>,
+    ) -> Self {
         Self {
             mode,
             height: 0.0,

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use futures_lite::future::yield_now;
 use cognixui::{AppContext, SingletonEntity};
+use futures_lite::future::yield_now;
 
 use crate::cloud_object::model::persistence::CloudModel;
 use crate::notebooks::manager::NotebookManager;

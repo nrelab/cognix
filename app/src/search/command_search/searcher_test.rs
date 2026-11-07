@@ -14,13 +14,13 @@ use crate::server::server_api::ServerApiProvider;
 use crate::server::telemetry::context_provider::AppTelemetryContextProvider;
 use crate::terminal::HistoryEntry;
 use crate::{appearance::Appearance, search::command_search::history::history_data_source};
+use cognixui::r#async::Timer;
+use cognixui::AppContext;
+use cognixui::{elements::Empty, App, Element};
 use itertools::Itertools;
 use ordered_float::OrderedFloat;
 use std::collections::HashSet;
 use std::time::Duration;
-use cognixui::r#async::Timer;
-use cognixui::AppContext;
-use cognixui::{elements::Empty, App, Element};
 
 #[derive(Clone, Debug)]
 enum TestItemAction {

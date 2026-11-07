@@ -1,8 +1,8 @@
 use ai::LLMId;
 use chrono::{DateTime, Utc};
+use cognixui::{App, SingletonEntity};
 use onboarding::slides::{AgentAutonomy, AgentDevelopmentSettings, ProjectOnboardingSettings};
 use onboarding::SelectedSettings;
-use cognixui::{App, SingletonEntity};
 
 use crate::ai::execution_profiles::profiles::AIExecutionProfilesModel;
 use crate::ai::execution_profiles::{

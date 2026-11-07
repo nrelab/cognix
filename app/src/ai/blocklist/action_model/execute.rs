@@ -24,6 +24,7 @@ use ai::agent::action_result::{InsertReviewCommentsResult, RequestCommandOutputR
 pub use ask_user_question::AskUserQuestionExecutor;
 pub(crate) use call_mcp_tool::coerce_integer_args;
 use call_mcp_tool::CallMCPToolExecutor;
+use cognix_core::{execution_mode::AppExecutionMode, features::FeatureFlag};
 use create_documents::CreateDocumentsExecutor;
 use edit_documents::EditDocumentsExecutor;
 use fetch_conversation::FetchConversationExecutor;
@@ -52,13 +53,9 @@ use suggest_new_conversation::SuggestNewConversationExecutor;
 pub use suggest_prompt::PromptSuggestionExecutor;
 use upload_artifact::UploadArtifactExecutor;
 use use_computer::UseComputerExecutor;
-use cognix_core::{execution_mode::AppExecutionMode, features::FeatureFlag};
 
 #[cfg(feature = "local_fs")]
 use crate::util::openable_file_type::is_binary_file;
-#[cfg(feature = "local_fs")]
-use futures::AsyncReadExt;
-use std::{any::Any, path::PathBuf, pin::Pin, sync::Arc};
 #[cfg(feature = "local_fs")]
 use cognix_files::{FileModel, TextFileReadResult};
 #[cfg(feature = "local_fs")]
@@ -69,6 +66,9 @@ use cognixui::{
     r#async::{Spawnable, SpawnableOutput},
     AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity,
 };
+#[cfg(feature = "local_fs")]
+use futures::AsyncReadExt;
+use std::{any::Any, path::PathBuf, pin::Pin, sync::Arc};
 
 #[cfg(feature = "local_fs")]
 use crate::util::image::{

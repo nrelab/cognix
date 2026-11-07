@@ -6,8 +6,8 @@ mod priority;
 use alias::{expand_command_aliases, AliasExpansionResult};
 pub use priority::Priority;
 
-use imp::*;
 use cognix_core::ui::theme::AnsiColorIdentifier;
+use imp::*;
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
@@ -15,9 +15,9 @@ use std::fmt::{self, Display, Formatter};
 use std::hash::{Hash, Hasher};
 
 use async_recursion::async_recursion;
+use cognix_command_signatures::IconType;
 use itertools::Itertools;
 use smol_str::SmolStr;
-use cognix_command_signatures::IconType;
 
 use crate::parsers::simple::parse_for_completions;
 use crate::{completer::describe::OptionCaseSensitivity, parsers::classify_command};

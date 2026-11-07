@@ -6,10 +6,10 @@ use std::{
 };
 
 use arborium::tree_sitter::{Language as ParserGrammar, Query};
+use cognix_editor::content::text::IndentUnit;
 use lazy_static::lazy_static;
 use rust_embed::RustEmbed;
 use serde::{Deserialize, Serialize};
-use cognix_editor::content::text::IndentUnit;
 
 #[derive(RustEmbed)]
 #[folder = "grammars"]

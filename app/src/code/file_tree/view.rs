@@ -1,3 +1,5 @@
+use cognix_util::path::LineAndColumnArg;
+use cognix_util::standardized_path::StandardizedPath;
 use editing::sort_entries_for_file_tree;
 use itertools::Itertools;
 use pathfinder_geometry::rect::RectF;
@@ -13,10 +15,7 @@ use std::collections::{HashMap, HashSet};
 use std::ops::Range;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
-use cognix_util::path::LineAndColumnArg;
-use cognix_util::standardized_path::StandardizedPath;
 
-use repo_metadata::repositories::DetectedRepositories;
 use cognix_core::send_telemetry_from_ctx;
 use cognixui::elements::{
     AcceptedByDropTarget, Align, Clipped, ConstrainedBox, Container, Dismiss, Draggable,
@@ -40,6 +39,7 @@ use cognixui::{
     ViewHandle,
 };
 use cognixui::{BlurContext, ModelHandle};
+use repo_metadata::repositories::DetectedRepositories;
 
 use crate::code::active_file::{ActiveFileEvent, ActiveFileModel};
 use crate::coding_panel_enablement_state::CodingPanelEnablementState;

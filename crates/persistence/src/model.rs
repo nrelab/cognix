@@ -3,9 +3,9 @@
 use std::collections::{HashMap, HashSet};
 
 use chrono::NaiveDateTime;
+use cognix_multi_agent_api::{self as api, response_event::stream_finished};
 use diesel::prelude::*;
 use serde::{Deserialize, Deserializer, Serialize};
-use cognix_multi_agent_api::{self as api, response_event::stream_finished};
 
 use super::schema::{
     active_mcp_servers, agent_conversations, agent_tasks, ai_document_panes, ai_memory_panes,

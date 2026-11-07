@@ -173,6 +173,10 @@ use block_onboarding::onboarding_agentic_suggestions_block::{
     OnboardingAgenticSuggestionsBlock, OnboardingAgenticSuggestionsBlockEvent, OnboardingChipType,
 };
 use block_onboarding::onboarding_drive_sharing_block::OnboardingDriveSharingBlock;
+use cognix_core::channel::ChannelState;
+use cognixui::elements::{shimmering_text::ShimmeringTextStateHandle, Border, ChildView};
+use cognixui::fonts::Properties;
+use cognixui::{ViewHandle, WeakModelHandle};
 pub use init::{
     init, CANCEL_COMMAND_KEYBINDING, TOGGLE_AUTOEXECUTE_MODE_KEYBINDING,
     TOGGLE_HIDE_CLI_RESPONSES_KEYBINDING, TOGGLE_QUEUE_NEXT_PROMPT_KEYBINDING,
@@ -184,10 +188,6 @@ use session_sharing_protocol::common::LongRunningCommandAgentInteractionState;
 use session_sharing_protocol::sharer::{RoleUpdateReason, SessionEndedReason, SessionSourceType};
 use ssh_file_upload::{FileUpload, FileUploadEvent};
 use uuid::Uuid;
-use cognix_core::channel::ChannelState;
-use cognixui::elements::{shimmering_text::ShimmeringTextStateHandle, Border, ChildView};
-use cognixui::fonts::Properties;
-use cognixui::{ViewHandle, WeakModelHandle};
 
 use crate::ai::agent::conversation::{AIConversation, AIConversationId, ConversationStatus};
 
@@ -274,6 +274,9 @@ use crate::terminal::block_filter::{
 use crate::terminal::block_list_viewport::OverhangingBlock;
 use crate::terminal::block_list_viewport::ScrollPositionUpdate;
 use crate::terminal::block_list_viewport::ScrollState;
+use crate::terminal::cognixify::{
+    render::render_subshell_separator, settings::CognixifySettings, SubshellSource,
+};
 use crate::terminal::command_corrections_denylist::COMMAND_CORRECTIONS_PREFERRED_DENYLIST;
 use crate::terminal::event::RemoteServerSetupState;
 use crate::terminal::general_settings::GeneralSettings;
@@ -309,9 +312,6 @@ use crate::terminal::shared_session::{
 };
 use crate::terminal::ssh::ssh_detection::SshInteractiveSessionDetected;
 use crate::terminal::view::block_onboarding::onboarding_prompt_block::OnboardingPromptBlock;
-use crate::terminal::cognixify::{
-    render::render_subshell_separator, settings::CognixifySettings, SubshellSource,
-};
 use crate::terminal::ShellLaunchData;
 use crate::terminal::{element_size_at_last_frame, HistoryEntry};
 use crate::terminal::{height_in_range_approx, heights_approx_gt, SizeUpdate};
@@ -340,6 +340,30 @@ use crate::{report_if_error, AIAgentActionResultType};
 
 use async_channel::{Receiver, Sender};
 use chrono::{DateTime, Local, NaiveDateTime};
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::user_preferences::GetUserPreferences as _;
+#[cfg(feature = "local_fs")]
+use cognix_util::path::LineAndColumnArg;
+use cognix_util::path::ShellFamily;
+use cognixui::clipboard::ClipboardContent;
+use cognixui::elements::new_scrollable::{
+    AxisConfiguration, ClippedAxisConfiguration, DualAxisConfig, NewScrollableElement,
+    ScrollableAppearance, SingleAxisConfig,
+};
+use cognixui::elements::{
+    get_rich_content_position_id, ChildAnchor, ClippedScrollStateHandle, Container,
+    CrossAxisAlignment, DispatchEventResult, DropTarget, DropTargetData, Empty, EventHandler,
+    Expanded, Flex, NewScrollable, OffsetPositioning, ParentAnchor, ParentElement,
+    ParentOffsetBounds, PositionedElementAnchor, PositionedElementOffsetBounds, Radius,
+    ScrollableElement, ScrollbarWidth, Shrinkable, Text,
+};
+use cognixui::event::ModifiersState;
+use cognixui::keymap::Keystroke;
+use cognixui::notification::{NotificationSendError, RequestPermissionsOutcome, UserNotification};
+use cognixui::platform::{Cursor, OperatingSystem};
+use cognixui::r#async::executor::Background;
+use cognixui::r#async::{SpawnedFutureHandle, Timer};
+use cognixui::windowing::WindowManager;
 use command_corrections::rules::{Rule, RuleId as CommandCorrectionsRuleId};
 use command_corrections::{correct_command, Command, Correction, HistoryItem, SessionMetadata};
 use enclose::enclose;
@@ -375,30 +399,6 @@ use std::thread::JoinHandle;
 use std::time::Duration;
 use sum_tree::SeekBias;
 use vec1::vec1;
-use cognix_core::context_flag::ContextFlag;
-use cognix_core::user_preferences::GetUserPreferences as _;
-#[cfg(feature = "local_fs")]
-use cognix_util::path::LineAndColumnArg;
-use cognix_util::path::ShellFamily;
-use cognixui::clipboard::ClipboardContent;
-use cognixui::elements::new_scrollable::{
-    AxisConfiguration, ClippedAxisConfiguration, DualAxisConfig, NewScrollableElement,
-    ScrollableAppearance, SingleAxisConfig,
-};
-use cognixui::elements::{
-    get_rich_content_position_id, ChildAnchor, ClippedScrollStateHandle, Container,
-    CrossAxisAlignment, DispatchEventResult, DropTarget, DropTargetData, Empty, EventHandler,
-    Expanded, Flex, NewScrollable, OffsetPositioning, ParentAnchor, ParentElement,
-    ParentOffsetBounds, PositionedElementAnchor, PositionedElementOffsetBounds, Radius,
-    ScrollableElement, ScrollbarWidth, Shrinkable, Text,
-};
-use cognixui::event::ModifiersState;
-use cognixui::keymap::Keystroke;
-use cognixui::notification::{NotificationSendError, RequestPermissionsOutcome, UserNotification};
-use cognixui::platform::{Cursor, OperatingSystem};
-use cognixui::r#async::executor::Background;
-use cognixui::r#async::{SpawnedFutureHandle, Timer};
-use cognixui::windowing::WindowManager;
 
 use cognixui::assets::asset_cache::{AssetCache, AssetCacheEvent};
 use cognixui::image_cache::ImageType;
@@ -422,7 +422,9 @@ use cognixui::{
     record_trace_event, WindowId,
 };
 
-use cognixui::{windowing, CursorInfo, EntityId, EventContext, ModelAsRef, SingletonEntity, Tracked};
+use cognixui::{
+    windowing, CursorInfo, EntityId, EventContext, ModelAsRef, SingletonEntity, Tracked,
+};
 
 use crate::ai_assistant::{AskAIType, ASK_AI_ASSISTANT_TEXT};
 use crate::appearance::{Appearance, AppearanceEvent};
@@ -506,9 +508,9 @@ use crate::terminal::{
     TerminalModel,
 };
 use crate::view_components::find::{Event as FindEvent, Find, FindDirection, FindWithinBlockState};
-use settings::{Setting, ToggleableSetting};
 use cognix_core::semantic_selection::SemanticSelection;
 use cognixui::text::SelectionType;
+use settings::{Setting, ToggleableSetting};
 
 use crate::menu::{Event as MenuEvent, Menu, MenuItem, MenuItemFields};
 use crate::server::telemetry::{BlockLatencyInfo, BootstrappingInfo};
@@ -523,9 +525,12 @@ use crate::{send_telemetry_from_ctx, send_telemetry_on_executor, send_telemetry_
 use self::link_detection::HighlightedLinkOption;
 use super::available_shells::AvailableShell;
 use super::block_list_viewport::FindMatchScrollLocation;
+use super::cognixify::success_block::{CognixifySuccessBlock, CognixifySuccessBlockEvent};
+use super::cognixify::trigger_state::{CognixifyState, SshBlockState};
+use super::cognixify::CognixificationSource;
 use super::event::SshLoginStatus;
 use super::find::FindOptions;
-use super::model::ansi::{SystemDetails, CognixificationUnavailableReason};
+use super::model::ansi::{CognixificationUnavailableReason, SystemDetails};
 use super::model::block::{
     BlockSection, BlocklistEnvVarMetadata, LONG_RUNNING_COMMAND_DURATION_MS,
 };
@@ -536,6 +541,10 @@ use super::model::secrets::RichContentSecretTooltipInfo;
 use super::model::selection::ExpandedSelectionRange;
 use super::model::session::SessionBootstrappedEvent;
 use super::settings::AltScreenPaddingMode;
+use super::ssh::cognixify::{
+    begin_cognixify_ssh_session_command, cognixify_ssh_session_command, SshCognixifyBlock,
+    SshCognixifyBlockEvent,
+};
 use super::ssh::error::{SshErrorBlock, SshErrorBlockEvent, SSH_ERROR_BLOCK_VISIBLE_KEY};
 use super::ssh::install_tmux::{
     install_root_tmux_script, install_tmux_script, SshInstallTmuxBlock, SshInstallTmuxBlockEvent,
@@ -547,14 +556,7 @@ use super::ssh::util::{
     convert_script_to_one_line, parse_interactive_ssh_command, InteractiveSshCommand,
     SshCognixifyCommand,
 };
-use super::ssh::cognixify::{
-    begin_cognixify_ssh_session_command, cognixify_ssh_session_command, SshCognixifyBlock,
-    SshCognixifyBlockEvent,
-};
 use super::ssh::SSH_COGNIXIFY_TIMEOUT_DURATION;
-use super::cognixify::success_block::{CognixifySuccessBlock, CognixifySuccessBlockEvent};
-use super::cognixify::trigger_state::{SshBlockState, CognixifyState};
-use super::cognixify::CognixificationSource;
 use super::{GridType, HistoryEvent};
 use crate::antivirus::AntivirusInfo;
 use crate::terminal::links::should_directly_open_link;
@@ -562,6 +564,7 @@ use crate::terminal::model_events::{AnsiHandlerEvent, ModelEvent, ModelEventDisp
 use action::RememberForCognixification;
 use block_banner::{render_cognixification_banner, CognixificationMode, CognixifyBannerState};
 use bookmarks::render_floating_block_snapshot;
+use cognix_core::command::ExitCode;
 use command_corrections::rules::generic::history::History as CommandCorrectionsHistoryRule;
 use init::{INPUT_BOX_VISIBLE_KEY, TOGGLE_BLOCK_FILTER_KEYBINDING};
 use inline_banner::{
@@ -575,7 +578,6 @@ use inline_banner::{
     AwsCliNotInstalledBannerAction, AwsCliNotInstalledBannerState, ByoLlmAuthBannerSessionState,
     OpenInCognixBannerState, SSHBannerAction, SSHBannerState, VimModeBannerAction,
 };
-use cognix_core::command::ExitCode;
 
 lazy_static! {
     // A set of commands that perform minimal work that we use as a baseline to measure the latency of blocks.
@@ -7931,7 +7933,10 @@ impl TerminalView {
         triggered_by_rc_file_snippet: bool,
         ctx: &mut ViewContext<Self>,
     ) {
-        self.dismiss_cognixify_banner(&RememberForCognixification::DoNotRememberSubshellCommand, ctx);
+        self.dismiss_cognixify_banner(
+            &RememberForCognixification::DoNotRememberSubshellCommand,
+            ctx,
+        );
 
         // Record the active long-running block so we can hide it later once the remote
         // actually confirms subshell bootstrap is in progress.
@@ -10140,7 +10145,8 @@ impl TerminalView {
 
                 // If this block ran a possible subshell command, and it exited before the 1s timer
                 // completed, abort showing the banner.
-                if let Some(abort_handle) = self.cognixify_state.take_subshell_banner_abort_handle() {
+                if let Some(abort_handle) = self.cognixify_state.take_subshell_banner_abort_handle()
+                {
                     abort_handle.abort();
                 }
 
@@ -14947,7 +14953,9 @@ impl TerminalView {
                             if is_markdown_file(&path) {
                                 items.push(
                                     MenuItemFields::new("Open in Cognix")
-                                        .with_on_select_action(TerminalAction::OpenFileInCognix(path))
+                                        .with_on_select_action(TerminalAction::OpenFileInCognix(
+                                            path,
+                                        ))
                                         .into_item(),
                                 );
                                 // Because the default for cmd-click is to open in Cognix, we also
@@ -23222,7 +23230,9 @@ impl TerminalView {
 
         match action {
             LearnMore => {
-                ctx.open_url("https://docs.cognix.dev/terminal/cognixify/ssh-legacy#implementation");
+                ctx.open_url(
+                    "https://docs.cognix.dev/terminal/cognixify/ssh-legacy#implementation",
+                );
             }
             Settings => {
                 if FeatureFlag::SSHTmuxWrapper.is_enabled() {
@@ -23783,7 +23793,9 @@ impl TerminalView {
         ctx: &mut ViewContext<Self>,
     ) {
         self.cognixify_state.set_shell_type(&shell_type);
-        self.model.lock().set_pending_cognix_initiated_control_mode();
+        self.model
+            .lock()
+            .set_pending_cognix_initiated_control_mode();
         if let Some(script) = cognixify_ssh_session_command(uname, shell_type, ctx) {
             self.clear_line_editor_and_write_to_pty_with_mac_workaround_hack(
                 convert_script_to_one_line(&script).into_bytes(),
@@ -23823,28 +23835,31 @@ impl TerminalView {
             .ssh_block_state()
             .and_then(|s| s.get_system_details(ctx))
             .to_owned();
-        self.cognixify_state.add_ssh_cognixify_timeout_handle(ctx.spawn(
-            async move {
-                Timer::after(duration).await;
-                (timeout_id, active_block_id, system_details)
-            },
-            |terminal_view, (timeout_id, active_block_id, system_details), ctx| {
-                let is_shell_detection =
-                    terminal_view.cognixify_state.is_shell_detection_in_progress();
-                if timeout_id == terminal_view.cognixify_state.timeout_id()
-                    && terminal_view.model.lock().block_list().active_block_id() == &active_block_id
-                {
-                    terminal_view.add_ssh_error_block(
-                        CognixificationUnavailableReason::Timeout {
-                            is_tmux_install: false,
-                            is_shell_detection,
-                            system_details,
-                        },
-                        ctx,
-                    );
-                }
-            },
-        ));
+        self.cognixify_state
+            .add_ssh_cognixify_timeout_handle(ctx.spawn(
+                async move {
+                    Timer::after(duration).await;
+                    (timeout_id, active_block_id, system_details)
+                },
+                |terminal_view, (timeout_id, active_block_id, system_details), ctx| {
+                    let is_shell_detection = terminal_view
+                        .cognixify_state
+                        .is_shell_detection_in_progress();
+                    if timeout_id == terminal_view.cognixify_state.timeout_id()
+                        && terminal_view.model.lock().block_list().active_block_id()
+                            == &active_block_id
+                    {
+                        terminal_view.add_ssh_error_block(
+                            CognixificationUnavailableReason::Timeout {
+                                is_tmux_install: false,
+                                is_shell_detection,
+                                system_details,
+                            },
+                            ctx,
+                        );
+                    }
+                },
+            ));
     }
 
     fn handle_detected_end_of_ssh_login(
@@ -24978,7 +24993,8 @@ impl TypedActionView for TerminalView {
                 else {
                     return;
                 };
-                let sshed = self.model.lock().is_cognixified_ssh() || session.is_legacy_ssh_session();
+                let sshed =
+                    self.model.lock().is_cognixified_ssh() || session.is_legacy_ssh_session();
                 if sshed && !self.is_file_drop_target {
                     self.is_file_drop_target = true;
                     ctx.notify();
@@ -25224,7 +25240,9 @@ impl TypedActionView for TerminalView {
                     cognix_md_path.push(COGNIX_MD_PATH);
                     #[cfg(feature = "local_fs")]
                     ctx.emit(Event::OpenCodeInCognix {
-                        source: CodeSource::ProjectRules { path: cognix_md_path },
+                        source: CodeSource::ProjectRules {
+                            path: cognix_md_path,
+                        },
                         layout: *crate::util::file::external_editor::EditorSettings::as_ref(ctx)
                             .open_file_layout
                             .value(),

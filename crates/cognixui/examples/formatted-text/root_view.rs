@@ -1,6 +1,5 @@
 //! A UI sample demonstrating how the SelectableArea element can be used.
 
-use markdown_parser::{parse_markdown, FormattedTextFragment, FormattedTextLine};
 use cognixui::fonts::FamilyId;
 use cognixui::SingletonEntity as _;
 use cognixui::{
@@ -10,6 +9,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use markdown_parser::{parse_markdown, FormattedTextFragment, FormattedTextLine};
 
 use cognixui::color::ColorU;
 use cognixui::elements::{Align, HighlightedHyperlink, HyperlinkLens};

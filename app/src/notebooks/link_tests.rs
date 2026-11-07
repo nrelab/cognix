@@ -4,12 +4,12 @@ use std::{
     sync::Arc,
 };
 
+use cognix_util::path::LineAndColumnArg;
+use cognixui::{App, ModelHandle, WindowId};
 use lazy_static::lazy_static;
 use parking_lot::Mutex;
 use tempfile::tempdir;
 use url::Url;
-use cognix_util::path::LineAndColumnArg;
-use cognixui::{App, ModelHandle, WindowId};
 
 use crate::{
     notebooks::{file::is_markdown_file, link::LinkEvent},

@@ -3,7 +3,7 @@ use std::rc::Rc;
 
 use super::color::{blend::Blend, contrast::MinimumAllowedContrast, ContrastingColor};
 use super::theme::color::internal_colors::{self, text_main};
-use super::theme::{Fill, CognixTheme};
+use super::theme::{CognixTheme, Fill};
 use cognixui::color::ColorU;
 use cognixui::elements::{
     ChildAnchor, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable,
@@ -214,17 +214,22 @@ impl UiBuilder {
                 )
             }
             ButtonVariant::Warn => (Fill::warn(), self.cognix_theme.foreground().with_opacity(0)),
-            ButtonVariant::Error => (Fill::error(), self.cognix_theme.foreground().with_opacity(0)),
+            ButtonVariant::Error => (
+                Fill::error(),
+                self.cognix_theme.foreground().with_opacity(0),
+            ),
             ButtonVariant::Outlined => {
                 return self.base_styles(
                     None,
                     self.cognix_theme.foreground().with_opacity(20),
-                    self.cognix_theme.sub_text_color(self.cognix_theme.background()),
+                    self.cognix_theme
+                        .sub_text_color(self.cognix_theme.background()),
                 );
             }
             ButtonVariant::Text => {
                 return self.text_button_styles(
-                    self.cognix_theme.sub_text_color(self.cognix_theme.background()),
+                    self.cognix_theme
+                        .sub_text_color(self.cognix_theme.background()),
                 );
             }
             ButtonVariant::Link => {
@@ -272,7 +277,9 @@ impl UiBuilder {
                     )),
                 self.cognix_theme.foreground().with_opacity(20),
             ),
-            ButtonVariant::Secondary => (self.cognix_theme.surface_3(), self.cognix_theme.outline()),
+            ButtonVariant::Secondary => {
+                (self.cognix_theme.surface_3(), self.cognix_theme.outline())
+            }
             ButtonVariant::Warn => (
                 Fill::warn().with_opacity(80),
                 self.cognix_theme.foreground().with_opacity(20),
@@ -285,7 +292,8 @@ impl UiBuilder {
                 return self.base_styles(
                     None,
                     self.cognix_theme.accent(),
-                    self.cognix_theme.sub_text_color(self.cognix_theme.background()),
+                    self.cognix_theme
+                        .sub_text_color(self.cognix_theme.background()),
                 );
             }
             ButtonVariant::Text => {
@@ -322,7 +330,9 @@ impl UiBuilder {
                     .blend(&Fill::black().with_opacity(*details.button_click_opacity())),
                 Fill::black().with_opacity(30),
             ),
-            ButtonVariant::Secondary => (self.cognix_theme.surface_3(), self.cognix_theme.outline()),
+            ButtonVariant::Secondary => {
+                (self.cognix_theme.surface_3(), self.cognix_theme.outline())
+            }
             ButtonVariant::Warn => (Fill::warn(), Fill::black().with_opacity(30)),
             ButtonVariant::Error => (Fill::error(), Fill::black().with_opacity(30)),
             ButtonVariant::Outlined => (
@@ -652,22 +662,35 @@ impl UiBuilder {
 
         Switch::new(
             mouse_state,
-            switch_margin_styles.merge(self.base_styles(
-                Some(Fill::Solid(*TRACK_COLOR)),
-                Fill::white(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
-            )),
+            switch_margin_styles.merge(
+                self.base_styles(
+                    Some(Fill::Solid(*TRACK_COLOR)),
+                    Fill::white(),
+                    self.cognix_theme
+                        .main_text_color(self.cognix_theme.surface_2()),
+                ),
+            ),
             None,
-            Some(switch_margin_styles.merge(self.base_styles(
-                Some(self.cognix_theme.accent()),
-                Fill::white(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
-            ))),
-            Some(switch_margin_styles.merge(self.base_styles(
-                Some(self.cognix_theme.disabled_ui_text_color()),
-                Fill::white(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
-            ))),
+            Some(
+                switch_margin_styles.merge(
+                    self.base_styles(
+                        Some(self.cognix_theme.accent()),
+                        Fill::white(),
+                        self.cognix_theme
+                            .main_text_color(self.cognix_theme.surface_2()),
+                    ),
+                ),
+            ),
+            Some(
+                switch_margin_styles.merge(
+                    self.base_styles(
+                        Some(self.cognix_theme.disabled_ui_text_color()),
+                        Fill::white(),
+                        self.cognix_theme
+                            .main_text_color(self.cognix_theme.surface_2()),
+                    ),
+                ),
+            ),
         )
         .with_thumb_hover_border(10.)
     }
@@ -795,7 +818,8 @@ impl UiBuilder {
             self.base_styles(
                 Some(self.cognix_theme.surface_2()),
                 self.cognix_theme.outline(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
+                self.cognix_theme
+                    .main_text_color(self.cognix_theme.surface_2()),
             ),
         )
     }
@@ -806,7 +830,8 @@ impl UiBuilder {
             self.base_styles(
                 Some(self.cognix_theme.surface_2()),
                 self.cognix_theme.outline(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
+                self.cognix_theme
+                    .main_text_color(self.cognix_theme.surface_2()),
             ),
             items,
         )
@@ -818,7 +843,8 @@ impl UiBuilder {
             self.base_styles(
                 Some(self.cognix_theme.surface_2()),
                 self.cognix_theme.outline(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
+                self.cognix_theme
+                    .main_text_color(self.cognix_theme.surface_2()),
             ),
         )
     }
@@ -834,7 +860,8 @@ impl UiBuilder {
             self.base_styles(
                 Some(self.cognix_theme.surface_2()),
                 self.cognix_theme.outline(),
-                self.cognix_theme.main_text_color(self.cognix_theme.surface_2()),
+                self.cognix_theme
+                    .main_text_color(self.cognix_theme.surface_2()),
             ),
         )
     }
@@ -857,9 +884,10 @@ impl UiBuilder {
         options: AnimatedButtonOptions,
     ) -> Button {
         let color = options.color.unwrap_or_else(|| {
-            self.cognix_theme
-                .foreground()
-                .on_background(self.cognix_theme.surface_2(), MinimumAllowedContrast::NonText)
+            self.cognix_theme.foreground().on_background(
+                self.cognix_theme.surface_2(),
+                MinimumAllowedContrast::NonText,
+            )
         });
 
         let border_color = if options.with_accent_animations {
@@ -985,7 +1013,9 @@ impl UiBuilder {
     }
 
     pub fn copy_button(&self, size: f32, mouse_state: MouseStateHandle) -> Button {
-        let color = self.cognix_theme.main_text_color(self.cognix_theme.surface_2());
+        let color = self
+            .cognix_theme
+            .main_text_color(self.cognix_theme.surface_2());
         let icon = Icon::new(COPY_SVG_PATH, color);
         let base_styles = UiComponentStyles {
             height: Some(size),
@@ -1152,7 +1182,10 @@ impl UiBuilder {
         };
 
         let text = Text::new_inline(text, self.ui_font_family(), self.ui_font_size() + 2.)
-            .with_color(text_main(&self.cognix_theme, self.cognix_theme.background()))
+            .with_color(text_main(
+                &self.cognix_theme,
+                self.cognix_theme.background(),
+            ))
             .with_style(Properties {
                 weight: Weight::Bold,
                 ..Default::default()
@@ -1160,7 +1193,10 @@ impl UiBuilder {
 
         let keystroke_styles = self
             .default_keyboard_shortcut_styles()
-            .set_font_color(text_main(&self.cognix_theme, self.cognix_theme.background()));
+            .set_font_color(text_main(
+                &self.cognix_theme,
+                self.cognix_theme.background(),
+            ));
         let keystrokes = KeyboardShortcut::new(keystroke, keystroke_styles);
 
         self.button_with_custom_styles(

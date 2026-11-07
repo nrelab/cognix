@@ -1,3 +1,4 @@
+use cognixui::App;
 use repo_metadata::{
     entry::{DirectoryEntry, Entry, FileMetadata},
     file_tree_store::FileTreeState,
@@ -5,7 +6,6 @@ use repo_metadata::{
     DirectoryWatcher, RepoMetadataModel,
 };
 use virtual_fs::{Stub, VirtualFS};
-use cognixui::App;
 
 use super::{
     extract_skill_parent_directory, find_skill_directories_in_tree, is_home_provider_path,
@@ -500,8 +500,10 @@ fn find_skill_directories_in_tree_finds_root_skills() {
             app.add_singleton_model(|_| DetectedRepositories::default());
             let repo_handle = watcher.update(&mut app, |w, ctx| {
                 w.add_directory(
-                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
-                        .unwrap(),
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                        &repo,
+                    )
+                    .unwrap(),
                     ctx,
                 )
                 .unwrap()
@@ -511,8 +513,10 @@ fn find_skill_directories_in_tree_finds_root_skills() {
             let model_handle = app.add_singleton_model(RepoMetadataModel::new);
             model_handle.update(&mut app, |model, ctx| {
                 let key =
-                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
-                        .unwrap();
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                        &repo,
+                    )
+                    .unwrap();
                 model.insert_test_state(key, state, ctx);
             });
 
@@ -644,8 +648,10 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
             app.add_singleton_model(|_| DetectedRepositories::default());
             let repo_handle = watcher.update(&mut app, |w, ctx| {
                 w.add_directory(
-                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
-                        .unwrap(),
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                        &repo,
+                    )
+                    .unwrap(),
                     ctx,
                 )
                 .unwrap()
@@ -655,8 +661,10 @@ fn find_skill_directories_in_tree_finds_subdirectory_skills() {
             let model_handle = app.add_singleton_model(RepoMetadataModel::new);
             model_handle.update(&mut app, |model, ctx| {
                 let key =
-                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
-                        .unwrap();
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                        &repo,
+                    )
+                    .unwrap();
                 model.insert_test_state(key, state, ctx);
             });
 
@@ -683,8 +691,10 @@ fn find_skill_directories_in_tree_empty_repo() {
         vfs.mkdir("repo/src");
 
         let src = Entry::Directory(DirectoryEntry {
-            path: cognix_util::standardized_path::StandardizedPath::try_from_local(&repo.join("src"))
-                .unwrap(),
+            path: cognix_util::standardized_path::StandardizedPath::try_from_local(
+                &repo.join("src"),
+            )
+            .unwrap(),
             children: vec![],
             ignored: false,
             loaded: true,
@@ -701,8 +711,10 @@ fn find_skill_directories_in_tree_empty_repo() {
             app.add_singleton_model(|_| DetectedRepositories::default());
             let repo_handle = watcher.update(&mut app, |w, ctx| {
                 w.add_directory(
-                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
-                        .unwrap(),
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                        &repo,
+                    )
+                    .unwrap(),
                     ctx,
                 )
                 .unwrap()
@@ -712,8 +724,10 @@ fn find_skill_directories_in_tree_empty_repo() {
             let model_handle = app.add_singleton_model(RepoMetadataModel::new);
             model_handle.update(&mut app, |model, ctx| {
                 let key =
-                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(&repo)
-                        .unwrap();
+                    cognix_util::standardized_path::StandardizedPath::from_local_canonicalized(
+                        &repo,
+                    )
+                    .unwrap();
                 model.insert_test_state(key, state, ctx);
             });
 

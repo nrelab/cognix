@@ -6,9 +6,9 @@ use crate::terminal::available_shells::AvailableShell;
 use crate::terminal::available_shells::AvailableShells;
 use crate::terminal::session_settings::{NewSessionSource, SessionSettings};
 use crate::terminal::ShellLaunchData;
-use std::path::PathBuf;
 use cognixui::SingletonEntity;
 use cognixui::{AppContext, ViewContext, WindowId};
+use std::path::PathBuf;
 
 impl Workspace {
     /// Helper function to compute the initial directory for a new session

@@ -1,5 +1,5 @@
-use serde::Serialize;
 use cognixui::{AppContext, SingletonEntity};
+use serde::Serialize;
 
 use crate::ai::llms::LLMId;
 use crate::CloudModel;

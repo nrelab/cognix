@@ -306,7 +306,8 @@ fn agent_run_cloud_accepts_mcp() {
 #[test]
 fn agent_run_cloud_accepts_run_ambient_alias() {
     // Ensure backwards compatibility: run-ambient should still work as an alias
-    let args = Args::try_parse_from(["cognix", "agent", "run-ambient", "--prompt", "hello"]).unwrap();
+    let args =
+        Args::try_parse_from(["cognix", "agent", "run-ambient", "--prompt", "hello"]).unwrap();
 
     let Some(Command::CommandLine(boxed_cmd)) = args.command else {
         panic!("Expected `cognix agent run-ambient` (alias) command");
@@ -358,7 +359,8 @@ fn agent_run_accepts_prompt_only() {
 
 #[test]
 fn agent_run_accepts_saved_prompt_only() {
-    let args = Args::try_parse_from(["cognix", "agent", "run", "--saved-prompt", "sp-123"]).unwrap();
+    let args =
+        Args::try_parse_from(["cognix", "agent", "run", "--saved-prompt", "sp-123"]).unwrap();
 
     let Some(Command::CommandLine(boxed_cmd)) = args.command else {
         panic!("Expected `cognix agent run` command");
@@ -1656,8 +1658,10 @@ fn run_message_list_parses_filters() {
 #[test]
 fn run_message_list_rejects_non_positive_limit() {
     assert!(
-        Args::try_parse_from(["cognix", "run", "message", "list", "run-123", "--limit", "0",])
-            .is_err()
+        Args::try_parse_from([
+            "cognix", "run", "message", "list", "run-123", "--limit", "0",
+        ])
+        .is_err()
     );
 }
 
@@ -1708,8 +1712,8 @@ fn run_message_read_parses() {
 
 #[test]
 fn run_message_mark_delivered_parses() {
-    let args =
-        Args::try_parse_from(["cognix", "run", "message", "mark-delivered", "message-456"]).unwrap();
+    let args = Args::try_parse_from(["cognix", "run", "message", "mark-delivered", "message-456"])
+        .unwrap();
 
     let Some(Command::CommandLine(boxed_cmd)) = args.command else {
         panic!("Expected `cognix run message mark-delivered` command");

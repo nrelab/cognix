@@ -10,10 +10,6 @@ use crate::search::item::SearchItem;
 use crate::search::result_renderer::ItemHighlightState;
 use crate::ui_components::icons::Icon;
 use crate::util::bindings::{BindingGroup, CommandBinding};
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
-use pathfinder_color::ColorU;
-use std::sync::Arc;
 use cognixui::elements::{
     Align, ConstrainedBox, Container, Flex, Highlight, ParentElement, Shrinkable, Text,
 };
@@ -21,6 +17,10 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::keymap::{DescriptionContext, Keystroke};
 use cognixui::ui_components::components::UiComponent;
 use cognixui::{AppContext, Element, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
+use pathfinder_color::ColorU;
+use std::sync::Arc;
 
 /// A matched binding from a search query.
 #[derive(Debug)]

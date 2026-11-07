@@ -1,6 +1,5 @@
 use std::iter;
 
-use pathfinder_geometry::vector::vec2f;
 use cognixui::clipboard::ClipboardContent;
 use cognixui::elements::{
     Border, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment,
@@ -11,9 +10,10 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::{
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognixui::elements::FormattedTextElement;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::ai::blocklist::code_block::{
     render_code_block_plain, CodeBlockOptions, CodeSnippetButtonHandles,

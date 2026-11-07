@@ -599,8 +599,8 @@ impl Input {
 }
 
 pub mod styles {
-    use pathfinder_color::ColorU;
     use cognix_core::ui::theme::CognixTheme;
+    use pathfinder_color::ColorU;
 
     use crate::ui_components::blended_colors;
 

@@ -8,13 +8,13 @@ use crate::ai::blocklist::action_model::AIConversationId;
 use crate::ai::skills::SkillManager;
 use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use ai::skills::{parse_skill, SkillReference};
+use cognixui::App;
 use repo_metadata::{
     repositories::DetectedRepositories, watcher::DirectoryWatcher, RepoMetadataModel,
 };
 use std::fs;
 use std::io::Write;
 use tempfile::TempDir;
-use cognixui::App;
 use watcher::HomeDirectoryWatcher;
 
 fn initialize_app(app: &mut App) {

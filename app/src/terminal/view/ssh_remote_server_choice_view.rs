@@ -16,7 +16,6 @@
 //!
 //! Dismissing the block (on click of either option, or when the session is
 //! deregistered) is the parent's responsibility.
-use settings::Setting;
 use cognix_core::ui::theme::color::internal_colors;
 use cognixui::{
     elements::{
@@ -28,6 +27,7 @@ use cognixui::{
     AppContext, Element, Entity, FocusContext, SingletonEntity, TypedActionView, View, ViewContext,
     ViewHandle,
 };
+use settings::Setting;
 
 use crate::{
     ai::blocklist::{
@@ -36,8 +36,8 @@ use crate::{
     },
     send_telemetry_from_ctx,
     server::telemetry::TelemetryEvent,
+    terminal::cognixify::settings::{CognixifySettings, SshExtensionInstallMode},
     terminal::model::session::SessionId,
-    terminal::cognixify::settings::{SshExtensionInstallMode, CognixifySettings},
     ui_components::blended_colors,
     Appearance,
 };
@@ -179,7 +179,9 @@ impl SshRemoteServerChoiceView {
                 "Manage Cognixify settings".into(),
                 None,
                 Some(Box::new(|ctx| {
-                    ctx.dispatch_typed_action(SshRemoteServerChoiceViewAction::OpenCognixifySettings);
+                    ctx.dispatch_typed_action(
+                        SshRemoteServerChoiceViewAction::OpenCognixifySettings,
+                    );
                 })),
                 self.manage_settings_mouse_state.clone(),
             )

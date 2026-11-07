@@ -12,12 +12,12 @@ use crate::rendering::OnGPUDeviceSelected;
 use crate::windowing;
 use crate::{r#async::block_on, rendering::GPUPowerPreference};
 use anyhow::{anyhow, Result};
+use cognixui_core::rendering::{GPUBackend, GPUDeviceInfo, GPUDeviceType};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use pathfinder_geometry::vector::Vector2F;
 use thiserror::Error;
 use version_compare::Version;
-use cognixui_core::rendering::{GPUBackend, GPUDeviceInfo, GPUDeviceType};
 use wgpu::{
     Adapter, Backend, CompositeAlphaMode, CurrentSurfaceTexture, Device, DeviceType, PresentMode,
     Queue, Surface, SurfaceConfiguration,

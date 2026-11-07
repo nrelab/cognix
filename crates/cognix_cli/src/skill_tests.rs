@@ -40,7 +40,9 @@ fn test_parse_full_path_with_org_repo() {
 
 #[test]
 fn test_parse_full_path_with_repo() {
-    let spec: SkillSpec = "cognix-server:.agents/skills/test/SKILL.md".parse().unwrap();
+    let spec: SkillSpec = "cognix-server:.agents/skills/test/SKILL.md"
+        .parse()
+        .unwrap();
     assert_eq!(spec.org, None);
     assert_eq!(spec.repo, Some("cognix-server".to_string()));
     assert_eq!(spec.skill_identifier, ".agents/skills/test/SKILL.md");

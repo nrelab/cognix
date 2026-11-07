@@ -3,12 +3,6 @@ use crate::terminal::model::session::SessionId;
 use crate::ui_components::icons::Icon as UIComponentsIcon;
 use async_channel::Sender;
 use chrono::{DateTime, Local};
-use fuzzy_match::match_indices;
-use itertools::Itertools;
-use pathfinder_geometry::vector::vec2f;
-use std::cmp::Ordering;
-use std::collections::HashSet;
-use std::{cmp, ops::Range, vec};
 use cognix_command_signatures::IconType;
 use cognix_completer::completer::{
     MatchType, PathSeparators, Suggestion, SuggestionResults, SuggestionType,
@@ -33,6 +27,12 @@ use cognixui::{
     fonts::{Cache, Properties, Weight},
     AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, WeakViewHandle,
 };
+use fuzzy_match::match_indices;
+use itertools::Itertools;
+use pathfinder_geometry::vector::vec2f;
+use std::cmp::Ordering;
+use std::collections::HashSet;
+use std::{cmp, ops::Range, vec};
 
 use crate::appearance::Appearance;
 use crate::terminal::history::LinkedWorkflowData;

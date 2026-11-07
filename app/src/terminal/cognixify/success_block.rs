@@ -10,7 +10,6 @@ use crate::ui_components::blended_colors;
 use crate::ui_components::icons::Icon as UiIcon;
 use crate::workspace::WorkspaceAction;
 use channel_versions::overrides::TargetOS;
-use parking_lot::RwLock;
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_core::ui::theme::CognixTheme;
 use cognixui::elements::{
@@ -22,6 +21,7 @@ use cognixui::{
     elements::{Border, Container, Flex, ParentElement},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use parking_lot::RwLock;
 
 use super::render::{HORIZONTAL_TEXT_MARGIN, SSH_DOCS_URL, SUBSHELL_DOCS_URL};
 use super::settings::CognixifySettings;
@@ -154,7 +154,11 @@ impl CognixifySuccessBlock {
             .finish()
     }
 
-    pub fn render_title_ui(&self, theme: &CognixTheme, appearance: &Appearance) -> Box<dyn Element> {
+    pub fn render_title_ui(
+        &self,
+        theme: &CognixTheme,
+        appearance: &Appearance,
+    ) -> Box<dyn Element> {
         let header_contents = render::build_header_row(
             "Session Cognixified",
             Icon::new(UiIcon::Cognix.into(), theme.active_ui_detail()),
@@ -252,7 +256,9 @@ impl CognixifySuccessBlock {
                         code_snippet.to_string(),
                     ));
 
-                    ctx.dispatch_typed_action(CognixifySuccessBlockAction::ClearAutoCognixifySnippet);
+                    ctx.dispatch_typed_action(
+                        CognixifySuccessBlockAction::ClearAutoCognixifySnippet,
+                    );
                 }
             })),
             Some(Box::new({

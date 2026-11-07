@@ -1315,9 +1315,11 @@ impl View for EnvVarCollectionView {
                             self.breadcrumbs.clone(),
                             appearance,
                             |ctx, _, breadcrumb| {
-                                ctx.dispatch_typed_action(EnvVarCollectionAction::ViewInCognixDrive(
-                                    breadcrumb.kind.into_item_id(),
-                                ));
+                                ctx.dispatch_typed_action(
+                                    EnvVarCollectionAction::ViewInCognixDrive(
+                                        breadcrumb.kind.into_item_id(),
+                                    ),
+                                );
                             },
                         ))
                         .with_horizontal_margin(CORE_HORIZONATAL_MARGIN)

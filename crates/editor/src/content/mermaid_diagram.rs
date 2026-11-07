@@ -4,13 +4,13 @@ use std::{
 };
 
 use bytes::Bytes;
-use mermaid_to_svg::MermaidTheme;
 use cognixui::{
     AppContext, SingletonEntity,
     assets::asset_cache::{AssetCache, AssetSource, AssetState, AsyncAssetId, AsyncAssetType},
     image_cache::ImageType,
     units::{IntoPixels, Pixels},
 };
+use mermaid_to_svg::MermaidTheme;
 
 use crate::render::{
     layout::TextLayout,

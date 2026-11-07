@@ -25,8 +25,8 @@ use crate::util::AsciiDebug;
 pub use crate::terminal::history::HistoryEntry;
 
 use super::ansi::{
-    FinishUpdateValue, InputBufferValue, Mode, PendingHook, TmuxInstallFailedInfo,
-    CognixificationUnavailableReason,
+    CognixificationUnavailableReason, FinishUpdateValue, InputBufferValue, Mode, PendingHook,
+    TmuxInstallFailedInfo,
 };
 use super::block::{
     AgentInteractionMetadata, Block, BlockId, BlockMetadata, BlockSize, BlocklistEnvVarMetadata,
@@ -61,13 +61,21 @@ use crate::terminal::model::session::SessionInfo;
 use crate::terminal::shell::{ShellName, ShellType};
 
 use crate::terminal::model::secrets::ObfuscateSecrets;
-use session_sharing_protocol::sharer::SessionSourceType;
 use cognix_core::report_error;
 #[cfg(not(target_family = "wasm"))]
 use cognixui::util::save_as_file;
+use session_sharing_protocol::sharer::SessionSourceType;
 
 use async_channel::Sender;
 use base64::Engine;
+use cognix_core::features::FeatureFlag;
+use cognix_core::semantic_selection::SemanticSelection;
+pub use cognix_terminal::model::BlockIndex;
+use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
+use cognixui::assets::asset_cache::Asset;
+use cognixui::image_cache::ImageType;
+use cognixui::r#async::executor::Background;
+use cognixui::AppContext;
 use hex::FromHexError;
 use instant::Instant;
 use itertools::{Either, Itertools};
@@ -82,14 +90,6 @@ use std::ops::{Range, RangeInclusive};
 use std::path::PathBuf;
 use std::str::FromStr;
 use std::sync::Arc;
-use cognix_core::features::FeatureFlag;
-use cognix_core::semantic_selection::SemanticSelection;
-pub use cognix_terminal::model::BlockIndex;
-use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
-use cognixui::assets::asset_cache::Asset;
-use cognixui::image_cache::ImageType;
-use cognixui::r#async::executor::Background;
-use cognixui::AppContext;
 
 /// Max size of the window title stack.
 const TITLE_STACK_MAX_DEPTH: usize = 4096;

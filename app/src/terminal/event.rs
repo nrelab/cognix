@@ -18,7 +18,7 @@ use crate::terminal::ClipboardType;
 use crate::util::AsciiDebug;
 
 use super::history::HistoryEntry;
-use super::model::ansi::{FinishUpdateValue, CognixificationUnavailableReason};
+use super::model::ansi::{CognixificationUnavailableReason, FinishUpdateValue};
 use super::model::block::BlockId;
 use super::model::session::{SessionId, SessionInfo};
 use super::model::terminal_model::{BlockIndex, ExitReason, TmuxInstallationState};

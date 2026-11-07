@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognixui::{
     elements::{
         CacheOption, ConstrainedBox, Flex, Icon, Image, MainAxisAlignment, MainAxisSize,
@@ -6,6 +5,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, TypedActionView, View,
 };
+use pathfinder_color::ColorU;
 
 pub struct RootView {}
 

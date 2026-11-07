@@ -9,13 +9,6 @@
 //! into [`View`] components as well. If that's ever deemed necessary, see [`RequestedCommandView`]
 //! for an example on how that transformation could be made.
 
-use lazy_static::lazy_static;
-use markdown_parser::FormattedText;
-use markdown_parser::FormattedTextFragment;
-use markdown_parser::FormattedTextLine;
-use pathfinder_color::ColorU;
-use std::borrow::Cow;
-use std::rc::Rc;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::color::internal_colors::neutral_2;
 use cognixui::elements::Align;
@@ -33,6 +26,13 @@ use cognixui::{
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, Element, EventContext, SingletonEntity,
 };
+use lazy_static::lazy_static;
+use markdown_parser::FormattedText;
+use markdown_parser::FormattedTextFragment;
+use markdown_parser::FormattedTextLine;
+use pathfinder_color::ColorU;
+use std::borrow::Cow;
+use std::rc::Rc;
 
 use super::inline_action_header::HeaderConfig;
 use crate::ai::blocklist::block::view_impl::WithContentItemSpacing;

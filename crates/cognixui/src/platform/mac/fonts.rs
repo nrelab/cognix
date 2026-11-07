@@ -1,6 +1,13 @@
 use super::text_layout::{layout_line, layout_text};
 use crate::fonts::font_kit::{properties_to_font_kit, Rasterizer};
 use anyhow::{anyhow, bail, Result};
+use cognixui_core::fonts::{
+    canvas::RasterFormat, FamilyId, FontId, FontInfo, GlyphId, Metrics, Properties,
+    RasterizedGlyph, SubpixelAlignment,
+};
+use cognixui_core::platform::{self, FontDB as _, LineStyle, TextLayoutSystem};
+use cognixui_core::rendering;
+use cognixui_core::text_layout::{ClipConfig, StyleAndFont, TextAlignment, TextFrame};
 use core_foundation::array::{CFArray, CFArrayRef};
 use core_foundation::base::{CFType, ItemRef, TCFType};
 use core_foundation::dictionary::CFDictionary;
@@ -30,13 +37,6 @@ use std::sync::{
     atomic::{AtomicUsize, Ordering},
     Arc,
 };
-use cognixui_core::fonts::{
-    canvas::RasterFormat, FamilyId, FontId, FontInfo, GlyphId, Metrics, Properties,
-    RasterizedGlyph, SubpixelAlignment,
-};
-use cognixui_core::platform::{self, FontDB as _, LineStyle, TextLayoutSystem};
-use cognixui_core::rendering;
-use cognixui_core::text_layout::{ClipConfig, StyleAndFont, TextAlignment, TextFrame};
 
 struct FontFamily {
     name: String,

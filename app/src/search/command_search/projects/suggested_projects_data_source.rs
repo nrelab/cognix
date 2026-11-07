@@ -1,9 +1,9 @@
 use chrono::{Duration, NaiveDateTime, Utc};
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 use fuzzy_match::match_indices_case_insensitive;
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 use std::path::Path;
-use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 use crate::search::command_palette::mixer::CommandPaletteItemAction;
 use crate::search::command_search::projects::{os_probably_case_sensitive, ProjectSearchItem};

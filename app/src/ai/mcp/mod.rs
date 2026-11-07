@@ -23,13 +23,13 @@ use crate::{
     },
     server::{ids::SyncId, sync_queue::QueueItem},
 };
+use cognix_core::ui::appearance::Appearance;
+use cognix_core::ui::Icon;
 #[cfg(not(target_family = "wasm"))]
 use diesel::{QueryDsl, RunQueryDsl, SqliteConnection};
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
-use cognix_core::ui::appearance::Appearance;
-use cognix_core::ui::Icon;
 
 pub mod manager;
 pub mod templatable_manager;
@@ -158,8 +158,8 @@ mod tests {
 }
 
 pub mod gallery;
-pub use gallery::MCPGalleryManager;
 use cognixui::{AppContext, SingletonEntity as _};
+pub use gallery::MCPGalleryManager;
 pub mod templatable;
 pub use templatable::JsonTemplate;
 pub use templatable::{TemplatableMCPServer, TemplateVariable};

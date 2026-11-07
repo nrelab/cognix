@@ -4,12 +4,12 @@ use crate::index::{
 use anyhow::anyhow;
 
 use chrono::{DateTime, Utc};
+use cognix_util::standardized_path::StandardizedPath;
 use itertools::Itertools;
 use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use repo_metadata::entry::is_file_parsable;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use cognix_util::standardized_path::StandardizedPath;
 
 use std::{
     collections::{HashMap, HashSet},

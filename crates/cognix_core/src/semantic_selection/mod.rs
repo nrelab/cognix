@@ -1,10 +1,10 @@
 use std::{collections::HashSet, ops::Range};
 
+use cognixui::elements::SmartSelectFn;
 use lazy_static::lazy_static;
 use regex::Regex;
 use settings::{macros::define_settings_group, Setting, SupportedPlatforms, SyncToCloud};
 use string_offset::ByteOffset;
-use cognixui::elements::SmartSelectFn;
 
 use cognixui::text::{
     word_boundaries::WordBoundariesPolicy,

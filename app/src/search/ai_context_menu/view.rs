@@ -34,11 +34,6 @@ use crate::search::result_renderer::{QueryResultRenderer, QueryResultRendererSty
 use crate::search::search_bar::{SearchBar, SearchBarEvent, SearchBarState, SearchResultOrdering};
 use crate::settings::InputSettings;
 use async_channel::Sender;
-use itertools::Itertools;
-use settings::Setting as _;
-use std::collections::HashSet;
-use std::ops::Range;
-use std::time::Duration;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::ConstrainedBox;
 use cognixui::elements::CrossAxisAlignment;
@@ -57,6 +52,11 @@ use cognixui::elements::{
     OffsetType, ParentElement, PositionedElementOffsetBounds, PositioningAxis, Radius,
     SavePosition, Shrinkable, Stack, Text, XAxisAnchor, YAxisAnchor,
 };
+use itertools::Itertools;
+use settings::Setting as _;
+use std::collections::HashSet;
+use std::ops::Range;
+use std::time::Duration;
 
 use cognixui::platform::Cursor;
 use cognixui::windowing::WindowManager;

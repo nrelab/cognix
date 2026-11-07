@@ -1,4 +1,5 @@
 #![cfg_attr(not(feature = "local_fs"), allow(dead_code))]
+use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 use fuzzy_match::{
     contains_wildcards, match_indices_case_insensitive, match_wildcard_pattern_case_insensitive,
     FuzzyMatchResult,
@@ -8,7 +9,6 @@ use std::{
     collections::HashSet,
     path::{Path, PathBuf},
 };
-use cognixui::{AppContext, Entity, ModelContext, SingletonEntity};
 
 cfg_if::cfg_if! {
     if #[cfg(feature = "local_fs")] {

@@ -1,4 +1,6 @@
 use arrayvec::ArrayVec;
+use cognixui::text::point::Point;
+use cognixui::text_layout::TextStyle;
 use num_traits::SaturatingSub;
 use std::{
     cmp,
@@ -8,8 +10,6 @@ use std::{
 };
 use string_offset::{ByteOffset, CharOffset};
 use sum_tree::{self, SeekBias, SumTree};
-use cognixui::text::point::Point;
-use cognixui::text_layout::TextStyle;
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 enum Run {

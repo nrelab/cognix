@@ -8,11 +8,11 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 
 use ai::diff_validation::AIRequestedCodeDiff;
+use cognix_core::send_telemetry_from_ctx;
+use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity as _, ViewHandle};
 use futures::{channel::oneshot, future::BoxFuture, FutureExt};
 use itertools::Itertools;
 use vec1::{vec1, Vec1};
-use cognix_core::send_telemetry_from_ctx;
-use cognixui::{Entity, EntityId, ModelContext, ModelHandle, SingletonEntity as _, ViewHandle};
 
 use apply_diff_model::ApplyDiffModel;
 pub(crate) use diff_application::apply_edits;

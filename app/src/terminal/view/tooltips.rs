@@ -53,8 +53,8 @@ fn open_in_cognix_tooltip(
         settings::CodeSettings, util::file::external_editor::EditorSettings,
         util::tooltips::should_show_open_in_cognix_link,
     };
-    use settings::Setting as _;
     use cognixui::SingletonEntity;
+    use settings::Setting as _;
 
     if !should_show_open_in_cognix_link(&path, app) {
         return None;

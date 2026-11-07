@@ -1,17 +1,6 @@
 use crate::ai::blocklist::view_util::render_provider_icon_button;
 use crate::ai::skills::{SkillOpenOrigin, SkillTelemetryEvent};
 use anyhow::Result;
-use lazy_static::lazy_static;
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use pathfinder_geometry::vector::vec2f;
-use rand::{distributions::Alphanumeric, thread_rng, Rng as _};
-use std::{
-    collections::HashMap,
-    path::{Path, PathBuf},
-    rc::Rc,
-    sync::Arc,
-    time::Duration,
-};
 use cognix_core::{
     features::FeatureFlag,
     platform::SessionPlatform,
@@ -48,6 +37,17 @@ use cognixui::{
     ui_components::components::{Coords, UiComponent, UiComponentStyles},
     AppContext, Element, Entity, FocusContext, ModelHandle, SingletonEntity, TypedActionView, View,
     ViewContext, ViewHandle,
+};
+use lazy_static::lazy_static;
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use pathfinder_geometry::vector::vec2f;
+use rand::{distributions::Alphanumeric, thread_rng, Rng as _};
+use std::{
+    collections::HashMap,
+    path::{Path, PathBuf},
+    rc::Rc,
+    sync::Arc,
+    time::Duration,
 };
 
 use super::malformed_line_heuristics::has_malformed_terminal_correction_signal;

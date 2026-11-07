@@ -1,11 +1,11 @@
 use super::styles::{HEADER_BORDER, HEADER_ROW_HEIGHT};
-use settings::Setting as _;
-use std::collections::HashMap;
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     units::{IntoPixels, Pixels},
     AppContext, Entity, ModelContext, ModelHandle, SingletonEntity, WindowId,
 };
+use settings::Setting as _;
+use std::collections::HashMap;
 
 use crate::settings::InputSettings;
 use crate::terminal::input::{

@@ -1,7 +1,7 @@
+use cognixui::integration::RERUN_EXIT_CODE;
 use command::blocking::Command;
 use std::env;
 use std::process::Stdio;
-use cognixui::integration::RERUN_EXIT_CODE;
 
 const MAX_TEST_RUNS: usize = 10;
 

@@ -1,3 +1,4 @@
+use cognix_util::content_version::ContentVersion;
 use core::fmt;
 use itertools::{Either, Itertools};
 use line_ending::LineEnding;
@@ -17,7 +18,6 @@ use std::{
     sync::Arc,
 };
 use vec1::{Vec1, vec1};
-use cognix_util::content_version::ContentVersion;
 
 use super::{
     anchor::{Anchor, AnchorSide, Anchors},
@@ -50,15 +50,15 @@ use crate::{
     multiline::{self, AnyMultilineString, LF, MultilineString},
     render::model::{EmbeddedItem, RenderedSelection, RenderedSelectionBias, RenderedSelectionSet},
 };
-use enum_iterator::all;
-use string_offset::{ByteOffset, CharOffset};
-use sum_tree::{SeekBias, SumTree};
 use cognixui::{AppContext, Entity, ModelContext};
 use cognixui::{EntityId, ModelHandle, elements::ListIndentLevel};
 use cognixui::{
     fonts::Weight,
     text::{TextBuffer, char_slice, point::Point},
 };
+use enum_iterator::all;
+use string_offset::{ByteOffset, CharOffset};
+use sum_tree::{SeekBias, SumTree};
 
 /// Format of the passed in text.
 #[derive(Clone, Debug, Copy)]

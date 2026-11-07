@@ -2,10 +2,10 @@ mod file_tree_state;
 
 use crate::file_tree_store::file_tree_state::FileTreeMapStore;
 use crate::{BuildTreeError, Entry, FileId, FileMetadata, Repository};
-use ignore::gitignore::Gitignore;
-use std::sync::Arc;
 use cognix_util::standardized_path::StandardizedPath;
 use cognixui::ModelHandle;
+use ignore::gitignore::Gitignore;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub struct FileTreeEntry {

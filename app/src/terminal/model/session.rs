@@ -5,6 +5,10 @@ use async_channel::Sender;
 pub use command_executor::*;
 
 use anyhow::Result;
+use cognix_util::path::{
+    convert_msys2_to_windows_native_path, convert_wsl_to_windows_host_path, msys2_exe_to_root,
+    ShellFamily,
+};
 use futures::future::{BoxFuture, Shared};
 use futures::FutureExt;
 use instant::Instant;
@@ -17,16 +21,12 @@ use std::ops::Deref;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use typed_path::{TypedPath, TypedPathBuf, WindowsPath};
-use cognix_util::path::{
-    convert_msys2_to_windows_native_path, convert_wsl_to_windows_host_path, msys2_exe_to_root,
-    ShellFamily,
-};
 
-use version_compare::Version;
 use cognix_completer::completer::{
     CommandExitStatus, CommandOutput, PathSeparators, TopLevelCommandCaseSensitivity,
 };
 use cognixui::{platform::OperatingSystem, Entity, ModelContext, SingletonEntity};
+use version_compare::Version;
 
 #[cfg(feature = "local_tty")]
 use crate::features::FeatureFlag;
@@ -37,8 +37,8 @@ use crate::terminal::event::ExecutedExecutorCommandEvent;
 use crate::terminal::ShellHost;
 use crate::terminal::ShellLaunchData;
 
-use crate::terminal::shell::{Shell, ShellType};
 use crate::terminal::cognixify::SubshellSource;
+use crate::terminal::shell::{Shell, ShellType};
 use crate::terminal::History;
 
 use super::ansi::{BootstrappedValue, InitShellValue, SSHValue};
@@ -824,14 +824,18 @@ pub enum SessionType {
     /// `RemoteServerManager` has completed the connection handshake. It is
     /// `None` when the feature flag is off or the connection hasn't been
     /// established yet.
-    CognixifiedRemote { host_id: Option<cognix_core::HostId> },
+    CognixifiedRemote {
+        host_id: Option<cognix_core::HostId>,
+    },
 }
 
 impl From<BootstrapSessionType> for SessionType {
     fn from(bst: BootstrapSessionType) -> Self {
         match bst {
             BootstrapSessionType::Local => SessionType::Local,
-            BootstrapSessionType::CognixifiedRemote => SessionType::CognixifiedRemote { host_id: None },
+            BootstrapSessionType::CognixifiedRemote => {
+                SessionType::CognixifiedRemote { host_id: None }
+            }
         }
     }
 }

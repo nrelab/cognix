@@ -7,6 +7,12 @@ use std::{fmt, future};
 use async_compat::{Compat, CompatExt};
 use async_stream::stream;
 use bytes::Bytes;
+use cognix_core::{
+    channel::{Channel, ChannelState},
+    execution_mode,
+    operating_system_info::OperatingSystemInfo,
+    report_error,
+};
 use futures::{Stream, StreamExt};
 use http::HeaderValue;
 use http::header::HeaderName;
@@ -15,12 +21,6 @@ use reqwest::IntoUrl;
 use reqwest_eventsource::RequestBuilderExt;
 use serde::Serialize;
 use serde::de::DeserializeOwned;
-use cognix_core::{
-    channel::{Channel, ChannelState},
-    execution_mode,
-    operating_system_info::OperatingSystemInfo,
-    report_error,
-};
 
 pub mod headers {
     /// Custom Cognix header indicating the version of the Cognix app.
@@ -310,8 +310,10 @@ impl Client {
                 .linux_kernel_version()
                 .and_then(|kernel_version| HeaderValue::from_str(kernel_version).ok())
             {
-                builder =
-                    builder.header(headers::COGNIX_OS_LINUX_KERNEL_VERSION, linux_kernel_version);
+                builder = builder.header(
+                    headers::COGNIX_OS_LINUX_KERNEL_VERSION,
+                    linux_kernel_version,
+                );
             }
         }
 
@@ -656,7 +658,8 @@ impl<'c> oauth2::AsyncHttpClient<'c> for Client {
 
     fn call(&'c self, request: oauth2::HttpRequest) -> Self::Future {
         Box::pin(async move {
-            let include_cognix_headers = Self::include_cognix_http_headers(request.uri().to_string());
+            let include_cognix_headers =
+                Self::include_cognix_http_headers(request.uri().to_string());
             let builder = reqwest::RequestBuilder::from_parts(
                 self.wrapped.clone(),
                 request.try_into().map_err(Box::new)?,

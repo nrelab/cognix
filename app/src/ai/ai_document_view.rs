@@ -47,7 +47,6 @@ use crate::{
     ui_components::icons::Icon,
     view_components::action_button::{ActionButton, PrimaryTheme},
 };
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::icons;
 use cognix_core::ui::icons::ICON_DIMENSIONS;
 use cognix_core::ui::theme::Fill as ThemeFill;
@@ -70,6 +69,7 @@ use cognixui::{
     ViewHandle,
 };
 use cognixui::{id, EntityId};
+use pathfinder_geometry::vector::vec2f;
 
 pub fn init(app: &mut AppContext) {
     app.register_editable_bindings([EditableBinding::new(
@@ -1174,9 +1174,9 @@ impl TypedActionView for AIDocumentView {
                     AIDocumentModel::as_ref(ctx).get_current_document(&self.document_id)
                 {
                     if let Some(sync_id) = document.sync_id {
-                        ctx.emit(AIDocumentEvent::ViewInCognixDrive(CognixDriveItemId::Object(
-                            CloudObjectTypeAndId::Notebook(sync_id),
-                        )));
+                        ctx.emit(AIDocumentEvent::ViewInCognixDrive(
+                            CognixDriveItemId::Object(CloudObjectTypeAndId::Notebook(sync_id)),
+                        ));
                     }
                 }
             }
@@ -1223,8 +1223,8 @@ impl BackingView for AIDocumentView {
         let mut menu_items = vec![];
 
         // Only show shareable link when the document is synced to Cognix Drive
-        if let Some(link) =
-            AIDocumentModel::as_ref(ctx).get_document_cognix_drive_object_link(&self.document_id, ctx)
+        if let Some(link) = AIDocumentModel::as_ref(ctx)
+            .get_document_cognix_drive_object_link(&self.document_id, ctx)
         {
             menu_items.push(
                 MenuItemFields::new("Copy link")

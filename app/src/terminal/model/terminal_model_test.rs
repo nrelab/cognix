@@ -6,11 +6,11 @@ use crate::terminal::model::grid::Dimensions as _;
 use crate::terminal::model::index::Side;
 use crate::terminal::model::selection::ExpandedSelectionRange;
 use chrono::{DateTime, Local};
-use vec1::vec1;
 use cognix_core::command::ExitCode;
 use cognix_terminal::model::ansi::ClearMode;
 use cognixui::text::str_to_byte_vec;
 use cognixui::text::SelectionType;
+use vec1::vec1;
 
 /// Helper function to create a SerializedBlock with default values,
 /// including the new is_local field.

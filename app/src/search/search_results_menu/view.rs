@@ -4,9 +4,6 @@ use crate::search::search_bar::{
     CreateQueryResultRendererFn, SearchBar, SearchBarEvent, SearchBarState, SearchResultOrdering,
 };
 use crate::search::QueryFilter;
-use itertools::Itertools;
-use std::marker::PhantomData;
-use std::ops::Range;
 use cognixui::elements::{
     ConstrainedBox, Container, Empty, Flex, ParentElement, SavePosition, ScrollStateHandle,
     Scrollable, ScrollableElement, ScrollbarWidth, Text, UniformList, UniformListState,
@@ -16,6 +13,9 @@ use cognixui::{
     Action, AppContext, Element, Entity, ModelHandle, SingletonEntity, View, ViewContext,
     ViewHandle, WeakViewHandle,
 };
+use itertools::Itertools;
+use std::marker::PhantomData;
+use std::ops::Range;
 
 use super::styles::{ESTIMATED_RESULT_HEIGHT, MAX_DISPLAYED_RESULT_COUNT};
 

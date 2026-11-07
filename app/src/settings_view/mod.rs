@@ -30,26 +30,6 @@ use appearance_page::{AppearancePageAction, AppearanceSettingsPageView};
 use billing_and_usage_page::{BillingAndUsagePageEvent, BillingAndUsagePageView};
 use code_page::CodeSubpage;
 use code_page::{CodeSettingsPageAction, CodeSettingsPageEvent};
-use environments_page::EnvironmentsPageView;
-use features_page::{FeaturesPageView, FeaturesSettingsPageEvent};
-use itertools::Itertools as _;
-use keybindings::KeybindingsView;
-use main_page::{MainPageAction, MainSettingsPageEvent, MainSettingsPageView};
-use mcp_servers_page::MCPServersSettingsPageView;
-use nav::{SettingsNavItem, SettingsUmbrella};
-use pathfinder_geometry::vector::Vector2F;
-use privacy_page::{PrivacyPageView, PrivacyPageViewEvent};
-use referrals_page::{ReferralsPageEvent, ReferralsPageView};
-use settings_file_footer::{render_footer, SettingsFooterKind, SettingsFooterMouseStates};
-use settings_page::{
-    MatchData, SettingsPage, SettingsPageEvent, SettingsPageMeta, SettingsPageViewHandle,
-    HEADER_PADDING,
-};
-use show_blocks_view::{ShowBlocksEvent, ShowBlocksView};
-use std::collections::HashMap;
-use std::path::PathBuf;
-use std::str::FromStr;
-use teams_page::{TeamsPageView, TeamsPageViewEvent};
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::{
     channel::ChannelState, context_flag::ContextFlag, features::FeatureFlag,
@@ -72,6 +52,26 @@ use cognixui::{
     Action, AppContext, Entity, ModelHandle, SingletonEntity, TypedActionView, UpdateView as _,
     View, ViewContext, ViewHandle,
 };
+use environments_page::EnvironmentsPageView;
+use features_page::{FeaturesPageView, FeaturesSettingsPageEvent};
+use itertools::Itertools as _;
+use keybindings::KeybindingsView;
+use main_page::{MainPageAction, MainSettingsPageEvent, MainSettingsPageView};
+use mcp_servers_page::MCPServersSettingsPageView;
+use nav::{SettingsNavItem, SettingsUmbrella};
+use pathfinder_geometry::vector::Vector2F;
+use privacy_page::{PrivacyPageView, PrivacyPageViewEvent};
+use referrals_page::{ReferralsPageEvent, ReferralsPageView};
+use settings_file_footer::{render_footer, SettingsFooterKind, SettingsFooterMouseStates};
+use settings_page::{
+    MatchData, SettingsPage, SettingsPageEvent, SettingsPageMeta, SettingsPageViewHandle,
+    HEADER_PADDING,
+};
+use show_blocks_view::{ShowBlocksEvent, ShowBlocksView};
+use std::collections::HashMap;
+use std::path::PathBuf;
+use std::str::FromStr;
+use teams_page::{TeamsPageView, TeamsPageViewEvent};
 
 mod about_page;
 mod admin_actions;
@@ -81,6 +81,8 @@ mod appearance_page;
 mod billing_and_usage;
 mod billing_and_usage_page;
 mod code_page;
+mod cognix_drive_page;
+mod cognixify_page;
 mod delete_environment_confirmation_dialog;
 mod directory_color_add_picker;
 pub(crate) mod environments_page;
@@ -106,8 +108,6 @@ mod teams_page;
 mod telemetry;
 mod transfer_ownership_confirmation_modal;
 pub mod update_environment_form;
-mod cognix_drive_page;
-mod cognixify_page;
 
 #[cfg(not(target_family = "wasm"))]
 pub(crate) use ai_page::cli_agent_settings_widget_id;
@@ -2581,7 +2581,9 @@ impl TypedActionView for SettingsView {
             }
             SettingsAction::CognixDrive(cognix_drive_action) => {
                 if let Some(cognix_drive_page) = self.settings_page(SettingsSection::CognixDrive) {
-                    if let SettingsPageViewHandle::CognixDrive(view) = &cognix_drive_page.view_handle {
+                    if let SettingsPageViewHandle::CognixDrive(view) =
+                        &cognix_drive_page.view_handle
+                    {
                         view.update(ctx, |view, ctx| {
                             view.handle_action(cognix_drive_action, ctx);
                         })

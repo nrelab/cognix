@@ -1,8 +1,6 @@
 //! SearchItem implementation for plan menu items.
 
 use ai::document::AIDocumentId;
-use fuzzy_match::FuzzyMatchResult;
-use ordered_float::OrderedFloat;
 use cognix_core::ui::theme::Fill;
 use cognix_core::ui::Icon;
 use cognixui::elements::{ConstrainedBox, Container, Highlight, ParentElement, Shrinkable, Text};
@@ -10,6 +8,8 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::prelude::{Align, CrossAxisAlignment, Flex, MainAxisAlignment, MainAxisSize};
 use cognixui::text_layout::ClipConfig;
 use cognixui::{AppContext, Element, SingletonEntity};
+use fuzzy_match::FuzzyMatchResult;
+use ordered_float::OrderedFloat;
 
 use crate::ai::document::ai_document_model::{AIDocument, AIDocumentVersion};
 use crate::appearance::Appearance;

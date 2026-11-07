@@ -105,11 +105,6 @@ use ai::project_context::model::ProjectContextModel;
 use num_traits::SaturatingSub;
 use string_offset::CharOffset;
 
-use indexmap::IndexMap;
-use itertools::Itertools;
-use pathfinder_geometry::rect::RectF;
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use rand::{distributions::Alphanumeric, Rng};
 use cognix_core::{
     channel::{Channel, ChannelState},
     features::FeatureFlag,
@@ -153,6 +148,11 @@ use cognixui::{
     r#async::SpawnedFutureHandle,
     ModelHandle, WeakViewHandle,
 };
+use indexmap::IndexMap;
+use itertools::Itertools;
+use pathfinder_geometry::rect::RectF;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use rand::{distributions::Alphanumeric, Rng};
 
 use crate::code::footer::{CodeFooterView, CodeFooterViewEvent};
 use crate::settings::AISettings;

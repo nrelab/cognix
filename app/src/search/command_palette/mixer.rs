@@ -6,11 +6,11 @@ use crate::search::mixer::SearchMixer;
 use crate::server::ids::SyncId;
 use crate::util::bindings::CommandBinding;
 use crate::workspace::PaneViewLocator;
-use std::sync::Arc;
-use strum_macros::IntoStaticStr;
 use cognix_util::path::LineAndColumnArg;
 use cognixui::keymap::BindingId;
 use cognixui::{EntityId, WindowId};
+use std::sync::Arc;
+use strum_macros::IntoStaticStr;
 
 pub type CommandPaletteMixer = SearchMixer<CommandPaletteItemAction>;
 

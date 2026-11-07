@@ -7,8 +7,8 @@ use std::borrow::Cow;
 
 use anyhow::Result;
 use async_trait::async_trait;
-use rust_embed::RustEmbed;
 use cognix_completer::ParsedTokensSnapshot;
+use rust_embed::RustEmbed;
 
 use crate::{
     ClassificationResult, Context, InputClassifier, InputType,

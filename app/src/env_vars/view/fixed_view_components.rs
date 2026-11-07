@@ -1,5 +1,3 @@
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::Vector2F;
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     elements::{
@@ -13,6 +11,8 @@ use cognixui::{
     },
     Element, ViewContext,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::Vector2F;
 
 use crate::{
     drive::sharing::{ContentEditability, SharingAccessLevel},

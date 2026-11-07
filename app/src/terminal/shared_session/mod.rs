@@ -1,9 +1,9 @@
 use byte_unit::Byte;
+use cognixui::{id, keymap::ContextPredicate, AppContext};
 use instant::Duration;
 use serde::{Deserialize, Serialize};
 use session_sharing_protocol::common::{Role, Scrollback, ScrollbackBlock, SessionId};
 use session_sharing_protocol::sharer::SessionSourceType;
-use cognixui::{id, keymap::ContextPredicate, AppContext};
 
 use crate::{
     channel::{Channel, ChannelState},

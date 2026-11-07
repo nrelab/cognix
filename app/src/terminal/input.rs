@@ -226,6 +226,7 @@ use crate::{
 
 use ai::skills::SkillReference;
 use base64::Engine as _;
+use cognix_completer::util::parse_current_commands_and_tokens;
 #[cfg(feature = "local_fs")]
 use diesel::SqliteConnection;
 use futures::FutureExt as _;
@@ -249,7 +250,6 @@ use std::{
 use string_offset::CharOffset;
 use vec1::Vec1;
 use vim::vim::{VimHandler, VimMode};
-use cognix_completer::util::parse_current_commands_and_tokens;
 
 use cognix_completer::{
     completer::{
@@ -305,6 +305,7 @@ use self::decorations::InputBackgroundJobOptions;
 use super::{
     alias::is_expandable_alias,
     block_list_viewport::InputMode,
+    cognixify::SubshellSource,
     event::{BlockCompletedEvent, BlockType, UserBlockCompleted},
     ligature_settings::LigatureSettings,
     model::{
@@ -338,7 +339,6 @@ use super::{
         ExecuteCommandEvent, SyncInputType, TerminalAction,
         PADDING_LEFT as TERMINAL_VIEW_PADDING_LEFT,
     },
-    cognixify::SubshellSource,
     History, HistoryEntry, SizeInfo, TerminalModel, UpArrowHistoryConfig,
 };
 use crate::ai::blocklist::agent_view::{
@@ -8978,7 +8978,8 @@ impl Input {
                             // the completions finish quickly, since that causes a jittery UX.
                             let _ = ctx.spawn(
                                 async move {
-                                    cognixui::r#async::Timer::after(Duration::from_millis(750)).await;
+                                    cognixui::r#async::Timer::after(Duration::from_millis(750))
+                                        .await;
                                     old_buffer_text_original
                                 },
                                 move |input, old_buffer_text_original, ctx| {

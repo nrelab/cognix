@@ -1,12 +1,12 @@
 use std::{path::PathBuf, time::Duration};
 
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
-use settings::Setting;
 use cognixui::{
     async_assert,
     integration::{AssertionOutcome, StepData, TestStep},
     App, ReadModel, SingletonEntity, UpdateModel, WindowId,
 };
+use settings::Setting;
 
 use crate::{
     integration_testing::step::new_step_with_default_assertions, settings::CodeSettings,

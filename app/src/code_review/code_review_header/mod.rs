@@ -13,7 +13,6 @@ use crate::{
     ui_components::icons::Icon,
     view_components::action_button::ActionButton,
 };
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::features::FeatureFlag;
 use cognixui::elements::{Hoverable, ParentElement};
 use cognixui::platform::Cursor;
@@ -31,6 +30,7 @@ use cognixui::{
     },
     AppContext, Element, ModelHandle, ViewHandle,
 };
+use pathfinder_geometry::vector::vec2f;
 
 // This is a best effort guess of the size of all of the elements in the header to know when we should start to wrap to the second row
 const HEADER_WRAP_BREAKPOINT: f32 = 450.;
@@ -445,7 +445,9 @@ impl CodeReviewHeader {
                     .build()
                     .finish()
             })
-            .with_tooltip_position(cognixui::ui_components::button::ButtonTooltipPosition::AboveLeft)
+            .with_tooltip_position(
+                cognixui::ui_components::button::ButtonTooltipPosition::AboveLeft,
+            )
             .build()
             .on_click(|ctx, _, _| {
                 ctx.dispatch_typed_action(CodeReviewAction::AddDiffSetAsContext(

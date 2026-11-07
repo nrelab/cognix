@@ -6,9 +6,9 @@
 
 use std::ops::Deref;
 
-use settings::PrivatePreferences;
 use cognixui::SingletonEntity;
 use cognixui_extras::user_preferences::UserPreferences;
+use settings::PrivatePreferences;
 
 /// An extension trait on [`cognixui::AppContext`] for accessing private user
 /// preferences.

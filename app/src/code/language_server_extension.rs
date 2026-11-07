@@ -1,7 +1,3 @@
-use lsp::{HoverContents, LspServerLogLevel, MarkupKind};
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use num_traits::SaturatingSub;
-use string_offset::CharOffset;
 use cognix_core::ui::{
     appearance::Appearance,
     theme::{color::internal_colors, CognixTheme},
@@ -18,6 +14,10 @@ use cognixui::{
     },
     AppContext, Element, SingletonEntity, ViewContext,
 };
+use lsp::{HoverContents, LspServerLogLevel, MarkupKind};
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use num_traits::SaturatingSub;
+use string_offset::CharOffset;
 
 use crate::code::local_code_editor::{
     HoverContentSegment, LocalCodeEditorView, LspHoverState, HOVER_TOOLTIP_MAX_HEIGHT,

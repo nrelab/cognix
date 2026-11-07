@@ -2,11 +2,11 @@ mod convert;
 
 use std::{fmt::Display, ops::Range, path::PathBuf, time::Duration};
 
+use cognix_terminal::model::BlockId;
 use itertools::Itertools as _;
 use serde::{Deserialize, Serialize};
 use strum_macros::EnumDiscriminants;
 use uuid::Uuid;
-use cognix_terminal::model::BlockId;
 
 use crate::{
     agent::{

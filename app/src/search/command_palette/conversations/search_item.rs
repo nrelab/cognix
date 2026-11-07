@@ -10,9 +10,6 @@ use crate::search::result_renderer::ItemHighlightState;
 use crate::search::SearchItem;
 use crate::ui_components::buttons::icon_button;
 use crate::util::time_format::format_approx_duration_from_now;
-use ordered_float::OrderedFloat;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::color::{blend::Blend, coloru_with_opacity};
 use cognix_core::ui::icons::Icon;
 use cognix_core::ui::theme::color::internal_colors;
@@ -25,6 +22,9 @@ use cognixui::fonts::{Properties, Weight};
 use cognixui::ui_components::button::ButtonTooltipPosition;
 use cognixui::ui_components::components::{UiComponent, UiComponentStyles};
 use cognixui::{AppContext, Element, Gradient, SingletonEntity};
+use ordered_float::OrderedFloat;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 /// Information about which action to take once the conversation item is accepted.
 #[derive(Debug)]

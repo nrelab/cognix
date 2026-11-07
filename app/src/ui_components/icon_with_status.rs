@@ -1,12 +1,12 @@
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::icons::Icon as CognixIcon;
 use cognix_core::ui::theme::color::internal_colors;
-use cognix_core::ui::theme::{Fill as CognixThemeFill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill as CognixThemeFill};
 use cognixui::elements::{
     ChildAnchor, ConstrainedBox, Container, CornerRadius, Element, OffsetPositioning, ParentAnchor,
     ParentElement, ParentOffsetBounds, Radius, Stack,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::ai::agent::conversation::ConversationStatus;
 use crate::terminal::CLIAgent;
@@ -157,10 +157,13 @@ fn render_with_optional_status_badge(
         return circle;
     };
     let (icon, color) = status.status_icon_and_color(theme);
-    let badge_icon = ConstrainedBox::new(icon.to_cognixui_icon(CognixThemeFill::Solid(color)).finish())
-        .with_width(sizing.badge_icon_size)
-        .with_height(sizing.badge_icon_size)
-        .finish();
+    let badge_icon = ConstrainedBox::new(
+        icon.to_cognixui_icon(CognixThemeFill::Solid(color))
+            .finish(),
+    )
+    .with_width(sizing.badge_icon_size)
+    .with_height(sizing.badge_icon_size)
+    .finish();
     let badge = Container::new(badge_icon)
         .with_uniform_padding(sizing.badge_padding)
         .with_corner_radius(CornerRadius::with_all(Radius::Percentage(50.)))

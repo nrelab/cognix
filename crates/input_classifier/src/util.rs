@@ -1,8 +1,8 @@
 use std::collections::HashSet;
 
+use cognix_completer::ParsedTokensSnapshot;
 use lazy_static::lazy_static;
 use natural_language_detection::check_if_token_has_shell_syntax;
-use cognix_completer::ParsedTokensSnapshot;
 
 /// The percentage of input tokens that can be described by our completion engine before
 /// we consider the input as a shell command. This could be tuned.

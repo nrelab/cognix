@@ -8,10 +8,10 @@ mod windows;
 
 use std::path::PathBuf;
 
-use serde::{Deserialize, Serialize};
-use settings::EditorChoice;
 use cognix_util::path::LineAndColumnArg;
 use cognixui::{AppContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
+use settings::EditorChoice;
 
 pub use self::settings::{EditorLayout, EditorSettings};
 

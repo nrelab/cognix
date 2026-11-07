@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use parking_lot::FairMutex;
 use cognix_core::features::FeatureFlag;
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::Fill;
@@ -9,6 +8,7 @@ use cognixui::elements::{Container, Element, Empty, MouseStateHandle};
 use cognixui::keymap::Keystroke;
 use cognixui::platform::OperatingSystem;
 use cognixui::{AppContext, Entity, ModelHandle, SingletonEntity, View, ViewContext};
+use parking_lot::FairMutex;
 
 use super::{AgentViewState, EphemeralMessageModel, EphemeralMessageModelEvent};
 use crate::ai::agent::conversation::AIConversation;

@@ -59,21 +59,21 @@ use crate::{
     },
     terminal::view::ConversationRestorationInNewPaneType,
 };
-use driver::AgentDriverError;
 use cognix_graphql::object_permissions::OwnerType;
+use driver::AgentDriverError;
 
 use crate::ai::attachment_utils::attachments_download_dir;
 use crate::ai::skills::{
     clone_repo_for_skill, resolve_skill_spec, ResolveSkillError, ResolvedSkill,
 };
 
+use cognix_cli::agent::{Harness, Prompt, RunAgentArgs};
+use cognix_cli::OZ_HARNESS_ENV;
 pub(crate) use driver::harness::{
     task_env_vars, validate_cli_installed, ClaudeHarness, ThirdPartyHarness,
 };
 pub use driver::AgentDriver;
 use telemetry::CliTelemetryEvent;
-use cognix_cli::agent::{Harness, Prompt, RunAgentArgs};
-use cognix_cli::OZ_HARNESS_ENV;
 
 mod admin;
 mod agent_config;

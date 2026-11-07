@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use pathfinder_geometry::vector::{Vector2F, vec2f};
 use cognix_core::ui::{Icon, appearance::Appearance};
 use cognixui::{
     assets::asset_cache::AssetSource,
@@ -8,6 +7,7 @@ use cognixui::{
     keymap::Keystroke,
     prelude::{stack::*, *},
 };
+use pathfinder_geometry::vector::{Vector2F, vec2f};
 
 use crate::{Component, Options as _, button};
 

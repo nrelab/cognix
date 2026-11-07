@@ -3,11 +3,11 @@
 // and defines state used only for session sharing.
 use std::collections::HashMap;
 
-use itertools::Itertools;
-use session_sharing_protocol::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 use cognix_core::features::FeatureFlag;
 use cognix_multi_agent_api::response_event::{stream_finished, ClientActions};
 use cognix_multi_agent_api::{client_action::Action, message::Message};
+use itertools::Itertools;
+use session_sharing_protocol::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 
 use super::response_stream::ResponseStreamId;
 use super::{BlocklistAIController, RequestInput};

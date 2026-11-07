@@ -1,4 +1,3 @@
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{
@@ -7,6 +6,7 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 use crate::{
     ai::{blocklist::error_color, AIRequestUsageModel},

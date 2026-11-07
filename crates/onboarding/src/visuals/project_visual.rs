@@ -1,7 +1,7 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::Icon;
 use cognixui::elements::Align;
 use cognixui::Element;
+use pathfinder_color::ColorU;
 
 use super::onboarding_visual::{IconPct, OnboardingVisual, Pill, RectPct};
 

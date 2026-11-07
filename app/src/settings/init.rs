@@ -1,7 +1,7 @@
-use settings::{Setting as _, SettingsManager};
 use cognix_core::features::FeatureFlag;
 use cognixui::{rendering::GPUPowerPreference, AppContext, SingletonEntity};
 use cognixui_extras::user_preferences;
+use settings::{Setting as _, SettingsManager};
 
 use crate::{
     ai::cloud_agent_settings::CloudAgentSettings,
@@ -13,6 +13,7 @@ use crate::{
     search::command_search::settings::CommandSearchSettings,
     terminal::{
         alt_screen_reporting::AltScreenReporting,
+        cognixify::settings::CognixifySettings,
         general_settings::GeneralSettings,
         keys_settings::KeysSettings,
         ligature_settings::LigatureSettings,
@@ -20,7 +21,6 @@ use crate::{
         session_settings::{SessionSettings, SessionSettingsChangedEvent},
         settings::TerminalSettings,
         shared_session::settings::SharedSessionSettings,
-        cognixify::settings::CognixifySettings,
         BlockListSettings,
     },
     undo_close::UndoCloseSettings,
@@ -36,10 +36,10 @@ use super::{
     cloud_preferences::CloudPreferencesSettings, initializer::SettingsInitializer,
     native_preference::NativePreferenceSettings, AISettings, AccessibilitySettings,
     AliasExpansionSettings, AppEditorSettings, BlockVisibilitySettings, ChangelogSettings,
-    CodeSettings, DebugSettings, EmacsBindingsSettings, FontSettings, FontSettingsChangedEvent,
-    GPUSettings, InputBoxType, InputModeSettings, InputSettings, PaneSettings,
-    SameLinePromptBlockSettings, ScrollSettings, SelectionSettings, SshSettings, ThemeSettings,
-    VimBannerSettings, CognixDrivePrivacySettings,
+    CodeSettings, CognixDrivePrivacySettings, DebugSettings, EmacsBindingsSettings, FontSettings,
+    FontSettingsChangedEvent, GPUSettings, InputBoxType, InputModeSettings, InputSettings,
+    PaneSettings, SameLinePromptBlockSettings, ScrollSettings, SelectionSettings, SshSettings,
+    ThemeSettings, VimBannerSettings,
 };
 
 pub struct UserDefaultsOnStartup {

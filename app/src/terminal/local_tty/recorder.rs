@@ -3,11 +3,11 @@ use crate::{
     terminal::TerminalModel,
 };
 use async_broadcast::Receiver;
+use cognixui::r#async::executor::Background;
 use futures_lite::StreamExt;
 use instant::{Duration, Instant};
 use parking_lot::FairMutex;
 use std::sync::{Arc, Mutex};
-use cognixui::r#async::executor::Background;
 
 /// We want to measure throughput as bytes / sec.
 const PTY_THROUGHPUT_TIME_INTERVAL: Duration = Duration::from_secs(1);

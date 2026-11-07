@@ -6,10 +6,10 @@ use std::time::Duration;
 
 use cognix_util::standardized_path::StandardizedPath;
 
-use futures::future::BoxFuture;
-use futures::FutureExt;
 use cognixui::r#async::FutureExt as AsyncFutureExt;
 use cognixui::{AppContext, Entity, EntityId, ModelContext, ModelHandle, SingletonEntity};
+use futures::future::BoxFuture;
+use futures::FutureExt;
 
 use crate::ai::agent::redaction::redact_secrets;
 use crate::ai::agent::{

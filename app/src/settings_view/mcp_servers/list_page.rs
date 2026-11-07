@@ -53,12 +53,6 @@ use crate::{
     workspace::Workspace,
     workspaces::user_workspaces::UserWorkspaces,
 };
-use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
-use settings::ToggleableSetting as _;
-use std::cmp::Ordering;
-use std::{collections::HashMap, path::PathBuf};
-use strum::IntoEnumIterator;
-use uuid::Uuid;
 use cognix_core::features::FeatureFlag;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::{appearance::AppearanceEvent, theme::color::internal_colors, Icon};
@@ -74,6 +68,12 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
+use settings::ToggleableSetting as _;
+use std::cmp::Ordering;
+use std::{collections::HashMap, path::PathBuf};
+use strum::IntoEnumIterator;
+use uuid::Uuid;
 
 const DESCRIPTION_TEXT: &str = "Add MCP servers to extend the Cognix Agent's capabilities. MCP servers expose data sources or tools to agents through a standardized interface, essentially acting like plugins. Add a custom server, or use the presets to get started with popular servers. You can also find team servers that have been shared with you here. ";
 

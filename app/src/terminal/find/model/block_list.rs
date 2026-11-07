@@ -1,8 +1,8 @@
 //! This module implements terminal find functionality for the blocklist.
 use std::{collections::HashMap, iter, ops::RangeInclusive};
 
-use itertools::Itertools;
 use cognixui::{units::Lines, AppContext, EntityId};
+use itertools::Itertools;
 
 use crate::terminal::{
     model::{

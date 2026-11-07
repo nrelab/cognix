@@ -1,6 +1,14 @@
 use std::collections::HashSet;
 use std::time::Duration;
 
+use cognix_completer::completer::MatchType;
+use cognix_core::command::ExitCode;
+use cognix_core::telemetry::EnablementState;
+use cognix_core::telemetry::TelemetryEvent as TelemetryEventTrait;
+use cognix_core::telemetry::TelemetryEventDesc;
+use cognixui::keymap::Keystroke;
+use cognixui::notification::{NotificationSendError, RequestPermissionsOutcome};
+use cognixui::rendering::ThinStrokes;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use serde_json::Value;
@@ -10,14 +18,6 @@ use session_sharing_protocol::common::SessionId as SharedSessionId;
 use session_sharing_protocol::sharer::SessionEndedReason;
 use strum_macros::EnumDiscriminants;
 use strum_macros::EnumIter;
-use cognix_completer::completer::MatchType;
-use cognix_core::command::ExitCode;
-use cognix_core::telemetry::EnablementState;
-use cognix_core::telemetry::TelemetryEvent as TelemetryEventTrait;
-use cognix_core::telemetry::TelemetryEventDesc;
-use cognixui::keymap::Keystroke;
-use cognixui::notification::{NotificationSendError, RequestPermissionsOutcome};
-use cognixui::rendering::ThinStrokes;
 
 use crate::ai::agent::api::ServerConversationToken;
 use crate::ai::agent::conversation::AIConversationId;
@@ -104,8 +104,8 @@ use crate::workflows::WorkflowSource;
 use crate::workspace::tab_settings::TabCloseButtonPosition;
 use crate::workspace::tab_settings::WorkspaceDecorationVisibility;
 use crate::workspace::TabMovement;
-use session_sharing_protocol::sharer::SessionSourceType;
 use cognix_core::interval_timer::TimingDataPoint;
+use session_sharing_protocol::sharer::SessionSourceType;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct BootstrappingInfo {
@@ -3371,7 +3371,9 @@ impl TelemetryEvent {
                 Some(json!({"enabled": enabled}))
             }
             TelemetryEvent::ToggleSshTmuxWrapper { enabled } => Some(json!({"enabled": enabled})),
-            TelemetryEvent::ToggleSshCognixification { enabled } => Some(json!({"enabled": enabled})),
+            TelemetryEvent::ToggleSshCognixification { enabled } => {
+                Some(json!({"enabled": enabled}))
+            }
             TelemetryEvent::SetSshExtensionInstallMode { mode } => Some(json!({"mode": mode})),
             TelemetryEvent::SshRemoteServerChoiceDoNotAskAgainToggled { checked } => {
                 Some(json!({"checked": checked}))
@@ -5449,7 +5451,9 @@ impl TelemetryEventDesc for TelemetryEventDiscriminants {
             Self::AgentModeRatedResponse => {
                 EnablementState::Flag(FeatureFlag::GlobalAIAnalyticsBanner)
             }
-            Self::ExecutedCognixDrivePrompt => EnablementState::Flag(FeatureFlag::AgentModeWorkflows),
+            Self::ExecutedCognixDrivePrompt => {
+                EnablementState::Flag(FeatureFlag::AgentModeWorkflows)
+            }
             Self::ImageReceived => EnablementState::Always,
             Self::FileExceededContextLimit => EnablementState::Always,
             Self::AgentModeError => EnablementState::Always,

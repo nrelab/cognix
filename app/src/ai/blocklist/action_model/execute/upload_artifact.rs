@@ -5,8 +5,8 @@ use std::path::PathBuf;
 #[path = "upload_artifact_tests.rs"]
 mod tests;
 
-use futures::{future::BoxFuture, FutureExt};
 use cognixui::{Entity, EntityId, ModelContext, ModelHandle};
+use futures::{future::BoxFuture, FutureExt};
 
 use crate::terminal::model::session::active_session::ActiveSession;
 #[cfg(not(target_family = "wasm"))]

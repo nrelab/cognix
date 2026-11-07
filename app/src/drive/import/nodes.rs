@@ -7,14 +7,6 @@ use crate::{
 };
 use anyhow::Result;
 use async_recursion::async_recursion;
-use futures_lite::StreamExt;
-use pathfinder_color::ColorU;
-use std::{
-    collections::HashMap,
-    ffi::OsStr,
-    ops::{Add, AddAssign, SubAssign},
-    path::{Path, PathBuf},
-};
 use cognixui::{
     elements::{
         Align, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable,
@@ -23,6 +15,14 @@ use cognixui::{
     platform::Cursor,
     ui_components::components::{UiComponent, UiComponentStyles},
     Element,
+};
+use futures_lite::StreamExt;
+use pathfinder_color::ColorU;
+use std::{
+    collections::HashMap,
+    ffi::OsStr,
+    ops::{Add, AddAssign, SubAssign},
+    path::{Path, PathBuf},
 };
 
 use crate::{

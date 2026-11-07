@@ -5,9 +5,6 @@ use std::{
 
 use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
-use comfy_table::Cell;
-use inquire::{Confirm, InquireError, Password};
-use serde::Serialize;
 use cognix_cli::{
     agent::OutputFormat,
     scope::ObjectScope,
@@ -24,6 +21,9 @@ use cognix_graphql::{
 };
 use cognix_managed_secrets::{client::SecretOwner, ManagedSecretManager, ManagedSecretValue};
 use cognixui::{platform::TerminationMode, AppContext, SingletonEntity as _};
+use comfy_table::Cell;
+use inquire::{Confirm, InquireError, Password};
+use serde::Serialize;
 
 use crate::{
     auth::UserUid, cloud_object::Owner, server::ids::ServerId,

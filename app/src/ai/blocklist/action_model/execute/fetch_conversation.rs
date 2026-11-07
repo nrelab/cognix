@@ -3,9 +3,9 @@ use crate::ai::agent::conversation_yaml;
 use crate::ai::agent::AIAgentActionResultType;
 use crate::ai::blocklist::history_model::CloudConversationData;
 use ai::agent::action_result::FetchConversationResult;
+use cognixui::{Entity, ModelContext, SingletonEntity};
 use futures::future::BoxFuture;
 use futures::FutureExt;
-use cognixui::{Entity, ModelContext, SingletonEntity};
 
 use crate::ai::agent::api::ServerConversationToken;
 use crate::ai::agent::AIAgentActionType;

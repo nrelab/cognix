@@ -31,7 +31,7 @@ use crate::pane_group::pane::DetachType;
 
 use crate::network::{NetworkStatus, NetworkStatusEvent, NetworkStatusKind};
 
-use crate::settings::{DebugSettings, InputModeSettings, CognixPromptSeparator};
+use crate::settings::{CognixPromptSeparator, DebugSettings, InputModeSettings};
 use crate::terminal::event_listener::ChannelEventListener;
 
 use crate::terminal::input::CommandExecutionSource;

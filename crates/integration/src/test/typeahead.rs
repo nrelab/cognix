@@ -210,12 +210,12 @@ pub fn test_input_reporting_powershell() -> Builder {
 /// This tests UNIX-specific signal handling.
 #[cfg(not(windows))]
 pub fn test_background_output() -> Builder {
-    use regex::Regex;
-    use std::{fs::OpenOptions, io::Write, os::unix::prelude::OpenOptionsExt};
     use cognix::integration_testing::{
         block::assert_background_output,
         terminal::{execute_command_for_single_terminal_in_tab, util::ExpectedExitStatus},
     };
+    use regex::Regex;
+    use std::{fs::OpenOptions, io::Write, os::unix::prelude::OpenOptionsExt};
 
     let (starter, _) = current_shell_starter_and_version();
     let (spawn_command, kill_command) = match starter.shell_type() {

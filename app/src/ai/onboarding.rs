@@ -1,10 +1,10 @@
 //! Onboarding-specific AI types and conversions.
 
 use ai::LLMId;
-use onboarding::slides::OnboardingModelInfo;
-use onboarding::OnboardingAuthState;
 use cognix_core::ui::icons::Icon;
 use cognixui::{AppContext, SingletonEntity};
+use onboarding::slides::OnboardingModelInfo;
+use onboarding::OnboardingAuthState;
 
 use crate::auth::AuthStateProvider;
 use crate::workspaces::user_workspaces::UserWorkspaces;

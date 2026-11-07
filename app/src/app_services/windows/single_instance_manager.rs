@@ -1,9 +1,9 @@
 use std::sync::LazyLock;
 
-use ipc::ServerBuilder;
-use parking_lot::Mutex;
 use cognix_core::channel::ChannelState;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use ipc::ServerBuilder;
+use parking_lot::Mutex;
 
 use windows::core::Error;
 use windows::Win32::Foundation::{CloseHandle, GetLastError, ERROR_ALREADY_EXISTS, HANDLE};

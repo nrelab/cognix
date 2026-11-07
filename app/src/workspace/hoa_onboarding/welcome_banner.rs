@@ -1,4 +1,3 @@
-use pathfinder_geometry::vector::vec2f;
 use cognix_core::ui::theme::{phenomenon::PhenomenonStyle, Fill};
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::elements::{
@@ -8,6 +7,7 @@ use cognixui::elements::{
 };
 use cognixui::fonts::{Properties, Weight};
 use cognixui::Element;
+use pathfinder_geometry::vector::vec2f;
 
 use crate::appearance::Appearance;
 use crate::ui_components::icons::Icon;

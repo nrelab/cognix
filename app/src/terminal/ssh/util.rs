@@ -190,7 +190,9 @@ impl SshCognixifyCommand {
         } else if GCLOUD_REGEX.is_match(command) {
             Some(SshCognixifyCommand::SshLike(SshLikeCommand::Gcloud))
         } else if ELASTIC_BEANSTALK_REGEX.is_match(command) {
-            Some(SshCognixifyCommand::SshLike(SshLikeCommand::ElasticBeanstalk))
+            Some(SshCognixifyCommand::SshLike(
+                SshLikeCommand::ElasticBeanstalk,
+            ))
         } else if DIGITAL_OCEAN_DROPLET_REGEX.is_match(command) {
             Some(SshCognixifyCommand::SshLike(
                 SshLikeCommand::DigitalOceanDroplet,

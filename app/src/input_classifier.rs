@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use input_classifier::{HeuristicClassifier, InputClassifier};
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use input_classifier::{HeuristicClassifier, InputClassifier};
 
 pub struct InputClassifierModel {
     pub classifier: Arc<dyn InputClassifier>,

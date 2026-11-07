@@ -1,4 +1,3 @@
-use pathfinder_color::ColorU;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{
@@ -8,6 +7,7 @@ use cognixui::{
     fonts::{Properties, Weight},
     Element,
 };
+use pathfinder_color::ColorU;
 
 use crate::ui_components::blended_colors;
 

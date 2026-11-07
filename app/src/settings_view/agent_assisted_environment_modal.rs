@@ -4,7 +4,6 @@ use std::{
     time::Duration,
 };
 
-use pathfinder_color::ColorU;
 use cognix_core::{
     features::FeatureFlag, paths::home_relative_path, ui::theme::color::internal_colors,
 };
@@ -20,6 +19,7 @@ use cognixui::{
     ui_components::components::UiComponent,
     AppContext, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
 
 use crate::{
     appearance::Appearance,

@@ -2,10 +2,10 @@ use std::collections::BTreeSet;
 
 use crate::ai::agent_sdk::output::{self, TableFormat};
 use crate::ai::llms::LLMPreferences;
-use comfy_table::Cell;
-use serde::Serialize;
 use cognix_cli::{model::ModelCommand, GlobalOptions};
 use cognixui::{platform::TerminationMode, AppContext, ModelContext, SingletonEntity};
+use comfy_table::Cell;
+use serde::Serialize;
 
 /// Handle model-related CLI commands.
 pub fn run(

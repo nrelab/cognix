@@ -1,7 +1,7 @@
 use chrono::Local;
-use std::collections::HashSet;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{platform::WindowStyle, App};
+use std::collections::HashSet;
 
 use crate::ai::blocklist::AIQueryHistory;
 use crate::input_suggestions::{filter_tab_suggestions, HistoryOrder};

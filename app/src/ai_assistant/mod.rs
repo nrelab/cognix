@@ -7,10 +7,6 @@ use crate::{
     terminal::model::terminal_model::BlockIndex,
     workflows::workflow::{Argument, Workflow},
 };
-use itertools::Itertools;
-use lazy_static::lazy_static;
-use pathfinder_color::ColorU;
-use serde::{Deserialize, Serialize};
 use cognix_core::command::ExitCode;
 use cognix_graphql::{
     ai::{
@@ -19,6 +15,10 @@ use cognix_graphql::{
     },
     mutations::generate_commands::{GenerateCommandsFailureType, GeneratedCommand},
 };
+use itertools::Itertools;
+use lazy_static::lazy_static;
+use pathfinder_color::ColorU;
+use serde::{Deserialize, Serialize};
 
 pub mod execution_context;
 pub mod panel;

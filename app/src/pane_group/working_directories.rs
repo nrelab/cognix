@@ -1,4 +1,8 @@
 #[cfg(feature = "local_fs")]
+use cognixui::{AppContext, SingletonEntity as _};
+use cognixui::{Entity, EntityId, ModelContext};
+use cognixui::{ModelHandle, ViewHandle};
+#[cfg(feature = "local_fs")]
 use indexmap::IndexSet;
 #[cfg(feature = "local_fs")]
 use repo_metadata::repositories::DetectedRepositories;
@@ -6,10 +10,6 @@ use std::collections::HashMap;
 #[cfg(feature = "local_fs")]
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
-#[cfg(feature = "local_fs")]
-use cognixui::{AppContext, SingletonEntity as _};
-use cognixui::{Entity, EntityId, ModelContext};
-use cognixui::{ModelHandle, ViewHandle};
 
 #[cfg(feature = "local_fs")]
 use crate::code::file_tree::FileTreeView;

@@ -5,13 +5,13 @@ use crate::terminal::model::blockgrid::BlockGrid;
 use crate::terminal::model::grid::Dimensions;
 use crate::terminal::model::ObfuscateSecrets;
 use crate::terminal::{color, SizeInfo};
-use pathfinder_geometry::vector::{vec2f, Vector2F};
 use cognixui::elements::{
     AfterLayoutContext, AppContext, Element, EventContext, LayoutContext, PaintContext, Point,
     SizeConstraint,
 };
 use cognixui::event::DispatchedEvent;
 use cognixui::geometry::rect::RectF;
+use pathfinder_geometry::vector::{vec2f, Vector2F};
 
 use super::blockgrid_renderer::GridRenderParams;
 

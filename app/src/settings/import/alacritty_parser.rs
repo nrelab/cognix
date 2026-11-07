@@ -1,13 +1,13 @@
 use crate::settings::import::config::ThemeError;
 use async_recursion::async_recursion;
 use async_trait::async_trait;
-use serde::Deserialize;
-use std::{env, io::ErrorKind, path::PathBuf};
 use cognix_core::ui::{
     color::hex_color::coloru_from_hex_string,
-    theme::{AnsiColor, AnsiColors, TerminalColors, CognixTheme},
+    theme::{AnsiColor, AnsiColors, CognixTheme, TerminalColors},
 };
 use cognixui::fonts::FontInfo;
+use serde::Deserialize;
+use std::{env, io::ErrorKind, path::PathBuf};
 
 use super::config::{
     calculate_accent_color, Config, ConfigError, ImportableSetting, ParseableConfig, SettingType,

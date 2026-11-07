@@ -1,11 +1,11 @@
 use std::sync::Arc;
 
 use arborium::tree_sitter::Tree;
-use languages::{language_by_filename, Language};
 use cognix_editor::content::buffer::{Buffer, BufferSnapshot};
 use cognix_editor::content::selection_model::BufferSelectionModel;
 use cognix_editor::content::text::IndentBehavior;
 use cognixui::App;
+use languages::{language_by_filename, Language};
 
 use crate::SyntaxTreeState;
 

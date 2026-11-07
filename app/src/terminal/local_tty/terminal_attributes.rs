@@ -1,8 +1,8 @@
 use std::{os::fd::RawFd, time::Duration};
 
+use cognixui::{Entity, ModelContext};
 use nix::sys::termios::{self, Termios};
 use nix::Result;
-use cognixui::{Entity, ModelContext};
 
 /// The default amount of time we wait before polling the terminal attributes again.
 const POLL_INTERVAL: Duration = Duration::from_secs(1);

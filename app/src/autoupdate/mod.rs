@@ -19,10 +19,6 @@ use crate::{
 use ::channel_versions::{ParsedVersion, VersionInfo};
 use anyhow::{anyhow, Context as _, Result};
 use chrono::{DateTime, FixedOffset, NaiveDate};
-use rand::Rng as _;
-use std::collections::VecDeque;
-use std::sync::Arc;
-use std::time::Duration;
 use cognix_core::execution_mode::AppExecutionMode;
 use cognixui::platform::TerminationMode;
 use cognixui::r#async::Timer;
@@ -33,6 +29,10 @@ use cognixui::{
     AppContext,
 };
 use cognixui::{Entity, ModelContext, SingletonEntity, ViewContext};
+use rand::Rng as _;
+use std::collections::VecDeque;
+use std::sync::Arc;
+use std::time::Duration;
 
 pub use self::changelog::get_current_changelog;
 use self::channel_versions::fetch_channel_versions;

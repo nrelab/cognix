@@ -25,6 +25,10 @@ use super::EditorSnapshot;
 use super::{selections::LocalSelections, LocalSelection};
 use crate::editor::{CursorColors, PlainTextEditorViewAction};
 use anyhow::{anyhow, Result};
+use cognixui::color::ColorU;
+use cognixui::text::{point::Point, words::is_default_word_boundary, BufferIndex, TextBuffer};
+use cognixui::text_layout::TextStyle;
+use cognixui::{Entity, ModelContext};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
@@ -42,10 +46,6 @@ use sum_tree::{self, Cursor, FilterCursor, SeekBias, SumTree};
 use time::{Global, Lamport};
 use undo::{LocalUndoStack, UndoHistory};
 use vec1::{vec1, Vec1};
-use cognixui::color::ColorU;
-use cognixui::text::{point::Point, words::is_default_word_boundary, BufferIndex, TextBuffer};
-use cognixui::text_layout::TextStyle;
-use cognixui::{Entity, ModelContext};
 
 #[cfg(test)]
 use rand::prelude::*;

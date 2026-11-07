@@ -1,5 +1,3 @@
-use pathfinder_geometry::vector::{vec2f, Vector2F};
-use std::{cell::RefCell, rc::Rc};
 use cognix_core::ui::appearance::Appearance;
 use cognixui::{
     elements::{
@@ -10,6 +8,8 @@ use cognixui::{
     App, Entity, Event, Presenter, TypedActionView, View, ViewContext, ViewHandle, WindowId,
     WindowInvalidation,
 };
+use pathfinder_geometry::vector::{vec2f, Vector2F};
+use std::{cell::RefCell, rc::Rc};
 
 use super::*;
 

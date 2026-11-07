@@ -1,5 +1,5 @@
-use string_offset::{ByteOffset, CharOffset};
 use cognixui::{text_layout::TextStyle, App};
+use string_offset::{ByteOffset, CharOffset};
 
 use crate::editor::{EditorSnapshot, PlainTextEditorViewAction, TextRun, ValidInputType};
 

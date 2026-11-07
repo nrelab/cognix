@@ -3,14 +3,6 @@
 
 use crate::code::editor::line_iterator::LineIterator;
 use crate::code_review::CodeReviewTelemetryEvent;
-use num_traits::SaturatingSub;
-use rangemap::{RangeMap, RangeSet};
-use std::future::Future;
-use std::ops::Range;
-use std::path::Path;
-use std::rc::Rc;
-use std::sync::Arc;
-use std::{cmp, mem};
 use cognix_core::platform::SessionPlatform;
 use cognix_core::send_telemetry_from_ctx;
 use cognix_core::ui::theme::Fill;
@@ -23,6 +15,14 @@ use cognix_editor::multiline::{AnyMultilineString, MultilineString, LF};
 use cognix_editor::render::model::{AutoScrollMode, LineCount, StyleUpdateAction};
 use cognix_editor::selection::TextDirection;
 use cognixui::units::{IntoPixels, Pixels};
+use num_traits::SaturatingSub;
+use rangemap::{RangeMap, RangeSet};
+use std::future::Future;
+use std::ops::Range;
+use std::path::Path;
+use std::rc::Rc;
+use std::sync::Arc;
+use std::{cmp, mem};
 
 use crate::util::link_detection::get_word_range_at_offset;
 use crate::{
@@ -31,22 +31,6 @@ use crate::{
 };
 
 use ai::diff_validation::DiffDelta;
-use itertools::Itertools;
-use languages::{language_by_filename, language_by_name, Language};
-use line_ending::LineEnding;
-use string_offset::CharOffset;
-use syntax_tree::{ColorMap, DecorationStateEvent, SyntaxTreeState};
-use vec1::{vec1, Vec1};
-use vim::vim::{
-    BracketChar, CharacterMotion, Direction, FindCharMotion, FirstNonWhitespaceMotion,
-    InsertPosition, LineMotion, MotionType, TextObjectInclusion, TextObjectType, VimOperator,
-    VimTextObject, WordBound, WordMotion, WordType,
-};
-use vim::{
-    find_next_paragraph_end, find_previous_paragraph_start, vim_a_block, vim_a_paragraph,
-    vim_a_quote, vim_a_word, vim_find_char_on_line, vim_find_matching_bracket, vim_inner_block,
-    vim_inner_paragraph, vim_inner_quote, vim_inner_word, vim_word_iterator_from_offset,
-};
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_editor::content::buffer::{ShouldAutoscroll, VimInsertPoint};
 use cognix_editor::{
@@ -73,6 +57,22 @@ use cognixui::elements::{
 };
 use cognixui::text::{point::Point, TextBuffer};
 use cognixui::{AppContext, Entity, ModelContext, ModelHandle, SingletonEntity};
+use itertools::Itertools;
+use languages::{language_by_filename, language_by_name, Language};
+use line_ending::LineEnding;
+use string_offset::CharOffset;
+use syntax_tree::{ColorMap, DecorationStateEvent, SyntaxTreeState};
+use vec1::{vec1, Vec1};
+use vim::vim::{
+    BracketChar, CharacterMotion, Direction, FindCharMotion, FirstNonWhitespaceMotion,
+    InsertPosition, LineMotion, MotionType, TextObjectInclusion, TextObjectType, VimOperator,
+    VimTextObject, WordBound, WordMotion, WordType,
+};
+use vim::{
+    find_next_paragraph_end, find_previous_paragraph_start, vim_a_block, vim_a_paragraph,
+    vim_a_quote, vim_a_word, vim_find_char_on_line, vim_find_matching_bracket, vim_inner_block,
+    vim_inner_paragraph, vim_inner_quote, vim_inner_word, vim_word_iterator_from_offset,
+};
 
 use super::super::DiffResult;
 use super::comments::{EditorCommentsModel, PendingComment, PendingCommentEvent};

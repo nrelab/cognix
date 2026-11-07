@@ -2,12 +2,9 @@ use crate::appearance::Appearance;
 use crate::send_telemetry_from_ctx;
 use crate::server::telemetry::TelemetryEvent;
 use crate::settings::{active_theme_kind, ThemeSettings};
-use crate::themes::theme::{ThemeKind, CognixTheme};
+use crate::themes::theme::{CognixTheme, ThemeKind};
 use crate::user_config;
 use crate::user_config::util::from_yaml;
-use std::default::Default;
-use std::fs;
-use std::fs::remove_file;
 use cognixui::assets::asset_cache::AssetSource;
 use cognixui::elements::{
     Container, CornerRadius, CrossAxisAlignment, Flex, MainAxisSize, MouseStateHandle,
@@ -20,6 +17,9 @@ use cognixui::{
     platform::Cursor, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     ViewContext,
 };
+use std::default::Default;
+use std::fs;
+use std::fs::remove_file;
 
 const BUTTON_PADDING: f32 = 12.;
 const BUTTON_FONT_SIZE: f32 = 14.;

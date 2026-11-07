@@ -2,9 +2,9 @@
 
 #[cfg(feature = "local_fs")]
 use crate::util::file::external_editor::{settings::EditorChoice, Editor, EditorSettings};
+pub use cognix_util::file_type::{is_binary_file, is_file_content_binary, is_markdown_file};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
-pub use cognix_util::file_type::{is_binary_file, is_file_content_binary, is_markdown_file};
 
 #[derive(
     Debug,

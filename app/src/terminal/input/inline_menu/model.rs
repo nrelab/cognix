@@ -1,7 +1,7 @@
 //! Generic model for tracking the selected item in an inline menu.
-use std::collections::HashSet;
 use cognixui::elements::MouseStateHandle;
 use cognixui::{Entity, ModelContext};
+use std::collections::HashSet;
 
 use crate::search::data_source::QueryFilter;
 use crate::terminal::input::inline_menu::view::InlineMenuAction;

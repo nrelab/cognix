@@ -11,6 +11,8 @@ use super::{
     appearance_page::AppearanceSettingsPageView,
     billing_and_usage_page::BillingAndUsagePageView,
     code_page::CodeSettingsPageView,
+    cognix_drive_page::CognixDriveSettingsPageView,
+    cognixify_page::CognixifyPageView,
     environments_page::EnvironmentsPageView,
     features_page::FeaturesPageView,
     keybindings::KeybindingsView,
@@ -20,8 +22,6 @@ use super::{
     referrals_page::ReferralsPageView,
     show_blocks_view::ShowBlocksView,
     teams_page::TeamsPageView,
-    cognix_drive_page::CognixDriveSettingsPageView,
-    cognixify_page::CognixifyPageView,
     SettingsSection,
 };
 use crate::{
@@ -31,7 +31,6 @@ use crate::{
     ui_components::icons::Icon,
     view_components::{Dropdown, SubmittableTextInput},
 };
-use settings::Setting;
 use cognix_core::{
     settings::SyncToCloud,
     ui::{color::blend::Blend, theme::color::internal_colors},
@@ -54,6 +53,7 @@ use cognixui::{
     units::Pixels,
     Action, AppContext, SingletonEntity, ViewContext, ViewHandle,
 };
+use settings::Setting;
 
 pub const TOGGLE_BUTTON_RIGHT_PADDING: f32 = 5.;
 pub const HEADER_PADDING: f32 = 15.;

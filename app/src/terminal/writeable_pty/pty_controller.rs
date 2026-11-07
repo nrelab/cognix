@@ -1,10 +1,10 @@
 use std::{borrow::Cow, collections::VecDeque, sync::Arc};
 
 use async_channel::{Receiver, Sender};
-use parking_lot::FairMutex;
-use thiserror::Error;
 use cognixui::r#async::block_on;
 use cognixui::{Entity, ModelContext, ModelHandle, SingletonEntity};
+use parking_lot::FairMutex;
+use thiserror::Error;
 
 use crate::ai::agent::AIAgentPtyWriteMode;
 use crate::terminal::input::CommandExecutionSource;

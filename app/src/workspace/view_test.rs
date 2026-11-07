@@ -64,11 +64,11 @@ use crate::ai::mcp::{
     gallery::MCPGalleryManager, templatable_manager::TemplatableMCPServerManager,
     FileBasedMCPManager, FileMCPWatcher,
 };
+use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use crate::resource_center::Tip;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
 use crate::test_util::settings::initialize_settings_for_tests;
 use crate::undo_close::UndoCloseSettings;
-use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use crate::workflows::local_workflows::LocalWorkflows;
 use crate::{experiments, workspace, GlobalResourceHandlesProvider};
 use crate::{AgentNotificationsModel, ObjectActions};
@@ -76,13 +76,13 @@ use crate::{AgentNotificationsModel, ObjectActions};
 use crate::settings::cloud_preferences_syncer::CloudPreferencesSyncer;
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use ai::project_context::model::ProjectContextModel;
+use cognix_editor::editor::NavigationKey;
+use cognixui::AddSingletonModel;
+use cognixui::{platform::WindowStyle, App, ViewHandle};
 use pane_group::{NotebookPane, PaneState, SplitPaneState, TerminalPaneId};
 use session_sharing_protocol::common::SessionId;
 use terminal::shared_session::permissions_manager::SessionPermissionsManager;
 use terminal::view::ActiveSessionState;
-use cognix_editor::editor::NavigationKey;
-use cognixui::AddSingletonModel;
-use cognixui::{platform::WindowStyle, App, ViewHandle};
 
 fn initialize_app(app: &mut App) {
     initialize_settings_for_tests(app);

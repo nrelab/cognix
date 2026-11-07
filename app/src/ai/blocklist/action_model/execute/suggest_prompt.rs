@@ -1,6 +1,6 @@
-use futures::{channel::oneshot, future::BoxFuture, FutureExt};
 use cognix_core::features::FeatureFlag;
 use cognixui::{Entity, ModelContext};
+use futures::{channel::oneshot, future::BoxFuture, FutureExt};
 
 use crate::{
     ai::{

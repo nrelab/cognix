@@ -2,10 +2,10 @@ use std::{cell::RefCell, rc::Rc};
 
 use anyhow::anyhow;
 use chrono::{DateTime, Local, TimeDelta};
-use futures::channel::oneshot;
-use uuid::Uuid;
 use cognix_multi_agent_api::response_event;
 use cognixui::{Entity, ModelContext, SingletonEntity};
+use futures::channel::oneshot;
+use uuid::Uuid;
 
 use crate::{
     ai::agent::{

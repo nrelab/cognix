@@ -1,7 +1,5 @@
 use std::sync::Arc;
 
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
 use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, OffsetPositioning, ParentAnchor, ParentElement as _,
@@ -10,6 +8,8 @@ use cognixui::{
     fonts::{Properties, Weight},
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
 
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::theme::color::internal_colors;

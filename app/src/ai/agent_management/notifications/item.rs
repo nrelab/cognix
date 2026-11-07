@@ -1,7 +1,7 @@
+use cognixui::EntityId;
 use enum_iterator::Sequence;
 use instant::Instant;
 use uuid::Uuid;
-use cognixui::EntityId;
 
 use crate::ai::agent::conversation::AIConversationId;
 use crate::ai::artifacts::Artifact;

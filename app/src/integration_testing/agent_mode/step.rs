@@ -1,7 +1,7 @@
 use std::{fs::read, io::Cursor, path::Path, time::Duration};
 
-use prost::Message;
 use cognixui::{async_assert, integration::TestStep, SingletonEntity};
+use prost::Message;
 
 use crate::ai::execution_profiles::profiles::AIExecutionProfilesModel;
 use crate::ai::execution_profiles::ActionPermission;

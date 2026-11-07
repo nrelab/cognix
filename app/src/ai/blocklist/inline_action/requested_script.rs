@@ -1,8 +1,6 @@
 //! This module is similar to `requested_actions.rs` but specifically for scripts instead of commands.
 //! Eventually, we'll probably want to refactor the functions here to lean on Views instead.
 
-use pathfinder_geometry::vector::Vector2F;
-use std::rc::Rc;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::elements::{
     Align, Border, ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable,
@@ -16,6 +14,8 @@ use cognixui::ui_components::toggle_menu::{
     ToggleMenuCallback, ToggleMenuItem, ToggleMenuStateHandle,
 };
 use cognixui::{AppContext, Element, EventContext, SingletonEntity};
+use pathfinder_geometry::vector::Vector2F;
+use std::rc::Rc;
 
 use super::inline_action_header::{
     INLINE_ACTION_HEADER_VERTICAL_PADDING, INLINE_ACTION_HORIZONTAL_PADDING,

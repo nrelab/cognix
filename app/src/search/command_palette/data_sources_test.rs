@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use chrono::Utc;
-use settings::manager::SettingsManager;
 use cognixui::{App, SingletonEntity};
+use settings::manager::SettingsManager;
 
 use super::*;
 use crate::auth::AuthStateProvider;

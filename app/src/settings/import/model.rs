@@ -4,13 +4,13 @@ use crate::interval_timer::IntervalTimer;
 use crate::settings::import::config::{Config, ConfigError};
 use crate::{send_telemetry_from_ctx, TelemetryEvent};
 
-use serde::Serialize;
-use strum::IntoEnumIterator;
-use strum_macros::{EnumDiscriminants, EnumIter};
 use cognix_core::features::FeatureFlag;
 use cognixui::Entity;
 use cognixui::ModelContext;
 use cognixui::SingletonEntity;
+use serde::Serialize;
+use strum::IntoEnumIterator;
+use strum_macros::{EnumDiscriminants, EnumIter};
 
 #[cfg(target_os = "macos")]
 use super::config::HotkeyError;

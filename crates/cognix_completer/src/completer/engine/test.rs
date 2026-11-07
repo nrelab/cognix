@@ -1,5 +1,5 @@
-use itertools::Itertools;
 use cognix_util::path::EscapeChar;
+use itertools::Itertools;
 
 use super::LocationType;
 use crate::completer::testing::FakeCompletionContext;

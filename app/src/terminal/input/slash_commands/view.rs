@@ -1,10 +1,10 @@
 use std::collections::HashSet;
 
 use ai::skills::SkillReference;
-use lazy_static::lazy_static;
 use cognixui::elements::ChildView;
 use cognixui::{AppContext, Element, ViewContext};
 use cognixui::{Entity, ModelHandle, View, ViewHandle};
+use lazy_static::lazy_static;
 
 use crate::ai::blocklist::agent_view::AgentViewController;
 use crate::search::data_source::{Query, QueryFilter};

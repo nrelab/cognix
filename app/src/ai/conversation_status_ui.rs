@@ -1,6 +1,6 @@
 use cognix_core::ui::appearance::Appearance;
 use cognix_core::ui::color::coloru_with_opacity;
-use cognix_core::ui::theme::{Fill, CognixTheme};
+use cognix_core::ui::theme::{CognixTheme, Fill};
 use cognixui::color::ColorU;
 use cognixui::elements::{ConstrainedBox, Container, CornerRadius, Radius};
 use cognixui::Element;

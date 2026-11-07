@@ -3,12 +3,12 @@ use std::collections::HashMap;
 
 use ::settings::Setting as _;
 use cfg_if::cfg_if;
-use lazy_static::lazy_static;
-use parking_lot::RwLock;
 use cognix_cli::RecoveryMechanism;
 use cognix_core::channel::{Channel, ChannelState};
 use cognixui::{Entity, ModelContext, SingletonEntity, WindowId};
 use cognixui_extras::user_preferences::UserPreferences;
+use lazy_static::lazy_static;
+use parking_lot::RwLock;
 
 use crate::{report_if_error, settings};
 

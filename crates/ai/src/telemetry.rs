@@ -1,13 +1,13 @@
 use std::time::Duration;
 
-use serde::Serialize;
-use serde_json::{json, Value};
-use strum_macros::{EnumDiscriminants, EnumIter};
 use cognix_core::{
     features::FeatureFlag,
     register_telemetry_event,
     telemetry::{EnablementState, TelemetryEvent, TelemetryEventDesc},
 };
+use serde::Serialize;
+use serde_json::{json, Value};
+use strum_macros::{EnumDiscriminants, EnumIter};
 
 #[cfg_attr(not(feature = "local_fs"), allow(dead_code))]
 #[derive(Clone, EnumDiscriminants)]

@@ -1,6 +1,3 @@
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use regex_automata::hybrid::BuildError;
 use cognix_editor::editor::NavigationKey;
 use cognixui::elements::{Align, Dash};
 use cognixui::ui_components::components::UiComponent;
@@ -15,6 +12,9 @@ use cognixui::{
     presenter::ChildView,
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext, ViewHandle,
 };
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use regex_automata::hybrid::BuildError;
 
 use crate::terminal::model::terminal_model::BlockIndex;
 use crate::{

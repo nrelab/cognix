@@ -1,6 +1,6 @@
 use super::*;
-use itertools::Itertools;
 use cognixui::keymap::BindingId;
+use itertools::Itertools;
 
 #[test]
 fn test_enqueue_new_item() {

@@ -2,9 +2,9 @@ use std::sync::Arc;
 
 use async_channel::Sender;
 use async_trait::async_trait;
+use cognixui::r#async::executor::Background;
 use ipc::{Client, ConnectionAddress};
 use url::Url;
-use cognixui::r#async::executor::Background;
 
 use super::single_instance_manager::uri_named_pipe_name;
 

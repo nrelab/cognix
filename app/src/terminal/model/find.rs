@@ -1,5 +1,6 @@
 use std::ops::RangeInclusive;
 
+use cognix_terminal::model::grid::CellType;
 use regex::escape;
 use regex_automata::hybrid::dfa::{Cache, DFA};
 use regex_automata::hybrid::BuildError;
@@ -7,7 +8,6 @@ use regex_automata::nfa::thompson;
 use regex_automata::util::pool::Pool;
 use regex_automata::util::syntax::Config;
 use regex_automata::{Anchored, Input};
-use cognix_terminal::model::grid::CellType;
 
 use crate::terminal::model::index::Direction;
 use crate::terminal::model::index::Point;

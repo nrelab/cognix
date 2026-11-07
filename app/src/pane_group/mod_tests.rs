@@ -19,6 +19,7 @@ use crate::{
     },
     auth::auth_manager::AuthManager,
     cloud_object::model::persistence::CloudModel,
+    cognix_managed_paths_watcher::CognixManagedPathsWatcher,
     context_chips::prompt::Prompt,
     experiments,
     network::NetworkStatus,
@@ -49,7 +50,6 @@ use crate::{
     },
     test_util::settings::initialize_settings_for_tests,
     undo_close::UndoCloseStack,
-    cognix_managed_paths_watcher::CognixManagedPathsWatcher,
     workflows::local_workflows::LocalWorkflows,
     workspace::{
         sync_inputs::SyncedInputState, ActiveSession, OneTimeModalModel, WorkspaceRegistry,
@@ -72,13 +72,13 @@ use ai::{
     index::full_source_code_embedding::manager::CodebaseIndexManager,
     project_context::model::ProjectContextModel,
 };
-use pathfinder_geometry::rect::RectF;
-use shared_session::permissions_manager::SessionPermissionsManager;
 use cognixui::windowing::{state::ApplicationStage, WindowManager};
 use cognixui::{
     platform::{WindowBounds, WindowStyle},
     App, ModelHandle,
 };
+use pathfinder_geometry::rect::RectF;
+use shared_session::permissions_manager::SessionPermissionsManager;
 
 fn initialize_app(app: &mut App) {
     initialize_settings_for_tests(app);

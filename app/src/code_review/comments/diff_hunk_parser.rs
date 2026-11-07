@@ -1,8 +1,8 @@
 //! Utilities for parsing unified diff hunks and extracting specific line content.
 
 use ai::agent::action::CommentSide;
-use num_traits::SaturatingSub;
 use cognix_editor::render::model::LineCount;
+use num_traits::SaturatingSub;
 
 use crate::{
     code::editor::line::EditorLineLocation,

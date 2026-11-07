@@ -5,11 +5,11 @@ use std::{
     sync::Arc,
 };
 
+use cognix_util::path::ShellFamily;
+use cognixui::{AddSingletonModel, App, SingletonEntity, WindowId};
 use futures::channel::oneshot;
 use parking_lot::Mutex;
 use tempfile::TempDir;
-use cognix_util::path::ShellFamily;
-use cognixui::{AddSingletonModel, App, SingletonEntity, WindowId};
 
 use crate::{
     cloud_object::{

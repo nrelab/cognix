@@ -12,7 +12,6 @@ use crate::{
     context_chips::display_chip::DisplayChipAction,
     terminal::input::MenuPositioningProvider,
 };
-use std::path::PathBuf;
 use cognix_core::features::FeatureFlag;
 use cognixui::{
     elements::{
@@ -22,6 +21,7 @@ use cognixui::{
     AppContext, Entity, EntityId, FocusContext, ModelHandle, SingletonEntity, TypedActionView,
     View, ViewContext, ViewHandle,
 };
+use std::path::PathBuf;
 
 use super::{
     display_chip::{DisplayChip, DisplayChipConfig, PromptDisplayChipEvent},

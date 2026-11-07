@@ -14,7 +14,9 @@ use crate::cloud_object::model::persistence::CloudModel;
 use crate::cloud_object::{GenericStringObjectFormat, JsonObjectType, ObjectType};
 use crate::drive::export::ExportManager;
 use crate::drive::items::CognixDriveItemId;
-use crate::drive::{CloudObjectTypeAndId, OpenCognixDriveObjectArgs, OpenCognixDriveObjectSettings};
+use crate::drive::{
+    CloudObjectTypeAndId, OpenCognixDriveObjectArgs, OpenCognixDriveObjectSettings,
+};
 use crate::experiments::{BlockOnboarding, Experiment};
 use crate::interval_timer::IntervalTimer;
 use crate::launch_configs::launch_config;
@@ -50,7 +52,7 @@ use crate::terminal::keys_settings::KeysSettings;
 use crate::terminal::shell::ShellType;
 use crate::terminal::view::{cell_size_and_padding, TerminalAction};
 use crate::themes::onboarding_theme_picker_themes;
-use crate::themes::theme::{AnsiColorIdentifier, Blend, Fill, ThemeKind, CognixThemeConfig};
+use crate::themes::theme::{AnsiColorIdentifier, Blend, CognixThemeConfig, Fill, ThemeKind};
 use crate::uri::OpenMCPSettingsArgs;
 use crate::util::bindings::{self, is_binding_pty_compliant};
 use crate::util::traffic_lights::{traffic_light_data, TrafficLightData, TrafficLightMouseStates};
@@ -80,6 +82,11 @@ use crate::{features::FeatureFlag, ChannelState};
 use crate::{send_telemetry_from_app_ctx, GlobalResourceHandles, GlobalResourceHandlesProvider};
 use anyhow::Result;
 use cfg_if::cfg_if;
+use cognix_core::context_flag::ContextFlag;
+use cognix_core::user_preferences::GetUserPreferences as _;
+use cognixui::clipboard::ClipboardContent;
+use cognixui::keymap::{EditableBinding, FixedBinding};
+use cognixui::windowing::WindowManager;
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use parking_lot::Mutex;
@@ -93,11 +100,6 @@ use std::sync::mpsc::SyncSender;
 use std::sync::Arc;
 use std::{collections::HashMap, path::PathBuf};
 use url::Url;
-use cognix_core::context_flag::ContextFlag;
-use cognix_core::user_preferences::GetUserPreferences as _;
-use cognixui::clipboard::ClipboardContent;
-use cognixui::keymap::{EditableBinding, FixedBinding};
-use cognixui::windowing::WindowManager;
 
 use crate::ai::llms::{LLMPreferences, LLMPreferencesEvent};
 use crate::ai::onboarding::{build_onboarding_models, current_onboarding_auth_state};
@@ -2635,11 +2637,12 @@ impl RootView {
                         return false;
                     }
 
-                    let item_id =
-                        CognixDriveItemId::Object(CloudObjectTypeAndId::from_generic_string_object(
+                    let item_id = CognixDriveItemId::Object(
+                        CloudObjectTypeAndId::from_generic_string_object(
                             GenericStringObjectFormat::Json(JsonObjectType::EnvVarCollection),
                             SyncId::ServerId(arg.server_id),
-                        ));
+                        ),
+                    );
 
                     handle.update(ctx, |workspace, ctx| {
                         let initialized_section_states =
@@ -3229,8 +3232,8 @@ impl RootView {
         ctx: &mut ViewContext<Self>,
     ) -> bool {
         use crate::settings::AISettings;
-        use voice_input::{VoiceInput, VoiceInputState, VoiceInputToggledFrom};
         use cognixui::event::KeyState;
+        use voice_input::{VoiceInput, VoiceInputState, VoiceInputToggledFrom};
 
         // Check that the released key matches the configured voice input toggle key.
         let ai_settings = AISettings::as_ref(ctx);

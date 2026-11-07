@@ -1,13 +1,6 @@
 use std::{borrow::Cow, sync::Arc, time::Duration};
 
 use anyhow::{Result, anyhow};
-use pathfinder_geometry::vector::Vector2F;
-use rust_embed::RustEmbed;
-use ui_components::{
-    Component as _, Options, button, dialog,
-    lightbox::{self, LightboxImage, LightboxImageSource, NavigationDirection},
-    switch, tooltip,
-};
 use cognix_core::ui::{Icon, appearance::Appearance, theme::color::internal_colors};
 use cognixui::{
     AssetProvider, SingletonEntity, Tracked,
@@ -18,6 +11,13 @@ use cognixui::{
     keymap::FixedBinding,
     platform,
     prelude::*,
+};
+use pathfinder_geometry::vector::Vector2F;
+use rust_embed::RustEmbed;
+use ui_components::{
+    Component as _, Options, button, dialog,
+    lightbox::{self, LightboxImage, LightboxImageSource, NavigationDirection},
+    switch, tooltip,
 };
 
 #[derive(Clone, Copy, RustEmbed)]

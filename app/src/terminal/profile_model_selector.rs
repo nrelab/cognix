@@ -1,10 +1,4 @@
 use ai::api_keys::{ApiKeyManager, ApiKeyManagerEvent};
-use indexmap::IndexMap;
-use instant::{Duration, Instant};
-use parking_lot::FairMutex;
-use pathfinder_color::ColorU;
-use pathfinder_geometry::vector::vec2f;
-use std::sync::Arc;
 use cognixui::{
     elements::{
         Border, ChildAnchor, ChildView, ConstrainedBox, Container, CornerRadius,
@@ -19,6 +13,12 @@ use cognixui::{
     AppContext, Element, Entity, EntityId, ModelHandle, SingletonEntity as _, TypedActionView,
     View, ViewContext, ViewHandle,
 };
+use indexmap::IndexMap;
+use instant::{Duration, Instant};
+use parking_lot::FairMutex;
+use pathfinder_color::ColorU;
+use pathfinder_geometry::vector::vec2f;
+use std::sync::Arc;
 
 const SIDECAR_HORIZONTAL_GAP: f32 = 8.;
 const SIDECAR_POSITION_ID: &str = "model_sidecar_panel";
@@ -91,7 +91,9 @@ pub fn calculate_scaled_font_size(appearance: &cognix_core::ui::appearance::Appe
 }
 
 /// Calculate the maximum width for profile name text (we will clip to this width)
-pub fn calculate_max_profile_name_width(appearance: &cognix_core::ui::appearance::Appearance) -> f32 {
+pub fn calculate_max_profile_name_width(
+    appearance: &cognix_core::ui::appearance::Appearance,
+) -> f32 {
     let scaled_font_size = calculate_scaled_font_size(appearance);
     scaled_font_size * MAX_PROFILE_NAME_WIDTH_SCALE_FACTOR
 }

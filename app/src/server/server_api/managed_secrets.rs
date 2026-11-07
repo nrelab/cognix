@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use anyhow::{anyhow, Context, Result};
 use async_trait::async_trait;
-use cynic::{MutationBuilder, QueryBuilder};
 use cognix_graphql::mutations::issue_task_identity_token::{
     IssueTaskIdentityToken, IssueTaskIdentityTokenInput, IssueTaskIdentityTokenResult,
     IssueTaskIdentityTokenVariables,
@@ -36,6 +35,7 @@ use cognix_graphql::{
     object_permissions::Owner,
 };
 use cognix_managed_secrets::client::{SecretOwner, TaskIdentityToken};
+use cynic::{MutationBuilder, QueryBuilder};
 
 use super::ServerApi;
 use crate::server::graphql::{get_request_context, get_user_facing_error_message};

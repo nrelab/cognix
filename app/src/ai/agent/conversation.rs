@@ -24,8 +24,6 @@ use std::collections::HashSet;
 use std::{collections::HashMap, fmt::Display};
 
 use super::task_store::TaskStore;
-use uuid::Uuid;
-use vec1::{Size0Error, Vec1};
 use cognix_core::command::ExitCode;
 use cognix_core::execution_mode::AppExecutionMode;
 use cognix_core::features::FeatureFlag;
@@ -37,6 +35,8 @@ use cognix_multi_agent_api::response_event::stream_finished;
 use cognix_multi_agent_api::{self as api, response_event::stream_finished::TokenUsage};
 use cognixui::color::ColorU;
 use cognixui::{EntityId, ModelContext, SingletonEntity};
+use uuid::Uuid;
+use vec1::{Size0Error, Vec1};
 
 use crate::ai::agent::{AIIdentifiers, CancellationReason};
 use crate::{

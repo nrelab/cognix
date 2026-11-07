@@ -3,8 +3,8 @@ use crate::{
     send_telemetry_on_executor,
     server::telemetry::{DownloadSource, TelemetryEvent},
 };
-use std::sync::Arc;
 use cognixui::r#async::executor::Background;
+use std::sync::Arc;
 
 /// Determine the Cognix download method (if possible) and send a telemetry event reporting that
 /// method

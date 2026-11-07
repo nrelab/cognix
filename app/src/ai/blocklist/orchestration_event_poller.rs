@@ -12,15 +12,15 @@ use crate::server::server_api::ai::{AIClient, AgentRunEvent};
 use crate::server::server_api::{ServerApi, ServerApiProvider};
 use anyhow::anyhow;
 use async_trait::async_trait;
+use cognix_core::features::FeatureFlag;
+use cognix_multi_agent_api as api;
+use cognixui::r#async::Timer;
+use cognixui::{Entity, ModelContext, SingletonEntity};
 use futures::channel::mpsc;
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 use std::time::Duration;
 use uuid::Uuid;
-use cognix_core::features::FeatureFlag;
-use cognix_multi_agent_api as api;
-use cognixui::r#async::Timer;
-use cognixui::{Entity, ModelContext, SingletonEntity};
 
 /// Adaptive polling backoff: 1s, 2s, 5s, then 10s max. Resets to 1s when
 /// events are found.

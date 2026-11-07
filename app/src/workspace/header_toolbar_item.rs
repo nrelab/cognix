@@ -6,8 +6,8 @@ use crate::settings::AISettings;
 use crate::ui_components::icons::Icon;
 use crate::workspace::tab_settings::TabSettings;
 
-use settings::Setting as _;
 use cognixui::{AppContext, SingletonEntity};
+use settings::Setting as _;
 
 /// A configurable item in the vertical tabs header toolbar.
 ///

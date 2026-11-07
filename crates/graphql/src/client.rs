@@ -1,11 +1,11 @@
 use std::borrow::Cow;
 
+use cognix_core::{channel::ChannelState, operating_system_info::OperatingSystemInfo};
 use cynic::{GraphQlResponse, QueryFragment, QueryVariables};
 use http::StatusCode;
 use instant::Duration;
 use reqwest::header::CONTENT_TYPE;
 use serde::{de::DeserializeOwned, Serialize};
-use cognix_core::{channel::ChannelState, operating_system_info::OperatingSystemInfo};
 
 use crate::{
     error::{UserFacingError, UserFacingErrorInterface},

@@ -9,12 +9,12 @@ use crate::repositories::stub_git_repository;
 use crate::repository::RepositorySubscriber;
 use crate::watcher::{DirectoryWatcher, TaskQueue};
 use crate::{CanonicalizedPath, RepoMetadataError, Repository, RepositoryUpdate};
-use futures::channel::mpsc;
-use futures::StreamExt as _;
-use virtual_fs::{Stub, VirtualFS};
 use cognix_util::standardized_path::StandardizedPath;
 use cognixui::r#async::Timer;
 use cognixui::{App, ModelContext, ModelHandle};
+use futures::channel::mpsc;
+use futures::StreamExt as _;
+use virtual_fs::{Stub, VirtualFS};
 
 #[test]
 fn test_add_repository_success() {

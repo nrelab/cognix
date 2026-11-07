@@ -4,13 +4,13 @@ use crate::drive::DriveObjectType;
 use crate::search::FilterChipRenderer as CommonFilterChipRenderer;
 use crate::search::QueryFilter;
 use crate::util::color::{ContrastingColor, MinimumAllowedContrast};
-use pathfinder_color::ColorU;
 use cognixui::elements::{
     ConstrainedBox, Container, CornerRadius, CrossAxisAlignment, Flex, Hoverable, Icon,
     MouseStateHandle, ParentElement, Radius, Text,
 };
 use cognixui::platform::Cursor;
 use cognixui::{Element, EventContext};
+use pathfinder_color::ColorU;
 
 /// Trait to render filter chips for the command palette.
 pub trait FilterChipRenderer: crate::search::FilterChipRenderer {
@@ -122,7 +122,9 @@ impl FilterChipRenderer for QueryFilter {
                 .theme()
                 .main_text_color(appearance.theme().surface_2())
                 .into_solid(),
-            QueryFilter::Workflows => cognix_drive_icon_color(appearance, DriveObjectType::Workflow),
+            QueryFilter::Workflows => {
+                cognix_drive_icon_color(appearance, DriveObjectType::Workflow)
+            }
             QueryFilter::Notebooks => cognix_drive_icon_color(
                 appearance,
                 DriveObjectType::Notebook {
@@ -146,7 +148,7 @@ impl FilterChipRenderer for QueryFilter {
 }
 
 mod styles {
-    use crate::themes::theme::{Blend, Fill, CognixTheme};
+    use crate::themes::theme::{Blend, CognixTheme, Fill};
     use cognixui::elements::{Border, MouseState};
 
     /// Size of the border when the query filter is hovered.

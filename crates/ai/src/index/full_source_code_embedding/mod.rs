@@ -15,10 +15,10 @@ pub use sync_client::SyncTask;
 pub use codebase_index::{CodebaseIndex, RetrievalID, SyncProgress};
 pub use merkle_tree::{ContentHash, NodeHash};
 
+use cognix_graphql::queries::rerank_fragments::FragmentLocationInput;
 use fragment_metadata::FragmentMetadata;
 use string_offset::ByteOffset;
 use thiserror::Error;
-use cognix_graphql::queries::rerank_fragments::FragmentLocationInput;
 
 #[derive(Error, Debug)]
 pub enum Error {

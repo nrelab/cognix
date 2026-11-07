@@ -1,6 +1,3 @@
-use pathfinder_geometry::rect::RectF;
-use regex::Regex;
-use settings::Setting as _;
 use cognix_util::path::user_friendly_path;
 use cognixui::{
     async_assert, async_assert_eq,
@@ -9,6 +6,9 @@ use cognixui::{
     windowing::WindowManager,
     App, SingletonEntity, ViewHandle, WindowId,
 };
+use pathfinder_geometry::rect::RectF;
+use regex::Regex;
+use settings::Setting as _;
 
 use crate::{
     ai::blocklist::agent_view::AgentViewState,

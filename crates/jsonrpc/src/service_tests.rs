@@ -2,9 +2,9 @@
 mod service_tests {
     use crate::{JsonRpcService, Transport};
     use async_trait::async_trait;
+    use cognixui::r#async::executor::Background;
     use std::sync::Arc;
     use std::sync::Mutex;
-    use cognixui::r#async::executor::Background;
 
     #[derive(Debug, Clone)]
     struct MockTransport {

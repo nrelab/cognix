@@ -20,29 +20,20 @@ use crate::terminal::model::selection::{SelectAction, SelectionPoint};
 use crate::terminal::safe_mode_settings::get_secret_obfuscation_mode;
 use crate::terminal::view::TerminalAction;
 use crate::terminal::{grid_renderer, SizeInfo};
-use crate::themes::theme::{Fill, CognixTheme};
+use crate::themes::theme::{CognixTheme, Fill};
 use crate::ui_components::{self, icons as UIIcon};
 use crate::util::color::Opacity;
-use enum_iterator::Sequence;
-use itertools::Itertools;
-use parking_lot::FairMutex;
-use vec1::Vec1;
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_core::ui::builder::UiBuilder;
 use cognix_core::ui::theme::AnsiColorIdentifier;
 use cognix_util::user_input::UserInput;
 use cognixui::platform::Cursor;
 use cognixui::text::SelectionType;
+use enum_iterator::Sequence;
+use itertools::Itertools;
+use parking_lot::FairMutex;
+use vec1::Vec1;
 
-use pathfinder_color::ColorU;
-use session_sharing_protocol::common::{ParticipantId, Selection};
-use std::cell::RefCell;
-use std::collections::{HashMap, HashSet};
-use std::mem;
-use std::ops::{Deref, Range, RangeInclusive};
-use std::rc::Rc;
-use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex, MutexGuard};
 use cognixui::elements::new_scrollable::{NewScrollableElement, ScrollableAxis};
 use cognixui::elements::{
     Axis, Border, ChildAnchor, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
@@ -62,12 +53,22 @@ use cognixui::{
     EventContext, LayoutContext, PaintContext, SizeConstraint,
 };
 use cognixui::{EntityId, ModelHandle, SingletonEntity as _};
+use pathfinder_color::ColorU;
+use session_sharing_protocol::common::{ParticipantId, Selection};
+use std::cell::RefCell;
+use std::collections::{HashMap, HashSet};
+use std::mem;
+use std::ops::{Deref, Range, RangeInclusive};
+use std::rc::Rc;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex, MutexGuard};
 
 use super::block_list_viewport::{ClampingMode, InputMode, ScrollPosition, ViewportState};
 use super::blockgrid_renderer::GridRenderParams;
 use super::find::{BlockListFindRun, BlockListMatch, TerminalFindModel};
 use super::grid_renderer::CellGlyphCache;
 
+use super::cognixify::render::{draw_flag_pole, render_subshell_flag};
 use super::meta_shortcuts::handle_keystroke_despite_composing;
 use super::model::block::BlockId;
 use super::model::blocks::{RichContentItem, SelectionRange};
@@ -85,12 +86,11 @@ use super::view::{
     BlocklistAIRenderContext, InlineBannerId, RichContentMetadata, SeparatorId,
     SharedSessionBanners, TerminalEditor, TerminalViewRenderContext, BLOCK_BANNER_HEIGHT,
 };
-use super::cognixify::render::{draw_flag_pole, render_subshell_flag};
 use super::TerminalModel;
 use super::{heights_approx_eq, HEIGHT_FUDGE_FACTOR_LINES};
 use crate::terminal::blockgrid_renderer::BlockGridParams;
-use crate::terminal::model::terminal_model::BlockIndex;
 use crate::terminal::cognixify::SubshellSource;
+use crate::terminal::model::terminal_model::BlockIndex;
 
 use crate::terminal::model::escape_sequences::{
     maybe_kitty_keyboard_escape_sequence, KeystrokeWithDetails, ToEscapeSequence,

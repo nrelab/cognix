@@ -1,9 +1,9 @@
 use std::borrow::Cow;
 
+use cognixui::{AppContext, AssetProvider, SingletonEntity};
 use itertools::Itertools;
 use lazy_static::lazy_static;
 use memo_map::MemoMap;
-use cognixui::{AppContext, AssetProvider, SingletonEntity};
 
 use crate::{
     env_vars::EnvVar,
@@ -12,8 +12,8 @@ use crate::{
 
 #[cfg(feature = "local_fs")]
 use super::{
-    model::session::{BootstrapSessionType, SessionInfo},
     cognixify::settings::{PIPENV_SUBSHELL_COMMAND_REGEX, POETRY_SUBSHELL_COMMAND_REGEX},
+    model::session::{BootstrapSessionType, SessionInfo},
 };
 
 lazy_static! {

@@ -1,4 +1,6 @@
 use anyhow::{Context, Result};
+use cognixui::text::point::Point;
+use cognixui::{AppContext, ModelContext, ModelHandle};
 use html5ever::serialize;
 use html5ever::{
     QualName,
@@ -15,11 +17,9 @@ use std::collections::VecDeque;
 use std::fmt::Write;
 use std::iter;
 use std::{io, ops::Range};
-use cognixui::text::point::Point;
-use cognixui::{AppContext, ModelContext, ModelHandle};
 
-use string_offset::CharOffset;
 use cognixui::elements::{ListIndentLevel, ListNumbering};
+use string_offset::CharOffset;
 
 use crate::content::anchor::AnchorSide;
 use crate::content::selection_model::BufferSelectionModel;

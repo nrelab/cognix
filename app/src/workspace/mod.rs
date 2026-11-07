@@ -43,13 +43,13 @@ use crate::channel::ChannelState;
 use crate::util::bindings::{self, cmd_or_ctrl_shift, is_binding_pty_compliant, CustomAction};
 
 use crate::palette::PaletteMode;
-use serde::{Deserialize, Serialize};
 use cognix_core::context_flag::ContextFlag;
 use cognixui::accessibility::AccessibilityVerbosity;
 use cognixui::elements::DropTargetData;
 use cognixui::keymap::FixedBinding;
 use cognixui::keymap::{BindingDescription, EditableBinding};
 use cognixui::AppContext;
+use serde::{Deserialize, Serialize};
 
 pub use action::{
     CommandSearchOptions, InitContent, RestoreConversationLayout, TabContextMenuAnchor,
@@ -85,14 +85,14 @@ pub fn is_feedback_skill_available(ctx: &AppContext) -> bool {
 }
 
 use crate::workspace::view::{
-    LEFT_PANEL_AGENT_CONVERSATIONS_BINDING_NAME, LEFT_PANEL_GLOBAL_SEARCH_BINDING_NAME,
-    LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME, LEFT_PANEL_COGNIX_DRIVE_BINDING_NAME,
+    LEFT_PANEL_AGENT_CONVERSATIONS_BINDING_NAME, LEFT_PANEL_COGNIX_DRIVE_BINDING_NAME,
+    LEFT_PANEL_GLOBAL_SEARCH_BINDING_NAME, LEFT_PANEL_PROJECT_EXPLORER_BINDING_NAME,
     NEW_AGENT_TAB_BINDING_NAME, NEW_AMBIENT_AGENT_TAB_BINDING_NAME, NEW_TAB_BINDING_NAME,
     NEW_TERMINAL_TAB_BINDING_NAME, OPEN_GLOBAL_SEARCH_BINDING_NAME,
-    TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME, TOGGLE_NOTIFICATION_MAILBOX_BINDING_NAME,
-    TOGGLE_PROJECT_EXPLORER_BINDING_NAME, TOGGLE_RIGHT_PANEL_BINDING_NAME,
-    TOGGLE_TAB_CONFIGS_MENU_BINDING_NAME, TOGGLE_VERTICAL_TABS_PANEL_BINDING_NAME,
-    TOGGLE_COGNIX_DRIVE_BINDING_NAME,
+    TOGGLE_COGNIX_DRIVE_BINDING_NAME, TOGGLE_CONVERSATION_LIST_VIEW_BINDING_NAME,
+    TOGGLE_NOTIFICATION_MAILBOX_BINDING_NAME, TOGGLE_PROJECT_EXPLORER_BINDING_NAME,
+    TOGGLE_RIGHT_PANEL_BINDING_NAME, TOGGLE_TAB_CONFIGS_MENU_BINDING_NAME,
+    TOGGLE_VERTICAL_TABS_PANEL_BINDING_NAME,
 };
 pub use one_time_modal_model::OneTimeModalModel;
 pub use registry::WorkspaceRegistry;
@@ -667,7 +667,9 @@ pub fn init(app: &mut AppContext) {
             WorkspaceAction::CreatePersonalFolder,
         )
         .with_group(bindings::BindingGroup::Folders.as_str())
-        .with_context_predicate(id!("Workspace") & id!(flags::ENABLE_COGNIX_DRIVE) & id!("IsOnline")),
+        .with_context_predicate(
+            id!("Workspace") & id!(flags::ENABLE_COGNIX_DRIVE) & id!("IsOnline"),
+        ),
         EditableBinding::new(
             NEW_TAB_BINDING_NAME,
             BindingDescription::new("Create new tab"),

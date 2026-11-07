@@ -11,15 +11,15 @@ use std::sync::Arc;
 
 use base64::Engine as _;
 use bounded_vec_deque::BoundedVecDeque;
-use pathfinder_geometry::vector::Vector2F;
-use rand::Rng;
-use unicode_width::{UnicodeWidthChar, UnicodeWidthStr};
 use cognix_core::channel::ChannelState;
 use cognix_core::features::FeatureFlag;
 use cognix_terminal::model::ansi::CharsetIndex;
 use cognix_terminal::model::grid::cell;
 use cognix_terminal::model::{KeyboardModes, KeyboardModesApplyBehavior};
 use cognixui::image_cache::{resize_dimensions, FitType};
+use pathfinder_geometry::vector::Vector2F;
+use rand::Rng;
+use unicode_width::{UnicodeWidthChar, UnicodeWidthStr};
 
 use crate::server::telemetry::ImageProtocol;
 use crate::terminal::event::Event;

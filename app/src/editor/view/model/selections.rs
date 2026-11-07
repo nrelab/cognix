@@ -1,11 +1,11 @@
 use std::{cmp::Ordering, mem, ops::Range};
 
+use cognixui::text::point::Point;
+use cognixui::AppContext;
 use pathfinder_geometry::vector::Vector2F;
 use serde::{Deserialize, Serialize};
 use string_offset::{ByteOffset, CharOffset};
 use vec1::Vec1;
-use cognixui::text::point::Point;
-use cognixui::AppContext;
 
 use super::{
     buffer::{Anchor, Buffer, LamportValue, ToBufferOffset, ToCharOffset, ToPoint},

@@ -8,9 +8,9 @@ mod tests {
         StaticEnvVar, StaticHeader, TemplatableMCPServer, TemplatableMCPServerInstallation,
         TemplateVariable, TransportType, VariableType, VariableValue,
     };
+    use cognix_managed_secrets::ManagedSecretValue;
     use serde_json;
     use std::collections::HashMap;
-    use cognix_managed_secrets::ManagedSecretValue;
 
     #[test]
     fn test_mcp_server_config_serialization_excludes_secret_env_values() {

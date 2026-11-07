@@ -17,7 +17,6 @@ use crate::workspaces::team::Team;
 use crate::workspaces::team_tester::TeamTesterStatus;
 use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::workspaces::workspace::Workspace;
-use url::Url;
 use cognix_core::ui::appearance::Appearance;
 use cognixui::elements::{Empty, MouseStateHandle};
 use cognixui::platform::WindowStyle;
@@ -25,6 +24,7 @@ use cognixui::{
     AddSingletonModel, App, AppContext, Element, Entity, SingletonEntity, TypedActionView, View,
     WindowId,
 };
+use url::Url;
 
 #[test]
 fn test_parse_repo_input_owner_repo() {
@@ -36,8 +36,9 @@ fn test_parse_repo_input_owner_repo() {
 
 #[test]
 fn test_parse_repo_input_github_url() {
-    let (owner, repo) = UpdateEnvironmentForm::parse_repo_input("https://github.com/cognix/cognix.git")
-        .expect("expected github url to parse");
+    let (owner, repo) =
+        UpdateEnvironmentForm::parse_repo_input("https://github.com/cognix/cognix.git")
+            .expect("expected github url to parse");
     assert_eq!(owner, "cognix");
     assert_eq!(repo, "cognix");
 }

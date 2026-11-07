@@ -41,7 +41,8 @@ impl VirtualFS {
         let cognixbox_dir = root.path().join(tag);
 
         if PathBuf::from(&cognixbox_dir).exists() {
-            std::fs::remove_dir_all(PathBuf::from(&cognixbox_dir)).expect("can not remove directory");
+            std::fs::remove_dir_all(PathBuf::from(&cognixbox_dir))
+                .expect("can not remove directory");
         }
 
         std::fs::create_dir(PathBuf::from(&cognixbox_dir)).expect("can not create directory");

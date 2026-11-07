@@ -18,10 +18,10 @@ use crate::{
         DEFAULT_COMMAND_EXECUTION_DENYLIST,
     },
 };
-use serde::{Deserialize, Serialize};
 use cognix_core::channel::ChannelState;
 use cognix_core::features::FeatureFlag;
 use cognixui::{AppContext, SingletonEntity};
+use serde::{Deserialize, Serialize};
 
 use super::llms::LLMId;
 
