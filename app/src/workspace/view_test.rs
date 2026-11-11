@@ -67,6 +67,7 @@ use crate::ai::mcp::{
 use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use crate::resource_center::Tip;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
+use crate::test_util::assert_eventually;
 use crate::test_util::settings::initialize_settings_for_tests;
 use crate::undo_close::UndoCloseSettings;
 use crate::workflows::local_workflows::LocalWorkflows;
@@ -1449,9 +1450,16 @@ fn test_terminal_model_isnt_leaked() {
         // contains the actual logic that drops the `TerminalModel`.
         app.update(|_| ());
 
+        // Dropping the tab can also leave in-flight background tasks (e.g. spawned during
+        // session setup) that still hold a reference to the model, so poll until the
+        // reference is actually released.
         // If we can't upgrade the weak reference, that means it was in fact destructed.
-        assert!(
-            terminal_model.upgrade().is_none(),
+        assert_eventually!(
+            100 =>
+            {
+                app.update(|_| ());
+                terminal_model.upgrade().is_none()
+            },
             "The terminal model should not exist once the tab is closed."
         )
     });
