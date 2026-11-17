@@ -377,6 +377,7 @@ use crate::{send_telemetry_from_ctx, GlobalResourceHandles};
 
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::semantic_selection::SemanticSelection;
+use cognix_session::common::SessionId as SharedSessionId;
 use cognix_util::path::{user_friendly_path, LineAndColumnArg};
 use cognixui::fonts::Weight;
 use cognixui::modals::{AlertDialogWithCallbacks, AppModalCallback};
@@ -386,7 +387,6 @@ use itertools::Itertools;
 use parking_lot::FairMutex;
 use pathfinder_geometry::rect::RectF;
 use repo_metadata::repositories::DetectedRepositories;
-use cognix_session::common::SessionId as SharedSessionId;
 use std::collections::{HashMap, HashSet};
 #[cfg(feature = "local_fs")]
 use std::convert::TryFrom;

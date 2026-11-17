@@ -28,10 +28,10 @@ use crate::{
     ChannelState, OpenPath,
 };
 use anyhow::{anyhow, ensure, Result};
+use cognix_session::common::SessionId;
 use cognixui::notification::UserNotification;
 use cognixui::{platform::TerminationMode, SingletonEntity as _, TypedActionView};
 use itertools::Itertools;
-use cognix_session::common::SessionId;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;

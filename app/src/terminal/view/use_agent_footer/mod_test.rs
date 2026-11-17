@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
 use cognix_core::settings::Setting as _;
-use cognixui::{App, AppContext, SingletonEntity, ViewContext};
 use cognix_session::sharer::SessionSourceType;
+use cognixui::{App, AppContext, SingletonEntity, ViewContext};
 
 use crate::{
     ai::{

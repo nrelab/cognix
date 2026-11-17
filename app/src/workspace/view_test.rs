@@ -22,13 +22,13 @@ use crate::pricing::PricingInfoModel;
 use crate::suggestions::ignored_suggestions_model::IgnoredSuggestionsModel;
 #[cfg(feature = "local_fs")]
 use crate::user_config::tab_configs_dir;
+use cognix_session::sharer::SessionSourceType;
 use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::watcher::DirectoryWatcher;
 #[cfg(feature = "local_fs")]
 use repo_metadata::CanonicalizedPath;
 #[cfg(feature = "local_fs")]
 use repo_metadata::RepoMetadataModel;
-use cognix_session::sharer::SessionSourceType;
 use std::collections::HashMap;
 #[cfg(feature = "local_fs")]
 use tempfile::TempDir;
@@ -78,10 +78,10 @@ use crate::settings::cloud_preferences_syncer::CloudPreferencesSyncer;
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use ai::project_context::model::ProjectContextModel;
 use cognix_editor::editor::NavigationKey;
+use cognix_session::common::SessionId;
 use cognixui::AddSingletonModel;
 use cognixui::{platform::WindowStyle, App, ViewHandle};
 use pane_group::{NotebookPane, PaneState, SplitPaneState, TerminalPaneId};
-use cognix_session::common::SessionId;
 use terminal::shared_session::permissions_manager::SessionPermissionsManager;
 use terminal::view::ActiveSessionState;
 

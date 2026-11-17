@@ -8,12 +8,12 @@ use crate::terminal::{
 use crate::test_util::add_window_with_terminal;
 use crate::test_util::terminal::initialize_app_for_terminal_view;
 
-use cognixui::units::Lines;
-use cognixui::{App, ViewHandle};
-use parking_lot::FairMutex;
 use cognix_session::common::{
     OrderedTerminalEvent, OrderedTerminalEventType, Scrollback, ScrollbackBlock, WindowSize,
 };
+use cognixui::units::Lines;
+use cognixui::{App, ViewHandle};
+use parking_lot::FairMutex;
 use std::sync::Arc;
 
 fn ordered_terminal_event_from_bytes(

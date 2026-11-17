@@ -3,8 +3,8 @@
 
 use std::{str::FromStr, sync::Arc, time::Duration};
 
-use futures::{select, FutureExt, Stream};
 use cognix_session::common::SessionId;
+use futures::{select, FutureExt, Stream};
 
 use super::AmbientAgentTaskId;
 use super::{AmbientAgentTask, AmbientAgentTaskState};

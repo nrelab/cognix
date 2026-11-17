@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-use cognixui::{Entity, SingletonEntity};
 use cognix_session::common::ProfileData;
+use cognixui::{Entity, SingletonEntity};
 
 use crate::auth::UserUid;
 

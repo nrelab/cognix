@@ -11,8 +11,8 @@ use crate::ai::blocklist::agent_view::agent_input_footer::{
 use crate::terminal::cli_agent_sessions::{CLIAgentInputEntrypoint, CLIAgentSessionsModel};
 use crate::terminal::shared_session::{SharedSessionActionSource, SharedSessionScrollbackType};
 use base64::Engine;
-use cognixui::clipboard::{ClipboardContent, ImageData};
 use cognix_session::sharer::SessionSourceType;
+use cognixui::clipboard::{ClipboardContent, ImageData};
 mod cognixify_footer;
 
 pub use crate::terminal::CLIAgent;

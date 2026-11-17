@@ -1,7 +1,7 @@
-use cognixui::platform::WindowStyle;
-use cognixui::{App, SingletonEntity, ViewHandle};
 use cognix_session::common::{ParticipantId, ParticipantList, SessionId};
 use cognix_session::sharer::SessionSourceType;
+use cognixui::platform::WindowStyle;
+use cognixui::{App, SingletonEntity, ViewHandle};
 
 use crate::auth::UserUid;
 use crate::editor::ReplicaId;

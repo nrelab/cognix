@@ -227,6 +227,7 @@ use crate::{
 use ai::skills::SkillReference;
 use base64::Engine as _;
 use cognix_completer::util::parse_current_commands_and_tokens;
+use cognix_session::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 #[cfg(feature = "local_fs")]
 use diesel::SqliteConnection;
 use futures::FutureExt as _;
@@ -235,7 +236,6 @@ use lazy_static::lazy_static;
 use ordered_float::Float;
 use regex::Regex;
 use serde_json::json;
-use cognix_session::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 use settings::{Setting as _, ToggleableSetting};
 use std::{
     any::Any,
@@ -12607,9 +12607,7 @@ impl Input {
     /// with the resulting `FileReference` attachments appended.
     fn upload_files_then_send_prompt(
         task_id: crate::ai::ambient_agents::AmbientAgentTaskId,
-        server_conversation_token: Option<
-            cognix_session::common::ServerConversationToken,
-        >,
+        server_conversation_token: Option<cognix_session::common::ServerConversationToken>,
         prompt: String,
         base_attachments: Vec<AgentAttachment>,
         pending_images: &[crate::ai::agent::ImageContext],

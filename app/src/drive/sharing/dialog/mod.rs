@@ -33,6 +33,7 @@ use crate::workspaces::user_workspaces::UserWorkspaces;
 use crate::TelemetryEvent;
 use cognix_core::ui::appearance::Appearance;
 use cognix_editor::editor::NavigationKey;
+use cognix_session::common::{Guest, PendingGuest, SessionId, TeamAclData};
 use cognixui::elements::{
     Align, ChildAnchor, ChildView, Fill, Highlight, MainAxisSize, MouseStateHandle,
     OffsetPositioning, ParentAnchor, PositionedElementAnchor, PositionedElementOffsetBounds,
@@ -59,7 +60,6 @@ use email_address::EmailAddress;
 use inheritance::{InheritanceDetails, InheritanceState};
 use itertools::Itertools;
 use pathfinder_geometry::vector::vec2f;
-use cognix_session::common::{Guest, PendingGuest, SessionId, TeamAclData};
 
 use super::{
     style, ContentEditability, LinkSharingSubjectType, ShareableObject, SharingAccessLevel,

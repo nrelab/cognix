@@ -1,6 +1,4 @@
 use async_broadcast::InactiveReceiver;
-use parking_lot::FairMutex;
-use pathfinder_geometry::vector::Vector2F;
 use cognix_session::common::{
     ActivePrompt, AddGuestsResponse, CLIAgentSessionState, CommandExecutionFailureReason,
     LinkAccessLevelUpdateResponse, RemoveGuestResponse, SelectedAgentModel, SessionId,
@@ -9,6 +7,8 @@ use cognix_session::common::{
 };
 use cognix_session::sharer::SessionSourceType;
 use cognix_session::viewer::SessionEndedReason;
+use parking_lot::FairMutex;
+use pathfinder_geometry::vector::Vector2F;
 use settings::Setting as _;
 use std::any::Any;
 
@@ -597,10 +597,20 @@ impl TerminalManager {
                 let active_remote_update = viewer_remote_update_guard.start_remote_update();
                 if let Some(universal_developer_input_context) = universal_developer_input_context {
                     if let Some(ref model) = universal_developer_input_context.selected_model {
-                        Self::handle_selected_agent_model_update(&weak_view_handle, model, &active_remote_update, ctx);
+                        Self::handle_selected_agent_model_update(
+                            &weak_view_handle,
+                            model,
+                            &active_remote_update,
+                            ctx,
+                        );
                     }
                     if let Some(ref input_mode) = universal_developer_input_context.input_mode {
-                        Self::handle_input_mode_update(&weak_view_handle, input_mode, &active_remote_update, ctx);
+                        Self::handle_input_mode_update(
+                            &weak_view_handle,
+                            input_mode,
+                            &active_remote_update,
+                            ctx,
+                        );
                     }
                     apply_cli_agent_state_update(
                         &weak_view_handle,
@@ -608,7 +618,9 @@ impl TerminalManager {
                         &active_remote_update,
                         ctx,
                     );
-                    if let Some(ref selected_conversation) = universal_developer_input_context.selected_conversation {
+                    if let Some(ref selected_conversation) =
+                        universal_developer_input_context.selected_conversation
+                    {
                         Self::handle_selected_conversation_update(
                             &weak_view_handle,
                             selected_conversation,
@@ -669,7 +681,9 @@ impl TerminalManager {
                 });
 
                 #[cfg(target_family = "wasm")]
-                crate::platform::wasm::emit_event(crate::platform::wasm::CognixEvent::SessionJoined);
+                crate::platform::wasm::emit_event(
+                    crate::platform::wasm::CognixEvent::SessionJoined,
+                );
             }
             NetworkEvent::SessionEnded { reason } => {
                 let Some(view) = weak_view_handle.upgrade(ctx) else {
@@ -751,10 +765,20 @@ impl TerminalManager {
                 let active_remote_update = viewer_remote_update_guard.start_remote_update();
 
                 if let Some(ref model) = context_update.selected_model {
-                    Self::handle_selected_agent_model_update(&weak_view_handle, model, &active_remote_update, ctx);
+                    Self::handle_selected_agent_model_update(
+                        &weak_view_handle,
+                        model,
+                        &active_remote_update,
+                        ctx,
+                    );
                 }
                 if let Some(ref input_mode) = context_update.input_mode {
-                    Self::handle_input_mode_update(&weak_view_handle, input_mode, &active_remote_update, ctx);
+                    Self::handle_input_mode_update(
+                        &weak_view_handle,
+                        input_mode,
+                        &active_remote_update,
+                        ctx,
+                    );
                 }
                 if let Some(ref selected_conversation) = context_update.selected_conversation {
                     Self::handle_selected_conversation_update(
@@ -765,7 +789,12 @@ impl TerminalManager {
                     );
                 }
                 if let Some(auto_approve) = context_update.auto_approve_agent_actions {
-                    apply_auto_approve_agent_actions_update(&weak_view_handle, auto_approve, &active_remote_update, ctx);
+                    apply_auto_approve_agent_actions_update(
+                        &weak_view_handle,
+                        auto_approve,
+                        &active_remote_update,
+                        ctx,
+                    );
                 }
 
                 if model

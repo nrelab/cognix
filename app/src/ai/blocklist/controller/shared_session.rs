@@ -6,8 +6,8 @@ use std::collections::HashMap;
 use cognix_core::features::FeatureFlag;
 use cognix_multi_agent_api::response_event::{stream_finished, ClientActions};
 use cognix_multi_agent_api::{client_action::Action, message::Message};
-use itertools::Itertools;
 use cognix_session::common::{AgentAttachment, ParticipantId, ServerConversationToken};
+use itertools::Itertools;
 
 use super::response_stream::ResponseStreamId;
 use super::{BlocklistAIController, RequestInput};

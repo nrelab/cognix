@@ -1,5 +1,5 @@
-use pathfinder_geometry::vector::vec2f;
 use cognix_session::sharer::SessionSourceType;
+use pathfinder_geometry::vector::vec2f;
 
 use cognixui::App;
 

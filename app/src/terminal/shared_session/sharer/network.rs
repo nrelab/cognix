@@ -10,10 +10,6 @@ use crate::terminal::shared_session::{connect_endpoint, max_session_size};
 use async_channel::Receiver;
 use byte_unit::{Byte, UnitType};
 use cognix_core::features::FeatureFlag;
-use futures_util::stream::AbortHandle;
-use futures_util::{SinkExt, StreamExt};
-use instant::Instant;
-use parking_lot::FairMutex;
 use cognix_session::common::{
     ActivePrompt, ActivePromptUpdate, AgentPromptFailureReason, AgentPromptRequest,
     AgentPromptRequestId, CommandExecutionFailureReason, CommandExecutionRequestId, ControlAction,
@@ -31,6 +27,10 @@ use cognix_session::sharer::{
     UpstreamMessage,
 };
 use cognix_session::sharer::{FailedToInitializeSessionReason, SessionEndedReason};
+use futures_util::stream::AbortHandle;
+use futures_util::{SinkExt, StreamExt};
+use instant::Instant;
+use parking_lot::FairMutex;
 use std::collections::HashMap;
 
 use std::pin::pin;

@@ -10,7 +10,6 @@ use std::{pin::pin, sync::Arc};
 
 use futures_util::{stream::AbortHandle, SinkExt, StreamExt};
 
-use parking_lot::FairMutex;
 use cognix_session::{
     common::{
         ActivePrompt, ActivePromptUpdate, AddGuestsResponse, AgentAttachment,
@@ -30,6 +29,7 @@ use cognix_session::{
         ViewerRemovedReason,
     },
 };
+use parking_lot::FairMutex;
 
 use cognix_core::features::FeatureFlag;
 use cognixui::{
@@ -1025,12 +1025,16 @@ impl FailedToJoinReason {
 impl From<cognix_session::viewer::FailedToJoinReason> for FailedToJoinReason {
     fn from(reason: cognix_session::viewer::FailedToJoinReason) -> Self {
         match reason {
-            cognix_session::viewer::FailedToJoinReason::Invalid |
-            cognix_session::viewer::FailedToJoinReason::InternalServerError => Self::Unknown,
+            cognix_session::viewer::FailedToJoinReason::Invalid
+            | cognix_session::viewer::FailedToJoinReason::InternalServerError => Self::Unknown,
             cognix_session::viewer::FailedToJoinReason::SessionNotFound => Self::SessionNotFound,
             cognix_session::viewer::FailedToJoinReason::WrongPassword => Self::WrongPassword,
-            cognix_session::viewer::FailedToJoinReason::MaxNumberOfParticipantsReached => Self::MaxNumberOfParticipantsReached,
-            cognix_session::viewer::FailedToJoinReason::SessionNotAccessible => Self::SessionNotAccessible,
+            cognix_session::viewer::FailedToJoinReason::MaxNumberOfParticipantsReached => {
+                Self::MaxNumberOfParticipantsReached
+            }
+            cognix_session::viewer::FailedToJoinReason::SessionNotAccessible => {
+                Self::SessionNotAccessible
+            }
         }
     }
 }

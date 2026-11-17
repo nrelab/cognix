@@ -2,12 +2,12 @@ use std::borrow::Cow;
 
 use chrono::{DateTime, Local};
 use cognix_core::{channel::ChannelState, ui::appearance::Appearance};
+use cognix_session::common::SessionId;
 use cognixui::{
     color::ColorU,
     ui_components::components::{UiComponent, UiComponentStyles},
     AppContext, SingletonEntity, WeakViewHandle,
 };
-use cognix_session::common::SessionId;
 
 use crate::{
     ai::{agent::conversation::AIConversationId, blocklist::BlocklistAIHistoryModel},

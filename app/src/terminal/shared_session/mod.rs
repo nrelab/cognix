@@ -1,9 +1,9 @@
 use byte_unit::Byte;
+use cognix_session::common::{Role, Scrollback, ScrollbackBlock, SessionId};
+use cognix_session::sharer::SessionSourceType;
 use cognixui::{id, keymap::ContextPredicate, AppContext};
 use instant::Duration;
 use serde::{Deserialize, Serialize};
-use cognix_session::common::{Role, Scrollback, ScrollbackBlock, SessionId};
-use cognix_session::sharer::SessionSourceType;
 
 use crate::{
     channel::{Channel, ChannelState},
@@ -366,9 +366,7 @@ impl From<GridType> for cognix_session::common::GridType {
             GridType::Prompt => cognix_session::common::GridType::Prompt,
             GridType::Rprompt => cognix_session::common::GridType::Rprompt,
             GridType::Output => cognix_session::common::GridType::Output,
-            GridType::PromptAndCommand => {
-                cognix_session::common::GridType::PromptAndCommand
-            }
+            GridType::PromptAndCommand => cognix_session::common::GridType::PromptAndCommand,
         }
     }
 }

@@ -3,11 +3,11 @@ use crate::ai::blocklist::block::cli_controller::LongRunningCommandControlState;
 use crate::ai::blocklist::history_model::BlocklistAIHistoryModel;
 use crate::features::FeatureFlag;
 use crate::terminal::model::block::AgentInteractionMetadata;
-use cognixui::{Entity, ModelContext, SingletonEntity, WeakViewHandle};
-use parking_lot::FairMutex;
 use cognix_session::common::{
     OrderedTerminalEvent, OrderedTerminalEventType, Scrollback, WindowSize,
 };
+use cognixui::{Entity, ModelContext, SingletonEntity, WeakViewHandle};
+use parking_lot::FairMutex;
 use std::io::{sink, Sink};
 use std::sync::Arc;
 

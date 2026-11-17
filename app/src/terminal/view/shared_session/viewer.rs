@@ -5,8 +5,8 @@ use crate::pane_group::PaneHeaderCustomAction;
 use crate::terminal::view::{TerminalAction, TerminalView};
 use crate::ui_components::icons::Icon;
 
-use cognixui::{elements::MouseStateHandle, ViewContext, ViewHandle};
 use cognix_session::common::{Role, WindowSize};
+use cognixui::{elements::MouseStateHandle, ViewContext, ViewHandle};
 
 use super::adapter::Participant;
 

@@ -13,14 +13,14 @@ use cognix_cli::share::{ShareAccessLevel, ShareRequest, ShareSubject};
 use cognix_completer::completer::CommandOutput;
 use cognix_core::command::ExitCode;
 use cognix_core::features::FeatureFlag;
+use cognix_session::common::{Role, SessionId};
+use cognix_session::sharer::SessionSourceType;
 use cognix_util::path::ShellFamily;
 use cognixui::{
     r#async::FutureExt, AppContext, Entity, ModelContext, ModelHandle, SingletonEntity as _,
     ViewHandle,
 };
 use futures::channel::oneshot;
-use cognix_session::common::{Role, SessionId};
-use cognix_session::sharer::SessionSourceType;
 
 use crate::terminal::model::session::ExecuteCommandOptions;
 

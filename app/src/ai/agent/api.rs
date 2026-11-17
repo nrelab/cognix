@@ -82,9 +82,7 @@ impl From<cognix_session::common::ServerConversationToken> for ServerConversatio
     }
 }
 
-impl TryFrom<ServerConversationToken>
-    for cognix_session::common::ServerConversationToken
-{
+impl TryFrom<ServerConversationToken> for cognix_session::common::ServerConversationToken {
     type Error = uuid::Error;
 
     fn try_from(token: ServerConversationToken) -> Result<Self, Self::Error> {

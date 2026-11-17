@@ -40,8 +40,6 @@ use pathfinder_geometry::vector::Vector2F;
 use crate::terminal::cli_agent_sessions::{
     CLIAgentInputState, CLIAgentSessionsModel, CLIAgentSessionsModelEvent,
 };
-use cognixui::r#async::executor::Background;
-use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 use cognix_session::common::{
     ActivePrompt, AgentPromptFailureReason, CLIAgentSessionState, CommandExecutionFailureReason,
     ControlAction, ControlActionFailureReason, SelectedAgentModel,
@@ -52,6 +50,8 @@ use cognix_session::common::{
     LongRunningCommandAgentInteraction, LongRunningCommandAgentInteractionState,
     SelectedConversation, UniversalDeveloperInputContext,
 };
+use cognixui::r#async::executor::Background;
+use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 use settings::Setting as _;
 
 use cognix_core::execution_mode::AppExecutionMode;

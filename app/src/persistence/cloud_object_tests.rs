@@ -1,5 +1,5 @@
-use lazy_static::lazy_static;
 use cognix_session::common::{InputReplicaId, ProfileData};
+use lazy_static::lazy_static;
 
 use crate::{
     auth::UserUid,

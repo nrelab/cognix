@@ -76,8 +76,8 @@ use cognix_completer::completer::{
     SuggestionResults, SuggestionType,
 };
 use cognix_completer::meta::Span;
-use fuzzy_match::FuzzyMatchResult;
 use cognix_session::common::Role;
+use fuzzy_match::FuzzyMatchResult;
 use smol_str::SmolStr;
 
 use unindent::Unindent;

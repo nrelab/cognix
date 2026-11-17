@@ -2,9 +2,9 @@ mod helper;
 mod model_impl;
 
 use cognix_core::features::FeatureFlag;
+use cognix_session::common::ParticipantId;
 pub use helper::AIBlockModelHelper;
 pub use model_impl::*;
-use cognix_session::common::ParticipantId;
 
 use crate::ai::{
     agent::{

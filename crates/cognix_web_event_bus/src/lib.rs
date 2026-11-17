@@ -68,7 +68,10 @@ mod tests {
     #[test]
     fn event_serializes_to_documented_json() {
         let cases = [
-            (CognixEvent::LoggedOut, serde_json::json!({"kind": "LOGGED_OUT"})),
+            (
+                CognixEvent::LoggedOut,
+                serde_json::json!({"kind": "LOGGED_OUT"}),
+            ),
             (
                 CognixEvent::SessionJoined,
                 serde_json::json!({"kind": "SESSION_JOINED"}),

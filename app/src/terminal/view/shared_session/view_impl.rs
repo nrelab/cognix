@@ -34,14 +34,14 @@ use crate::{
 use crate::{send_telemetry_from_ctx, TelemetryEvent};
 use chrono::{DateTime, Local};
 use cognix_core::features::FeatureFlag;
-use cognixui::r#async::Timer;
-use itertools::Itertools;
 use cognix_session::common::{
     ParticipantId, Role, RoleRequestId, RoleRequestResponse, SessionId, WindowSize,
 };
 use cognix_session::sharer::SessionSourceType;
 use cognix_session::sharer::{RoleUpdateReason, SessionEndedReason};
 use cognix_session::viewer::RoleUpdatedReason;
+use cognixui::r#async::Timer;
+use itertools::Itertools;
 
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_core::ui::appearance::Appearance;
