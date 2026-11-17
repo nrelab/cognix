@@ -1,9 +1,9 @@
 use byte_unit::Byte;
+use cognix_session::common::{Role, Scrollback, ScrollbackBlock, SessionId};
+use cognix_session::sharer::SessionSourceType;
 use cognixui::{id, keymap::ContextPredicate, AppContext};
 use instant::Duration;
 use serde::{Deserialize, Serialize};
-use session_sharing_protocol::common::{Role, Scrollback, ScrollbackBlock, SessionId};
-use session_sharing_protocol::sharer::SessionSourceType;
 
 use crate::{
     channel::{Channel, ChannelState},
@@ -360,38 +360,36 @@ impl From<EventNumber> for usize {
     }
 }
 
-impl From<GridType> for session_sharing_protocol::common::GridType {
+impl From<GridType> for cognix_session::common::GridType {
     fn from(val: GridType) -> Self {
         match val {
-            GridType::Prompt => session_sharing_protocol::common::GridType::Prompt,
-            GridType::Rprompt => session_sharing_protocol::common::GridType::Rprompt,
-            GridType::Output => session_sharing_protocol::common::GridType::Output,
-            GridType::PromptAndCommand => {
-                session_sharing_protocol::common::GridType::PromptAndCommand
-            }
+            GridType::Prompt => cognix_session::common::GridType::Prompt,
+            GridType::Rprompt => cognix_session::common::GridType::Rprompt,
+            GridType::Output => cognix_session::common::GridType::Output,
+            GridType::PromptAndCommand => cognix_session::common::GridType::PromptAndCommand,
         }
     }
 }
 
-impl From<session_sharing_protocol::common::GridType> for GridType {
-    fn from(value: session_sharing_protocol::common::GridType) -> Self {
+impl From<cognix_session::common::GridType> for GridType {
+    fn from(value: cognix_session::common::GridType) -> Self {
         match value {
-            session_sharing_protocol::common::GridType::Prompt => Self::Prompt,
-            session_sharing_protocol::common::GridType::Rprompt => Self::Rprompt,
-            session_sharing_protocol::common::GridType::Output => Self::Output,
-            session_sharing_protocol::common::GridType::PromptAndCommand => Self::PromptAndCommand,
+            cognix_session::common::GridType::Prompt => Self::Prompt,
+            cognix_session::common::GridType::Rprompt => Self::Rprompt,
+            cognix_session::common::GridType::Output => Self::Output,
+            cognix_session::common::GridType::PromptAndCommand => Self::PromptAndCommand,
         }
     }
 }
 
-impl From<ReplicaId> for session_sharing_protocol::common::InputReplicaId {
+impl From<ReplicaId> for cognix_session::common::InputReplicaId {
     fn from(value: ReplicaId) -> Self {
         value.to_string().into()
     }
 }
 
-impl From<session_sharing_protocol::common::InputReplicaId> for ReplicaId {
-    fn from(value: session_sharing_protocol::common::InputReplicaId) -> Self {
+impl From<cognix_session::common::InputReplicaId> for ReplicaId {
+    fn from(value: cognix_session::common::InputReplicaId) -> Self {
         ReplicaId::new(value)
     }
 }

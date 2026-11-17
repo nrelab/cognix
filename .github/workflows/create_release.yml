@@ -1279,8 +1279,10 @@ jobs:
 
       - name: Bundle app
         id: bundle_app
+        # Builds the Rust/WASM bundle and merges the TypeScript SPA (web/) into
+        # the same packages_dir that gets uploaded below. See script/web/build.
         run: |
-          script/wasm/bundle --channel $CHANNEL
+          script/web/build $CHANNEL
         shell: bash
         env:
           CHANNEL: ${{ steps.get-config.outputs.channel }}
@@ -1289,11 +1291,15 @@ jobs:
       - name: Brotli compress app bundle
         run: |
           # The brotli binary won't let us compress in-place, so we need to rename back to the
-          # original afterwards.
-          brotli --rm "${{ steps.bundle_app.outputs.packages_dir }}"/*
-          for file in "${{ steps.bundle_app.outputs.packages_dir }}"/*.br; do
-              mv -- "$file" "${file%.br}"
-          done
+          # original afterwards. Recurse: the bundle now contains the SPA's hashed asset dirs.
+          cd "${{ steps.bundle_app.outputs.packages_dir }}"
+          file_list="$(mktemp)"
+          find . -type f ! -name "*.br" -print0 > "$file_list"
+          while IFS= read -r -d '' file; do
+            brotli --rm "$file"
+            mv -- "$file.br" "$file"
+          done < "$file_list"
+          rm -f "$file_list"
         shell: bash
 
       - name: Set up Sentry CLI

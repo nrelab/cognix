@@ -46,28 +46,28 @@ impl Default for BlockId {
     }
 }
 
-impl From<BlockId> for session_sharing_protocol::common::BlockId {
+impl From<BlockId> for cognix_session::common::BlockId {
     fn from(value: BlockId) -> Self {
         value.to_string().into()
     }
 }
 
-impl From<session_sharing_protocol::common::BlockId> for BlockId {
-    fn from(value: session_sharing_protocol::common::BlockId) -> Self {
+impl From<cognix_session::common::BlockId> for BlockId {
+    fn from(value: cognix_session::common::BlockId) -> Self {
         value.to_string().into()
     }
 }
 
-impl From<session_sharing_protocol::common::BufferId> for BlockId {
-    fn from(value: session_sharing_protocol::common::BufferId) -> Self {
-        let block_id = session_sharing_protocol::common::BlockId::from(value);
+impl From<cognix_session::common::BufferId> for BlockId {
+    fn from(value: cognix_session::common::BufferId) -> Self {
+        let block_id = cognix_session::common::BlockId::from(value);
         block_id.into()
     }
 }
 
-impl From<BlockId> for session_sharing_protocol::common::BufferId {
+impl From<BlockId> for cognix_session::common::BufferId {
     fn from(value: BlockId) -> Self {
-        let block_id = session_sharing_protocol::common::BlockId::from(value);
+        let block_id = cognix_session::common::BlockId::from(value);
         block_id.into()
     }
 }

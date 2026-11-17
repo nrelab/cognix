@@ -167,7 +167,7 @@ impl ApiKeyManager {
                 openai,
                 google,
                 open_router,
-                allow_use_of_warp_credits: false,
+                allow_use_of_cognix_credits: false,
                 aws_credentials,
             })
         }

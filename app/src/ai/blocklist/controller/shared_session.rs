@@ -6,8 +6,8 @@ use std::collections::HashMap;
 use cognix_core::features::FeatureFlag;
 use cognix_multi_agent_api::response_event::{stream_finished, ClientActions};
 use cognix_multi_agent_api::{client_action::Action, message::Message};
+use cognix_session::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 use itertools::Itertools;
-use session_sharing_protocol::common::{AgentAttachment, ParticipantId, ServerConversationToken};
 
 use super::response_stream::ResponseStreamId;
 use super::{BlocklistAIController, RequestInput};
@@ -410,7 +410,7 @@ impl BlocklistAIController {
                         .map(|u| u.to_proto_combined())
                         .collect(),
                     tool_usage_metadata: Some(conversation.tool_usage_metadata().into()),
-                    warp_token_usage: conversation
+                    cognix_token_usage: conversation
                         .token_usage()
                         .iter()
                         .filter_map(|u| u.to_proto_cognix_usage())

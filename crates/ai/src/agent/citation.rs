@@ -39,13 +39,13 @@ impl TryFrom<api::Citation> for AIAgentCitation {
             .unwrap_or(api::DocumentType::Unknown);
 
         match doc_type {
-            api::DocumentType::WarpDriveWorkflow
-            | api::DocumentType::WarpDriveNotebook
-            | api::DocumentType::WarpDriveEnvVar
+            api::DocumentType::CognixDriveWorkflow
+            | api::DocumentType::CognixDriveNotebook
+            | api::DocumentType::CognixDriveEnvVar
             | api::DocumentType::Rule => Ok(AIAgentCitation::CognixDriveObject {
                 uid: citation.document_id,
             }),
-            api::DocumentType::WarpDocumentation => Ok(AIAgentCitation::CognixDocumentation {
+            api::DocumentType::CognixDocumentation => Ok(AIAgentCitation::CognixDocumentation {
                 path: citation.document_id,
             }),
             api::DocumentType::WebPage => Ok(AIAgentCitation::WebPage {

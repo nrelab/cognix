@@ -4,15 +4,15 @@ use async_channel::Sender;
 use futures_util::stream::AbortHandle;
 use instant::Instant;
 
-use cognixui::{App, ModelHandle};
-use parking_lot::FairMutex;
-use session_sharing_protocol::{
+use cognix_session::{
     common::{
         ActivePrompt, OrderedTerminalEvent, OrderedTerminalEventType, ParticipantId, Selection,
         SessionId,
     },
     sharer::{DownstreamMessage, ReconnectToken, UpstreamMessage},
 };
+use cognixui::{App, ModelHandle};
+use parking_lot::FairMutex;
 use websocket::{Message, WebsocketMessage as _};
 
 use crate::{
@@ -390,7 +390,7 @@ fn test_ignore_duplicate_prompt_updates() {
         assert_eq!(ws_proxy_rx.len(), 0);
         // First prompt update should go through.
         network.update(&mut app, |network, _ctx| {
-            network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
+            network.send_active_prompt_update_if_changed(ActivePrompt::CognixPrompt(
                 "test cognix prompt".to_owned(),
             ));
         });
@@ -398,13 +398,13 @@ fn test_ignore_duplicate_prompt_updates() {
 
         // Duplicate prompt updates should be ignored.
         network.update(&mut app, |network, _ctx| {
-            network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
+            network.send_active_prompt_update_if_changed(ActivePrompt::CognixPrompt(
                 "test cognix prompt".to_owned(),
             ));
         });
         assert_eq!(ws_proxy_rx.len(), 1);
         network.update(&mut app, |network, _ctx| {
-            network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
+            network.send_active_prompt_update_if_changed(ActivePrompt::CognixPrompt(
                 "test cognix prompt".to_owned(),
             ));
         });
@@ -412,7 +412,7 @@ fn test_ignore_duplicate_prompt_updates() {
 
         // Different prompt should go through.
         network.update(&mut app, |network, _ctx| {
-            network.send_active_prompt_update_if_changed(ActivePrompt::WarpPrompt(
+            network.send_active_prompt_update_if_changed(ActivePrompt::CognixPrompt(
                 "different cognix prompt".to_owned(),
             ));
         });

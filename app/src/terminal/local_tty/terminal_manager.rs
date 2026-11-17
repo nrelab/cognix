@@ -20,7 +20,7 @@ use std::rc::Rc;
 use std::sync::mpsc::{SendError, SyncSender};
 use std::{collections::HashMap, ffi::OsString, path::PathBuf, sync::Arc, thread::JoinHandle};
 
-use session_sharing_protocol::sharer::{
+use cognix_session::sharer::{
     AddGuestsResponse, FailedToInitializeSessionReason, Lifetime, LinkAccessLevelUpdateResponse,
     QuotaType, RemoveGuestResponse, SessionEndedReason, SessionSourceType,
     TeamAccessLevelUpdateResponse, UpdatePendingUserRoleResponse,
@@ -40,17 +40,18 @@ use pathfinder_geometry::vector::Vector2F;
 use crate::terminal::cli_agent_sessions::{
     CLIAgentInputState, CLIAgentSessionsModel, CLIAgentSessionsModelEvent,
 };
-use cognixui::r#async::executor::Background;
-use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
-use session_sharing_protocol::common::{
+use cognix_session::common::{
     ActivePrompt, AgentPromptFailureReason, CLIAgentSessionState, CommandExecutionFailureReason,
     ControlAction, ControlActionFailureReason, SelectedAgentModel,
     UniversalDeveloperInputContextUpdate, WriteToPtyFailureReason,
 };
 #[cfg(not(any(test, feature = "integration_tests")))]
-use session_sharing_protocol::common::{
-    LongRunningCommandAgentInteractionState, SelectedConversation, UniversalDeveloperInputContext,
+use cognix_session::common::{
+    LongRunningCommandAgentInteraction, LongRunningCommandAgentInteractionState,
+    SelectedConversation, UniversalDeveloperInputContext,
 };
+use cognixui::r#async::executor::Background;
+use cognixui::{AppContext, ModelContext, ModelHandle, SingletonEntity, ViewHandle, WindowId};
 use settings::Setting as _;
 
 use cognix_core::execution_mode::AppExecutionMode;
@@ -347,7 +348,7 @@ impl TerminalManager {
                     return
                 };
                 network.update(ctx, |network, _| {
-                    network.send_active_prompt_update_if_changed(session_sharing_protocol::common::ActivePrompt::WarpPrompt(serialized_prompt))
+                    network.send_active_prompt_update_if_changed(cognix_session::common::ActivePrompt::CognixPrompt(serialized_prompt))
                 });
             }
         });
@@ -446,7 +447,7 @@ impl TerminalManager {
                 if let Some(network) = session_sharer_clone.borrow().as_ref() {
                     network.update(ctx, |network, _| {
                         network.send_active_prompt_update_if_changed(
-                            session_sharing_protocol::common::ActivePrompt::PS1,
+                            cognix_session::common::ActivePrompt::PS1,
                         )
                     });
                 }
@@ -1305,7 +1306,7 @@ impl TerminalManager {
                 );
                 return;
             };
-            ActivePrompt::WarpPrompt(serialized_prompt)
+            ActivePrompt::CognixPrompt(serialized_prompt)
         };
 
         let selection = terminal_view.read(ctx, |view, ctx| {
@@ -1360,10 +1361,14 @@ impl TerminalManager {
                     )
                     .and_then(|update| update.selected_conversation);
 
-                let long_running_command_agent_interaction_state = {
+                let (
+                    long_running_command_agent_interaction_state,
+                    long_running_command_agent_interaction,
+                ) = {
                     let model = model.lock();
                     let active_block = model.block_list().active_block();
-                    let state = if active_block.is_active_and_long_running() {
+                    let is_long_running = active_block.is_active_and_long_running();
+                    let state = if is_long_running {
                         if active_block.is_agent_in_control() {
                             LongRunningCommandAgentInteractionState::InControl
                         } else if active_block.is_agent_tagged_in() {
@@ -1374,7 +1379,11 @@ impl TerminalManager {
                     } else {
                         LongRunningCommandAgentInteractionState::NotInteracting
                     };
-                    Some(state)
+                    let interaction = is_long_running.then(|| LongRunningCommandAgentInteraction {
+                        block_id: active_block.id().clone().into(),
+                        state,
+                    });
+                    (Some(state), interaction)
                 };
 
                 // Include CLI agent session state in initial context so
@@ -1397,6 +1406,7 @@ impl TerminalManager {
                     auto_approve_agent_actions: Some(auto_approve_agent_actions),
                     selected_model: None,
                     long_running_command_agent_interaction_state,
+                    long_running_command_agent_interaction,
                     cli_agent_session,
                 };
 

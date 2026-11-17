@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
+use cognix_session::common::SessionId;
 use itertools::Itertools;
-use session_sharing_protocol::common::SessionId;
 
 use cognixui::{
     AppContext, Entity, EntityId, ModelContext, SingletonEntity, ViewHandle, WeakViewHandle,

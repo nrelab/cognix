@@ -2,12 +2,12 @@ use std::cell::Cell;
 use std::rc::Rc;
 
 use cognix_core::features::FeatureFlag;
-use cognixui::{AppContext, ModelHandle, SingletonEntity, WeakViewHandle};
-use input_classifier::InputType;
-use session_sharing_protocol::common::{
+use cognix_session::common::{
     CLIAgentSessionState, InputMode, InputType as ProtocolInputType, SelectedAgentModel,
     SelectedConversation, ServerConversationToken, UniversalDeveloperInputContextUpdate,
 };
+use cognixui::{AppContext, ModelHandle, SingletonEntity, WeakViewHandle};
+use input_classifier::InputType;
 
 use crate::ai::blocklist::agent_view::{AgentViewController, AgentViewEntryOrigin};
 use crate::ai::blocklist::{BlocklistAIContextModel, BlocklistAIHistoryModel, InputConfig};

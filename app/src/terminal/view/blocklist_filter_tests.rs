@@ -39,7 +39,7 @@ fn create_restored_conversation(
 #[test]
 fn test_should_show_task_in_blocklist_hides_cognix_docs_subagent_task() {
     let conversation = create_restored_conversation(
-        api::message::tool_call::subagent::Metadata::WarpDocumentationSearch(()),
+        api::message::tool_call::subagent::Metadata::CognixDocumentationSearch(()),
     );
 
     let subtask = conversation
@@ -67,7 +67,7 @@ fn test_should_show_task_in_blocklist_hides_conversation_search_subagent_task() 
 #[test]
 fn test_exchanges_for_blocklist_excludes_cognix_docs_subagent_exchanges() {
     let conversation = create_restored_conversation(
-        api::message::tool_call::subagent::Metadata::WarpDocumentationSearch(()),
+        api::message::tool_call::subagent::Metadata::CognixDocumentationSearch(()),
     );
 
     let exchanges = exchanges_for_blocklist(&conversation);

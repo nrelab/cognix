@@ -1550,7 +1550,7 @@ impl AIConversation {
             self.conversation_usage_metadata.credits_spent = usage_metadata.credits_spent;
 
             let mut token_usage: HashMap<_, ModelTokenUsage> = HashMap::new();
-            for (model_id, usage) in usage_metadata.warp_token_usage {
+            for (model_id, usage) in usage_metadata.cognix_token_usage {
                 let entry = token_usage.entry(model_id.clone()).or_default();
                 entry.cognix_tokens += usage.total_tokens;
                 for (category, tokens) in usage.token_usage_by_category {

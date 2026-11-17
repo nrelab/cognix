@@ -714,7 +714,7 @@ impl ConvertAPIToolCallToAIAgentAction for api::message::ToolCall {
                             conversation_id,
                         }
                     }
-                    Some(Metadata::WarpDocumentationSearch(_)) => {
+                    Some(Metadata::CognixDocumentationSearch(_)) => {
                         SubagentType::CognixDocumentationSearch
                     }
                     None => SubagentType::Unknown,

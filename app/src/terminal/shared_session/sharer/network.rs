@@ -10,11 +10,7 @@ use crate::terminal::shared_session::{connect_endpoint, max_session_size};
 use async_channel::Receiver;
 use byte_unit::{Byte, UnitType};
 use cognix_core::features::FeatureFlag;
-use futures_util::stream::AbortHandle;
-use futures_util::{SinkExt, StreamExt};
-use instant::Instant;
-use parking_lot::FairMutex;
-use session_sharing_protocol::common::{
+use cognix_session::common::{
     ActivePrompt, ActivePromptUpdate, AgentPromptFailureReason, AgentPromptRequest,
     AgentPromptRequestId, CommandExecutionFailureReason, CommandExecutionRequestId, ControlAction,
     ControlActionFailureReason, ControlActionRequestId, FeatureSupport, InputOperationId,
@@ -24,13 +20,17 @@ use session_sharing_protocol::common::{
     UniversalDeveloperInputContextUpdate, UserID, WindowSize, WriteToPtyFailureReason,
     WriteToPtyRequestId,
 };
-use session_sharing_protocol::sharer::{
+use cognix_session::sharer::{
     AddGuestsResponse, DownstreamMessage, FailedToAddGuestsReason, LinkAccessLevelUpdateResponse,
     ReconnectPayload, ReconnectToken, RemoveGuestResponse, RoleUpdateReason,
     SessionTerminatedReason, TeamAccessLevelUpdateResponse, UpdatePendingUserRoleResponse,
     UpstreamMessage,
 };
-use session_sharing_protocol::sharer::{FailedToInitializeSessionReason, SessionEndedReason};
+use cognix_session::sharer::{FailedToInitializeSessionReason, SessionEndedReason};
+use futures_util::stream::AbortHandle;
+use futures_util::{SinkExt, StreamExt};
+use instant::Instant;
+use parking_lot::FairMutex;
 use std::collections::HashMap;
 
 use std::pin::pin;
@@ -53,9 +53,9 @@ use crate::throttle::throttle;
 #[cfg(not(any(test, feature = "integration_tests")))]
 use {
     crate::{report_error, server::telemetry::telemetry_context},
-    session_sharing_protocol::common::{Scrollback, TelemetryContext},
-    session_sharing_protocol::sharer::SessionSourceType,
-    session_sharing_protocol::sharer::{InitPayload, Lifetime},
+    cognix_session::common::{Scrollback, TelemetryContext},
+    cognix_session::sharer::SessionSourceType,
+    cognix_session::sharer::{InitPayload, Lifetime},
 };
 
 /// The amount of time we will wait to batch consecutive PTY read events before sending an event to the server
@@ -464,7 +464,7 @@ impl Network {
         }
 
         let operations = operations
-            .map(|o| serde_json::to_vec(o).map(session_sharing_protocol::common::CrdtOperation))
+            .map(|o| serde_json::to_vec(o).map(cognix_session::common::CrdtOperation))
             .collect();
 
         let ops = match operations {
@@ -624,7 +624,7 @@ impl Network {
                     // We don't use the `send_message_to_server` API here
                     // because we don't want to buffer this message.
 
-                    use session_sharing_protocol::common::SelectedAgentModel;
+                    use cognix_session::common::SelectedAgentModel;
 
                     let message = UpstreamMessage::Initialize(InitPayload {
                         scrollback,
@@ -641,6 +641,8 @@ impl Network {
                         }),
                         lifetime,
                         source_type,
+                        source_task_id: None,
+                        share_with_team_uid: None,
                         feature_support: FeatureSupport {
                             supports_agent_view: FeatureFlag::AgentView.is_enabled(),
                             supports_full_role: true,
@@ -1280,7 +1282,7 @@ pub fn failed_to_initialize_session_user_error(reason: &FailedToInitializeSessio
 pub fn failed_to_add_guests_user_error(reason: &FailedToAddGuestsReason) -> String {
     match reason {
         FailedToAddGuestsReason::Invalid => "Something went wrong. Please try again.",
-        FailedToAddGuestsReason::NotWarpUsers => {
+        FailedToAddGuestsReason::NotCognixUsers => {
             "One or more emails were not associated with Cognix accounts."
         }
         FailedToAddGuestsReason::GuestAlreadyAdded => {

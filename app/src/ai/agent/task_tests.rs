@@ -575,7 +575,7 @@ fn test_is_cognix_documentation_search_subagent() {
             "docs_call",
             parent_id,
             subtask_id,
-            Some(api::message::tool_call::subagent::Metadata::WarpDocumentationSearch(())),
+            Some(api::message::tool_call::subagent::Metadata::CognixDocumentationSearch(())),
         )],
     );
     let subtask_api_task = create_api_subtask(subtask_id, parent_id, vec![]);

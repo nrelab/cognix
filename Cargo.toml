@@ -248,7 +248,7 @@ serde_json = { version = "1.0", features = ["raw_value"] }
 serde_urlencoded = "0.7"
 serde_with = "2.0.1"
 serde_yaml = "0.8"
-session-sharing-protocol = { git = "https://github.com/warpdotdev/session-sharing-protocol.git", rev = "3a12b871dfd1019a66057e4d9b7d5c812b73ee8c" }
+cognix-session = { git = "https://github.com/nrelab/cognix-session.git", rev = "a274f71f7a8afc87ccd38f6f803f2d29b694f004" }
 similar = { version = "2.7", features = ["inline"] }
 simplelog = "0.12.2"
 smallvec = "1.6.1"
@@ -301,10 +301,10 @@ unicode-width = "0.1.12"
 uuid = { version = "1.1.2", features = ["v4", "serde", "js"] }
 vec1 = { version = "1.8.0", features = ["serde"] }
 version-compare = "0.1"
-vte = { git = "https://github.com/warpdotdev/vte.git", rev = "4b399c87b63ba88f45709edaa6383fc519f6c900", default-features = false }
+vte = { git = "https://github.com/nrelab/cognix-vendor.git", default-features = false }
 walkdir = "2"
 cognix-workflows = { git = "https://github.com/warpdotdev/workflows", package = "warp-workflows", rev = "793a98ddda6ef19682aed66364faebd2829f0e01" }
-cognix_multi_agent_api = { git = "https://github.com/warpdotdev/warp-proto-apis.git", package = "warp_multi_agent_api", rev = "78a78f21a75432bf0141e396fb318bf1694e47f0" }
+cognix_multi_agent_api = { git = "https://github.com/nrelab/cognix-proto-apis.git", package = "cognix_multi_agent_api", rev = "3090d3128d487a24616476e00e427f819eb412f9" }
 wasm-bindgen = "0.2.89"
 wasm-bindgen-futures = "0.4.42"
 web-sys = { version = "0.3.69", features = [
@@ -348,7 +348,7 @@ dirs = "6.0.0"
 rayon = "1.10.0"
 sha2 = "0.10"
 shellexpand = "3.1.1"
-cognix-command-signatures = { git = "https://github.com/warpdotdev/command-signatures.git", package = "warp-command-signatures", rev = "00a032b8ea0ee5711e2077e39a92dc9ca2051cd3", default-features = false }
+cognix-command-signatures = { git = "https://github.com/nrelab/cmdforge.git", package = "cognix-cmdforge", rev = "b5011c627260fb571ee0a9638aed0cbc8e7bfbf9", default-features = false }
 winit = { git = "https://github.com/warpdotdev/winit.git", rev = "7ef01853ae3fe952e6014080a88dc4352662dfb1" }
 x11rb = "0.13.0"
 mockito = "1.7.0"
@@ -489,6 +489,6 @@ tink-hybrid = { git = "https://github.com/warpdotdev/tink-rust", branch = "warpd
 tikv-jemallocator = { git = "https://github.com/warpdotdev/jemallocator.git", rev = "2ee30bfdf7059223b54810e4ea6c666f0a379e0b" }
 tikv-jemalloc-sys = { git = "https://github.com/warpdotdev/jemallocator.git", rev = "2ee30bfdf7059223b54810e4ea6c666f0a379e0b" }
 
-[patch."https://github.com/warpdotdev/warp-proto-apis.git"]
+[patch."https://github.com/nrelab/cognix-proto-apis.git"]
 # Uncomment for local development of warp-proto-apis
 # cognix_multi_agent_api = { path = "../warp-proto-apis/apis/multi_agent/v1/gen/rust" }

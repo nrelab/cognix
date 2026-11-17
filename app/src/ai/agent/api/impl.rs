@@ -53,7 +53,7 @@ pub async fn generate_multi_agent_output(
 
     let mut api_keys = params.api_keys;
     if let Some(api_keys) = &mut api_keys {
-        api_keys.allow_use_of_warp_credits = params.allow_use_of_cognix_credits_with_byok;
+        api_keys.allow_use_of_cognix_credits = params.allow_use_of_cognix_credits_with_byok;
     }
 
     let request = api::Request {
@@ -69,7 +69,7 @@ pub async fn generate_multi_agent_output(
                 ..Default::default()
             }),
             rules_enabled: params.is_memory_enabled,
-            warp_drive_context_enabled: params.cognix_drive_context_enabled,
+            cognix_drive_context_enabled: params.cognix_drive_context_enabled,
             web_context_retrieval_enabled: true,
             supports_parallel_tool_calls: true,
             use_anthropic_text_editor_tools: false,

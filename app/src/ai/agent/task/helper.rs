@@ -193,7 +193,7 @@ impl SubagentExt for api::message::tool_call::Subagent {
         self.metadata.as_ref().is_some_and(|metadata| {
             matches!(
                 metadata,
-                api::message::tool_call::subagent::Metadata::WarpDocumentationSearch(_)
+                api::message::tool_call::subagent::Metadata::CognixDocumentationSearch(_)
             )
         })
     }
@@ -207,7 +207,7 @@ impl SubagentExt for api::message::tool_call::Subagent {
             Some(Metadata::ComputerUse(_)) => "computer_use",
             Some(Metadata::Summarization(_)) => "summarization",
             Some(Metadata::ConversationSearch(_)) => "conversation_search",
-            Some(Metadata::WarpDocumentationSearch(_)) => "cognix_documentation_search",
+            Some(Metadata::CognixDocumentationSearch(_)) => "cognix_documentation_search",
             None => "unknown",
         }
     }

@@ -1,5 +1,5 @@
 use crate::terminal::model::{blocks::BlockList, index::Point, terminal_model::WithinBlock};
-use session_sharing_protocol::common::BlockPoint;
+use cognix_session::common::BlockPoint;
 
 impl WithinBlock<Point> {
     /// Converts an un-transformed block point

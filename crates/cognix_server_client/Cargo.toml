@@ -23,7 +23,7 @@ persistence.workspace = true
 schemars = { version = "1", features = ["uuid1"] }
 serde.workspace = true
 settings_value.workspace = true
-session-sharing-protocol.workspace = true
+cognix-session.workspace = true
 thiserror.workspace = true
 uuid.workspace = true
 cognix_core.workspace = true

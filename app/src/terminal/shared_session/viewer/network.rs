@@ -1,6 +1,6 @@
 //! The model that interfaces with the network to
 //! connect to and communicate with the shared session.
-//! Adheres to the [`session-sharing-protocol`].
+//! Adheres to the [`cognix-session`].
 
 use anyhow::bail;
 use async_channel::Receiver;
@@ -10,8 +10,7 @@ use std::{pin::pin, sync::Arc};
 
 use futures_util::{stream::AbortHandle, SinkExt, StreamExt};
 
-use parking_lot::FairMutex;
-use session_sharing_protocol::{
+use cognix_session::{
     common::{
         ActivePrompt, ActivePromptUpdate, AddGuestsResponse, AgentAttachment,
         AgentPromptFailureReason, AgentPromptRequest, AgentPromptRequestId,
@@ -30,6 +29,7 @@ use session_sharing_protocol::{
         ViewerRemovedReason,
     },
 };
+use parking_lot::FairMutex;
 
 use cognix_core::features::FeatureFlag;
 use cognixui::{
@@ -216,7 +216,7 @@ impl Network {
         write_to_pty_events_rx: Receiver<Vec<u8>>,
         ctx: &mut ModelContext<Self>,
     ) -> Self {
-        use session_sharing_protocol::common::SessionId;
+        use cognix_session::common::SessionId;
 
         let (ws_proxy_tx, ws_proxy_rx) = async_channel::unbounded();
         let (selection_throttled_tx, selection_rx) = async_channel::unbounded();
@@ -227,7 +227,7 @@ impl Network {
         let session_id = SessionId::new();
         let viewer_id = ParticipantId::new();
         let viewer_firebase_uid = UserUid::new("mock_firebase_uid");
-        let active_prompt = ActivePrompt::WarpPrompt("test cognix prompt".to_owned());
+        let active_prompt = ActivePrompt::CognixPrompt("test cognix prompt".to_owned());
 
         let model = Network {
             heartbeat,
@@ -820,7 +820,7 @@ impl Network {
         }
 
         let operations = operations
-            .map(|o| serde_json::to_vec(o).map(session_sharing_protocol::common::CrdtOperation))
+            .map(|o| serde_json::to_vec(o).map(cognix_session::common::CrdtOperation))
             .collect();
 
         let ops = match operations {
@@ -888,6 +888,7 @@ impl Network {
             server_conversation_token,
             prompt,
             attachments,
+            user_query_b64: None,
         };
         self.send_message_to_server(UpstreamMessage::SendAgentPrompt(request));
     }
@@ -1021,15 +1022,19 @@ impl FailedToJoinReason {
     }
 }
 
-impl From<session_sharing_protocol::viewer::FailedToJoinReason> for FailedToJoinReason {
-    fn from(reason: session_sharing_protocol::viewer::FailedToJoinReason) -> Self {
+impl From<cognix_session::viewer::FailedToJoinReason> for FailedToJoinReason {
+    fn from(reason: cognix_session::viewer::FailedToJoinReason) -> Self {
         match reason {
-            session_sharing_protocol::viewer::FailedToJoinReason::Invalid |
-            session_sharing_protocol::viewer::FailedToJoinReason::InternalServerError => Self::Unknown,
-            session_sharing_protocol::viewer::FailedToJoinReason::SessionNotFound => Self::SessionNotFound,
-            session_sharing_protocol::viewer::FailedToJoinReason::WrongPassword => Self::WrongPassword,
-            session_sharing_protocol::viewer::FailedToJoinReason::MaxNumberOfParticipantsReached => Self::MaxNumberOfParticipantsReached,
-            session_sharing_protocol::viewer::FailedToJoinReason::SessionNotAccessible => Self::SessionNotAccessible,
+            cognix_session::viewer::FailedToJoinReason::Invalid
+            | cognix_session::viewer::FailedToJoinReason::InternalServerError => Self::Unknown,
+            cognix_session::viewer::FailedToJoinReason::SessionNotFound => Self::SessionNotFound,
+            cognix_session::viewer::FailedToJoinReason::WrongPassword => Self::WrongPassword,
+            cognix_session::viewer::FailedToJoinReason::MaxNumberOfParticipantsReached => {
+                Self::MaxNumberOfParticipantsReached
+            }
+            cognix_session::viewer::FailedToJoinReason::SessionNotAccessible => {
+                Self::SessionNotAccessible
+            }
         }
     }
 }

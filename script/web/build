@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+#
+# Builds the Cognix web app: Rust/WASM bundle + TypeScript SPA, merged into a
+# single deployable directory — the same `packages_dir` ($OUT_DIR) that
+# `release_web` uploads to GCS.
+#
+# Usage: ./script/web/build <channel>
+#   channel: local | dev | preview | stable (passed to script/wasm/bundle)
+#
+# Layout after merge ($OUT_DIR = deployable root):
+#   index.html, /assets/*.js   → SPA (Vite output)
+#   /assets/client/wasm/*      → cognix.js + cognix_bg.wasm
+#   (bundle/assets → /assets/client/static is uploaded separately by release_web)
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")"/../.. && pwd)"
+cd "$REPO_ROOT"
+
+CHANNEL="${1:?usage: script/web/build <channel>}"
+
+# 1. Build the Rust/WASM bundle (existing pipeline).
+#    Sourcing exports OUT_DIR and ASSET_TARGET_DIR.
+# shellcheck disable=SC1091
+source ./script/wasm/bundle --channel "$CHANNEL"
+
+WASM_OUT="$OUT_DIR"   # .../bundle/wasm — the release "packages_dir"
+
+# 2. Build the TypeScript SPA.
+pushd web
+if [ ! -d node_modules ]; then
+  npm ci
+fi
+npm run build   # tsc --noEmit && vite build && copy-wasm → web/dist
+popd
+
+# 3. Merge: SPA owns index.html + hashed /assets; WASM moves under /assets/client/wasm.
+rm -f "$WASM_OUT"/index.html
+cp -R web/dist/. "$WASM_OUT"/
+mkdir -p "$WASM_OUT/assets/client/wasm"
+cp "$WASM_OUT"/cognix.js "$WASM_OUT"/cognix_bg.wasm "$WASM_OUT/assets/client/wasm/"
+rm -f "$WASM_OUT"/cognix.js "$WASM_OUT"/cognix_bg.wasm
+
+echo "Built web app at $WASM_OUT"
+echo "$WASM_OUT"

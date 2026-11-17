@@ -408,7 +408,7 @@ impl Task {
                     Some(Metadata::ComputerUse(_)) => None,
                     Some(Metadata::Summarization(_)) => None,
                     Some(Metadata::ConversationSearch(_)) => None,
-                    Some(Metadata::WarpDocumentationSearch(_)) => None,
+                    Some(Metadata::CognixDocumentationSearch(_)) => None,
                     None => None,
                 }),
             TaskImpl::Optimistic(optimistic::Task::CLIAgent(subtask)) => {

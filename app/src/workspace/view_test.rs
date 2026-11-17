@@ -22,13 +22,13 @@ use crate::pricing::PricingInfoModel;
 use crate::suggestions::ignored_suggestions_model::IgnoredSuggestionsModel;
 #[cfg(feature = "local_fs")]
 use crate::user_config::tab_configs_dir;
+use cognix_session::sharer::SessionSourceType;
 use repo_metadata::repositories::DetectedRepositories;
 use repo_metadata::watcher::DirectoryWatcher;
 #[cfg(feature = "local_fs")]
 use repo_metadata::CanonicalizedPath;
 #[cfg(feature = "local_fs")]
 use repo_metadata::RepoMetadataModel;
-use session_sharing_protocol::sharer::SessionSourceType;
 use std::collections::HashMap;
 #[cfg(feature = "local_fs")]
 use tempfile::TempDir;
@@ -67,6 +67,7 @@ use crate::ai::mcp::{
 use crate::cognix_managed_paths_watcher::CognixManagedPathsWatcher;
 use crate::resource_center::Tip;
 use crate::terminal::cli_agent_sessions::CLIAgentSessionsModel;
+use crate::test_util::assert_eventually;
 use crate::test_util::settings::initialize_settings_for_tests;
 use crate::undo_close::UndoCloseSettings;
 use crate::workflows::local_workflows::LocalWorkflows;
@@ -77,10 +78,10 @@ use crate::settings::cloud_preferences_syncer::CloudPreferencesSyncer;
 use ai::index::full_source_code_embedding::manager::CodebaseIndexManager;
 use ai::project_context::model::ProjectContextModel;
 use cognix_editor::editor::NavigationKey;
+use cognix_session::common::SessionId;
 use cognixui::AddSingletonModel;
 use cognixui::{platform::WindowStyle, App, ViewHandle};
 use pane_group::{NotebookPane, PaneState, SplitPaneState, TerminalPaneId};
-use session_sharing_protocol::common::SessionId;
 use terminal::shared_session::permissions_manager::SessionPermissionsManager;
 use terminal::view::ActiveSessionState;
 
@@ -1449,9 +1450,18 @@ fn test_terminal_model_isnt_leaked() {
         // contains the actual logic that drops the `TerminalModel`.
         app.update(|_| ());
 
+        // Dropping the tab can also leave in-flight background tasks (e.g. spawned during
+        // session setup) that still hold a reference to the model, so poll until the
+        // reference is actually released. Under parallel test load these tasks can take
+        // several seconds to complete, so allow a generous budget; the loop exits as soon
+        // as the model is dropped.
         // If we can't upgrade the weak reference, that means it was in fact destructed.
-        assert!(
-            terminal_model.upgrade().is_none(),
+        assert_eventually!(
+            4000 =>
+            {
+                app.update(|_| ());
+                terminal_model.upgrade().is_none()
+            },
             "The terminal model should not exist once the tab is closed."
         )
     });

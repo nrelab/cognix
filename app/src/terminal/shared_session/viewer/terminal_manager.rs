@@ -1,14 +1,14 @@
 use async_broadcast::InactiveReceiver;
-use parking_lot::FairMutex;
-use pathfinder_geometry::vector::Vector2F;
-use session_sharing_protocol::common::{
+use cognix_session::common::{
     ActivePrompt, AddGuestsResponse, CLIAgentSessionState, CommandExecutionFailureReason,
     LinkAccessLevelUpdateResponse, RemoveGuestResponse, SelectedAgentModel, SessionId,
     TeamAccessLevelUpdateResponse, UniversalDeveloperInputContextUpdate,
     UpdatePendingUserRoleResponse,
 };
-use session_sharing_protocol::sharer::SessionSourceType;
-use session_sharing_protocol::viewer::SessionEndedReason;
+use cognix_session::sharer::SessionSourceType;
+use cognix_session::viewer::SessionEndedReason;
+use parking_lot::FairMutex;
+use pathfinder_geometry::vector::Vector2F;
 use settings::Setting as _;
 use std::any::Any;
 
@@ -597,10 +597,20 @@ impl TerminalManager {
                 let active_remote_update = viewer_remote_update_guard.start_remote_update();
                 if let Some(universal_developer_input_context) = universal_developer_input_context {
                     if let Some(ref model) = universal_developer_input_context.selected_model {
-                        Self::handle_selected_agent_model_update(&weak_view_handle, model, &active_remote_update, ctx);
+                        Self::handle_selected_agent_model_update(
+                            &weak_view_handle,
+                            model,
+                            &active_remote_update,
+                            ctx,
+                        );
                     }
                     if let Some(ref input_mode) = universal_developer_input_context.input_mode {
-                        Self::handle_input_mode_update(&weak_view_handle, input_mode, &active_remote_update, ctx);
+                        Self::handle_input_mode_update(
+                            &weak_view_handle,
+                            input_mode,
+                            &active_remote_update,
+                            ctx,
+                        );
                     }
                     apply_cli_agent_state_update(
                         &weak_view_handle,
@@ -608,7 +618,9 @@ impl TerminalManager {
                         &active_remote_update,
                         ctx,
                     );
-                    if let Some(ref selected_conversation) = universal_developer_input_context.selected_conversation {
+                    if let Some(ref selected_conversation) =
+                        universal_developer_input_context.selected_conversation
+                    {
                         Self::handle_selected_conversation_update(
                             &weak_view_handle,
                             selected_conversation,
@@ -669,7 +681,9 @@ impl TerminalManager {
                 });
 
                 #[cfg(target_family = "wasm")]
-                crate::platform::wasm::emit_event(crate::platform::wasm::CognixEvent::SessionJoined);
+                crate::platform::wasm::emit_event(
+                    crate::platform::wasm::CognixEvent::SessionJoined,
+                );
             }
             NetworkEvent::SessionEnded { reason } => {
                 let Some(view) = weak_view_handle.upgrade(ctx) else {
@@ -751,10 +765,20 @@ impl TerminalManager {
                 let active_remote_update = viewer_remote_update_guard.start_remote_update();
 
                 if let Some(ref model) = context_update.selected_model {
-                    Self::handle_selected_agent_model_update(&weak_view_handle, model, &active_remote_update, ctx);
+                    Self::handle_selected_agent_model_update(
+                        &weak_view_handle,
+                        model,
+                        &active_remote_update,
+                        ctx,
+                    );
                 }
                 if let Some(ref input_mode) = context_update.input_mode {
-                    Self::handle_input_mode_update(&weak_view_handle, input_mode, &active_remote_update, ctx);
+                    Self::handle_input_mode_update(
+                        &weak_view_handle,
+                        input_mode,
+                        &active_remote_update,
+                        ctx,
+                    );
                 }
                 if let Some(ref selected_conversation) = context_update.selected_conversation {
                     Self::handle_selected_conversation_update(
@@ -765,7 +789,12 @@ impl TerminalManager {
                     );
                 }
                 if let Some(auto_approve) = context_update.auto_approve_agent_actions {
-                    apply_auto_approve_agent_actions_update(&weak_view_handle, auto_approve, &active_remote_update, ctx);
+                    apply_auto_approve_agent_actions_update(
+                        &weak_view_handle,
+                        auto_approve,
+                        &active_remote_update,
+                        ctx,
+                    );
                 }
 
                 if model
@@ -1080,10 +1109,10 @@ impl TerminalManager {
                     };
                     view.update(ctx, |terminal_view, ctx| {
                         let reason_string = match reason {
-                            session_sharing_protocol::common::FailedToAddGuestsReason::NotWarpUsers => {
+                            cognix_session::common::FailedToAddGuestsReason::NotCognixUsers => {
                                 "One or more of the emails are not Cognix users.".to_owned()
                             }
-                            session_sharing_protocol::common::FailedToAddGuestsReason::GuestAlreadyAdded => {
+                            cognix_session::common::FailedToAddGuestsReason::GuestAlreadyAdded => {
                                 "One or more of the guests has already been added.".to_owned()
                             }
                             _ => "Something went wrong. Please try again.".to_owned(),
@@ -1132,7 +1161,7 @@ impl TerminalManager {
     ) {
         let mut model = model.lock();
         match active_prompt {
-            ActivePrompt::WarpPrompt(serialized_prompt_snapshot) => {
+            ActivePrompt::CognixPrompt(serialized_prompt_snapshot) => {
                 match serde_json::from_str::<PromptSnapshot>(serialized_prompt_snapshot) {
                     Ok(prompt_snapshot) => {
                         model.block_list_mut().set_honor_ps1(false);
@@ -1185,7 +1214,7 @@ impl TerminalManager {
 
     fn handle_input_mode_update(
         weak_view_handle: &WeakViewHandle<TerminalView>,
-        input_mode: &session_sharing_protocol::common::InputMode,
+        input_mode: &cognix_session::common::InputMode,
         guard: &ActiveRemoteUpdate,
         ctx: &mut AppContext,
     ) {
@@ -1210,7 +1239,7 @@ impl TerminalManager {
 
     fn handle_selected_conversation_update(
         weak_view_handle: &WeakViewHandle<TerminalView>,
-        selected_conversation: &session_sharing_protocol::common::SelectedConversation,
+        selected_conversation: &cognix_session::common::SelectedConversation,
         guard: &ActiveRemoteUpdate,
         ctx: &mut AppContext,
     ) {

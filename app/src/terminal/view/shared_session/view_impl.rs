@@ -34,14 +34,14 @@ use crate::{
 use crate::{send_telemetry_from_ctx, TelemetryEvent};
 use chrono::{DateTime, Local};
 use cognix_core::features::FeatureFlag;
-use cognixui::r#async::Timer;
-use itertools::Itertools;
-use session_sharing_protocol::common::{
+use cognix_session::common::{
     ParticipantId, Role, RoleRequestId, RoleRequestResponse, SessionId, WindowSize,
 };
-use session_sharing_protocol::sharer::SessionSourceType;
-use session_sharing_protocol::sharer::{RoleUpdateReason, SessionEndedReason};
-use session_sharing_protocol::viewer::RoleUpdatedReason;
+use cognix_session::sharer::SessionSourceType;
+use cognix_session::sharer::{RoleUpdateReason, SessionEndedReason};
+use cognix_session::viewer::RoleUpdatedReason;
+use cognixui::r#async::Timer;
+use itertools::Itertools;
 
 use cognix_core::semantic_selection::SemanticSelection;
 use cognix_core::ui::appearance::Appearance;
@@ -59,8 +59,8 @@ use crate::menu::Event as MenuEvent;
 use crate::terminal::shared_session::participant_avatar_view::ParticipantAvatarEvent;
 use crate::terminal::shared_session::participant_avatar_view::ParticipantAvatarView;
 
-use session_sharing_protocol::common::ParticipantList;
-use session_sharing_protocol::common::ParticipantPresenceUpdate;
+use cognix_session::common::ParticipantList;
+use cognix_session::common::ParticipantPresenceUpdate;
 
 use cognixui::elements::MouseStateHandle;
 use cognixui::AppContext;
@@ -878,7 +878,7 @@ impl TerminalView {
     pub fn get_shared_session_presence_selection(
         &self,
         ctx: &AppContext,
-    ) -> session_sharing_protocol::common::Selection {
+    ) -> cognix_session::common::Selection {
         let model_lock = self.model.lock();
         let input_mode = *InputModeSettings::as_ref(ctx).input_mode.value();
         let semantic_selection = SemanticSelection::as_ref(ctx);
@@ -890,7 +890,7 @@ impl TerminalView {
             .map(|id| id.to_string().into())
             .collect_vec();
         if !selected_block_ids.is_empty() {
-            return session_sharing_protocol::common::Selection::Blocks {
+            return cognix_session::common::Selection::Blocks {
                 block_ids: selected_block_ids,
             };
         }
@@ -900,7 +900,7 @@ impl TerminalView {
             if let Some(selection_range) =
                 model_lock.alt_screen().selection_range(semantic_selection)
             {
-                return session_sharing_protocol::common::Selection::AltScreenText {
+                return cognix_session::common::Selection::AltScreenText {
                     start: (*selection_range.start()).into(),
                     end: (*selection_range.end()).into(),
                     is_reversed: selection_range.is_reversed(),
@@ -912,19 +912,19 @@ impl TerminalView {
         {
             let Some(start) = start.to_session_sharing_block_point(model_lock.block_list()) else {
                 log::error!("Failed convert start of selection range to BlockPoint");
-                return session_sharing_protocol::common::Selection::None;
+                return cognix_session::common::Selection::None;
             };
             let Some(end) = end.to_session_sharing_block_point(model_lock.block_list()) else {
                 log::error!("Failed convert end of selection range to BlockPoint");
-                return session_sharing_protocol::common::Selection::None;
+                return cognix_session::common::Selection::None;
             };
-            return session_sharing_protocol::common::Selection::BlockText {
+            return cognix_session::common::Selection::BlockText {
                 start,
                 end,
                 is_reversed,
             };
         }
-        session_sharing_protocol::common::Selection::None
+        cognix_session::common::Selection::None
     }
 
     pub fn handle_presence_manager_event(
@@ -1072,7 +1072,7 @@ impl TerminalView {
                 },
                 ctx,
             );
-        } else if let session_sharing_protocol::common::Selection::BlockText {
+        } else if let cognix_session::common::Selection::BlockText {
             start,
             end,
             is_reversed,

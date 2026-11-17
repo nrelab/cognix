@@ -3,11 +3,11 @@ use crate::ai::blocklist::block::cli_controller::LongRunningCommandControlState;
 use crate::ai::blocklist::history_model::BlocklistAIHistoryModel;
 use crate::features::FeatureFlag;
 use crate::terminal::model::block::AgentInteractionMetadata;
-use cognixui::{Entity, ModelContext, SingletonEntity, WeakViewHandle};
-use parking_lot::FairMutex;
-use session_sharing_protocol::common::{
+use cognix_session::common::{
     OrderedTerminalEvent, OrderedTerminalEventType, Scrollback, WindowSize,
 };
+use cognixui::{Entity, ModelContext, SingletonEntity, WeakViewHandle};
+use parking_lot::FairMutex;
 use std::io::{sink, Sink};
 use std::sync::Arc;
 
@@ -297,6 +297,7 @@ impl EventLoop {
                         .lock()
                         .set_is_receiving_agent_conversation_replay(false);
                 }
+                OrderedTerminalEventType::CloudModeSetupPhaseEnded => (),
             }
 
             if Some(self.next_event_no) == self.catching_up_to_event_no {

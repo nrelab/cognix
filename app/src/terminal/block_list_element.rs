@@ -34,6 +34,7 @@ use itertools::Itertools;
 use parking_lot::FairMutex;
 use vec1::Vec1;
 
+use cognix_session::common::{ParticipantId, Selection};
 use cognixui::elements::new_scrollable::{NewScrollableElement, ScrollableAxis};
 use cognixui::elements::{
     Axis, Border, ChildAnchor, ClippedScrollStateHandle, ConstrainedBox, Container, CornerRadius,
@@ -54,7 +55,6 @@ use cognixui::{
 };
 use cognixui::{EntityId, ModelHandle, SingletonEntity as _};
 use pathfinder_color::ColorU;
-use session_sharing_protocol::common::{ParticipantId, Selection};
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
 use std::mem;
