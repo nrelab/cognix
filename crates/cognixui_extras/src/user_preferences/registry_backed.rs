@@ -10,7 +10,7 @@ pub struct RegistryBackedPreferences {
     app_key_path: String,
 }
 
-static COGNIX_REGISTRY_BASE_PATH: &str = "Software\\Cognix.dev\\";
+static COGNIX_REGISTRY_BASE_PATH: &str = "Software\\cognix.khulnasoft.com\\";
 pub const KEY_NOT_FOUND_ERR: HRESULT = HRESULT::from_win32(0x80070002);
 
 impl RegistryBackedPreferences {

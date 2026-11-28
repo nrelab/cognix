@@ -3417,7 +3417,7 @@ impl SettingsWidget for UsageWidget {
                     vec![
                         FormattedTextFragment::hyperlink(
                             "Contact support",
-                            "mailto:support@cognix.dev",
+                            "mailto:support@cognix.khulnasoft.com",
                         ),
                         FormattedTextFragment::plain_text(" for more AI usage."),
                     ]
@@ -4349,7 +4349,7 @@ impl AgentsWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.cognix.dev/agent-platform/capabilities/codebase-context",
+                "https://docs.cognix.khulnasoft.com/agent-platform/capabilities/codebase-context",
             ),
         ];
         let description = Container::new(
@@ -4420,7 +4420,7 @@ impl AgentsWidget {
                 FormattedTextFragment::plain_text("You haven't added any MCP servers yet. Once you do, you'll be able to control how much autonomy the Cognix Agent has when interacting with them. "),
                 FormattedTextFragment::hyperlink_action("Add a server", AISettingsPageAction::OpenMCPServerCollection),
                 FormattedTextFragment::plain_text(" or "),
-                FormattedTextFragment::hyperlink("learn more about MCPs.", "https://docs.cognix.dev/agent-platform/capabilities/mcp"),
+                FormattedTextFragment::hyperlink("learn more about MCPs.", "https://docs.cognix.khulnasoft.com/agent-platform/capabilities/mcp"),
             ];
 
             Container::new(
@@ -4878,7 +4878,7 @@ impl SettingsWidget for MCPServersWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.cognix.dev/agent-platform/capabilities/mcp",
+                "https://docs.cognix.khulnasoft.com/agent-platform/capabilities/mcp",
             ),
         ];
 
@@ -4924,7 +4924,7 @@ impl SettingsWidget for MCPServersWidget {
                                 ),
                                 FormattedTextFragment::hyperlink(
                                     "See supported providers.",
-                                    "https://docs.cognix.dev/agent-platform/capabilities/mcp#file-based-mcp-servers",
+                                    "https://docs.cognix.khulnasoft.com/agent-platform/capabilities/mcp#file-based-mcp-servers",
                                 ),
                             ]
                         });
@@ -5009,7 +5009,7 @@ impl AIFactWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.cognix.dev/agent-platform/capabilities/rules",
+                "https://docs.cognix.khulnasoft.com/agent-platform/capabilities/rules",
             ),
         ];
         let description = Container::new(
@@ -6014,7 +6014,7 @@ impl ApiKeysWidget {
                     vec![
                         FormattedTextFragment::hyperlink(
                             "Contact sales",
-                            "mailto:sales@cognix.dev",
+                            "mailto:sales@cognix.khulnasoft.com",
                         ),
                         FormattedTextFragment::plain_text(
                             " to enable bringing your own API keys on your Enterprise plan.",

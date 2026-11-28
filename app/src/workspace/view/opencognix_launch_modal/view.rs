@@ -26,7 +26,7 @@ const HERO_HEIGHT: f32 = 92.;
 const HERO_IMAGE_PATH: &str = "async/png/onboarding/opencognix_launch_banner.png";
 const REPO_URL: &str = "https://github.com/nrelab/cognix";
 const CONTRIBUTING_URL: &str = "https://github.com/nrelab/cognix/blob/master/CONTRIBUTING.md";
-const OZ_URL: &str = "https://oz.cognix.dev";
+const OZ_URL: &str = "https://oz.cognix.khulnasoft.com";
 
 struct InlineLink {
     text: &'static str,

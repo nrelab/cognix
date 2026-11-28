@@ -30,13 +30,13 @@ pub fn make_router() -> Router {
             .on_failure(()),
     );
 
-    // We allow requests from localhost, cognix.dev and any subdomain of cognix.dev.
+    // We allow requests from localhost, cognix.khulnasoft.com and any subdomain of cognix.khulnasoft.com.
     let allow_origin_predicate =
         AllowOrigin::predicate(|origin: &HeaderValue, _request_parts: &Parts| {
             origin == "http://localhost:8080"
                 || origin == "http://localhost:8082"
-                || origin == "https://cognix.dev"
-                || origin.as_bytes().ends_with(b".cognix.dev")
+                || origin == "https://cognix.khulnasoft.com"
+                || origin.as_bytes().ends_with(b".cognix.khulnasoft.com")
         });
 
     let cors = CorsLayer::new()

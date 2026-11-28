@@ -121,7 +121,7 @@ runs:
       run: |
         set -euo pipefail
         git config user.name "Cognix Agent"
-        git config user.email "agent@cognix.dev"
+        git config user.email "agent@cognix.khulnasoft.com"
     
     - name: Run Cognix agent
       shell: bash

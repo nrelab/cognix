@@ -669,15 +669,15 @@ const BOOTSTRAP_FAILED_DURATION: Duration = Duration::from_secs(7);
 /// during the bootstrap period.
 const ENV_VAR_BOOTSTRAP_FAILED_DURATION: Duration = Duration::from_secs(60);
 const KNOWN_ISSUES_URL: &str =
-    "https://docs.cognix.dev/support-and-community/troubleshooting-and-support/known-issues";
+    "https://docs.cognix.khulnasoft.com/support-and-community/troubleshooting-and-support/known-issues";
 
 /// Link to supported custom prompts.
 const PROMPT_COMPATIBILITY_URL: &str =
-    "https://docs.cognix.dev/terminal/appearance/prompt#custom-prompt-compatibility-table";
+    "https://docs.cognix.khulnasoft.com/terminal/appearance/prompt#custom-prompt-compatibility-table";
 
 /// Link to troubleshooting steps for ControlMaster errors.
 const CONTROLMASTER_ISSUES_URL: &str =
-    "https://docs.cognix.dev/terminal/cognixify/ssh-legacy#troubleshooting";
+    "https://docs.cognix.khulnasoft.com/terminal/cognixify/ssh-legacy#troubleshooting";
 
 /// Link to instructions on how to update p10k.
 const P10K_UPDATE_INSTRUCTIONS_URL: &str =
@@ -693,9 +693,9 @@ const MIN_DELTA_FOR_TEXT_SELECTION: f32 = 0.5;
 /// Notifications-specific info
 /// TODO (suraj): add documentation for notifications in gitbook
 const NOTIFICATIONS_LEARN_MORE_URL: &str =
-    "https://docs.cognix.dev/terminal/more-features/notifications";
+    "https://docs.cognix.khulnasoft.com/terminal/more-features/notifications";
 pub const NOTIFICATIONS_TROUBLESHOOT_URL: &str =
-    "https://docs.cognix.dev/terminal/more-features/notifications#troubleshooting-notifications";
+    "https://docs.cognix.khulnasoft.com/terminal/more-features/notifications#troubleshooting-notifications";
 
 const DEBOUNCE_PERIOD: Duration = Duration::from_millis(40);
 
@@ -18786,7 +18786,7 @@ impl TerminalView {
                     ctx.emit(Event::OpenCognixDriveObjectInPane(uid.clone()));
                 }
                 AIAgentCitation::CognixDocumentation { path } => {
-                    ctx.open_url(&format!("https://docs.cognix.dev/{path}"));
+                    ctx.open_url(&format!("https://docs.cognix.khulnasoft.com/{path}"));
                 }
                 AIAgentCitation::WebPage { url } => {
                     ctx.open_url(url);
@@ -23231,7 +23231,7 @@ impl TerminalView {
         match action {
             LearnMore => {
                 ctx.open_url(
-                    "https://docs.cognix.dev/terminal/cognixify/ssh-legacy#implementation",
+                    "https://docs.cognix.khulnasoft.com/terminal/cognixify/ssh-legacy#implementation",
                 );
             }
             Settings => {

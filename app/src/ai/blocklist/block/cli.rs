@@ -1522,7 +1522,7 @@ impl TypedActionView for CLISubagentView {
                     .write(ClipboardContent::plain_text(debug_id.clone()));
             }
             CLISubagentAction::OpenFeedbackDocs => {
-                ctx.open_url("https://docs.cognix.dev/support-and-billing/sending-us-feedback");
+                ctx.open_url("https://docs.cognix.khulnasoft.com/support-and-billing/sending-us-feedback");
             }
         }
     }

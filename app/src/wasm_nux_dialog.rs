@@ -278,12 +278,12 @@ impl TypedActionView for WasmNUXDialog {
                 }
             }
             WasmNUXDialogAction::OpenDownloadDesktopAppLink => {
-                ctx.open_url("https://app.cognix.dev/get_cognix");
+                ctx.open_url("https://app.cognix.khulnasoft.com/get_cognix");
                 self.requested_download = true;
                 ctx.notify();
             }
             WasmNUXDialogAction::LearnMore => {
-                ctx.open_url("https://www.cognix.dev");
+                ctx.open_url("https://www.cognix.khulnasoft.com");
             }
         }
     }

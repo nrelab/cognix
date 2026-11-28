@@ -1,10 +1,10 @@
-# Plan: Build `app.cognix.dev` as a TypeScript web app
+# Plan: Build `app.cognix.khulnasoft.com` as a TypeScript web app
 
 Status: **Draft plan** · Last updated: 2026-11-17 · Owner: TBD
 
-## 1. What `app.cognix.dev` actually is
+## 1. What `app.cognix.khulnasoft.com` actually is
 
-`app.cognix.dev` is **not** a Rust binary. It is the **web host application** for Cognix:
+`app.cognix.khulnasoft.com` is **not** a Rust binary. It is the **web host application** for Cognix:
 a browser SPA that
 
 1. signs the user in with Firebase,
@@ -25,14 +25,14 @@ host and references a React app:
 | SPA fallback routes `/`, `/session/{id}`, `/drive/{type}/{id}` | `crates/serve-wasm/src/main.rs` |
 | Base app path `/app`, browser `replaceState` | `app/src/uri/browser_url_handler.rs` |
 | Web-intent URL grammar (`/session`, `/conversation`, `/drive`, `/settings`, `/action`) | `app/src/uri/web_intent_parser.rs` |
-| Prod API roots (`https://app.cognix.dev`, `wss://rtc.app.cognix.dev/graphql/v2`, `wss://sessions.app.cognix.dev`, `https://oz.cognix.dev`) | `crates/cognix_core/src/channel/config.rs` |
+| Prod API roots (`https://app.cognix.khulnasoft.com`, `wss://rtc.app.cognix.khulnasoft.com/graphql/v2`, `wss://sessions.app.cognix.khulnasoft.com`, `https://oz.cognix.khulnasoft.com`) | `crates/cognix_core/src/channel/config.rs` |
 
 So "build the app in TypeScript" means **build the React/TypeScript host SPA that the WASM client
 runs inside**, plus (in later phases) the GraphQL-backed dashboard surfaces.
 
-> **Environment caveat:** `app.cognix.dev` does not resolve/answer from this machine
-> (DNS resolves via AWS, but HTTPS connections time out; `oz.cognix.dev` and
-> `sessions.app.cognix.dev` behave the same). The plan below is derived from the
+> **Environment caveat:** `app.cognix.khulnasoft.com` does not resolve/answer from this machine
+> (DNS resolves via AWS, but HTTPS connections time out; `oz.cognix.khulnasoft.com` and
+> `sessions.app.cognix.khulnasoft.com` behave the same). The plan below is derived from the
 > checked-out source contract and from the upstream web product (`app.warp.dev`,
 > which now redirects to `platform.warp.dev` and serves a React SPA with Vite-style
 > content-hashed chunks). Treat the
@@ -42,7 +42,7 @@ runs inside**, plus (in later phases) the GraphQL-backed dashboard surfaces.
 ## 2. Goal and non-goals
 
 ### Goal
-Ship a production TypeScript SPA at `app.cognix.dev` that:
+Ship a production TypeScript SPA at `app.cognix.khulnasoft.com` that:
 
 - authenticates via Firebase,
 - mounts the existing WASM client at `/app`, `/session/:id`, `/conversation/:id`,
@@ -134,11 +134,11 @@ All unknown paths fall back to `index.html` (SPA) and are decided by the WASM cl
 
 - Firebase API key (prod): `AIzaSyBdy3O3S9hrdayLJxJ7mriBR4qgUaUygAs` (from `ChannelState`).
 - Refresh-token exchange: `POST https://securetoken.googleapis.com/v1/token?key=<key>`
-  (`app/src/auth/credentials.rs`); fallback proxy `POST https://app.cognix.dev/proxy/token?key=<key>`.
+  (`app/src/auth/credentials.rs`); fallback proxy `POST https://app.cognix.khulnasoft.com/proxy/token?key=<key>`.
 - Browser-session fallback: when no refresh token is handed over, the WASM client authenticates
   with ambient cookies (`LoginToken::SessionCookie`); the host must therefore call the API with
   `credentials: "include"` where relevant.
-- GraphQL: `POST https://app.cognix.dev/graphql/v2?op=<OperationName>`, JSON body
+- GraphQL: `POST https://app.cognix.khulnasoft.com/graphql/v2?op=<OperationName>`, JSON body
   `{ query, variables }`, `Authorization: Bearer <accessToken>` when signed in.
 
 ### 3.6 GraphQL request context
@@ -246,7 +246,7 @@ Root-level additions:
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ app.cognix.dev (CDN / load balancer)                         │
+│ app.cognix.khulnasoft.com (CDN / load balancer)                         │
 │  /assets/client/static/*  → static-assets bucket (immutable) │
 │  /assets/client/wasm/*    → release bucket                   │
 │  everything else          → SPA index.html                   │
@@ -256,7 +256,7 @@ Root-level additions:
 │ TypeScript host SPA (React + Vite)                           │
 │  Router: /app /session /conversation /drive /settings /action│
 │  Auth: Firebase SDK ──► refresh token ──► cognixUserHandoff()│
-│  API:  GraphQL client ──► https://app.cognix.dev/graphql/v2  │
+│  API:  GraphQL client ──► https://app.cognix.khulnasoft.com/graphql/v2  │
 │  Events: window.cognixEmitEvent ◄── Rust/WASM                 │
 │  Errors: Sentry                                              │
 │                                                              │
@@ -269,7 +269,7 @@ Root-level additions:
                         │
                         │ GraphQL / WebSocket (when invoked)
                         ▼
-        app.cognix.dev · rtc.app.cognix.dev · sessions.app.cognix.dev · oz.cognix.dev
+        app.cognix.khulnasoft.com · rtc.app.cognix.khulnasoft.com · sessions.app.cognix.khulnasoft.com · oz.cognix.khulnasoft.com
 ```
 
 **Single source of truth for auth:** the host owns Firebase login/logout. The WASM client is a
@@ -335,7 +335,7 @@ terminal in the browser; typing works; a resize works.
 - [ ] Deep-link resolution `/drive/:type/:name-:id` → open correct object.
 - [ ] Share/guest/link permissions UI (`addObjectGuests`, `setObjectLinkPermissions`, …).
 - [ ] Real-time updates via RTC subscription (`cognixDriveUpdates` at
-      `wss://rtc.app.cognix.dev/graphql/v2`).
+      `wss://rtc.app.cognix.khulnasoft.com/graphql/v2`).
 - [ ] Empty/error/loading states; optimistic updates.
 
 **Exit:** Drive objects created in the desktop client appear in the web browser without reload.
@@ -439,9 +439,9 @@ Add a Rust test that asserts the serialized event JSON, so the contract cannot d
 
 ## 11. Verification / reverse-engineering follow-up
 
-When a machine with access to `app.cognix.dev` is available:
+When a machine with access to `app.cognix.khulnasoft.com` is available:
 
-1. Start Chrome with a loopback CDP endpoint, open `https://app.cognix.dev`.
+1. Start Chrome with a loopback CDP endpoint, open `https://app.cognix.khulnasoft.com`.
 2. `rea.list_browser_targets` → `rea.inspect_web_page` (passive DOM, scripts, storage).
 3. `rea.analyze_web_bundle` → export scripts, derive the chunk graph and route candidates.
 4. `rea.capture_browser_scenario` for login, session view, drive view, settings deeplink.
@@ -453,7 +453,7 @@ exactly instead of approximating it.
 
 ## 12. Definition of done (v1)
 
-- `https://app.cognix.dev/` boots the SPA, signs in, and shows the terminal.
+- `https://app.cognix.khulnasoft.com/` boots the SPA, signs in, and shows the terminal.
 - `/session/:id`, `/drive/:type/:slug`, `/conversation/:id`, `/settings/:section`, `/action/:type`,
   `/get_cognix` all resolve and behave per §3.4.
 - `cognixUserHandoff` and `cognixEmitEvent` match the frozen contract; Rust serialization test passes.

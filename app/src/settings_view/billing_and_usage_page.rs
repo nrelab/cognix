@@ -3191,7 +3191,7 @@ impl UsageWidget {
                 vec![
                     FormattedTextFragment::hyperlink(
                         "Upgrade to Enterprise",
-                        "mailto:sales@cognix.dev",
+                        "mailto:sales@cognix.khulnasoft.com",
                     ),
                     FormattedTextFragment::plain_text(" for custom limits and dedicated support."),
                 ]
@@ -3199,7 +3199,7 @@ impl UsageWidget {
                 vec![
                     FormattedTextFragment::hyperlink(
                         "Contact support",
-                        "mailto:support@cognix.dev",
+                        "mailto:support@cognix.khulnasoft.com",
                     ),
                     FormattedTextFragment::plain_text(" for more AI usage."),
                 ]

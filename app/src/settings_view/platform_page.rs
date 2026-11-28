@@ -38,7 +38,7 @@ use std::collections::HashMap;
 
 const MODAL_WIDTH: f32 = 460.;
 const MODAL_HEIGHT: f32 = 320.;
-const API_KEY_DOCS_URL: &str = "https://docs.cognix.dev/reference/cli/api-keys";
+const API_KEY_DOCS_URL: &str = "https://docs.cognix.khulnasoft.com/reference/cli/api-keys";
 
 #[derive(Clone, Copy)]
 pub enum PlatformPageViewEvent {

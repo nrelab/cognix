@@ -1,5 +1,5 @@
 // Hard coded constants to divide keybindings into their respective categories/sections.
-// This should always align with documentation: https://docs.cognix.dev/getting-started/keyboard-shortcuts
+// This should always align with documentation: https://docs.cognix.khulnasoft.com/getting-started/keyboard-shortcuts
 
 use cognixui::keymap::Keystroke;
 

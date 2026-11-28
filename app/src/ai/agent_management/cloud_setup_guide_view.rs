@@ -29,10 +29,10 @@ use serde::Serialize;
 use std::collections::HashMap;
 use string_offset::CharCounter;
 
-const DOCS_URL: &str = "https://docs.cognix.dev/agent-platform/cloud-agents/overview";
+const DOCS_URL: &str = "https://docs.cognix.khulnasoft.com/agent-platform/cloud-agents/overview";
 const ENV_DOCS_URL: &str =
-    "https://docs.cognix.dev/reference/cli/integration-setup#creating-an-environment";
-const OZ_URL: &str = "https://oz.cognix.dev";
+    "https://docs.cognix.khulnasoft.com/reference/cli/integration-setup#creating-an-environment";
+const OZ_URL: &str = "https://oz.cognix.khulnasoft.com";
 
 const CONTENT_MAX_WIDTH: f32 = 720.;
 
@@ -207,13 +207,13 @@ impl CloudSetupGuideView {
         header_container.finish()
     }
 
-    /// Render the quick start banner with link to oz.cognix.dev.
+    /// Render the quick start banner with link to oz.cognix.khulnasoft.com.
     fn render_quick_start_banner(&self, appearance: &Appearance) -> Box<dyn Element> {
         let theme = appearance.theme();
         let font_size = 16.;
 
         let text = Text::new_inline(
-            "Quick start: Visit oz.cognix.dev for a UI-based setup experience.",
+            "Quick start: Visit oz.cognix.khulnasoft.com for a UI-based setup experience.",
             appearance.ui_font_family(),
             font_size,
         )

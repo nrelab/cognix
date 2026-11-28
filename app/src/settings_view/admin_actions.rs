@@ -18,7 +18,7 @@ impl AdminActions {
 
     /// Open the support email link
     pub fn contact_support(ctx: &mut AppContext) {
-        ctx.open_url("mailto:support@cognix.dev");
+        ctx.open_url("mailto:support@cognix.khulnasoft.com");
     }
 }
 

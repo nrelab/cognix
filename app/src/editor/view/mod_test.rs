@@ -526,7 +526,7 @@ fn test_smart_select_with_drag() {
 
         app.add_window(WindowStyle::NotStealFocus, |ctx| {
             let mut editor = EditorView::new_with_base_text(
-                "word ~/.cognix/themes/foo-bar.yaml andy@cognix.dev",
+                "word ~/.cognix/themes/foo-bar.yaml andy@cognix.khulnasoft.com",
                 Default::default(),
                 ctx,
             );

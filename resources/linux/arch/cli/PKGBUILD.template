@@ -3,7 +3,7 @@ pkgver=@@VERSION@@
 pkgrel=@@RELEASE@@
 pkgdesc="The orchestration platform for cloud agents"
 arch=('@@ARCH@@')
-url="https://cognix.dev"
+url="https://cognix.khulnasoft.com"
 license=('custom')
 depends=(
 	'curl'

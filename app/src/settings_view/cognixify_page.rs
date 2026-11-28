@@ -538,7 +538,7 @@ impl TitleWidget {
             ),
             FormattedTextFragment::hyperlink(
                 "Learn more",
-                "https://docs.cognix.dev/terminal/cognixify/subshells",
+                "https://docs.cognix.khulnasoft.com/terminal/cognixify/subshells",
             ),
         ];
 
@@ -749,7 +749,7 @@ impl SettingsWidget for SSHWidget {
                     Some(AdditionalInfo {
                         mouse_state: self.additional_info_mouse_state.clone(),
                         on_click_action: Some(CognixifyPageAction::OpenUrl(
-                            "https://docs.cognix.dev/terminal/cognixify/ssh".into(),
+                            "https://docs.cognix.khulnasoft.com/terminal/cognixify/ssh".into(),
                         )),
                         secondary_text: None,
                         tooltip_override_text: None,

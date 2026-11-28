@@ -40,7 +40,7 @@ use std::cell::Cell;
 use cognixui::elements::{ChildAnchor, ParentAnchor, ParentOffsetBounds};
 use pathfinder_geometry::vector::vec2f;
 
-const TOS_URL: &str = "https://www.cognix.dev/terms-of-service";
+const TOS_URL: &str = "https://www.cognix.khulnasoft.com/terms-of-service";
 
 // ---------------------------------------------------------------------------
 // Init (keybindings)

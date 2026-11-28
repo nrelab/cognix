@@ -179,8 +179,8 @@ pub fn install_script() -> String {
 
 /// Construct the download URL from the server root URL.
 ///
-/// For example, given `https://app.cognix.dev`, returns
-/// `https://app.cognix.dev/download/cli`.
+/// For example, given `https://app.cognix.khulnasoft.com`, returns
+/// `https://app.cognix.khulnasoft.com/download/cli`.
 fn download_url() -> String {
     let base = ChannelState::server_root_url();
     let base = base.trim_end_matches('/');

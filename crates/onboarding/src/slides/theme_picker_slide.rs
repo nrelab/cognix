@@ -50,7 +50,7 @@ pub enum ThemePickerSlideAction {
     PrivacySettingsClicked,
 }
 
-const TOS_URL: &str = "https://www.cognix.dev/terms-of-service";
+const TOS_URL: &str = "https://www.cognix.khulnasoft.com/terms-of-service";
 
 #[derive(Debug, Clone)]
 struct ThemeOption {

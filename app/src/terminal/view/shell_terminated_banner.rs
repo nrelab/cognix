@@ -226,7 +226,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://docs.cognix.dev/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
+                                "https://docs.cognix.khulnasoft.com/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
                             ));
                         })
                         .finish(),
@@ -264,7 +264,7 @@ impl TerminationType {
                         .build()
                         .on_click(|ctx, _, _| {
                             ctx.dispatch_typed_action(Action::OpenUrl(
-                                "https://docs.cognix.dev/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
+                                "https://docs.cognix.khulnasoft.com/support-and-community/troubleshooting-and-support/known-issues#debugging".to_string(),
                             ));
                         })
                         .finish(),

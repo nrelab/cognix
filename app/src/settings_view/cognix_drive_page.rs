@@ -224,7 +224,7 @@ impl SettingsWidget for CognixDriveToggleWidget {
             Some(AdditionalInfo {
                 mouse_state: self.info_icon_mouse_state.clone(),
                 on_click_action: Some(CognixDriveSettingsPageAction::OpenUrl(
-                    "https://docs.cognix.dev/knowledge-and-collaboration/cognix-drive".to_string(),
+                    "https://docs.cognix.khulnasoft.com/knowledge-and-collaboration/cognix-drive".to_string(),
                 )),
                 secondary_text: None,
                 tooltip_override_text: None,

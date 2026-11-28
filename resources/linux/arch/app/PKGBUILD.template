@@ -3,7 +3,7 @@ pkgver=@@VERSION@@
 pkgrel=@@RELEASE@@
 pkgdesc="Cognix, the Rust-based terminal for developers and teams"
 arch=('@@ARCH@@')
-url="https://cognix.dev"
+url="https://cognix.khulnasoft.com"
 license=('custom')
 depends=(
 	'curl'

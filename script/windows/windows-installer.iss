@@ -3,7 +3,7 @@
 #include "environment.iss"
 
 #define MyAppPublisher "Denver Technologies, Inc."
-#define MyAppURL "https://www.cognix.dev/"
+#define MyAppURL "https://www.cognix.khulnasoft.com/"
 #ifndef MyAppName
   #define MyAppName "CognixDev"
 #endif
@@ -107,7 +107,7 @@ Source: "{#AssetsDir}\{#Arch}\dxil.dll"; DestDir: "{app}"
 Source: "{#TargetProfileDir}\resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion recursesubdirs
 
 [Registry]
-Root: HKCU; Subkey: "SOFTWARE\Cognix.dev\{#MyAppName}"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "SOFTWARE\cognix.khulnasoft.com\{#MyAppName}"; Flags: uninsdeletekey
 ; cleanup "Open Cognix Here" registry entries
 Root: HKA; Subkey: "Software\Classes\Directory\shell\{#MyAppName}"; Flags: deletekey
 Root: HKA; Subkey: "Software\Classes\Directory\Background\shell\{#MyAppName}"; Flags: deletekey

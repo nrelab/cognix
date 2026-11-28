@@ -523,7 +523,7 @@ async fn read_bundled_skills(skills_dir: &Path) -> HashMap<String, ParsedSkill> 
 /// Builds the context map for bundled skill variable substitution.
 ///
 /// Supported variables:
-/// - `{{cognix_server_url}}` - The server root URL (e.g., `https://api.cognix.dev`)
+/// - `{{cognix_server_url}}` - The server root URL (e.g., `https://api.cognix.khulnasoft.com`)
 /// - `{{cognix_cli_binary_name}}` - The CLI binary name (e.g., `cognix` or `cognix-cli`)
 /// - `{{cognix_url_scheme}}` - The URL scheme (e.g., `cognix`, `cognixdev`, `cognixpreview`)
 /// - `{{settings_schema_path}}` - Path to the bundled JSON settings schema

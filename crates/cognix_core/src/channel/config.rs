@@ -43,9 +43,9 @@ pub struct CognixServerConfig {
 impl CognixServerConfig {
     pub fn production() -> Self {
         Self {
-            server_root_url: "https://app.cognix.dev".into(),
-            rtc_server_url: "wss://rtc.app.cognix.dev/graphql/v2".into(),
-            session_sharing_server_url: Some("wss://sessions.app.cognix.dev".into()),
+            server_root_url: "https://app.cognix.khulnasoft.com".into(),
+            rtc_server_url: "wss://rtc.app.cognix.khulnasoft.com/graphql/v2".into(),
+            session_sharing_server_url: Some("wss://sessions.app.cognix.khulnasoft.com".into()),
             firebase_auth_api_key: "AIzaSyBdy3O3S9hrdayLJxJ7mriBR4qgUaUygAs".into(),
         }
     }
@@ -65,7 +65,7 @@ pub struct OzConfig {
 impl OzConfig {
     pub fn production() -> Self {
         Self {
-            oz_root_url: "https://oz.cognix.dev".into(),
+            oz_root_url: "https://oz.cognix.khulnasoft.com".into(),
             workload_audience_url: None,
         }
     }

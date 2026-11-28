@@ -367,7 +367,7 @@ impl PromptAlertView {
                     } else {
                         text_fragments.push(FormattedTextFragment::hyperlink(
                             CONTACT_SUPPORT_TEXT,
-                            "mailto:support@cognix.dev".to_owned(),
+                            "mailto:support@cognix.khulnasoft.com".to_owned(),
                         ));
                     }
                 } else {

@@ -103,7 +103,7 @@ Note that for `async_assert` to actually work, the `set_assertion` needs to **re
 
 ## How to add a sqlite snapshot?
 * You can copy over a cognix.sqlite file from ~/Library/Application\ Support/{cognix, dev.cognix.Cognix-(Dev|Preview|Stable)} directly
-* You may want to sanitize some info that is specific to you (i.e. cwd https://staging.cognix.dev/block/FNBafyVtxvjmdNIx6HxUM5)
+* You may want to sanitize some info that is specific to you (i.e. cwd https://staging.cognix.khulnasoft.com/block/FNBafyVtxvjmdNIx6HxUM5)
 
 
 ### How to run integration tests?

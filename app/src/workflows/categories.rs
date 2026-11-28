@@ -766,7 +766,7 @@ impl CategoriesView {
                 .link(
                     "creating your own workflow".into(),
                     Some(
-                        "https://docs.cognix.dev/knowledge-and-collaboration/cognix-drive/workflows"
+                        "https://docs.cognix.khulnasoft.com/knowledge-and-collaboration/cognix-drive/workflows"
                             .into(),
                     ),
                     None,

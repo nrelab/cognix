@@ -62,19 +62,19 @@ pub fn sections(ctx: &mut ViewContext<ResourceCenterMainView>) -> Vec<Section> {
             ContentItem {
                 title: "Use your custom prompt",
                 description: "Set up Cognix to honor your PS1 setting",
-                url: "https://docs.cognix.dev/terminal/appearance/prompt",
+                url: "https://docs.cognix.khulnasoft.com/terminal/appearance/prompt",
                 button_label: "View documentation",
             },
             ContentItem {
                 title: "Integrate Cognix with your IDE",
                 description: "Configure Cognix to launch from your most used development tools",
-                url: "https://docs.cognix.dev/terminal/integrations-and-plugins",
+                url: "https://docs.cognix.khulnasoft.com/terminal/integrations-and-plugins",
                 button_label: "View documentation",
             },
             ContentItem {
                 title: "How Cognix uses Cognix",
                 description: "Learn how Cognix's engineering team uses their favorite features",
-                url: "https://www.cognix.dev/blog/how-cognix-uses-cognix",
+                url: "https://www.cognix.khulnasoft.com/blog/how-cognix-uses-cognix",
                 button_label: "Read article",
             },
         ],
