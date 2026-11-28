@@ -4090,7 +4090,7 @@ pub fn test_valid_domains() {
     assert!(!TeamsPageView::is_valid_domain("cognix!.dev"));
     assert!(!TeamsPageView::is_valid_domain("cognix.khulnasoft.com>"));
     assert!(!TeamsPageView::is_valid_domain("cognix.khulnasoft.com."));
-    assert!(TeamsPageView::is_valid_domain("app.cognix.khulnasoft.com"));
+    assert!(TeamsPageView::is_valid_domain("platform.khulnasoft.com"));
     assert!(TeamsPageView::is_valid_domain("cognix0.dev0"));
     assert!(TeamsPageView::is_valid_domain("cognix.khulnasoft.com"));
     assert!(TeamsPageView::is_valid_domain("miniclip.com"));

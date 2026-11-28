@@ -1,5 +1,5 @@
 [package]
-authors = ["Cognix Team <dev@warp.dev>"]
+authors = ["Cognix Team <info@khulnasoft.com>"]
 edition = "2021"
 name = "ipc"
 version = "0.1.0"

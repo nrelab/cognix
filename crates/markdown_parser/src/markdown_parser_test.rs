@@ -1575,14 +1575,14 @@ fn test_parse_inline_link_spec() {
 #[test]
 fn test_parse_long_link_with_parens() {
     // This is a regression test for CLD-1604.
-    let source = "This is [a link](https://console.cloud.google.com/traces/list?project=astral-field-294621&pageState=(%22traceIntervalPicker%22:(%22groupValue%22:%22P1D%22,%22customValue%22:null),%22traceFilter%22:(%22chips%22:%22%255B%257B_22k_22_3A_22%252Fhttp%252Furl_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22https_3A%252F%252Fapp.cognix.khulnasoft.com%252Fgraphql_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22%252Fhttp%252Furl_22%257D%255D%22))&minl=0&maxl=53.33333333333334&tid=c3c3ffc64f74f16a1015e3f2d105c3d9&spanId=0ddd4991fda16831) with parentheses";
+    let source = "This is [a link](https://console.cloud.google.com/traces/list?project=astral-field-294621&pageState=(%22traceIntervalPicker%22:(%22groupValue%22:%22P1D%22,%22customValue%22:null),%22traceFilter%22:(%22chips%22:%22%255B%257B_22k_22_3A_22%252Fhttp%252Furl_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22https_3A%252F%252Fplatform.khulnasoft.com%252Fgraphql_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22%252Fhttp%252Furl_22%257D%255D%22))&minl=0&maxl=53.33333333333334&tid=c3c3ffc64f74f16a1015e3f2d105c3d9&spanId=0ddd4991fda16831) with parentheses";
     assert_eq!(
         parse_all(source, parse_inline),
         vec![
             FormattedTextFragment::plain_text("This is "),
             FormattedTextFragment::hyperlink(
                 "a link",
-                "https://console.cloud.google.com/traces/list?project=astral-field-294621&pageState=(%22traceIntervalPicker%22:(%22groupValue%22:%22P1D%22,%22customValue%22:null),%22traceFilter%22:(%22chips%22:%22%255B%257B_22k_22_3A_22%252Fhttp%252Furl_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22https_3A%252F%252Fapp.cognix.khulnasoft.com%252Fgraphql_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22%252Fhttp%252Furl_22%257D%255D%22))&minl=0&maxl=53.33333333333334&tid=c3c3ffc64f74f16a1015e3f2d105c3d9&spanId=0ddd4991fda16831"
+                "https://console.cloud.google.com/traces/list?project=astral-field-294621&pageState=(%22traceIntervalPicker%22:(%22groupValue%22:%22P1D%22,%22customValue%22:null),%22traceFilter%22:(%22chips%22:%22%255B%257B_22k_22_3A_22%252Fhttp%252Furl_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22https_3A%252F%252Fplatform.khulnasoft.com%252Fgraphql_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22%252Fhttp%252Furl_22%257D%255D%22))&minl=0&maxl=53.33333333333334&tid=c3c3ffc64f74f16a1015e3f2d105c3d9&spanId=0ddd4991fda16831"
             ),
             FormattedTextFragment::plain_text(" with parentheses")
         ]
@@ -2702,7 +2702,8 @@ fn test_parse_table_with_empty_cells() {
 
 #[test]
 fn test_parse_table_with_links() {
-    let source = "| Link | Text |\n| --- | --- |\n| [Cognix](https://cognix.khulnasoft.com) | normal |\n";
+    let source =
+        "| Link | Text |\n| --- | --- |\n| [Cognix](https://cognix.khulnasoft.com) | normal |\n";
     let result = test_parse_markdown_with_gfm_tables(source);
     assert_eq!(result.len(), 1);
 

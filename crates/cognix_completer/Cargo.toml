@@ -1,6 +1,6 @@
 [package]
 name = "cognix_completer"
-authors = ["Cognix Team <dev@warp.dev>"]
+authors = ["Cognix Team <info@khulnasoft.com>"]
 version = "0.1.0"
 edition = "2021"
 description = "Cognix completions engine"

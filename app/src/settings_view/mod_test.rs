@@ -198,7 +198,7 @@ fn subpage_display_names_are_correct() {
 
 #[test]
 fn subpage_from_str_parses_display_names() {
-    // Both the legacy "Oz" name and the new "Warp Agent" display name must
+    // Both the legacy "Oz" name and the new "Cognix Agent" display name must
     // resolve to SettingsSection::CognixAgent so existing deep links, persisted
     // telemetry strings, and external callers continue to work after the
     // user-facing rename (see specs/GH1063/product.md, Behavior #8).
@@ -748,7 +748,7 @@ fn collapsed_umbrella_with_filtered_subpages_uses_first_visible_subpage() {
     let nav_items = realistic_nav_items();
 
     let stops = build_nav_stops(&nav_items, |section| {
-        // Hide WarpAgent (first AI subpage); keep the rest.
+        // Hide CognixAgent (first AI subpage); keep the rest.
         section != SettingsSection::CognixAgent
     });
 
@@ -766,12 +766,12 @@ fn collapsed_umbrella_with_filtered_subpages_uses_first_visible_subpage() {
             assert_eq!(
                 *first_subpage,
                 SettingsSection::AgentProfiles,
-                "WarpAgent is hidden by the filter, so the first visible subpage is AgentProfiles"
+                "CognixAgent is hidden by the filter, so the first visible subpage is AgentProfiles"
             );
             assert_eq!(
                 *last_subpage,
                 SettingsSection::ThirdPartyCLIAgents,
-                "last_subpage is unaffected by hiding WarpAgent and should remain the last visible subpage"
+                "last_subpage is unaffected by hiding CognixAgent and should remain the last visible subpage"
             );
         }
         _ => unreachable!(),
@@ -911,7 +911,7 @@ fn arrow_down_from_account_with_collapsed_agents_lands_on_first_subpage() {
     let nav_items = realistic_nav_items();
     let stops = build_nav_stops(&nav_items, |_| true);
 
-    // Pressing Down from Account should auto-expand Agents and select WarpAgent,
+    // Pressing Down from Account should auto-expand Agents and select CognixAgent,
     // not skip over to BillingAndUsage.
     let next = simulate_cycle(
         &nav_items,
@@ -955,7 +955,7 @@ fn arrow_up_into_collapsed_umbrella_respects_search_filter_for_last_subpage() {
 
     // From BillingAndUsage, Up should land on the last *visible* AI subpage
     // (AgentMCPServers), not on the filtered-out Knowledge/ThirdPartyCLIAgents
-    // or on the first subpage WarpAgent.
+    // or on the first subpage CognixAgent.
     let next = simulate_cycle(
         &nav_items,
         &stops,
@@ -1013,7 +1013,7 @@ fn arrow_down_across_adjacent_collapsed_umbrellas() {
 #[test]
 fn arrow_down_collapsed_umbrella_respects_search_filter() {
     let nav_items = realistic_nav_items();
-    // Search filter hides WarpAgent and AgentProfiles so the first visible AI
+    // Search filter hides CognixAgent and AgentProfiles so the first visible AI
     // subpage is AgentMCPServers.
     let is_visible = |section: SettingsSection| {
         !matches!(
@@ -1024,7 +1024,7 @@ fn arrow_down_collapsed_umbrella_respects_search_filter() {
     let stops = build_nav_stops(&nav_items, is_visible);
 
     // From Account, Down should land on AgentMCPServers (first visible
-    // subpage of the still-collapsed Agents umbrella), not on WarpAgent /
+    // subpage of the still-collapsed Agents umbrella), not on CognixAgent /
     // AgentProfiles.
     let next = simulate_cycle(
         &nav_items,

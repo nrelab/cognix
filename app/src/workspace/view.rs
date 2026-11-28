@@ -6271,9 +6271,9 @@ impl Workspace {
                     open_in_active_window: false,
                 },
             ),
-            NewSessionMenuItem::OpenLaunchConfigDocs => {
-                ctx.open_url("https://docs.cognix.khulnasoft.com/terminal/sessions/launch-configurations")
-            }
+            NewSessionMenuItem::OpenLaunchConfigDocs => ctx.open_url(
+                "https://docs.cognix.khulnasoft.com/terminal/sessions/launch-configurations",
+            ),
             #[cfg(feature = "local_fs")]
             NewSessionMenuItem::CreateNewTabConfig => {
                 self.create_and_open_new_tab_config(ctx);

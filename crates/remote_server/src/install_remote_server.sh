@@ -2,7 +2,7 @@
 # Installs the Cognix remote server binary on a remote host.
 #
 # Placeholders (substituted at runtime by setup.rs):
-#   {download_base_url}  — e.g. https://app.cognix.khulnasoft.com/download/cli
+#   {download_base_url}  — e.g. https://platform.khulnasoft.com/download/cli
 #   {channel}            — stable | preview | dev
 #   {install_dir}        — e.g. ~/.cognix/remote-server
 #   {binary_name}        — e.g. oz | oz-dev | oz-preview

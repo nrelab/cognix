@@ -43,9 +43,9 @@ pub struct CognixServerConfig {
 impl CognixServerConfig {
     pub fn production() -> Self {
         Self {
-            server_root_url: "https://app.cognix.khulnasoft.com".into(),
-            rtc_server_url: "wss://rtc.app.cognix.khulnasoft.com/graphql/v2".into(),
-            session_sharing_server_url: Some("wss://sessions.app.cognix.khulnasoft.com".into()),
+            server_root_url: "https://platform.khulnasoft.com".into(),
+            rtc_server_url: "wss://rtc.platform.khulnasoft.com/graphql/v2".into(),
+            session_sharing_server_url: Some("wss://sessions.platform.khulnasoft.com".into()),
             firebase_auth_api_key: "AIzaSyBdy3O3S9hrdayLJxJ7mriBR4qgUaUygAs".into(),
         }
     }

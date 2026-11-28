@@ -631,7 +631,10 @@ impl BuildPlanMigrationModal {
 
         let learn_more_fragments = vec![
             FormattedTextFragment::plain_text("Learn more on our "),
-            FormattedTextFragment::hyperlink("pricing page", "https://www.cognix.khulnasoft.com/pricing"),
+            FormattedTextFragment::hyperlink(
+                "pricing page",
+                "https://www.cognix.khulnasoft.com/pricing",
+            ),
             FormattedTextFragment::plain_text("."),
         ];
         let learn_more = Container::new(

@@ -133,7 +133,8 @@ fn test_links_not_auto_highlighted() {
         },
         StyledBufferRun {
             run: "http://example.com".to_string(),
-            text_styles: TextStylesWithMetadata::default().link("https://cognix.khulnasoft.com".to_string()),
+            text_styles: TextStylesWithMetadata::default()
+                .link("https://cognix.khulnasoft.com".to_string()),
             block_style: BufferBlockStyle::PlainText,
         },
         StyledBufferRun {
@@ -205,7 +206,8 @@ fn test_text_around_link_not_auto_highlighted() {
         },
         StyledBufferRun {
             run: "alink".to_string(),
-            text_styles: TextStylesWithMetadata::default().link("https://cognix.khulnasoft.com".to_string()),
+            text_styles: TextStylesWithMetadata::default()
+                .link("https://cognix.khulnasoft.com".to_string()),
             block_style: BufferBlockStyle::PlainText,
         },
         StyledBufferRun {

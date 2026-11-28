@@ -1,6 +1,6 @@
 [package]
 name = "input_classifier"
-authors = ["Cognix Team <dev@warp.dev>"]
+authors = ["Cognix Team <info@khulnasoft.com>"]
 edition = "2024"
 publish.workspace = true
 license.workspace = true

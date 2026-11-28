@@ -43,7 +43,8 @@ mod tests;
 
 const LEARN_MORE_MARKDOWN_URL: &str =
     "https://docs.cognix.khulnasoft.com/terminal/more-features/markdown-viewer";
-const LEARN_MORE_CODE_URL: &str = "https://docs.cognix.khulnasoft.com/code/overview#built-in-code-editor";
+const LEARN_MORE_CODE_URL: &str =
+    "https://docs.cognix.khulnasoft.com/code/overview#built-in-code-editor";
 
 /// A path to a file that can be opened in Cognix, along with its type.
 #[derive(Debug, Clone, PartialEq, Eq)]

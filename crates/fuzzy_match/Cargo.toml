@@ -1,6 +1,6 @@
 [package]
 name = "fuzzy_match"
-authors = ["Cognix Team <dev@warp.dev>"]
+authors = ["Cognix Team <info@khulnasoft.com>"]
 version = "0.1.0"
 edition = "2021"
 description = "Performs fuzzy match with text against query"

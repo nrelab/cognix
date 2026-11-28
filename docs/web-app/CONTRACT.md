@@ -1,4 +1,4 @@
-# Contract: `app.cognix.khulnasoft.com` web host ↔ WASM client
+# Contract: `platform.khulnasoft.com` web host ↔ WASM client
 
 Status: **Frozen for v1** · Last updated: 2026-11-17
 Source of truth: `docs/web-app/PLAN.md` §3. Any change here requires a matching Rust change
@@ -82,8 +82,8 @@ All unknown paths fall back to `index.html`; the WASM client decides via `WebInt
   (The REST token-exchange key in `ChannelState` differs; both are valid Firebase
   API keys for the project.) Overridable via `VITE_FIREBASE_*` env vars.
 - Refresh-token exchange: `POST https://securetoken.googleapis.com/v1/token?key=<key>`
-  (`app/src/auth/credentials.rs`); host-side fallback proxy `POST https://app.cognix.khulnasoft.com/proxy/token?key=<key>`.
-- GraphQL: `POST https://app.cognix.khulnasoft.com/graphql/v2?op=<OperationName>`, JSON body
+  (`app/src/auth/credentials.rs`); host-side fallback proxy `POST https://platform.khulnasoft.com/proxy/token?key=<key>`.
+- GraphQL: `POST https://platform.khulnasoft.com/graphql/v2?op=<OperationName>`, JSON body
   `{ query, variables }`, `Authorization: Bearer <firebase id token>` when signed in.
 
 ## 6. `requestContext` (every GraphQL operation)

@@ -1,6 +1,6 @@
 [package]
 name = "repo_metadata"
-authors = ["Cognix Team <dev@warp.dev>"]
+authors = ["Cognix Team <info@khulnasoft.com>"]
 version = "0.1.0"
 edition = "2021"
 description = "Repository metadata utilities for Cognix"

@@ -1,5 +1,5 @@
 [package]
-authors = ["Cognix Team <dev@warp.dev>"]
+authors = ["Cognix Team <info@khulnasoft.com>"]
 edition = "2021"
 name = "cognixui_extras"
 version = "0.0.0"

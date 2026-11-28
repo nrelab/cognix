@@ -660,7 +660,8 @@ lazy_static! {
 const NOTIFICATION_CHECKBOX_MARGIN_RIGHT: f32 = 5.;
 const NOTIFICATION_EDITOR_MARGIN: f32 = 5.;
 
-const NOTIFICATIONS_DOCS_URL: &str = "https://docs.cognix.khulnasoft.com/terminal/more-features/notifications";
+const NOTIFICATIONS_DOCS_URL: &str =
+    "https://docs.cognix.khulnasoft.com/terminal/more-features/notifications";
 
 /// WARNING: this constant was computed manually by determining the pixel width
 /// of the quake mode dropdowns based on the number of expanded items in the flex row.
@@ -4261,7 +4262,8 @@ impl SettingsWidget for SessionRestorationWidget {
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
-                    "https://docs.cognix.khulnasoft.com/terminal/sessions/session-restoration".into(),
+                    "https://docs.cognix.khulnasoft.com/terminal/sessions/session-restoration"
+                        .into(),
                 )),
                 secondary_text: None,
                 tooltip_override_text: None,
@@ -4294,7 +4296,8 @@ impl SettingsWidget for SessionRestorationWidget {
                 .link(
                     "See docs.".to_owned(),
                     Some(
-                        "https://docs.cognix.khulnasoft.com/terminal/sessions/session-restoration".to_owned(),
+                        "https://docs.cognix.khulnasoft.com/terminal/sessions/session-restoration"
+                            .to_owned(),
                     ),
                     None,
                     self.docs_link.clone(),
@@ -4348,7 +4351,8 @@ impl SettingsWidget for SnackbarHeaderWidget {
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
-                    "https://docs.cognix.khulnasoft.com/terminal/blocks/sticky-command-header".into(),
+                    "https://docs.cognix.khulnasoft.com/terminal/blocks/sticky-command-header"
+                        .into(),
                 )),
                 secondary_text: None,
                 tooltip_override_text: None,
@@ -6707,7 +6711,8 @@ impl SettingsWidget for SmartSelectWidget {
             Some(AdditionalInfo {
                 mouse_state: self.additional_info_link.clone(),
                 on_click_action: Some(FeaturesPageAction::OpenUrl(
-                    "https://docs.cognix.khulnasoft.com/terminal/more-features/text-selection".into(),
+                    "https://docs.cognix.khulnasoft.com/terminal/more-features/text-selection"
+                        .into(),
                 )),
                 secondary_text: None,
                 tooltip_override_text: None,
