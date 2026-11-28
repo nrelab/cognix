@@ -90,11 +90,11 @@ deltae = "0.3.1"
 derivative.workspace = true
 dhat = { version = "0.3.2", optional = true }
 diesel.workspace = true
-difflib = { git = "https://github.com/warpdotdev/difflib.git", rev = "114177e7d8e1f8017baca397f943e11644b14d63" }
+difflib = { git = "https://github.com/nrelab/cognix-vendor.git" }
 directories.workspace = true
 dirs.workspace = true
 dunce.workspace = true
-email_address = { git = "https://github.com/warpdotdev/rust-email_address", branch = "main" }
+email_address = { git = "https://github.com/nrelab/cognix-vendor.git" }
 embed_plist = "1.2"
 enclose = "1.1.8"
 enum-iterator.workspace = true
@@ -679,7 +679,7 @@ inline_slash_commands = ["agent_view"]
 # Enable this feature to track heap usage and automatically produce a heap
 # profile report when app memory usage exceeds a 10GB threshold.
 #
-# Enabled on WarpDev by default.
+# Enabled on CognixDev by default.
 heap_usage_tracking = ["jemalloc_pprof", "crash_reporting"]
 image_as_context = []
 in_band_generators_ssh = []
@@ -965,7 +965,7 @@ short_description = "The cloud-backed terminal for individuals and teams, featur
 category = "public.app-category.developer-tools"
 copyright = "© 2025, Denver Technologies, Inc"
 identifier = "dev.cognix.Cognix-Dev"
-name = "WarpDev"
+name = "CognixDev"
 osx_frameworks = [
     "frameworks/dev/Sentry-Dynamic-WithARM64e.xcframework/macos-arm64_arm64e_x86_64/Sentry.framework",
 ]

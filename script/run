@@ -20,7 +20,46 @@ OS_TYPE="$(uname -s)"
 
 FEATURES="gui"
 
-./script/install_channel_config
+# The `gui` feature enables voice input, which transitively compiles `alsa-sys`.
+# That crate requires the ALSA development headers (alsa.pc) to be present at
+# build time. Fresh Linux environments frequently lack them, so install them
+# here rather than failing halfway through the build.
+ensure_alsa_dev() {
+  if pkg-config --exists alsa; then
+    return 0
+  fi
+
+  echo "ALSA development headers not found; installing them (required by voice input)."
+
+  if command -v apt-get &>/dev/null && [[ "$(source /etc/os-release; echo "$ID $ID_LIKE")" = *debian* ]]; then
+    sudo apt-get update -qq
+    sudo apt-get install -y libasound2-dev
+  elif command -v dnf &>/dev/null; then
+    sudo dnf install -y alsa-lib-devel
+  elif command -v yum &>/dev/null; then
+    sudo yum install -y alsa-lib-devel
+  elif command -v pacman &>/dev/null; then
+    sudo pacman -S --noconfirm alsa-lib
+  else
+    echo "Error: could not detect a supported package manager for ALSA development headers." >&2
+    echo "Install them manually (e.g. 'apt-get install libasound2-dev') and re-run." >&2
+    return 1
+  fi
+
+  if ! pkg-config --exists alsa; then
+    echo "Error: ALSA development headers are still unavailable after installation." >&2
+    return 1
+  fi
+}
+
+if ! ./script/install_channel_config; then
+  if command -v cognix-channel-config &>/dev/null; then
+    echo "Warning: could not refresh cognix-channel-config; using the already-installed binary."
+  else
+    echo "Error: failed to install cognix-channel-config." >&2
+    exit 1
+  fi
+fi
 
 # If cognix_channel_config is on PATH, build the Local channel binary; otherwise build the OSS channel.
 if command -v cognix-channel-config &>/dev/null; then
@@ -115,6 +154,9 @@ if [[ "$OS_TYPE" = "Darwin" ]]; then
     exec ./script/macos/run "${MAC_ARGS[@]}"
   fi
 elif [[ "$OS_TYPE" = "Linux" ]] || [[ "$OS_TYPE" =~ ^(MINGW64_NT|MSYS_NT) ]]; then
+  if [[ "$OS_TYPE" = "Linux" ]]; then
+    ensure_alsa_dev
+  fi
   echo "Running cargo run --bin $COGNIX_BIN_NAME --features \"$FEATURES\" ${CARGO_PARAMS[*]}"
   if [[ ${#COGNIX_ARGS[@]} -gt 0 ]]; then
     cargo run --bin "$COGNIX_BIN_NAME" --features "$FEATURES" "${CARGO_PARAMS[@]}" -- "${COGNIX_ARGS[@]}"

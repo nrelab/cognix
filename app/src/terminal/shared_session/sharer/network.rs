@@ -648,6 +648,7 @@ impl Network {
                             supports_full_role: true,
                             supports_full_role_for_real: true,
                         },
+                        share_with_team_uid: None,
                     });
                     if let Err(e) = network.ws_proxy_tx.try_send(message) {
                         log::error!("Sharer failed to send initialization message: {e}");

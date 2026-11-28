@@ -1553,21 +1553,21 @@ impl AIConversation {
             for (model_id, usage) in usage_metadata.cognix_token_usage {
                 let entry = token_usage.entry(model_id.clone()).or_default();
                 entry.cognix_tokens += usage.total_tokens;
-                for (category, tokens) in usage.token_usage_by_category {
+                for (category, tokens) in &usage.token_usage_by_category {
                     *entry
                         .cognix_token_usage_by_category
-                        .entry(category)
-                        .or_default() += tokens;
+                        .entry(category.clone())
+                        .or_default() += *tokens;
                 }
             }
-            for (model_id, usage) in usage_metadata.byok_token_usage {
+            for (model_id, usage) in &usage_metadata.byok_token_usage {
                 let entry = token_usage.entry(model_id.clone()).or_default();
                 entry.byok_tokens += usage.total_tokens;
-                for (category, tokens) in usage.token_usage_by_category {
+                for (category, tokens) in &usage.token_usage_by_category {
                     *entry
                         .byok_token_usage_by_category
-                        .entry(category)
-                        .or_default() += tokens;
+                        .entry(category.clone())
+                        .or_default() += *tokens;
                 }
             }
 
