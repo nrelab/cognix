@@ -642,7 +642,6 @@ impl Network {
                         lifetime,
                         source_type,
                         source_task_id: None,
-                        share_with_team_uid: None,
                         feature_support: FeatureSupport {
                             supports_agent_view: FeatureFlag::AgentView.is_enabled(),
                             supports_full_role: true,

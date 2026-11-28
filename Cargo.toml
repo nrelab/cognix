@@ -490,5 +490,5 @@ tikv-jemallocator = { git = "https://github.com/nrelab/cognix-vendor.git" }
 tikv-jemalloc-sys = { git = "https://github.com/nrelab/cognix-vendor.git" }
 
 [patch."https://github.com/nrelab/cognix-proto-apis.git"]
-# Uncomment for local development of warp-proto-apis
-# cognix_multi_agent_api = { path = "../warp-proto-apis/apis/multi_agent/v1/gen/rust" }
+# Uncomment for local development of cognix-proto-apis
+# cognix_multi_agent_api = { path = "../cognix-proto-apis/apis/multi_agent/v1/gen/rust" }
