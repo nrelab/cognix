@@ -179,11 +179,11 @@ fn no_proxy_suffix_with_dot() {
     let _lock = ENV_LOCK.lock();
     clear_proxy_env();
     env::set_var("HTTPS_PROXY", "http://proxy:3128");
-    env::set_var("NO_PROXY", ".cognix.dev");
+    env::set_var("NO_PROXY", ".cognix.khulnasoft.com");
 
-    assert!(resolved_proxy_tls("sessions.app.cognix.dev").is_none());
+    assert!(resolved_proxy_tls("sessions.app.cognix.khulnasoft.com").is_none());
 
-    assert!(resolved_proxy_tls("cognix.dev").is_some()); // Exact "cognix.dev" != ".cognix.dev"
+    assert!(resolved_proxy_tls("cognix.khulnasoft.com").is_some()); // Exact "cognix.khulnasoft.com" != ".cognix.khulnasoft.com"
     assert!(resolved_proxy_tls("other.com").is_some());
     clear_proxy_env();
 }
@@ -193,13 +193,13 @@ fn no_proxy_suffix_without_dot() {
     let _lock = ENV_LOCK.lock();
     clear_proxy_env();
     env::set_var("HTTPS_PROXY", "http://proxy:3128");
-    env::set_var("NO_PROXY", "cognix.dev");
+    env::set_var("NO_PROXY", "cognix.khulnasoft.com");
 
-    // "sessions.app.cognix.dev" ends with ".cognix.dev" → matches
-    assert!(resolved_proxy_tls("sessions.app.cognix.dev").is_none());
+    // "sessions.app.cognix.khulnasoft.com" ends with ".cognix.khulnasoft.com" → matches
+    assert!(resolved_proxy_tls("sessions.app.cognix.khulnasoft.com").is_none());
     // Exact match too
-    assert!(resolved_proxy_tls("cognix.dev").is_none());
-    assert!(resolved_proxy_tls("notcognix.dev").is_some());
+    assert!(resolved_proxy_tls("cognix.khulnasoft.com").is_none());
+    assert!(resolved_proxy_tls("notcognix.khulnasoft.com").is_some());
     clear_proxy_env();
 }
 

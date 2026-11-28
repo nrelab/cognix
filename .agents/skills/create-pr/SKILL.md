@@ -128,7 +128,7 @@ Add changelog entries when appropriate using the format at the bottom of the PR 
 When committing changes or creating a PR, include attribution at the end of every commit message or PR description:
 
 ```
-Co-Authored-By: Cognix <agent@cognix.dev>
+Co-Authored-By: Cognix <agent@cognix.khulnasoft.com>
 ```
 
 ## Testing Requirements

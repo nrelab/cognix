@@ -3150,7 +3150,7 @@ fn test_inline_markdown_roundtrips() {
         "*Complicated **text*** with *nest**ing***",
         "This `is not a [link](https://example.com) due to` precedence",
         "A **`bold code span`** too",
-        "[link1](https://cognix.dev)[**link2**](https://example.com)",
+        "[link1](https://cognix.khulnasoft.com)[**link2**](https://example.com)",
         "Combined *~~italic and strikethrough~~*",
         "Overlapping *~~abc~~def*",
         "This is <u>underlined</u>",
@@ -7782,7 +7782,7 @@ fn test_link_style_exact() {
             let edit_result = buffer.select_and_style_link(
                 CharOffset::from(3)..CharOffset::from(7),
                 "ne\nb".to_string(),
-                "www.cognix.dev".to_string(),
+                "www.cognix.khulnasoft.com".to_string(),
                 selection.clone(),
                 ctx,
             );
@@ -7795,7 +7795,7 @@ fn test_link_style_exact() {
             );
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>li<a><a_www.cognix.dev>ne\\nb<a>lock"
+                "<text><a_www.google.com>li<a><a_www.cognix.khulnasoft.com>ne\\nb<a>lock"
             );
 
             let delta = edit_result.delta.expect("Should exist");
@@ -7814,7 +7814,7 @@ fn test_link_style_exact() {
                             StyledBufferRun {
                                 run: "ne\n".to_string(),
                                 text_styles: TextStylesWithMetadata::default()
-                                    .link("www.cognix.dev".to_string()),
+                                    .link("www.cognix.khulnasoft.com".to_string()),
                                 block_style: BufferBlockStyle::PlainText
                             }
                         ],
@@ -7826,7 +7826,7 @@ fn test_link_style_exact() {
                             StyledBufferRun {
                                 run: "b".to_string(),
                                 text_styles: TextStylesWithMetadata::default()
-                                    .link("www.cognix.dev".to_string()),
+                                    .link("www.cognix.khulnasoft.com".to_string()),
                                 block_style: BufferBlockStyle::PlainText
                             },
                             StyledBufferRun {
@@ -7850,7 +7850,7 @@ fn test_link_style_exact() {
             buffer.redo(selection.clone(), ctx);
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>li<a><a_www.cognix.dev>ne\\nb<a>lock"
+                "<text><a_www.google.com>li<a><a_www.cognix.khulnasoft.com>ne\\nb<a>lock"
             );
         });
     });
@@ -7928,7 +7928,7 @@ fn test_link_style_different_tag() {
             let edit_result = buffer.select_and_style_link(
                 CharOffset::from(3)..CharOffset::from(7),
                 "normal long text".to_string(),
-                "www.cognix.dev".to_string(),
+                "www.cognix.khulnasoft.com".to_string(),
                 selection.clone(),
                 ctx,
             );
@@ -7941,7 +7941,7 @@ fn test_link_style_different_tag() {
             );
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>g<a>n<a_www.cognix.dev>normal long text<a>ock"
+                "<text><a_www.google.com>g<a>n<a_www.cognix.khulnasoft.com>normal long text<a>ock"
             );
 
             let delta = edit_result.delta.expect("Should exist");
@@ -7964,7 +7964,7 @@ fn test_link_style_different_tag() {
                         StyledBufferRun {
                             run: "normal long text".to_string(),
                             text_styles: TextStylesWithMetadata::default()
-                                .link("www.cognix.dev".to_string()),
+                                .link("www.cognix.khulnasoft.com".to_string()),
                             block_style: BufferBlockStyle::PlainText
                         },
                         StyledBufferRun {
@@ -7987,7 +7987,7 @@ fn test_link_style_different_tag() {
             buffer.redo(selection.clone(), ctx);
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>g<a>n<a_www.cognix.dev>normal long text<a>ock"
+                "<text><a_www.google.com>g<a>n<a_www.cognix.khulnasoft.com>normal long text<a>ock"
             );
         });
     });
@@ -8024,7 +8024,7 @@ fn test_link_style_overlapping() {
             let edit_result = buffer.select_and_style_link(
                 CharOffset::from(3)..CharOffset::from(7),
                 "ne\nb".to_string(),
-                "www.cognix.dev".to_string(),
+                "www.cognix.khulnasoft.com".to_string(),
                 selection.clone(),
                 ctx,
             );
@@ -8037,7 +8037,7 @@ fn test_link_style_overlapping() {
             );
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>li<a><a_www.cognix.dev>ne\\nb<a>lock"
+                "<text><a_www.google.com>li<a><a_www.cognix.khulnasoft.com>ne\\nb<a>lock"
             );
 
             let delta = edit_result.delta.expect("Should exist");
@@ -8056,7 +8056,7 @@ fn test_link_style_overlapping() {
                             StyledBufferRun {
                                 run: "ne\n".to_string(),
                                 text_styles: TextStylesWithMetadata::default()
-                                    .link("www.cognix.dev".to_string()),
+                                    .link("www.cognix.khulnasoft.com".to_string()),
                                 block_style: BufferBlockStyle::PlainText
                             }
                         ],
@@ -8068,7 +8068,7 @@ fn test_link_style_overlapping() {
                             StyledBufferRun {
                                 run: "b".to_string(),
                                 text_styles: TextStylesWithMetadata::default()
-                                    .link("www.cognix.dev".to_string()),
+                                    .link("www.cognix.khulnasoft.com".to_string()),
                                 block_style: BufferBlockStyle::PlainText
                             },
                             StyledBufferRun {
@@ -8092,7 +8092,7 @@ fn test_link_style_overlapping() {
             buffer.redo(selection.clone(), ctx);
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>li<a><a_www.cognix.dev>ne\\nb<a>lock"
+                "<text><a_www.google.com>li<a><a_www.cognix.khulnasoft.com>ne\\nb<a>lock"
             );
         });
     });
@@ -8129,7 +8129,7 @@ fn test_link_style_surrounded() {
             let edit_result = buffer.select_and_style_link(
                 CharOffset::from(3)..CharOffset::from(5),
                 "ne".to_string(),
-                "www.cognix.dev".to_string(),
+                "www.cognix.khulnasoft.com".to_string(),
                 selection.clone(),
                 ctx,
             );
@@ -8142,7 +8142,7 @@ fn test_link_style_surrounded() {
             );
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>li<a><a_www.cognix.dev>ne<a>\\nblock"
+                "<text><a_www.google.com>li<a><a_www.cognix.khulnasoft.com>ne<a>\\nblock"
             );
 
             let delta = edit_result.delta.expect("Should exist");
@@ -8160,7 +8160,7 @@ fn test_link_style_surrounded() {
                         StyledBufferRun {
                             run: "ne".to_string(),
                             text_styles: TextStylesWithMetadata::default()
-                                .link("www.cognix.dev".to_string()),
+                                .link("www.cognix.khulnasoft.com".to_string()),
                             block_style: BufferBlockStyle::PlainText
                         },
                         StyledBufferRun {
@@ -8183,7 +8183,7 @@ fn test_link_style_surrounded() {
             buffer.redo(selection.clone(), ctx);
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>li<a><a_www.cognix.dev>ne<a>\\nblock"
+                "<text><a_www.google.com>li<a><a_www.cognix.khulnasoft.com>ne<a>\\nblock"
             );
         });
     });
@@ -8441,13 +8441,13 @@ fn test_unstyle_link_overlapping() {
             buffer.select_and_style_link(
                 CharOffset::from(4)..CharOffset::from(7),
                 "e\nb".to_string(),
-                "www.cognix.dev".to_string(),
+                "www.cognix.khulnasoft.com".to_string(),
                 selection.clone(),
                 ctx,
             );
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>lin<a><a_www.cognix.dev>e\\nb<a>lock"
+                "<text><a_www.google.com>lin<a><a_www.cognix.khulnasoft.com>e\\nb<a>lock"
             );
 
             let prev_selection = buffer.to_rendered_selection_set(selection.clone(), ctx);
@@ -8466,7 +8466,7 @@ fn test_unstyle_link_overlapping() {
             );
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>l<a>ine<a_www.cognix.dev>\\nb<a>lock"
+                "<text><a_www.google.com>l<a>ine<a_www.cognix.khulnasoft.com>\\nb<a>lock"
             );
 
             let delta = edit_result.delta.expect("Should exist");
@@ -8490,7 +8490,7 @@ fn test_unstyle_link_overlapping() {
                             StyledBufferRun {
                                 run: "\n".to_string(),
                                 text_styles: TextStylesWithMetadata::default()
-                                    .link("www.cognix.dev".to_string()),
+                                    .link("www.cognix.khulnasoft.com".to_string()),
                                 block_style: BufferBlockStyle::PlainText
                             },
                         ],
@@ -8502,7 +8502,7 @@ fn test_unstyle_link_overlapping() {
                             StyledBufferRun {
                                 run: "b".to_string(),
                                 text_styles: TextStylesWithMetadata::default()
-                                    .link("www.cognix.dev".to_string()),
+                                    .link("www.cognix.khulnasoft.com".to_string()),
                                 block_style: BufferBlockStyle::PlainText
                             },
                             StyledBufferRun {
@@ -8520,13 +8520,13 @@ fn test_unstyle_link_overlapping() {
             buffer.undo(selection.clone(), ctx);
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>lin<a><a_www.cognix.dev>e\\nb<a>lock"
+                "<text><a_www.google.com>lin<a><a_www.cognix.khulnasoft.com>e\\nb<a>lock"
             );
 
             buffer.redo(selection.clone(), ctx);
             assert_eq!(
                 buffer.content.debug(),
-                "<text><a_www.google.com>l<a>ine<a_www.cognix.dev>\\nb<a>lock"
+                "<text><a_www.google.com>l<a>ine<a_www.cognix.khulnasoft.com>\\nb<a>lock"
             );
         });
     });

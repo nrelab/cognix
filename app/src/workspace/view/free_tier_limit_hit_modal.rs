@@ -231,7 +231,7 @@ impl FreeTierLimitHitModal {
                                     FormattedTextFragment::plain_text("Access to "),
                                     FormattedTextFragment::hyperlink(
                                         "Reload Credits".to_string(),
-                                        "https://docs.cognix.dev/support-and-community/plans-and-billing/add-on-credits".to_string(),
+                                        "https://docs.cognix.khulnasoft.com/support-and-community/plans-and-billing/add-on-credits".to_string(),
                                     ),
                                 ])]);
                                 Flex::row()
@@ -274,7 +274,7 @@ impl FreeTierLimitHitModal {
                                 let formatted_text = FormattedText::new([FormattedTextLine::Line(vec![
                                     FormattedTextFragment::hyperlink(
                                         "Extended cloud agents access".to_string(),
-                                        "https://www.cognix.dev/oz".to_string(),
+                                        "https://www.cognix.khulnasoft.com/oz".to_string(),
                                     ),
                                 ])]);
                                 Flex::row()

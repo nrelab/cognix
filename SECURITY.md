@@ -8,7 +8,7 @@ If you believe you've found a security vulnerability, please follow responsible 
 
 Instead, please report it through one of the following channels:
 
-- **Email:** [security@cognix.dev](mailto:security@cognix.dev)
+- **Email:** [security@cognix.khulnasoft.com](mailto:security@cognix.khulnasoft.com)
 - **GitHub Security Advisory:** [Open a private advisory](https://github.com/nrelab/cognix/security/advisories/new)
 
 We will acknowledge your report promptly and work with you to understand and resolve the issue as quickly as possible.

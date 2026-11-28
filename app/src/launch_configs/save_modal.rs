@@ -530,7 +530,7 @@ impl LaunchConfigSaveModal {
                     .link(
                         "Link to Documentation".to_string(),
                         Some(
-                            "https://docs.cognix.dev/terminal/sessions/launch-configurations"
+                            "https://docs.cognix.khulnasoft.com/terminal/sessions/launch-configurations"
                                 .to_string(),
                         ),
                         None,

@@ -5,8 +5,8 @@ Depends: fontconfig, libegl1, libwayland-client0, libwayland-egl1, libx11-6, lib
 Recommends: libgl1-mesa-dri, yaru-icon-theme | adwaita-icon-theme-full
 Priority: optional
 Architecture: @@ARCH@@
-Maintainer: Cognix Linux Maintainers <linux-maintainers@cognix.dev>
-Homepage: https://cognix.dev/
+Maintainer: Cognix Linux Maintainers <linux-maintainers@cognix.khulnasoft.com>
+Homepage: https://cognix.khulnasoft.com/
 Description: Cognix, the Rust-based terminal for developers and teams
  Cognix is a modern, Rust-based terminal with AI built in so teams can
  build great software, faster. Bringing collaboration to the command line,

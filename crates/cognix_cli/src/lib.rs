@@ -352,7 +352,7 @@ impl Args {
 
 <bold><underline>Learn more:</underline></bold>
 * Use <bold>{bin_name} help</bold> to learn more about each command
-* Read the documentation at https://docs.cognix.dev/reference/cli
+* Read the documentation at https://docs.cognix.khulnasoft.com/reference/cli
 "#
         ));
 

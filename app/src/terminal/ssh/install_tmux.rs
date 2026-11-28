@@ -25,7 +25,7 @@ use cognixui::{BlurContext, FocusContext};
 use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 
 pub const WHY_INSTALL_TMUX_URL: &str =
-    "https://docs.cognix.dev/terminal/cognixify/ssh#why-do-i-need-tmux-on-the-remote-machine";
+    "https://docs.cognix.khulnasoft.com/terminal/cognixify/ssh#why-do-i-need-tmux-on-the-remote-machine";
 
 #[derive(Debug, Clone)]
 pub struct TmuxInstallMethod {

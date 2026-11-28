@@ -1,1 +1,1 @@
-Cognix](https://www.cognix.dev) is an agentic development environment, born out of the terminal. Use Cognix's built-in coding agent, or bring your own CLI agent (Claude Code, Codex, Gemini CLI, and others).
+Cognix](https://www.cognix.khulnasoft.com) is an agentic development environment, born out of the terminal. Use Cognix's built-in coding agent, or bring your own CLI agent (Claude Code, Codex, Gemini CLI, and others).

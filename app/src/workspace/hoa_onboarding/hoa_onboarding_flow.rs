@@ -472,7 +472,7 @@ impl HoaOnboardingFlow {
             styles: FormattedTextStyles {
                 underline: true,
                 hyperlink: Some(Hyperlink::Url(
-                    "https://docs.cognix.dev/agent-platform/cognix-agents/agent-notifications"
+                    "https://docs.cognix.khulnasoft.com/agent-platform/cognix-agents/agent-notifications"
                         .into(),
                 )),
                 ..Default::default()

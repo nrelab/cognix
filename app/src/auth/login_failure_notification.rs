@@ -11,7 +11,7 @@ use markdown_parser::{FormattedText, FormattedTextFragment, FormattedTextLine};
 use crate::appearance::Appearance;
 
 const LOGIN_TROUBLESHOOTING_DOCS_URL: &str =
-    "https://docs.cognix.dev/support-and-community/troubleshooting-and-support/troubleshooting-login-issues";
+    "https://docs.cognix.khulnasoft.com/support-and-community/troubleshooting-and-support/troubleshooting-login-issues";
 
 /// Represents reasons why login failed.
 pub enum LoginFailureReason {

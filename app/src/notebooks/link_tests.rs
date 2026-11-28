@@ -141,8 +141,8 @@ fn test_resolve_bare_url() {
             url("http://google.com")
         );
         assert_eq!(
-            resolve(&app, &links, "cognix.dev").await,
-            url("http://cognix.dev")
+            resolve(&app, &links, "cognix.khulnasoft.com").await,
+            url("http://cognix.khulnasoft.com")
         );
         assert_eq!(
             resolve(&app, &links, "bbc.co.uk").await,
@@ -214,12 +214,12 @@ fn test_resolve_valid_url() {
         let links = init_link_model(&mut app, None);
 
         assert_eq!(
-            resolve(&app, &links, "https://cognix.dev").await,
-            url("https://cognix.dev")
+            resolve(&app, &links, "https://cognix.khulnasoft.com").await,
+            url("https://cognix.khulnasoft.com")
         );
         assert_eq!(
-            resolve(&app, &links, "mailto:test@cognix.dev").await,
-            url("mailto:test@cognix.dev")
+            resolve(&app, &links, "mailto:test@cognix.khulnasoft.com").await,
+            url("mailto:test@cognix.khulnasoft.com")
         );
     });
 }

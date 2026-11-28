@@ -44,7 +44,7 @@ use super::{
     AuthStateProvider,
 };
 
-const TOS_URL: &str = "https://www.cognix.dev/terms-of-service";
+const TOS_URL: &str = "https://www.cognix.khulnasoft.com/terms-of-service";
 
 const COMMON_BODY_UI_FONT_SIZE: f32 = 12.;
 const AUTH_MODAL_GAP: f32 = 16.;

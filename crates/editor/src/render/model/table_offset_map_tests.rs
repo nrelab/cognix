@@ -146,7 +146,7 @@ fn test_cell_range() {
 
 #[test]
 fn test_table_cell_offset_map_handles_bold_and_links() {
-    let source = "**Bold** [Link](https://cognix.dev)";
+    let source = "**Bold** [Link](https://cognix.khulnasoft.com)";
     let inline = parse_inline_markdown(source);
     assert!(
         inline.iter().any(|fragment| fragment
@@ -158,7 +158,7 @@ fn test_table_cell_offset_map_handles_bold_and_links() {
     assert!(
         inline
             .iter()
-            .any(|fragment| matches!(&fragment.styles.hyperlink, Some(Hyperlink::Url(url)) if url == "https://cognix.dev")),
+            .any(|fragment| matches!(&fragment.styles.hyperlink, Some(Hyperlink::Url(url)) if url == "https://cognix.khulnasoft.com")),
         "parsed inline should have a hyperlink fragment"
     );
     let map = TableCellOffsetMap::from_inline_and_source(source, &inline);

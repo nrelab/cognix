@@ -11,7 +11,7 @@ Thanks for helping improve Cognix! This guide explains how to open issues, propo
 
 ## How Contributing to Cognix Works
 
-Cognix's contribution model is shaped by [Oz](https://oz.cognix.dev), an agent that automates parts of triage, spec writing, implementation, and review. Compared with a typical open-source repository, a few things work differently here:
+Cognix's contribution model is shaped by [Oz](https://oz.cognix.khulnasoft.com), an agent that automates parts of triage, spec writing, implementation, and review. Compared with a typical open-source repository, a few things work differently here:
 
 - **Issues are the starting point for everything.** Discussion, scoping, and design happen on the issue before any PR is opened.
 - **Feature requests differ from bug fixes:**
@@ -118,7 +118,7 @@ If you'd rather have an **Oz cloud agent** implement a ready issue for you, ment
 
 Contributors with several merged PRs may be invited to become collaborators. Collaborators receive expanded permissions including the ability to:
 
-- Assign [Oz](https://cognix.dev/oz) to work on issues by mentioning `@oz` in a comment on any issue that has a readiness label.
+- Assign [Oz](https://cognix.khulnasoft.com/oz) to work on issues by mentioning `@oz` in a comment on any issue that has a readiness label.
 - Use complimentary Oz credits for contributions to this repository.
 - Apply and manage issue labels.
 
@@ -155,7 +155,7 @@ Run unit tests with `cargo nextest run`. See [COGNIX.md](COGNIX.md) for more det
 
 ## Code of Conduct
 
-This project adopts the [Contributor Covenant](https://www.contributor-covenant.org/) (v2.1) as its code of conduct. All contributors and maintainers are expected to follow it in every project space. See [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for the full text, or report violations to cognix-coc at cognix.dev.
+This project adopts the [Contributor Covenant](https://www.contributor-covenant.org/) (v2.1) as its code of conduct. All contributors and maintainers are expected to follow it in every project space. See [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for the full text, or report violations to cognix-coc at cognix.khulnasoft.com.
 
 ## Reporting Security Issues
 
@@ -163,6 +163,6 @@ See [`SECURITY.md`](SECURITY.md) for our security disclosure policy and private 
 
 ## Getting Help
 
-- Browse the [Cognix docs](https://docs.cognix.dev/).
-- Join the [Slack Community](https://go.cognix.dev/join-preview) to ask questions and connect with other contributors.
+- Browse the [Cognix docs](https://docs.cognix.khulnasoft.com/).
+- Join the [Slack Community](https://go.cognix.khulnasoft.com/join-preview) to ask questions and connect with other contributors.
 - Open a [GitHub issue](https://github.com/nrelab/cognix/issues) for bugs or feature requests.

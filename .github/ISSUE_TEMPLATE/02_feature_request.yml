@@ -8,7 +8,7 @@ body:
       options:
         - label: "I have [searched Cognix feature requests](https://github.com/nrelab/cognix/issues?q=is%3Aissue+label%3AFEATURE) and there are no duplicates"
           required: true
-        - label: "I have [searched Cognix docs](https://docs.cognix.dev) and my feature is not there"
+        - label: "I have [searched Cognix docs](https://docs.cognix.khulnasoft.com) and my feature is not there"
           required: true
   - type: textarea
     id: "describe-solution"

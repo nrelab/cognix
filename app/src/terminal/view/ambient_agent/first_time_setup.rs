@@ -164,7 +164,7 @@ impl FirstTimeCloudAgentSetupView {
             ),
             FormattedTextFragment::hyperlink(
                 "Visit docs",
-                "https://docs.cognix.dev/agent-platform/cloud-agents/overview",
+                "https://docs.cognix.khulnasoft.com/agent-platform/cloud-agents/overview",
             ),
         ];
         column.add_child(
