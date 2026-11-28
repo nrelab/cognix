@@ -4,15 +4,15 @@ use async_channel::Sender;
 use futures_util::stream::AbortHandle;
 use instant::Instant;
 
-use cognixui::{App, ModelHandle};
-use parking_lot::FairMutex;
-use session_sharing_protocol::{
+use cognix_session::{
     common::{
         ActivePrompt, OrderedTerminalEvent, OrderedTerminalEventType, ParticipantId, Selection,
         SessionId,
     },
     sharer::{DownstreamMessage, ReconnectToken, UpstreamMessage},
 };
+use cognixui::{App, ModelHandle};
+use parking_lot::FairMutex;
 use websocket::{Message, WebsocketMessage as _};
 
 use crate::{

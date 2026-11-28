@@ -791,7 +791,7 @@ pub trait AIClient: 'static + Send + Sync {
         &self,
         task_id: AmbientAgentTaskId,
         task_state: Option<AgentTaskState>,
-        session_id: Option<session_sharing_protocol::common::SessionId>,
+        session_id: Option<cognix_session::common::SessionId>,
         conversation_id: Option<String>,
         status_message: Option<TaskStatusUpdate>,
     ) -> anyhow::Result<(), anyhow::Error>;
@@ -1376,7 +1376,7 @@ impl AIClient for ServerApi {
         &self,
         task_id: AmbientAgentTaskId,
         task_state: Option<AgentTaskState>,
-        session_id: Option<session_sharing_protocol::common::SessionId>,
+        session_id: Option<cognix_session::common::SessionId>,
         conversation_id: Option<String>,
         status_message: Option<TaskStatusUpdate>,
     ) -> anyhow::Result<(), anyhow::Error> {

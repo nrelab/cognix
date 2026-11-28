@@ -42,7 +42,7 @@ workarounds = [
 #
 # Excluded crates (same as deny.toml exceptions):
 #   - command-corrections
-#   - session-sharing-protocol
+#   - cognix-session
 #   - cognix-command-signatures
 #   - cognix-completion-metadata
 #   - cognix-workflows

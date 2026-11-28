@@ -27,6 +27,7 @@ use cognix_core::execution_mode::AppExecutionMode;
 use cognix_core::features::FeatureFlag;
 use cognix_core::report_error;
 use cognix_core::ui::theme::{color::internal_colors, CognixTheme};
+use cognix_session::common::SessionId;
 use cognixui::color::ColorU;
 use cognixui::r#async::Timer;
 use cognixui::windowing::{StateEvent, WindowManager};
@@ -38,7 +39,6 @@ use futures::stream::AbortHandle;
 use instant::Instant;
 use itertools::Itertools;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-use session_sharing_protocol::common::SessionId;
 use std::collections::{HashMap, HashSet};
 use std::time::Duration;
 

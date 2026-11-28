@@ -29,7 +29,7 @@ use crate::themes::theme::AnsiColorIdentifier;
 use crate::themes::theme_chooser::ThemeChooserMode;
 use crate::workflows::{WorkflowSelectionSource, WorkflowSource, WorkflowType};
 use crate::workspace::PaneViewLocator;
-use session_sharing_protocol::common::SessionId;
+use cognix_session::common::SessionId;
 
 use cognixui::accessibility::AccessibilityVerbosity;
 use cognixui::geometry::rect::RectF;

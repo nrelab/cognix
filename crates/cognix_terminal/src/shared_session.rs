@@ -1,16 +1,16 @@
 use crate::model::Point;
 
-impl From<Point> for session_sharing_protocol::common::Point {
+impl From<Point> for cognix_session::common::Point {
     fn from(val: Point) -> Self {
-        session_sharing_protocol::common::Point {
+        cognix_session::common::Point {
             row: val.row,
             col: val.col,
         }
     }
 }
 
-impl From<session_sharing_protocol::common::Point> for Point {
-    fn from(value: session_sharing_protocol::common::Point) -> Self {
+impl From<cognix_session::common::Point> for Point {
+    fn from(value: cognix_session::common::Point) -> Self {
         Self {
             row: value.row,
             col: value.col,

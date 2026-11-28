@@ -13,14 +13,14 @@ use cognix_cli::share::{ShareAccessLevel, ShareRequest, ShareSubject};
 use cognix_completer::completer::CommandOutput;
 use cognix_core::command::ExitCode;
 use cognix_core::features::FeatureFlag;
+use cognix_session::common::{Role, SessionId};
+use cognix_session::sharer::SessionSourceType;
 use cognix_util::path::ShellFamily;
 use cognixui::{
     r#async::FutureExt, AppContext, Entity, ModelContext, ModelHandle, SingletonEntity as _,
     ViewHandle,
 };
 use futures::channel::oneshot;
-use session_sharing_protocol::common::{Role, SessionId};
-use session_sharing_protocol::sharer::SessionSourceType;
 
 use crate::terminal::model::session::ExecuteCommandOptions;
 
@@ -83,7 +83,7 @@ pub(crate) enum TerminalDriverEvent {
     SlowBootstrap,
     /// The terminal session has established a shared session.
     EstablishedSharedSession {
-        session_id: session_sharing_protocol::common::SessionId,
+        session_id: cognix_session::common::SessionId,
         join_url: String,
     },
 }

@@ -70,6 +70,9 @@ use cognix_cli::agent::Harness;
 use cognix_core::command::ExitCode;
 use cognix_core::context_flag::ContextFlag;
 use cognix_core::HostId;
+use cognix_session::common::{
+    ParticipantId, Role, RoleRequestId, RoleRequestRejectedReason, RoleRequestResponse, SessionId,
+};
 use cognix_util::path::convert_wsl_to_windows_host_path;
 #[cfg(feature = "local_fs")]
 use cognix_util::path::LineAndColumnArg;
@@ -84,9 +87,6 @@ use parking_lot::FairMutex;
 use pathfinder_geometry::rect::RectF;
 use pathfinder_geometry::vector::{vec2f, Vector2F};
 use serde::{Deserialize, Serialize};
-use session_sharing_protocol::common::{
-    ParticipantId, Role, RoleRequestId, RoleRequestRejectedReason, RoleRequestResponse, SessionId,
-};
 use tree::DEFAULT_FLEX_VALUE;
 use typed_path::TypedPath;
 use url::Url;
@@ -148,7 +148,7 @@ use crate::terminal::{
     MockTerminalManager, ShareBlockModal, ShareBlockModalEvent, ShellLaunchData, ShellLaunchState,
 };
 use crate::{cmd_or_ctrl_shift, send_telemetry_from_ctx};
-use session_sharing_protocol::sharer::SessionSourceType;
+use cognix_session::sharer::SessionSourceType;
 use settings::Setting as _;
 
 use crate::code::active_file::ActiveFileModel;

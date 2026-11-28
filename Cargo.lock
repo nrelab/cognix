@@ -2919,7 +2919,6 @@ dependencies = [
  "cocoa 0.26.0",
  "cognix-cmdforge",
  "cognix-session",
- "cognix-workflows",
  "cognix_cli",
  "cognix_completer",
  "cognix_core",
@@ -3079,7 +3078,7 @@ dependencies = [
  "serde_regex",
  "serde_urlencoded",
  "serde_with 2.3.3",
- "serde_yaml 0.8.26",
+ "serde_yaml",
  "serial_test",
  "settings",
  "settings_value",
@@ -3130,6 +3129,7 @@ dependencies = [
  "voice_input",
  "vte",
  "walkdir",
+ "warp-workflows",
  "wasm-bindgen",
  "watcher",
  "web-sys",
@@ -3147,7 +3147,7 @@ dependencies = [
 [[package]]
 name = "cognix-cmdforge"
 version = "0.0.0"
-source = "git+https://github.com/nrelab/cmdforge.git#b5011c627260fb571ee0a9638aed0cbc8e7bfbf9"
+source = "git+https://github.com/nrelab/cmdforge.git?rev=b5011c627260fb571ee0a9638aed0cbc8e7bfbf9#b5011c627260fb571ee0a9638aed0cbc8e7bfbf9"
 dependencies = [
  "cfg-if",
  "cognix-completion-metadata",
@@ -3165,7 +3165,7 @@ dependencies = [
 [[package]]
 name = "cognix-completion-metadata"
 version = "0.0.0"
-source = "git+https://github.com/nrelab/cmdforge.git#b5011c627260fb571ee0a9638aed0cbc8e7bfbf9"
+source = "git+https://github.com/nrelab/cmdforge.git?rev=b5011c627260fb571ee0a9638aed0cbc8e7bfbf9#b5011c627260fb571ee0a9638aed0cbc8e7bfbf9"
 dependencies = [
  "html-escape",
  "itertools 0.10.5",
@@ -3178,33 +3178,12 @@ dependencies = [
 [[package]]
 name = "cognix-session"
 version = "0.0.0"
-source = "git+https://github.com/nrelab/cognix-session.git#a274f71f7a8afc87ccd38f6f803f2d29b694f004"
+source = "git+https://github.com/nrelab/cognix-session.git?rev=a274f71f7a8afc87ccd38f6f803f2d29b694f004"
 dependencies = [
  "byte-unit",
  "serde",
  "serde_json",
  "uuid",
-]
-
-[[package]]
-name = "cognix-workflows"
-version = "0.1.0"
-source = "git+https://github.com/nrelab/cognix-workflows#75db0ecec078409ffbe4f38c6c5efc0b0bf6c37b"
-dependencies = [
- "anyhow",
- "cognix-workflows-types",
- "convert_case 0.11.0",
- "serde_yaml 0.9.34+deprecated",
- "uneval",
- "walkdir",
-]
-
-[[package]]
-name = "cognix-workflows-types"
-version = "0.1.0"
-source = "git+https://github.com/nrelab/cognix-workflows#75db0ecec078409ffbe4f38c6c5efc0b0bf6c37b"
-dependencies = [
- "serde",
 ]
 
 [[package]]
@@ -3307,7 +3286,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_with 2.3.3",
- "serde_yaml 0.8.26",
+ "serde_yaml",
  "settings",
  "settings_value",
  "shellexpand",
@@ -3511,7 +3490,7 @@ dependencies = [
 [[package]]
 name = "cognix_multi_agent_api"
 version = "0.0.0"
-source = "git+https://github.com/nrelab/cognix-proto-apis.git#3090d3128d487a24616476e00e427f819eb412f9"
+source = "git+https://github.com/nrelab/cognix-proto-apis.git?rev=3090d3128d487a24616476e00e427f819eb412f9#3090d3128d487a24616476e00e427f819eb412f9"
 dependencies = [
  "prost 0.14.3",
  "prost-reflect",
@@ -3633,6 +3612,7 @@ dependencies = [
  "log",
  "serde",
  "serde-wasm-bindgen",
+ "serde_json",
  "wasm-bindgen",
 ]
 
@@ -7633,7 +7613,6 @@ dependencies = [
  "clap",
  "cognix",
  "cognix-cmdforge",
- "cognix-workflows",
  "cognix_cli",
  "cognix_core",
  "cognix_multi_agent_api",
@@ -7663,6 +7642,7 @@ dependencies = [
  "sum_tree",
  "sysinfo",
  "version-compare",
+ "warp-workflows",
  "whoami",
 ]
 
@@ -14986,7 +14966,7 @@ checksum = "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be"
 [[package]]
 name = "utf8parse"
 version = "0.2.1"
-source = "git+https://github.com/nrelab/cognix-vendor.git#17ef8d86d7d8432d90afea8881c7a323ec8b7268"
+source = "git+https://github.com/nrelab/cognix-vendor.git#30dfba01f691d013aa687c20044929d35c66ead4"
 
 [[package]]
 name = "utf8parse"
@@ -15165,7 +15145,7 @@ dependencies = [
 [[package]]
 name = "vte"
 version = "0.13.0"
-source = "git+https://github.com/nrelab/cognix-vendor.git#17ef8d86d7d8432d90afea8881c7a323ec8b7268"
+source = "git+https://github.com/nrelab/cognix-vendor.git#30dfba01f691d013aa687c20044929d35c66ead4"
 dependencies = [
  "utf8parse 0.2.1",
  "vte_generate_state_changes",
@@ -15174,7 +15154,7 @@ dependencies = [
 [[package]]
 name = "vte_generate_state_changes"
 version = "0.1.1"
-source = "git+https://github.com/nrelab/cognix-vendor.git#17ef8d86d7d8432d90afea8881c7a323ec8b7268"
+source = "git+https://github.com/nrelab/cognix-vendor.git#30dfba01f691d013aa687c20044929d35c66ead4"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -15203,6 +15183,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bfa7760aed19e106de2c7c0b581b509f2f25d3dacaf737cb82ac61bc6d760b0e"
 dependencies = [
  "try-lock",
+]
+
+[[package]]
+name = "warp-workflows"
+version = "0.1.0"
+source = "git+https://github.com/warpdotdev/workflows?rev=793a98ddda6ef19682aed66364faebd2829f0e01#793a98ddda6ef19682aed66364faebd2829f0e01"
+dependencies = [
+ "anyhow",
+ "convert_case 0.4.0",
+ "memmap",
+ "serde_yaml",
+ "uneval",
+ "walkdir",
+ "warp-workflows-types",
+]
+
+[[package]]
+name = "warp-workflows-types"
+version = "0.1.0"
+source = "git+https://github.com/warpdotdev/workflows?rev=793a98ddda6ef19682aed66364faebd2829f0e01#793a98ddda6ef19682aed66364faebd2829f0e01"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

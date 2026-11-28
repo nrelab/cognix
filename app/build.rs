@@ -185,6 +185,15 @@ fn generate_channel_config_if_needed(target_family: &str, target_os: &str) {
         "native"
     };
 
+    // Match the target_os mapping used by `load_config_from_generator` in
+    // app/src/bin/channel_config.rs: wasm targets report `unknown`, which maps
+    // to `linux`.
+    let os_arg = match target_os {
+        "macos" => "macos",
+        "windows" => "windows",
+        _ => "linux",
+    };
+
     // Generate config for all internal channels. The build script runs once per crate (not
     // once per binary), so we generate all configs here and each binary's include_str! picks
     // up its own file.
@@ -195,7 +204,7 @@ fn generate_channel_config_if_needed(target_family: &str, target_os: &str) {
             .arg("--target-family")
             .arg(family_arg)
             .arg("--target-os")
-            .arg(target_os)
+            .arg(os_arg)
             .output()
             .unwrap_or_else(|err| {
                 panic!("Failed to execute config generator at '{config_bin}': {err}")

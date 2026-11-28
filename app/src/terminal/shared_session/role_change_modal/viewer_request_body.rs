@@ -1,4 +1,5 @@
 use crate::{appearance::Appearance, ui_components::blended_colors};
+use cognix_session::common::Role;
 use cognixui::elements::{
     Container, Flex, MainAxisAlignment, MouseStateHandle, ParentElement, Text,
 };
@@ -12,7 +13,6 @@ use cognixui::{
     },
     AppContext, Element, Entity, SingletonEntity, TypedActionView, View, ViewContext,
 };
-use session_sharing_protocol::common::Role;
 
 use super::{BODY_PADDING, HEADER_FONT_SIZE, MODAL_PADDING, TEXT_FONT_SIZE};
 

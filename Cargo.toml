@@ -248,7 +248,7 @@ serde_json = { version = "1.0", features = ["raw_value"] }
 serde_urlencoded = "0.7"
 serde_with = "2.0.1"
 serde_yaml = "0.8"
-session-sharing-protocol = { git = "https://github.com/nrelab/cognix-session.git", package="cognix-session" }
+cognix-session = { git = "https://github.com/nrelab/cognix-session.git", rev = "a274f71f7a8afc87ccd38f6f803f2d29b694f004" }
 similar = { version = "2.7", features = ["inline"] }
 simplelog = "0.12.2"
 smallvec = "1.6.1"
@@ -303,8 +303,8 @@ vec1 = { version = "1.8.0", features = ["serde"] }
 version-compare = "0.1"
 vte = { git = "https://github.com/nrelab/cognix-vendor.git", default-features = false }
 walkdir = "2"
-cognix-workflows = { git = "https://github.com/nrelab/cognix-workflows" }
-cognix_multi_agent_api = { git = "https://github.com/nrelab/cognix-proto-apis.git" }
+cognix-workflows = { git = "https://github.com/warpdotdev/workflows", package = "warp-workflows", rev = "793a98ddda6ef19682aed66364faebd2829f0e01" }
+cognix_multi_agent_api = { git = "https://github.com/nrelab/cognix-proto-apis.git", package = "cognix_multi_agent_api", rev = "3090d3128d487a24616476e00e427f819eb412f9" }
 wasm-bindgen = "0.2.89"
 wasm-bindgen-futures = "0.4.42"
 web-sys = { version = "0.3.69", features = [
@@ -348,8 +348,8 @@ dirs = "6.0.0"
 rayon = "1.10.0"
 sha2 = "0.10"
 shellexpand = "3.1.1"
-cognix-command-signatures = { git = "https://github.com/nrelab/cmdforge.git", package = "cognix-cmdforge", default-features = false }
-winit = { git = "https://github.com/nrelab/cognix-vendor.git" }
+cognix-command-signatures = { git = "https://github.com/nrelab/cmdforge.git", package = "cognix-cmdforge", rev = "b5011c627260fb571ee0a9638aed0cbc8e7bfbf9", default-features = false }
+winit = { git = "https://github.com/warpdotdev/winit.git", rev = "7ef01853ae3fe952e6014080a88dc4352662dfb1" }
 x11rb = "0.13.0"
 mockito = "1.7.0"
 sysinfo = { version = "0.37.0", default-features = false, features = [
@@ -490,5 +490,5 @@ tikv-jemallocator = { git = "https://github.com/nrelab/cognix-vendor.git" }
 tikv-jemalloc-sys = { git = "https://github.com/nrelab/cognix-vendor.git" }
 
 [patch."https://github.com/nrelab/cognix-proto-apis.git"]
-# Uncomment for local development of cognix-proto-apis
-# cognix_multi_agent_api = { path = "../cognix-proto-apis/apis/multi_agent/v1/gen/rust" }
+# Uncomment for local development of warp-proto-apis
+# cognix_multi_agent_api = { path = "../warp-proto-apis/apis/multi_agent/v1/gen/rust" }

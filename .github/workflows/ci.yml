@@ -663,6 +663,37 @@ jobs:
           # Sentry SDK binary releases).
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  web-check:
+    name: Web SPA checks
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: params
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install web dependencies
+        run: npm ci
+        working-directory: web
+
+      - name: Typecheck, lint, and test
+        run: |
+          npm run typecheck
+          npm run lint
+          npm test
+        working-directory: web
+
+      - name: Verify generated GraphQL types are up-to-date
+        run: |
+          npm run codegen
+          git diff --exit-code -- src/api/generated
+        working-directory: web
+
   # A final job that collects the results of all of the parallel CI jobs and
   # makes sure that all of them pass.
   #
@@ -683,6 +714,7 @@ jobs:
       - lints
       - wasm-lint
       - general-lint
+      - web-check
       - check-release-compilation
     steps:
       - name: Check CI results

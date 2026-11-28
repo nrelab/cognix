@@ -6,16 +6,16 @@ use cognix_core::command::ExitCode;
 use cognix_core::telemetry::EnablementState;
 use cognix_core::telemetry::TelemetryEvent as TelemetryEventTrait;
 use cognix_core::telemetry::TelemetryEventDesc;
+use cognix_session::common::ParticipantId;
+use cognix_session::common::Role;
+use cognix_session::common::SessionId as SharedSessionId;
+use cognix_session::sharer::SessionEndedReason;
 use cognixui::keymap::Keystroke;
 use cognixui::notification::{NotificationSendError, RequestPermissionsOutcome};
 use cognixui::rendering::ThinStrokes;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use serde_json::Value;
-use session_sharing_protocol::common::ParticipantId;
-use session_sharing_protocol::common::Role;
-use session_sharing_protocol::common::SessionId as SharedSessionId;
-use session_sharing_protocol::sharer::SessionEndedReason;
 use strum_macros::EnumDiscriminants;
 use strum_macros::EnumIter;
 
@@ -105,7 +105,7 @@ use crate::workspace::tab_settings::TabCloseButtonPosition;
 use crate::workspace::tab_settings::WorkspaceDecorationVisibility;
 use crate::workspace::TabMovement;
 use cognix_core::interval_timer::TimingDataPoint;
-use session_sharing_protocol::sharer::SessionSourceType;
+use cognix_session::sharer::SessionSourceType;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct BootstrappingInfo {
